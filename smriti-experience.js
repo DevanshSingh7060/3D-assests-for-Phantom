@@ -59,8 +59,8 @@
     NOTICE: { pos: { x: 30, y: 94, z: 205 }, target: { x: -25, y: 52, z: 8 }, fov: 28 },
     SEARCH: { pos: { x: 20, y: 104, z: 225 }, target: { x: -35, y: 52, z: 5 }, fov: 29 },
     PHANTOM: { pos: { x: 62, y: 122, z: 285 }, target: { x: 14, y: 56, z: -25 }, fov: 32 },
-    REVEAL: { pos: { x: 68, y: 96, z: 175 }, target: { x: 96, y: 82, z: -80 }, fov: 27 },
-    DISCOVER: { pos: { x: 48, y: 92, z: 185 }, target: { x: 72, y: 68, z: -60 }, fov: 28 },
+    REVEAL: { pos: { x: 52, y: 106, z: 240 }, target: { x: 42, y: 64, z: -40 }, fov: 30 },
+    DISCOVER: { pos: { x: 45, y: 100, z: 225 }, target: { x: 38, y: 60, z: -35 }, fov: 29 },
     RESOLVE: { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 }
   };
 
@@ -584,6 +584,12 @@
             }
           });
 
+          // Procedurally relax arms from stiff T-pose into natural idle resting pose
+          const bodyMesh = model.getObjectByName('Object_2');
+          if (bodyMesh && bodyMesh.geometry) {
+            this.relaxDoraArms(bodyMesh);
+          }
+
           // Measure raw model dimensions
           const box = new THREE.Box3().setFromObject(model);
           const size = box.getSize(new THREE.Vector3());
@@ -635,6 +641,53 @@
           console.error('Error loading Dora GLB:', err);
         }
       );
+    }
+
+    // Procedural arm relaxation from raw static T-pose into natural animated short posture
+    relaxDoraArms(bodyMesh) {
+      const geo = bodyMesh.geometry;
+      const pos = geo.attributes.position;
+      if (!pos) return;
+
+      const shoulderZ = 1.70;
+      const shoulderX = 0.44;
+
+      for (let i = 0; i < pos.count; i++) {
+        const x = pos.getX(i);
+        const y = pos.getY(i);
+        const z = pos.getZ(i);
+
+        // Only affect arm vertices (above legs z > 0.65)
+        if (z > 0.65) {
+          if (x > shoulderX) {
+            // Left arm: rotate downward
+            const dist = x - shoulderX;
+            const w = Math.min(Math.max(dist / 0.22, 0), 1);
+            const theta = -1.12 * w; // ~64 degrees down
+            const dx = x - shoulderX;
+            const dz = z - shoulderZ;
+            const cosT = Math.cos(theta);
+            const sinT = Math.sin(theta);
+            pos.setX(i, shoulderX + dx * cosT - dz * sinT);
+            pos.setZ(i, shoulderZ + dx * sinT + dz * cosT);
+            pos.setY(i, y - 0.08 * w); // slightly forward into natural resting posture
+          } else if (x < -shoulderX) {
+            // Right arm: rotate downward
+            const dist = -x - shoulderX;
+            const w = Math.min(Math.max(dist / 0.22, 0), 1);
+            const theta = 1.12 * w; // ~64 degrees down
+            const dx = x - (-shoulderX);
+            const dz = z - shoulderZ;
+            const cosT = Math.cos(theta);
+            const sinT = Math.sin(theta);
+            pos.setX(i, -shoulderX + dx * cosT - dz * sinT);
+            pos.setZ(i, shoulderZ + dx * sinT + dz * cosT);
+            pos.setY(i, y - 0.08 * w); // slightly forward
+          }
+        }
+      }
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
     }
 
     // =========================================================================

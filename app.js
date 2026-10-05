@@ -36,4 +36,8 @@
   const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 22);
   window.addEventListener('scroll', updateHeader, { passive: true });
   updateHeader();
+
+  if (window.location.search.includes('story=true') || window.location.hash === '#story') {
+    window.setTimeout(() => startStory(), 1200);
+  }
 })();
