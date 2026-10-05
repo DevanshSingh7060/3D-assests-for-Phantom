@@ -1,11 +1,13 @@
 /**
- * SMRITI — Spatial Memory Web Experience Engine (v4.0 Final Polish)
+ * SMRITI — Spatial Memory Web Experience Engine (v4.1 Final Polish)
  * ----------------------------------------------------------------------------
  * Integrates:
  * - 3D Assets: Dora (GLB), small_table.glb, sofa.glb, plant_with_pot.glb
  * - Exact physical surface contact calculations (Zero penetration, zero floating)
+ * - Soft radial-gradient contact shadows (Zero harsh bounding boxes)
+ * - Harmonized warm palette (Terracotta-caramel sofa, oak table, organic green plant)
  * - Authoritative single-source-of-truth glasses state machine
- * - Smartphone prop facing Dora's face with live OLED canvas UI & face glow
+ * - Smartphone prop facing Dora's face with live OLED canvas UI & soft facial glow
  * - Real character root motion translation & directional walking to bookshelf
  * - Physical hand-object reach and pickup synchronization
  * - Translucent PHANTOM spatial scan & 26% memory ghost imprint at exact table origin
@@ -38,7 +40,7 @@
 
     furnitureWood: 0x8B6042,   // Rich warm wood (#8B6042)
     furnitureDark: 0x34251F,   // Dark brown (#34251F)
-    armchairFabric: 0xF5ECD8,  // Soft Bouclé Fabric (#F5ECD8)
+    armchairFabric: 0xA65F38,  // Warm Terracotta/Caramel Armchair (#A65F38)
     blanketTerracotta: 0xC95F3D,// Terracotta Throw (#C95F3D)
     cushionMustard: 0xD5A63C,  // Warm Velvet Mustard (#D5A63C)
     lampBrass: 0xC8A050,       // Brushed Warm Brass
@@ -86,6 +88,9 @@
       this.targetCamLook = new THREE.Vector3().copy(CAM_PRESETS.HOME.target);
       this.targetFov = CAM_PRESETS.HOME.fov;
 
+      // Shared Radial Shadow Texture for Soft Realistic Contact Shadows
+      this.shadowTexture = null;
+
       // 3D Subject Handles (Hero Character: Dora GLB)
       this.character = null;
       this.characterHead = null;
@@ -99,7 +104,7 @@
 
       // Environment 3D GLB Handles
       this.tableGroup = null;
-      this.tableTopSurfaceY = 48.0; // Default calculated height
+      this.tableTopSurfaceY = 48.0;
       this.sofaGroup = null;
       this.plantGroup = null;
       this.shelfGroup = null;
@@ -116,9 +121,10 @@
       this.glassesState = 'GLASSES_TABLE';
       this.glasses = null;
       this.ghostGlasses = null;
-      this.glassesTablePos = new THREE.Vector3(-78, 52.8, 8);
-      this.glassesTableRot = new THREE.Euler(0, 0.28, 0);
-      this.glassesShelfPos = new THREE.Vector3(104, 85.8, -85);
+      this.glassesTablePos = new THREE.Vector3(-78, 51.5, 8);
+      this.glassesTableRot = new THREE.Euler(-0.12, 0.32, -0.05);
+      this.glassesShelfPos = new THREE.Vector3(104, 85.2, -85);
+      this.glassesShelfRot = new THREE.Euler(-0.12, 0.28, 0);
       this.tableContactShadow = null;
       this.shelfContactShadow = null;
       this.glassesPickedUp = false;
@@ -177,11 +183,30 @@
       this.init();
     }
 
+    createRadialShadowTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      gradient.addColorStop(0, 'rgba(36, 23, 16, 0.75)');
+      gradient.addColorStop(0.35, 'rgba(36, 23, 16, 0.45)');
+      gradient.addColorStop(0.70, 'rgba(36, 23, 16, 0.15)');
+      gradient.addColorStop(1.0, 'rgba(36, 23, 16, 0)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, 128, 128);
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.needsUpdate = true;
+      return texture;
+    }
+
     init() {
       // 1. Scene with Warm Canvas Atmosphere
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(PALETTE.bg);
       this.scene.fog = new THREE.FogExp2(PALETTE.bg, 0.0006);
+
+      this.shadowTexture = this.createRadialShadowTexture();
 
       const isMobile = window.innerWidth < 640;
       const initialFov = isMobile ? 38 : CAM_PRESETS.HOME.fov;
@@ -229,6 +254,11 @@
         this.mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
         this.mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
       });
+
+      // Auto-start if requested in URL
+      if (window.location.search.includes('story=true') || window.location.hash === '#story') {
+        setTimeout(() => this.startStory(), 1400);
+      }
 
       this.animate = this.animate.bind(this);
       requestAnimationFrame(this.animate);
@@ -384,10 +414,10 @@
           this.tableGroup.add(model);
           this.tableTopSurfaceY = targetHeight; // Top tabletop surface height in world
 
-          // Ground Contact Shadow under table base
+          // Soft Radial Contact Shadow under table base
           const tableFloorShadow = new THREE.Mesh(
-            new THREE.PlaneGeometry(38, 38),
-            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.38, depthWrite: false })
+            new THREE.PlaneGeometry(42, 42),
+            new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.55, depthWrite: false })
           );
           tableFloorShadow.rotation.x = -Math.PI * 0.5;
           tableFloorShadow.position.set(0, 0.04, 0);
@@ -401,7 +431,7 @@
       );
     }
 
-    // 2. SOFA (sofa.glb) — Sits on floor with warm bouclé fabric
+    // 2. SOFA (sofa.glb) — Sits on floor with warm terracotta/caramel upholstery
     loadSofa() {
       this.sofaGroup = new THREE.Group();
       this.sofaGroup.position.set(-48, 0, -38);
@@ -428,7 +458,9 @@
               child.castShadow = true;
               child.receiveShadow = true;
               if (child.material) {
-                child.material.roughness = 0.78;
+                // Harmonized warm caramel/terracotta upholstery
+                child.material.color = new THREE.Color(PALETTE.armchairFabric);
+                child.material.roughness = 0.74;
                 child.material.metalness = 0.02;
                 child.material.needsUpdate = true;
               }
@@ -437,10 +469,10 @@
 
           this.sofaGroup.add(model);
 
-          // Floor Contact Shadow under sofa
+          // Soft Radial Contact Shadow under sofa
           const sofaShadow = new THREE.Mesh(
-            new THREE.PlaneGeometry(size.x * scale * 1.08, size.z * scale * 1.08),
-            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.42, depthWrite: false })
+            new THREE.PlaneGeometry(size.x * scale * 1.15, size.z * scale * 1.15),
+            new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.58, depthWrite: false })
           );
           sofaShadow.rotation.x = -Math.PI * 0.5;
           sofaShadow.position.set(0, 0.04, 0);
@@ -492,11 +524,12 @@
 
           this.plantGroup.add(model);
 
-          // Floor Contact Shadow under pot
+          // Soft Radial Contact Shadow under pot
           const potShadow = new THREE.Mesh(
-            new THREE.CylinderGeometry(11, 11, 0.1, 24),
-            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.38, depthWrite: false })
+            new THREE.PlaneGeometry(28, 28),
+            new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.55, depthWrite: false })
           );
+          potShadow.rotation.x = -Math.PI * 0.5;
           potShadow.position.set(0, 0.04, 0);
           this.plantGroup.add(potShadow);
         },
@@ -556,10 +589,10 @@
       vase.castShadow = true;
       this.shelfGroup.add(vase);
 
-      // Ground Contact Shadow under bookshelf
+      // Soft Radial Contact Shadow under bookshelf
       const shelfShadow = new THREE.Mesh(
-        new THREE.PlaneGeometry(64, 34),
-        new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.42, depthWrite: false })
+        new THREE.PlaneGeometry(74, 38),
+        new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.58, depthWrite: false })
       );
       shelfShadow.rotation.x = -Math.PI * 0.5;
       shelfShadow.position.set(0, 0.04, 0);
@@ -843,10 +876,10 @@
             this.doraEyes = objEyes;
           }
 
-          // Ground Contact Shadow under Dora's feet
+          // Soft Radial Contact Shadow under Dora's feet
           const feetShadow = new THREE.Mesh(
-            new THREE.PlaneGeometry(28, 20),
-            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.40, depthWrite: false })
+            new THREE.PlaneGeometry(32, 24),
+            new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.52, depthWrite: false })
           );
           feetShadow.rotation.x = -Math.PI * 0.5;
           feetShadow.position.set(0, 0.04, 0);
@@ -1025,7 +1058,7 @@
     // 6. HERO PROPS & ZERO-CLIPPING PHYSICAL PLACEMENT ENGINE
     // =========================================================================
     buildHeroProps() {
-      // 1. Reading Glasses
+      // 1. Reading Glasses (Realistic spectacles scale ~0.85)
       this.glasses = new THREE.Group();
       const matFrame = new THREE.MeshStandardMaterial({
         color: PALETTE.glassesFrame,
@@ -1081,27 +1114,28 @@
       templeR.rotation.x = Math.PI * 0.5;
       this.glasses.add(templeR);
 
-      this.glasses.scale.set(1.25, 1.25, 1.25);
+      // Human-scale proportions: 0.85 scale fits realistically on table and in hand
+      this.glasses.scale.set(0.85, 0.85, 0.85);
       this.scene.add(this.glasses);
 
       // 2. Physical Soft Contact Shadows (Zero Penetration, Zero Floating)
       const shadowMatTable = new THREE.MeshBasicMaterial({
-        color: 0x241710,
+        map: this.shadowTexture,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.55,
         depthWrite: false
       });
-      this.tableContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 11), shadowMatTable);
+      this.tableContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 12), shadowMatTable);
       this.tableContactShadow.rotation.x = -Math.PI * 0.5;
       this.scene.add(this.tableContactShadow);
 
       const shadowMatShelf = new THREE.MeshBasicMaterial({
-        color: 0x241710,
+        map: this.shadowTexture,
         transparent: true,
         opacity: 0.0,
         depthWrite: false
       });
-      this.shelfContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 11), shadowMatShelf);
+      this.shelfContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 12), shadowMatShelf);
       this.shelfContactShadow.rotation.x = -Math.PI * 0.5;
       this.scene.add(this.shelfContactShadow);
 
@@ -1141,7 +1175,7 @@
       gTempleR.rotation.x = Math.PI * 0.5;
       this.ghostGlasses.add(gTempleR);
 
-      this.ghostGlasses.scale.set(1.25, 1.25, 1.25);
+      this.ghostGlasses.scale.set(0.85, 0.85, 0.85);
       this.ghostGlasses.visible = false;
       this.scene.add(this.ghostGlasses);
 
@@ -1221,7 +1255,11 @@
       const tableSurfaceY = this.tableTopSurfaceY || 48.0;
       const shelf2SurfaceY = 83.5;
 
+      // Calculate contact with natural resting orientation
+      this.glasses.rotation.copy(this.glassesTableRot);
       const tableContactY = this.calculateContactY(this.glasses, tableSurfaceY);
+
+      this.glasses.rotation.copy(this.glassesShelfRot);
       const shelfContactY = this.calculateContactY(this.glasses, shelf2SurfaceY);
 
       this.glassesTablePos.set(-78, tableContactY, 8);
@@ -1323,7 +1361,7 @@
 
       this.glasses.position.copy(this.glassesTablePos);
       this.glasses.rotation.copy(this.glassesTableRot);
-      if (this.tableContactShadow) this.tableContactShadow.material.opacity = 0.42;
+      if (this.tableContactShadow) this.tableContactShadow.material.opacity = 0.55;
       if (this.shelfContactShadow) this.shelfContactShadow.material.opacity = 0.0;
 
       this.charPos.copy(CHAR_ORIGIN);
@@ -1372,7 +1410,7 @@
         if (!this.isBlinking && now - this.lastBlinkTime > this.nextBlinkInterval) {
           this.isBlinking = true;
           this.lastBlinkTime = now;
-          this.nextBlinkInterval = 2400 + Math.random() * 3800; // Irregular cadence
+          this.nextBlinkInterval = 2400 + Math.random() * 3800;
         }
         if (this.isBlinking) {
           const blinkProgress = (now - this.lastBlinkTime) / this.blinkDuration;
@@ -1522,19 +1560,24 @@
               this.glassesTablePos.y + (this.glassesShelfPos.y - this.glassesTablePos.y) * p + arcY,
               this.glassesTablePos.z + (this.glassesShelfPos.z - this.glassesTablePos.z) * p
             );
-            this.glasses.rotation.set(0.15 * Math.sin(p * Math.PI), 0.28 + p * Math.PI * 0.85, 0.1 * Math.sin(p * Math.PI));
+            this.glasses.rotation.set(
+              this.glassesTableRot.x + (this.glassesShelfRot.x - this.glassesTableRot.x) * p + 0.15 * Math.sin(p * Math.PI),
+              this.glassesTableRot.y + p * Math.PI * 0.85,
+              this.glassesTableRot.z + 0.1 * Math.sin(p * Math.PI)
+            );
 
             // Crossfade contact shadows
-            this.tableContactShadow.material.opacity = Math.max(0, 0.42 * (1 - p * 2));
-            this.shelfContactShadow.material.opacity = Math.max(0, 0.42 * ((p - 0.5) * 2));
+            this.tableContactShadow.material.opacity = Math.max(0, 0.55 * (1 - p * 2));
+            this.shelfContactShadow.material.opacity = Math.max(0, 0.55 * ((p - 0.5) * 2));
           } else if (flight > 1.0) {
             // Damped harmonic settling bounce on shelf
             this.glassesState = 'GLASSES_SHELF';
             const settleT = (flight - 1.0) / 0.25;
             const bounce = Math.sin(settleT * Math.PI * 3) * Math.exp(-settleT * 4) * 0.8;
             this.glasses.position.set(this.glassesShelfPos.x, this.glassesShelfPos.y + Math.max(0, bounce), this.glassesShelfPos.z);
+            this.glasses.rotation.copy(this.glassesShelfRot);
             this.tableContactShadow.material.opacity = 0;
-            this.shelfContactShadow.material.opacity = 0.42;
+            this.shelfContactShadow.material.opacity = 0.55;
           }
 
           this.updateDoraArms({
@@ -1892,7 +1935,7 @@
           this.glasses.rotation.copy(this.glassesTableRot);
         } else if (this.glassesState === 'GLASSES_SHELF') {
           this.glasses.position.copy(this.glassesShelfPos);
-          this.glasses.rotation.set(0, 0.28, 0);
+          this.glasses.rotation.copy(this.glassesShelfRot);
         } else if (this.glassesState === 'GLASSES_HELD') {
           this.glasses.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.8, this.rightHandWorldPos.z + 1.0);
           this.glasses.rotation.set(-0.25, 0.4, 0.1);
@@ -1949,4 +1992,9 @@
   }
 
   window.SmritiExperience = SmritiExperience;
+  window.triggerSmritiStory = () => {
+    if (window.smritiApp) {
+      window.smritiApp.startStory();
+    }
+  };
 })();
