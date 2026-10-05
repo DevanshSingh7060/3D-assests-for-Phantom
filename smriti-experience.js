@@ -927,10 +927,10 @@
       const sRollL = pCfg.lShoulderRoll, sPitchL = pCfg.lShoulderPitch, sYawL = pCfg.lShoulderYaw, eBendL = pCfg.lElbowBend, wFlexL = pCfg.lWristFlex;
       const sRollR = pCfg.rShoulderRoll, sPitchR = pCfg.rShoulderPitch, sYawR = pCfg.rShoulderYaw, eBendR = pCfg.rElbowBend, wFlexR = pCfg.rWristFlex;
 
-      const cosRollL = Math.cos(sRollL), sinRollL = Math.sin(sRollL);
+      const cosRollL = Math.cos(-sRollL), sinRollL = Math.sin(-sRollL);
       const cosPitchL = Math.cos(sPitchL), sinPitchL = Math.sin(sPitchL);
       const cosYawL = Math.cos(sYawL), sinYawL = Math.sin(sYawL);
-      const sinEbL = Math.sin(eBendL);
+      const cosEbL = Math.cos(eBendL), sinEbL = Math.sin(eBendL);
       const sinWfL = Math.sin(wFlexL);
 
       const cosRollR = Math.cos(-sRollR), sinRollR = Math.sin(-sRollR);
@@ -962,10 +962,11 @@
         const wWr = Math.min(Math.max((absX - 1.36) / 0.18, 0), 1);
 
         if (ox > 0) {
-          // Left Arm (Holding smartphone prop)
-          const dx = ox - sxL;
-          const dy = oy - syL;
-          const dz = oz - szL;
+          // Left Arm (Holding smartphone prop) — Mirrored FK Rigging
+          const mox = -ox;
+          const dx = mox - sxR;
+          const dy = oy - syR;
+          const dz = oz - szR;
 
           const rx = dx * cosRollL - dz * sinRollL;
           let rz = dx * sinRollL + dz * cosRollL;
@@ -974,21 +975,25 @@
           const rx2 = rx * cosYawL - ry * sinYawL;
           const ry2 = rx * sinYawL + ry * cosYawL;
 
-          let px = sxL + rx2;
-          let py = syL + ry2;
-          let pz = szL + rz;
+          let px = sxR + rx2;
+          let py = syR + ry2;
+          let pz = szR + rz;
 
           if (wEl > 0) {
             const distEl = absX - 0.96;
-            py -= distEl * sinEbL * 0.85 * wEl;
-            pz -= distEl * 0.25 * wEl;
-          }
-          if (wWr > 0) {
-            const distWr = absX - 1.36;
-            py -= distWr * sinWfL * 0.4 * wWr;
+            py -= distEl * sinEbL * 0.92 * wEl;
+            pz -= distEl * (1.0 - cosEbL) * 0.42 * wEl;
+            px += distEl * sinEbL * 0.22 * wEl;
           }
 
-          const fx = ox * (1 - wSh) + px * wSh;
+          if (wWr > 0) {
+            const distWr = absX - 1.36;
+            py -= distWr * sinWfL * 0.55 * wWr;
+            px += distWr * 0.15 * wWr;
+          }
+
+          const finalPx = -px;
+          const fx = ox * (1 - wSh) + finalPx * wSh;
           const fy = oy * (1 - wSh) + py * wSh;
           const fz = oz * (1 - wSh) + pz * wSh;
           posAttr.setXYZ(i, fx, fy, fz);
