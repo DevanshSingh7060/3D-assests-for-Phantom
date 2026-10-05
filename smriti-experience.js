@@ -624,17 +624,18 @@
       this.phoneTexture = new THREE.CanvasTexture(this.phoneCanvas);
       this.phoneTexture.encoding = THREE.sRGBEncoding;
 
-      // Screen mesh facing +Z (so phone.lookAt(doraHead) faces Dora's eyes directly!)
+      // Screen mesh facing -Z (Three.js lookAt points local -Z at target, so screen faces Dora's face directly!)
       const screenMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(3.3, 7.0),
         new THREE.MeshBasicMaterial({ map: this.phoneTexture })
       );
-      screenMesh.position.z = 0.25;
+      screenMesh.position.z = -0.25;
+      screenMesh.rotation.y = Math.PI;
       this.phone.add(screenMesh);
 
       // Cyan screen light illuminating Dora's face from the screen surface
-      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0.35, 30);
-      this.phoneScreenLight.position.set(0, 0, 1.2);
+      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0.55, 35);
+      this.phoneScreenLight.position.set(0, 0, -1.5);
       this.phone.add(this.phoneScreenLight);
 
       this.scene.add(this.phone);
@@ -981,14 +982,15 @@
 
           if (wEl > 0) {
             const distEl = absX - 0.96;
-            py -= distEl * sinEbL * 0.92 * wEl;
-            pz -= distEl * (1.0 - cosEbL) * 0.42 * wEl;
-            px += distEl * sinEbL * 0.22 * wEl;
+            py -= distEl * sinEbL * 0.95 * wEl;
+            pz += distEl * (sinEbL * 0.95 + (1.0 - cosEbL) * 0.35) * wEl;
+            px += distEl * sinEbL * 0.28 * wEl;
           }
 
           if (wWr > 0) {
             const distWr = absX - 1.36;
-            py -= distWr * sinWfL * 0.55 * wWr;
+            py -= distWr * sinWfL * 0.45 * wWr;
+            pz += distWr * sinWfL * 0.35 * wWr;
             px += distWr * 0.15 * wWr;
           }
 
@@ -1022,14 +1024,15 @@
 
           if (wEl > 0) {
             const distEl = absX - 0.96;
-            py -= distEl * sinEbR * 0.92 * wEl;
-            pz -= distEl * (1.0 - cosEbR) * 0.42 * wEl;
-            px += distEl * sinEbR * 0.22 * wEl;
+            py -= distEl * sinEbR * 0.95 * wEl;
+            pz += distEl * (sinEbR * 0.95 + (1.0 - cosEbR) * 0.35) * wEl;
+            px += distEl * sinEbR * 0.28 * wEl;
           }
 
           if (wWr > 0) {
             const distWr = absX - 1.36;
-            py -= distWr * sinWfR * 0.55 * wWr;
+            py -= distWr * sinWfR * 0.45 * wWr;
+            pz += distWr * sinWfR * 0.35 * wWr;
             px += distWr * 0.15 * wWr;
           }
 
