@@ -53,14 +53,15 @@
   const GLASSES_DEST = { x: 104, y: 86.5, z: -85 };
   const CHAR_ORIGIN = { x: 4, y: 0, z: 10 };
 
-  // Cinematic 3/4 Perspective Camera States (35–45mm focal depth, character occupies 28–32% height)
+  // Cinematic 3/4 Perspective Camera States (Smooth easing, hero character commands 25–35% height)
   const CAM_PRESETS = {
-    HOME: { pos: { x: 55, y: 118, z: 285 }, target: { x: 6, y: 60, z: -10 }, fov: 31 },
-    CHARACTER: { pos: { x: 38, y: 98, z: 205 }, target: { x: 4, y: 64, z: 10 }, fov: 28 },
-    SEARCH: { pos: { x: 15, y: 110, z: 230 }, target: { x: -48, y: 54, z: 0 }, fov: 29 },
-    PHANTOM: { pos: { x: 72, y: 130, z: 310 }, target: { x: 15, y: 62, z: -35 }, fov: 32 },
-    REVEAL: { pos: { x: 68, y: 98, z: 160 }, target: { x: 104, y: 86, z: -85 }, fov: 27 },
-    RESOLUTION: { pos: { x: 55, y: 118, z: 285 }, target: { x: 6, y: 60, z: -10 }, fov: 31 }
+    HOME: { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 },
+    NOTICE: { pos: { x: 30, y: 94, z: 205 }, target: { x: -25, y: 52, z: 8 }, fov: 28 },
+    SEARCH: { pos: { x: 20, y: 104, z: 225 }, target: { x: -35, y: 52, z: 5 }, fov: 29 },
+    PHANTOM: { pos: { x: 62, y: 122, z: 285 }, target: { x: 14, y: 56, z: -25 }, fov: 32 },
+    REVEAL: { pos: { x: 68, y: 96, z: 175 }, target: { x: 96, y: 82, z: -80 }, fov: 27 },
+    DISCOVER: { pos: { x: 48, y: 92, z: 185 }, target: { x: 72, y: 68, z: -60 }, fov: 28 },
+    RESOLVE: { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 }
   };
 
   class SmritiExperience {
@@ -76,9 +77,11 @@
       this.targetCamLook = new THREE.Vector3().copy(CAM_PRESETS.HOME.target);
       this.targetFov = CAM_PRESETS.HOME.fov;
 
-      // 3D Subject Handles
+      // 3D Subject Handles (Hero Character: Dora the Explorer GLB)
       this.character = null;
       this.characterHead = null;
+      this.doraEyes = null;
+      this.doraLoaded = false;
       this.characterEyelids = [];
       this.characterEyebrows = [];
       this.characterMouth = null;
@@ -153,7 +156,7 @@
       this.setupCinematicLighting();
       this.buildOrganicEnvironment();
       this.buildStylizedFurniture();
-      this.buildCharacterV3();
+      this.loadDoraCharacter();
       this.buildHeroProps();
 
       window.addEventListener('resize', () => this.onResize());
@@ -542,288 +545,96 @@
     }
 
     // =========================================================================
-    // 4. CHARACTER REDESIGN V3 (Stylized Animated Character with Soul & Personality)
-    // Proportions: Oversized sculpted head, compact body, drop-shoulder olive sweater
+    // 4. HERO CHARACTER: DORA THE EXPLORER (Uploaded GLB Integration)
+    // Model: dora_dora_the_explorer.glb (and /mnt/data/dora_dora_the_explorer.glb)
+    // Proportions: 25–35% of visual hero scene height, grounded on oak floor
+    // Articulated: Head & eyes & mouth grouped on neck pivot for expressive animation
     // =========================================================================
-    buildCharacterV3() {
-      // Materials with rich contrast and soft cartoon lighting
-      const matSkin = new THREE.MeshStandardMaterial({
-        color: PALETTE.charSkin,
-        roughness: 0.44,
-        metalness: 0.02
-      });
-      const matHair = new THREE.MeshStandardMaterial({ color: PALETTE.charHair, roughness: 0.6 });
-      const matSweater = new THREE.MeshStandardMaterial({ color: PALETTE.charSweater, roughness: 0.72 });
-      const matCollar = new THREE.MeshStandardMaterial({ color: PALETTE.charCollar, roughness: 0.76 });
-      const matAccent = new THREE.MeshStandardMaterial({ color: PALETTE.charAccent, roughness: 0.75 });
-      const matPants = new THREE.MeshStandardMaterial({ color: PALETTE.charPants, roughness: 0.7 });
-      const matShoes = new THREE.MeshStandardMaterial({ color: PALETTE.charShoes, roughness: 0.5 });
-      const matBlush = new THREE.MeshBasicMaterial({ color: PALETTE.charBlush, transparent: true, opacity: 0.78 });
-
+    loadDoraCharacter() {
       this.character = new THREE.Group();
       this.character.position.copy(CHAR_ORIGIN);
-      this.character.scale.set(1.22, 1.22, 1.22);
       this.character.rotation.copy(this.charRot);
-
-      // 1. Stylized Chestnut Loafers (Rounded moccasin toe box + dark sole)
-      [-5.8, 5.8].forEach((xPos) => {
-        const shoeGroup = new THREE.Group();
-        shoeGroup.position.set(xPos, 0, 0);
-
-        // Rounded Shoe Body
-        const shoeMesh = new THREE.Mesh(new THREE.SphereGeometry(4.2, 16, 16), matShoes);
-        shoeMesh.scale.set(1.05, 0.75, 1.6);
-        shoeMesh.position.set(0, 3.2, 1.2);
-        shoeMesh.castShadow = true;
-        shoeGroup.add(shoeMesh);
-
-        // Dark Leather Sole
-        const sole = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.4, 1.4, 16), matShoes);
-        sole.scale.set(1.05, 1, 1.55);
-        sole.position.set(0, 0.7, 1.2);
-        shoeGroup.add(sole);
-
-        this.character.add(shoeGroup);
-      });
-
-      // 2. Cream Linen Relaxed Tapered Trousers
-      [-5.5, 5.5].forEach((xPos) => {
-        const legGroup = new THREE.Group();
-        legGroup.position.set(xPos, 5, 0);
-
-        // Tapered Leg Volume
-        const legCylinder = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.2, 28, 20), matPants);
-        legCylinder.position.set(0, 14, 0);
-        legCylinder.castShadow = true;
-        legGroup.add(legCylinder);
-
-        // Trouser Ankle Cuff
-        const cuff = new THREE.Mesh(new THREE.TorusGeometry(3.4, 0.65, 12, 20), matPants);
-        cuff.position.set(0, 1.5, 0);
-        cuff.rotation.x = Math.PI * 0.5;
-        legGroup.add(cuff);
-
-        this.character.add(legGroup);
-      });
-
-      // Hips / Pelvis (Smooth rounded junction)
-      const hips = new THREE.Mesh(new THREE.SphereGeometry(10.2, 20, 20), matPants);
-      hips.scale.set(1.15, 0.65, 0.95);
-      hips.position.set(0, 33, 0);
-      hips.castShadow = true;
-      this.character.add(hips);
-
-      // 3. Cozy Drop-Shoulder Deep Olive Knit Sweater (Soft sculpted volume)
-      const sweaterGroup = new THREE.Group();
-      sweaterGroup.position.set(0, 48, 0);
-
-      // Main Torso Body (Smooth rounded cylinder)
-      const torso = new THREE.Mesh(new THREE.CylinderGeometry(9.8, 11.2, 26, 24), matSweater);
-      torso.scale.set(1.12, 1, 0.92);
-      torso.position.set(0, -1, 0);
-      torso.castShadow = true;
-      sweaterGroup.add(torso);
-
-      // Ribbed Sweater Hem at Waist
-      const hem = new THREE.Mesh(new THREE.TorusGeometry(10.8, 1.2, 14, 24), matCollar);
-      hem.position.set(0, -14, 0);
-      hem.scale.set(1.12, 1, 0.92);
-      hem.rotation.x = Math.PI * 0.5;
-      sweaterGroup.add(hem);
-
-      // Drop-Shoulder Soft Rounded Caps
-      [-11.5, 11.5].forEach((xPos) => {
-        const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(3.6, 16, 16), matSweater);
-        shoulderCap.position.set(xPos, 8.5, 0);
-        shoulderCap.scale.set(1.05, 0.95, 0.95);
-        sweaterGroup.add(shoulderCap);
-      });
-
-      // Warm Terracotta Neckerchief / Scarf Accent (Memorable visual feature!)
-      const scarf = new THREE.Mesh(new THREE.TorusGeometry(5.2, 1.4, 14, 20), matAccent);
-      scarf.position.set(0, 12.8, 0);
-      scarf.rotation.set(Math.PI * 0.5, 0.1, 0.15);
-      sweaterGroup.add(scarf);
-
-      // Ribbed Mock-Neck Collar
-      const collar = new THREE.Mesh(new THREE.CylinderGeometry(4.8, 4.8, 3.2, 20), matCollar);
-      collar.position.set(0, 13.8, 0);
-      sweaterGroup.add(collar);
-
-      // Cozy Cardigan Placket & Wooden Buttons
-      const placket = new THREE.Mesh(new THREE.BoxGeometry(1.8, 25, 0.8), matCollar);
-      placket.position.set(0, -1, 10.6);
-      placket.castShadow = true;
-      sweaterGroup.add(placket);
-
-      [-8, -2, 4].forEach((yBtn) => {
-        const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.5, 12), matShoes);
-        btn.rotation.x = Math.PI * 0.5;
-        btn.position.set(0, yBtn, 11.1);
-        btn.castShadow = true;
-        sweaterGroup.add(btn);
-      });
-
-      this.character.add(sweaterGroup);
-
-      // Smooth Neck (Snug support)
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 2.8, 5, 16), matSkin);
-      neck.position.set(0, 60, 0);
-      this.character.add(neck);
-
-      // 4. Arms with articulated pivots (Relaxed, natural drape)
-      this.characterArmL = new THREE.Group();
-      this.characterArmL.position.set(-12.4, 55, 0);
-      this.characterArmL.rotation.set(0.06, 0.05, 0.08);
-
-      const sleeveGeo = new THREE.CylinderGeometry(2.8, 2.4, 19, 16);
-      const armSleeveL = new THREE.Mesh(sleeveGeo, matSweater);
-      armSleeveL.position.set(-0.8, -9, 0);
-      armSleeveL.rotation.z = -0.06;
-      armSleeveL.castShadow = true;
-      this.characterArmL.add(armSleeveL);
-
-      const wristCuffL = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.55, 12, 16), matCollar);
-      wristCuffL.position.set(-1.4, -18.5, 0);
-      wristCuffL.rotation.x = Math.PI * 0.5;
-      this.characterArmL.add(wristCuffL);
-
-      const handL = new THREE.Mesh(new THREE.SphereGeometry(2.3, 16, 16), matSkin);
-      handL.position.set(-1.6, -21.2, 0);
-      handL.scale.set(0.9, 1.15, 0.85);
-      handL.castShadow = true;
-      this.characterArmL.add(handL);
-      this.character.add(this.characterArmL);
-
-      // Right Arm (Animated during search phase)
-      this.characterArmR = new THREE.Group();
-      this.characterArmR.position.set(12.4, 55, 0);
-      this.characterArmR.rotation.set(0.06, -0.05, -0.08);
-
-      const armSleeveR = new THREE.Mesh(sleeveGeo, matSweater);
-      armSleeveR.position.set(0.8, -9, 0);
-      armSleeveR.rotation.z = 0.06;
-      armSleeveR.castShadow = true;
-      this.characterArmR.add(armSleeveR);
-
-      const wristCuffR = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.55, 12, 16), matCollar);
-      wristCuffR.position.set(1.4, -18.5, 0);
-      wristCuffR.rotation.x = Math.PI * 0.5;
-      this.characterArmR.add(wristCuffR);
-
-      const handR = new THREE.Mesh(new THREE.SphereGeometry(2.3, 16, 16), matSkin);
-      handR.position.set(1.6, -21.2, 0);
-      handR.scale.set(0.9, 1.15, 0.85);
-      handR.castShadow = true;
-      this.characterArmR.add(handR);
-      this.character.add(this.characterArmR);
-
-      // 5. Stylized Head Pivot (Snug on neck, Pixar/Ghibli warmth)
-      this.characterHead = new THREE.Group();
-      this.characterHead.position.set(0, 64, 0);
-
-      // Sculpted Head with Rounded Cheeks
-      const head = new THREE.Mesh(new THREE.SphereGeometry(13.2, 32, 32), matSkin);
-      head.position.set(0, 3.5, 0);
-      head.scale.set(1.08, 1.02, 1.05);
-      head.castShadow = true;
-      this.characterHead.add(head);
-
-      // Volumetric Sculpted Espresso Hair
-      const hairMain = new THREE.Mesh(new THREE.SphereGeometry(13.8, 32, 32), matHair);
-      hairMain.position.set(0, 8.0, -1.2);
-      hairMain.scale.set(1.04, 0.82, 1.04);
-      hairMain.castShadow = true;
-      this.characterHead.add(hairMain);
-
-      // Front Bangs Wave
-      const hairBangs = new THREE.Mesh(new THREE.SphereGeometry(7.5, 20, 20), matHair);
-      hairBangs.position.set(-2.5, 13.0, 7.8);
-      hairBangs.rotation.set(-0.25, 0.15, -0.3);
-      hairBangs.scale.set(1.15, 0.65, 0.85);
-      this.characterHead.add(hairBangs);
-
-      const hairSideLock = new THREE.Mesh(new THREE.SphereGeometry(5.5, 16, 16), matHair);
-      hairSideLock.position.set(9.5, 8.5, 4.5);
-      hairSideLock.rotation.set(0.1, 0.2, 0.4);
-      hairSideLock.scale.set(0.65, 1.2, 0.75);
-      this.characterHead.add(hairSideLock);
-
-      // Stylized Eyebrows
-      [-4.6, 4.6].forEach((xPos, idx) => {
-        const brow = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.42, 0.35, 3.8, 12),
-          new THREE.MeshBasicMaterial({ color: PALETTE.charHair })
-        );
-        brow.position.set(xPos, 7.0, 13.0);
-        brow.rotation.z = idx === 0 ? 0.12 : -0.12;
-        this.characterEyebrows.push(brow);
-        this.characterHead.add(brow);
-      });
-
-      // Expressive Eyes with Glossy Highlights & Eyelid Morphing
-      [-4.6, 4.6].forEach((xPos) => {
-        const eyeGroup = new THREE.Group();
-        eyeGroup.position.set(xPos, 3.5, 12.8);
-
-        // Pupil / Iris
-        const pupil = new THREE.Mesh(
-          new THREE.SphereGeometry(1.65, 16, 16),
-          new THREE.MeshBasicMaterial({ color: PALETTE.charEyes })
-        );
-        eyeGroup.add(pupil);
-
-        // Specular Catchlights (Gives life and warmth!)
-        const catchlight1 = new THREE.Mesh(
-          new THREE.SphereGeometry(0.55, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
-        );
-        catchlight1.position.set(0.45, 0.5, 1.2);
-        eyeGroup.add(catchlight1);
-
-        const catchlight2 = new THREE.Mesh(
-          new THREE.SphereGeometry(0.28, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
-        );
-        catchlight2.position.set(-0.35, -0.35, 1.3);
-        eyeGroup.add(catchlight2);
-
-        // Eyelid for Natural Blinking
-        const eyelid = new THREE.Mesh(
-          new THREE.SphereGeometry(1.75, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.5),
-          matSkin
-        );
-        eyelid.position.set(0, 0, 0.1);
-        eyelid.rotation.x = -Math.PI * 0.5;
-        eyelid.visible = false;
-        eyeGroup.add(eyelid);
-        this.characterEyelids.push(eyelid);
-
-        this.characterHead.add(eyeGroup);
-      });
-
-      // Soft Coral Cheeks (Blush)
-      [-7.2, 7.2].forEach((xPos) => {
-        const blush = new THREE.Mesh(new THREE.SphereGeometry(2.2, 16, 16), matBlush);
-        blush.position.set(xPos, -0.3, 12.2);
-        blush.scale.set(1, 0.55, 0.35);
-        this.characterHead.add(blush);
-      });
-
-      // Cute Button Nose
-      const nose = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), matSkin);
-      nose.position.set(0, 2.1, 14.3);
-      this.characterHead.add(nose);
-
-      // Expressive Mouth (Curved subtle smile)
-      const mouthMat = new THREE.MeshBasicMaterial({ color: 0x8A4839 });
-      this.characterMouth = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.35, 12, 16, Math.PI * 0.85), mouthMat);
-      this.characterMouth.position.set(0, -1.3, 13.8);
-      this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08); // Warm, gentle smile
-      this.characterHead.add(this.characterMouth);
-
-      this.character.add(this.characterHead);
       this.scene.add(this.character);
+
+      this.characterHead = null;
+      this.doraEyes = null;
+      this.doraLoaded = false;
+
+      const loader = new THREE.GLTFLoader();
+      const glbPath = 'dora_dora_the_explorer.glb';
+
+      loader.load(
+        glbPath,
+        (gltf) => {
+          const model = gltf.scene;
+
+          // Shadow and material enhancements for rich 3D cartoon pop
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+              if (child.material) {
+                child.material.roughness = 0.52;
+                child.material.metalness = 0.04;
+                if (child.material.map) {
+                  child.material.map.encoding = THREE.sRGBEncoding;
+                }
+                child.material.needsUpdate = true;
+              }
+            }
+          });
+
+          // Measure raw model dimensions
+          const box = new THREE.Box3().setFromObject(model);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+
+          // Scale Dora so she commands 25–35% of the visual hero area (~96 units tall)
+          const targetHeight = 96;
+          const scale = targetHeight / (size.y || 3.81);
+          model.scale.set(scale, scale, scale);
+
+          // Ground feet cleanly at y = 0 and center horizontally
+          model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
+
+          // Articulated Head Rigging for Dora
+          // In dora_dora_the_explorer.glb:
+          // Node 1 (Dora_fix.obj.cleaner.materialmerger.gles) contains:
+          // Object_2 = Body, Object_3 = Eyes, Object_4 = Head, Object_5 = Mouth
+          const node1 = model.getObjectByName('Dora_fix.obj.cleaner.materialmerger.gles') || model.children[0]?.children[0];
+          const objEyes = model.getObjectByName('Object_3');
+          const objHead = model.getObjectByName('Object_4');
+          const objMouth = model.getObjectByName('Object_5');
+
+          if (node1 && objHead && objEyes && objMouth) {
+            const headPivot = new THREE.Group();
+            headPivot.name = 'doraHeadPivot';
+            // Neck junction in node1 local coordinates: (0, 0, 2.38)
+            headPivot.position.set(0, 0, 2.38);
+            node1.add(headPivot);
+
+            // Re-parent head, eyes, mouth into headPivot
+            [objHead, objEyes, objMouth].forEach((part) => {
+              node1.remove(part);
+              part.position.set(0, 0, -2.38);
+              headPivot.add(part);
+            });
+
+            this.characterHead = headPivot;
+            this.doraEyes = objEyes;
+          } else {
+            this.characterHead = new THREE.Group();
+            this.character.add(this.characterHead);
+          }
+
+          this.character.add(model);
+          this.doraLoaded = true;
+        },
+        undefined,
+        (err) => {
+          console.error('Error loading Dora GLB:', err);
+        }
+      );
     }
 
     // =========================================================================
@@ -1102,14 +913,16 @@
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
       this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
 
-      // Realistic Natural Eyelid Blinking
+      // Realistic Natural Eyelid Blinking for Dora
       if (now - this.lastBlinkTime > this.nextBlinkInterval) {
         this.lastBlinkTime = now;
         this.nextBlinkInterval = 2800 + Math.random() * 2400; // Unpredictable natural blinking
-        this.characterEyelids.forEach(lid => {
-          lid.visible = true;
-          setTimeout(() => { if (lid) lid.visible = false; }, 130);
-        });
+        if (this.doraEyes) {
+          this.doraEyes.scale.y = 0.08;
+          setTimeout(() => {
+            if (this.doraEyes) this.doraEyes.scale.y = 1.0;
+          }, 120);
+        }
       }
 
       const isMobile = window.innerWidth < 640;
@@ -1166,8 +979,9 @@
         if (elapsed < 1.8) {
           const p = this.easeInOutCubic(Math.min(elapsed / 1.4, 1));
           if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.CHARACTER.pos);
-            this.targetCamLook.copy(CAM_PRESETS.CHARACTER.target);
+            this.targetCamPos.copy(CAM_PRESETS.NOTICE.pos);
+            this.targetCamLook.copy(CAM_PRESETS.NOTICE.target);
+            this.targetFov = CAM_PRESETS.NOTICE.fov;
           }
           this.headRot.set(0.14 * p, -0.48 * p, -0.05 * p);
           this.charRot.y = 0.22 - 0.35 * p;
@@ -1196,6 +1010,7 @@
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.SEARCH.pos);
             this.targetCamLook.copy(CAM_PRESETS.SEARCH.target);
+            this.targetFov = CAM_PRESETS.SEARCH.fov;
           }
 
           if (elapsed < 5.6) {
@@ -1203,7 +1018,6 @@
             const p = this.easeInOutCubic(Math.min((elapsed - 4.2) / 0.9, 1));
             this.headRot.set(0.28 * p, -0.58 * p, -0.2 * p); // Puzzled head tilt
             this.charRot.y = -0.28 * p;
-            if (this.characterArmR) this.characterArmR.rotation.set(-0.45 * p, 0, 0.25 * p); // Raises hand quizzically
           } else if (elapsed < 6.8) {
             // Scans side to side looking around
             this.headRot.set(0.22, -0.25 + Math.sin(elapsed * 4.5) * 0.3, -0.14);
@@ -1217,6 +1031,7 @@
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.PHANTOM.pos);
             this.targetCamLook.copy(CAM_PRESETS.PHANTOM.target);
+            this.targetFov = CAM_PRESETS.PHANTOM.fov;
           }
 
           // Activate memory imprint & glowing spatial trail
@@ -1236,18 +1051,21 @@
 
         // Phase 5: Spotting Bookshelf & Relief (10.5 to 13.5s)
         else if (elapsed < 13.5) {
+          const p = this.easeInOutCubic(Math.min((elapsed - 10.5) / 1.4, 1));
           if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.REVEAL.pos);
-            this.targetCamLook.copy(CAM_PRESETS.REVEAL.target);
+            if (p < 0.55) {
+              this.targetCamPos.copy(CAM_PRESETS.REVEAL.pos);
+              this.targetCamLook.copy(CAM_PRESETS.REVEAL.target);
+              this.targetFov = CAM_PRESETS.REVEAL.fov;
+            } else {
+              this.targetCamPos.copy(CAM_PRESETS.DISCOVER.pos);
+              this.targetCamLook.copy(CAM_PRESETS.DISCOVER.target);
+              this.targetFov = CAM_PRESETS.DISCOVER.fov;
+            }
           }
 
-          const p = this.easeInOutCubic(Math.min((elapsed - 10.5) / 1.4, 1));
           this.headRot.set(0.18 * (1 - p) + 0.05 * p, -0.45 * (1 - p) + 0.55 * p, 0);
           this.charRot.y = -0.28 * (1 - p) + 0.38 * p;
-
-          // Arm lowers happily, mouth relaxes into smile
-          if (this.characterArmR) this.characterArmR.rotation.set(-0.45 * (1 - p), 0, 0);
-          if (this.characterMouth) this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08);
 
           this.charPos.x = CHAR_ORIGIN.x + 16 * p;
           this.charPos.z = CHAR_ORIGIN.z - 10 * p;
@@ -1257,8 +1075,9 @@
         // Phase 6: Resolution & Peace (13.5s+)
         else {
           if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.RESOLUTION.pos);
-            this.targetCamLook.copy(CAM_PRESETS.RESOLUTION.target);
+            this.targetCamPos.copy(CAM_PRESETS.RESOLVE.pos);
+            this.targetCamLook.copy(CAM_PRESETS.RESOLVE.target);
+            this.targetFov = CAM_PRESETS.RESOLVE.fov;
           } else {
             this.targetCamPos.set(10, 115, 340);
             this.targetCamLook.set(4, 58, -15);
@@ -1276,7 +1095,13 @@
         this.character.rotation.copy(this.charRot);
       }
       if (this.characterHead) {
-        this.characterHead.rotation.copy(this.headRot);
+        if (this.characterHead.name === 'doraHeadPivot') {
+          this.characterHead.rotation.x = this.headRot.x;
+          this.characterHead.rotation.z = -this.headRot.y;
+          this.characterHead.rotation.y = -this.headRot.z;
+        } else {
+          this.characterHead.rotation.copy(this.headRot);
+        }
       }
 
       // Smooth Cinematic Camera Lerp
