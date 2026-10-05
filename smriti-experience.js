@@ -69,13 +69,13 @@
     GLASSES_MOVE:  { pos: { x: 42, y: 102, z: 245 }, target: { x: 10, y: 58, z: -20 }, fov: 30 },
     SEARCH:        { pos: { x: 22, y: 102, z: 220 }, target: { x: -35, y: 52, z: 5 },  fov: 29 },
     PHONE_CHECK:   { pos: { x: 22, y: 88, z: 175 },  target: { x: 6, y: 56, z: 12 },   fov: 26 },
-    PHANTOM_SCAN:  { pos: { x: 32, y: 118, z: 295 }, target: { x: 16, y: 56, z: -35 }, fov: 38 },
-    MEMORY_REVEAL: { pos: { x: 32, y: 118, z: 295 }, target: { x: 16, y: 56, z: -35 }, fov: 38 },
-    NOTICE_SHELF:  { pos: { x: 65, y: 108, z: 245 }, target: { x: 55, y: 60, z: -55 }, fov: 30 },
-    WALK_TO_SHELF: { pos: { x: 80, y: 104, z: 215 }, target: { x: 65, y: 60, z: -55 }, fov: 29 },
-    APPROACH:      { pos: { x: 74, y: 96, z: 185 },  target: { x: 78, y: 64, z: -68 }, fov: 27 },
-    PICKUP:        { pos: { x: 74, y: 96, z: 185 },  target: { x: 78, y: 64, z: -68 }, fov: 27 },
-    RELIEF:        { pos: { x: 60, y: 106, z: 250 }, target: { x: 44, y: 58, z: -40 }, fov: 30 }
+    PHANTOM_SCAN:  { pos: { x: 28, y: 120, z: 295 }, target: { x: 16, y: 56, z: -35 }, fov: 38 },
+    MEMORY_REVEAL: { pos: { x: 28, y: 120, z: 295 }, target: { x: 16, y: 56, z: -35 }, fov: 38 },
+    NOTICE_SHELF:  { pos: { x: 55, y: 104, z: 235 }, target: { x: 62, y: 58, z: -55 }, fov: 30 },
+    WALK_TO_SHELF: { pos: { x: 70, y: 108, z: 235 }, target: { x: 65, y: 56, z: -55 }, fov: 31 },
+    APPROACH:      { pos: { x: 92, y: 100, z: 165 }, target: { x: 86, y: 64, z: -75 }, fov: 28 },
+    PICKUP:        { pos: { x: 92, y: 100, z: 165 }, target: { x: 86, y: 64, z: -75 }, fov: 28 },
+    RELIEF:        { pos: { x: 86, y: 102, z: 195 }, target: { x: 76, y: 62, z: -60 }, fov: 29 }
   };
 
   class SmritiExperience {
@@ -498,8 +498,8 @@
     // 3. PLANT WITH POT (plant_with_pot.glb) — Sits on floor, rich foliage
     loadPlant() {
       this.plantGroup = new THREE.Group();
-      // Positioned at z = -52 (safely behind Dora's walk path from (4,10) to (78,-66))
-      this.plantGroup.position.set(32, 0, -52);
+      // Positioned beside sofa arm at (-28, 0, -42) so it frames the sofa and is 100% clear of pickup
+      this.plantGroup.position.set(-28, 0, -42);
       this.scene.add(this.plantGroup);
 
       const loader = new THREE.GLTFLoader();
@@ -819,7 +819,6 @@
               if (child.material) {
                 child.material.roughness = 0.52;
                 child.material.metalness = 0.04;
-                child.material.side = THREE.DoubleSide; // Fix hair/head backface culling when turning around
                 if (child.material.map) {
                   child.material.map.encoding = THREE.sRGBEncoding;
                 }
@@ -828,39 +827,13 @@
             }
           });
 
-          // 1. FIX NOSE BLACK SPOT ARTIFACT:
-          // Remap vertices 1034-1075 on Object_4 to smooth peach facial skin tone (0.3086, 0.6934)
-          const objHead = model.getObjectByName('Object_4');
-          if (objHead && objHead.geometry) {
-            const headGeo = objHead.geometry;
-            const uvAttr = headGeo.attributes.uv;
-            const posAttr = headGeo.attributes.position;
-            if (uvAttr) {
-              for (let i = 0; i < uvAttr.count; i++) {
-                const u = uvAttr.getX(i);
-                const v = uvAttr.getY(i);
-                if (u > 0.85 && v > 0.60) {
-                  uvAttr.setXY(i, 0.3086, 0.6934);
-                  if (posAttr) {
-                    posAttr.setY(i, posAttr.getY(i) + 0.012);
-                  }
-                }
-              }
-              uvAttr.needsUpdate = true;
-              if (posAttr) {
-                posAttr.needsUpdate = true;
-                headGeo.computeVertexNormals();
-              }
-            }
-          }
-
-          // 2. SETUP FORWARD KINEMATICS ARM RIGGING:
+          // 1. SETUP FORWARD KINEMATICS ARM RIGGING:
           const bodyMesh = model.getObjectByName('Object_2');
           if (bodyMesh && bodyMesh.geometry) {
             this.setupDoraBodyRig(bodyMesh);
           }
 
-          // 3. SCALE & GROUND DORA:
+          // 2. SCALE & GROUND DORA:
           const box = new THREE.Box3().setFromObject(model);
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
@@ -870,8 +843,9 @@
           model.scale.set(scale, scale, scale);
           model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
 
-          // 4. ARTICULATED HEAD & EYES RIG:
+          // 3. ARTICULATED HEAD RIG (Pristine original geometry & materials):
           const node1 = model.getObjectByName('Dora_fix.obj.cleaner.materialmerger.gles') || model.children[0]?.children[0];
+          const objHead = model.getObjectByName('Object_4');
           const objEyes = model.getObjectByName('Object_3');
           const objMouth = model.getObjectByName('Object_5');
 
@@ -888,7 +862,6 @@
             });
 
             this.characterHead = headPivot;
-            this.doraEyes = objEyes;
           }
 
           // Soft Radial Contact Shadow under Dora's feet
@@ -966,30 +939,8 @@
         const oz = base[i * 3 + 2];
         const absX = Math.abs(ox);
 
-        // Bipedal Leg Stride & Step-Lift Kinematics (eliminates sliding!)
-        if (absX < 0.38) {
-          if (walkWeight > 0.01 && oz < 1.15) {
-            const isLeft = ox > 0.04;
-            const isRight = ox < -0.04;
-            if (isLeft || isRight) {
-              const wLeg = Math.min(Math.max((1.15 - oz) / 0.95, 0), 1);
-              const smoothW = wLeg * wLeg * (3 - 2 * wLeg);
-              // Left & right legs alternate phase by PI (180 deg)
-              const stridePhase = isLeft ? walkPhase : walkPhase + Math.PI;
-              const sinS = Math.sin(stridePhase);
-
-              // Forward/backward stride: in Dora's GLB negative Y is forward
-              const legPitch = sinS * 0.32 * walkWeight * smoothW;
-              const newY = oy - legPitch;
-
-              // Ground clearance: swinging foot lifts off floor, stance foot stays firmly grounded
-              const lift = Math.max(0, sinS) * 0.16 * walkWeight * smoothW;
-              const newZ = oz + lift;
-
-              posAttr.setXYZ(i, ox, newY, newZ);
-              continue;
-            }
-          }
+        // Body, hips, and legs remain in pristine base geometry
+        if (absX <= 0.40) {
           posAttr.setXYZ(i, ox, oy, oz);
           continue;
         }
@@ -1319,7 +1270,7 @@
       this.tableSpatialPoints.visible = false;
       this.scene.add(this.tableSpatialPoints);
 
-      // 7. Spatial Memory Trajectory Trail (Smooth 3D Catmull-Rom Tube)
+      // 7. Spatial Memory Trajectory Trail (Subtle, elegant thin trail)
       const curve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(-78, 51.5, 8),
         new THREE.Vector3(-45, 96.0, -15),
@@ -1327,11 +1278,11 @@
         new THREE.Vector3(75, 98.0, -72),
         new THREE.Vector3(104, 85.2, -85)
       ]);
-      const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.42, 8, false);
+      const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.10, 8, false);
       const tubeMat = new THREE.MeshBasicMaterial({
-        color: PALETTE.movementAmber,
+        color: 0x5CE1D2,
         transparent: true,
-        opacity: 0.65,
+        opacity: 0.30,
         blending: THREE.AdditiveBlending
       });
       this.spatialTrail = new THREE.Mesh(tubeGeo, tubeMat);
@@ -1415,7 +1366,7 @@
           new THREE.Vector3(this.glassesShelfPos.x, this.glassesShelfPos.y + 1, this.glassesShelfPos.z)
         ]);
         if (this.spatialTrail.geometry) this.spatialTrail.geometry.dispose();
-        this.spatialTrail.geometry = new THREE.TubeGeometry(curve, 64, 0.7, 8, false);
+        this.spatialTrail.geometry = new THREE.TubeGeometry(curve, 64, 0.10, 8, false);
       }
 
       if (!this.isStoryActive || this.glassesState === 'GLASSES_TABLE') {
@@ -1526,40 +1477,8 @@
         this.ui.replay.classList.remove('visible');
         this.ui.replay.hidden = true;
       }
-    }
-
-    setHeadLookAt(targetWorldPos, weight = 1.0) {
-      if (!this.characterHead) return;
-      const headPos = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
-      const dx = targetWorldPos.x - headPos.x;
-      const dy = targetWorldPos.y - headPos.y;
-      const dz = targetWorldPos.z - headPos.z;
-
-      const cosY = Math.cos(-this.charRot.y);
-      const sinY = Math.sin(-this.charRot.y);
-      const localX = dx * cosY - dz * sinY;
-      const localZ = dx * sinY + dz * cosY;
-
-      // In Dora's local frame:
-      // localX > 0 is her LEFT (phone hand, bookshelf)
-      // localX < 0 is her RIGHT (side table)
-      // dy < 0 is DOWN (phone screen, table surface)
-      // dy > 0 is UP (shelf 2)
-      const targetYaw = Math.atan2(localX, Math.max(localZ, 2.0));
-      const horizDist = Math.hypot(localX, localZ);
-      const targetPitch = -Math.atan2(dy, Math.max(horizDist, 2.0));
-
-      const clampedYaw = THREE.MathUtils.clamp(targetYaw, -1.15, 1.15);
-      const clampedPitch = THREE.MathUtils.clamp(targetPitch, -0.45, 0.65);
-
-      this.headRot.y = this.headRot.y * (1 - weight) + clampedYaw * weight;
-      this.headRot.x = this.headRot.x * (1 - weight) + clampedPitch * weight;
-      this.headRot.z = 0;
-
-      if (this.doraEyes) {
-        this.doraEyes.position.x = THREE.MathUtils.clamp(clampedYaw * 0.045, -0.05, 0.05);
-        this.doraEyes.position.z = -2.38 + THREE.MathUtils.clamp(-clampedPitch * 0.035, -0.03, 0.03);
-      }
+      this.updateDoraArms(this.currentArmPose);
+      if (this.characterHead) this.characterHead.rotation.set(0, 0, 0);
     }
 
     easeInOutCubic(x) {
@@ -1581,77 +1500,35 @@
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.045;
       this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.045;
 
-      // Natural Irregular Blinking Loop
-      if (this.doraEyes) {
-        if (!this.isBlinking && now - this.lastBlinkTime > this.nextBlinkInterval) {
-          this.isBlinking = true;
-          this.lastBlinkTime = now;
-          this.nextBlinkInterval = 2400 + Math.random() * 3800;
-        }
-        if (this.isBlinking) {
-          const blinkProgress = (now - this.lastBlinkTime) / this.blinkDuration;
-          if (blinkProgress >= 1.0) {
-            this.isBlinking = false;
-            this.doraEyes.scale.y = 1.0;
-          } else {
-            const blinkFactor = Math.sin(blinkProgress * Math.PI);
-            this.doraEyes.scale.y = Math.max(0.06, 1.0 - blinkFactor * 0.94);
-          }
-        }
-      }
-
       const isMobile = window.innerWidth < 640;
 
       // ================= IDLE STATE =================
       if (!this.isStoryActive) {
         this.currentStoryPhase = 'IDLE';
         this.glassesState = 'GLASSES_TABLE';
-        const t = (now % 16000) / 1000;
 
-        // Subtle breathing & weight shifts
         const breath = Math.sin(now * 0.0022) * 0.42;
         this.charPos.set(CHAR_ORIGIN.x, breath, CHAR_ORIGIN.z);
+        this.charRot.y = 0.22;
+        this.headRot.set(0, 0, 0);
 
-        // Relaxed natural bilateral arm posture (both arms resting naturally beside hips)
-        const armPose = {
+        // Relaxed natural arm posture
+        this.updateDoraArms({
           lShoulderRoll: -1.35,
-          lShoulderPitch: -0.15 + Math.sin(now * 0.0018) * 0.03,
-          lShoulderYaw: 0.05,
-          lElbowBend: 0.32,
-          lWristFlex: 0.22,
+          lShoulderPitch: -0.15,
+          lElbowBend: 0.30,
           rShoulderRoll: -1.35,
-          rShoulderPitch: -0.15 + Math.cos(now * 0.0016) * 0.03,
-          rShoulderYaw: -0.05,
-          rElbowBend: 0.28,
-          rWristFlex: 0.18
-        };
+          rShoulderPitch: -0.15,
+          rElbowBend: 0.28
+        });
 
-        if (t < 4.5) {
-          this.headRot.set(0.02, 0.04 + Math.sin(now * 0.001) * 0.03, 0);
-          this.charRot.y = 0.22 + Math.sin(now * 0.0008) * 0.02;
-        } else if (t < 8.0) {
-          const f = this.easeInOutCubic(Math.min((t - 4.5) / 1.2, 1));
-          this.headRot.set(0.12 * f, -0.42 * f, -0.04 * f);
-          this.charRot.y = 0.22 - 0.22 * f;
-        } else if (t < 11.5) {
-          const f = this.easeInOutCubic(Math.min((t - 8.0) / 1.2, 1));
-          this.headRot.set(0.12 * (1 - f), -0.42 * (1 - f) + 0.04 * f, 0);
-          this.charRot.y = 0.0 + 0.22 * f;
-        } else {
-          this.headRot.set(0.04, 0.12, 0);
-          this.charRot.y = 0.22;
-        }
-
-        this.updateDoraArms(armPose);
-
-        // Position phone casually inside left hand at hip
+        // Casually carry phone at hip
         if (this.phone) {
-          this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+          this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
           this.phone.rotation.set(-0.25, -0.15, 0.1);
           if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.2;
         }
 
-        // Camera HOME
         if (isMobile) {
           this.targetCamPos.set(10, 115, 340);
           this.targetCamLook.set(4, 58, -15);
@@ -1674,7 +1551,7 @@
         if (this.ghostGlasses && this.ghostGlasses.visible) {
           const ghostMat = this.ghostGlasses.children[0]?.material;
           if (ghostMat) {
-            ghostMat.emissiveIntensity = 0.45 + Math.sin(now * 0.006) * 0.20;
+            ghostMat.emissiveIntensity = 0.32 + Math.sin(now * 0.005) * 0.15;
           }
         }
 
@@ -1702,22 +1579,22 @@
             this.targetFov = CAM_PRESETS.NOTICE.fov;
           }
 
-          // Dora turns head to look at glasses on side table
-          this.charRot.y = 0.22 - 0.20 * p;
+          this.charRot.y = 0.22 - 0.12 * p;
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
-          this.setHeadLookAt(this.TABLE_LOOK_TARGET, p);
+          // Glances gently right toward side table
+          this.headRot.set(-0.06 * p, -0.28 * p, 0);
 
           this.updateDoraArms({
             lShoulderRoll: -1.35,
             lShoulderPitch: -0.15,
             lElbowBend: 0.32,
-            rShoulderRoll: -1.25,
-            rShoulderPitch: -0.22 * p,
-            rElbowBend: 0.35
+            rShoulderRoll: -1.35,
+            rShoulderPitch: -0.15,
+            rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, -0.15, 0.1);
           }
 
@@ -1735,12 +1612,10 @@
         else if (elapsed < 6.0) {
           this.currentStoryPhase = 'GLASSES_MOVE';
           const pLookAway = this.easeInOutCubic(Math.min((elapsed - 2.8) / 1.2, 1));
-          this.charRot.y = 0.02 + 0.25 * pLookAway;
+          this.charRot.y = 0.10 + 0.15 * pLookAway;
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
-
-          // Head looks away towards living room center
-          const lookAwayTarget = new THREE.Vector3(10, 55, 50);
-          this.setHeadLookAt(lookAwayTarget, pLookAway);
+          // Head looks ahead / away
+          this.headRot.set(0, 0.10 * pLookAway, 0);
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.GLASSES_MOVE.pos);
@@ -1769,7 +1644,6 @@
             this.tableContactShadow.material.opacity = Math.max(0, 0.55 * (1 - p * 2));
             this.shelfContactShadow.material.opacity = Math.max(0, 0.55 * ((p - 0.5) * 2));
           } else if (flight > 1.0) {
-            // Damped harmonic settling bounce on shelf
             this.glassesState = 'GLASSES_SHELF';
             const settleT = (flight - 1.0) / 0.25;
             const bounce = Math.sin(settleT * Math.PI * 3) * Math.exp(-settleT * 4) * 0.8;
@@ -1789,7 +1663,7 @@
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, -0.15, 0.1);
           }
         }
@@ -1809,10 +1683,10 @@
             this.targetFov = CAM_PRESETS.SEARCH.fov;
           }
 
-          if (elapsed < 7.4) {
-            const p = this.easeInOutCubic((elapsed - 6.0) / 1.4);
-            this.charRot.y = 0.27 - 0.42 * p; // turns body towards side table
-            this.setHeadLookAt(this.TABLE_LOOK_TARGET, 1.0);
+          if (elapsed < 7.5) {
+            const p = this.easeInOutCubic((elapsed - 6.0) / 1.5);
+            this.charRot.y = 0.25 - 0.30 * p;
+            this.headRot.set(-0.10 * p, -0.32 * p, 0);
 
             this.updateDoraArms({
               lShoulderRoll: -1.25,
@@ -1823,10 +1697,8 @@
               rElbowBend: 0.35
             });
           } else {
-            // Puzzled search scan: head searches around empty table
-            const scanW = Math.sin((elapsed - 7.4) * 3.5);
-            const searchTarget = new THREE.Vector3(-78 + scanW * 14, 48, 8 + Math.cos(scanW) * 8);
-            this.setHeadLookAt(searchTarget, 1.0);
+            const scanW = Math.sin((elapsed - 7.5) * 2.8);
+            this.headRot.set(-0.08, -0.22 + scanW * 0.15, 0);
 
             this.updateDoraArms({
               lShoulderRoll: -1.15,
@@ -1839,7 +1711,7 @@
           }
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.9, this.leftHandWorldPos.z + 0.6);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.35, -0.2, 0.15);
           }
 
@@ -1855,11 +1727,10 @@
         // STEP 4 — PHONE CHECK (9.5s to 13.0s)
         // Dedicated PHONE_CHECK state:
         // Torso turns slightly toward phone hand.
-        // Left arm bends at elbow, raises phone to chest/chin level.
-        // Phone rotates vertically with screen facing Dora at 3/4 angle.
-        // Head & eyes dynamically track PHONE_LOOK_TARGET.
-        // Subtle cyan facial glow illuminates chin, cheek, and shirt.
-        // Progress increments 0% -> 84%.
+        // Left arm bends at elbow, raises phone vertically in front of chest.
+        // Screen faces Dora at 3/4 angle.
+        // Head tilts downward slightly looking directly at screen.
+        // Screen light softly illuminates lower face and shirt.
         // -------------------------------------------------------------
         else if (elapsed < 13.0) {
           this.currentStoryPhase = 'PHONE_CHECK';
@@ -1873,10 +1744,11 @@
             this.targetFov = CAM_PRESETS.PHONE_CHECK.fov;
           }
 
-          // Step 1: Torso turns slightly toward the phone hand
-          this.charRot.y = -0.15 * (1 - p) + 0.10 * p;
+          this.charRot.y = -0.05 * (1 - p) + 0.10 * p;
 
-          // Steps 2 & 3: Phone hand bends at elbow and raises phone to chest level
+          // Head tilts down and glances at phone in left hand
+          this.headRot.set(-0.24 * p, 0.26 * p, 0);
+
           this.updateDoraArms({
             lShoulderRoll: -1.22 * p + -1.35 * (1 - p),
             lShoulderPitch: -0.55 * p + -0.18 * (1 - p),
@@ -1888,7 +1760,6 @@
             rElbowBend: 0.28
           });
 
-          // Step 4 & 5: Phone held vertically, screen on -Z faces Dora at 3/4 angle
           if (this.phone) {
             this.phone.position.set(
               this.leftHandWorldPos.x - 0.25,
@@ -1897,24 +1768,14 @@
             );
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
-            this.phone.rotateY(0.32); // 3/4 angle so viewer also clearly sees SMRITI OLED UI!
-
-            // Step 6 & 7: Explicit PHONE_LOOK_TARGET positioned slightly above phone screen center
-            this.PHONE_LOOK_TARGET.set(
-              this.phone.position.x,
-              this.phone.position.y + 1.5,
-              this.phone.position.z
-            );
-            this.setHeadLookAt(this.PHONE_LOOK_TARGET, p);
+            this.phone.rotateY(0.32);
           }
 
-          // Step 9: Subtle phone screen light illuminates lower face, hands, shirt
           if (this.phoneScreenLight) {
-            this.phoneScreenLight.intensity = 0.95 * p;
+            this.phoneScreenLight.intensity = 0.85 * p;
             this.phoneScreenLight.color.setHex(0x5CE1D2);
           }
 
-          // Step 8: Live OLED progress bar rising from 0% to 84%
           const scanProgress = p * 0.84;
           this.drawPhoneScreen('SCAN', `${Math.round(scanProgress * 100)}%`, scanProgress);
 
@@ -1926,13 +1787,10 @@
 
         // -------------------------------------------------------------
         // STEP 5 — PHANTOM SPATIAL SCAN (13.0s to 16.5s)
-        // Visual Climax Moment:
-        // Phone hits 100% -> CHANGE DETECTED.
-        // Room lighting subtly shifts with controlled teal layer.
-        // Translucent wide scan plane sweeps across the entire room (-115 to +115).
-        // Dynamic sweep light illuminates table, sofa, Dora, plant, bookshelf.
-        // Floating spatial point cloud twinkles around side table.
-        // Camera widens to show full panorama.
+        // Visual Climax:
+        // Translucent wide scan plane sweeps across entire room.
+        // Dynamic sweep light illuminates objects as plane passes.
+        // Floating spatial point markers appear around table.
         // -------------------------------------------------------------
         else if (elapsed < 16.5) {
           this.currentStoryPhase = 'PHANTOM_SCAN';
@@ -1946,30 +1804,24 @@
             this.targetFov = CAM_PRESETS.PHANTOM_SCAN.fov;
           }
 
-          // Controlled teal layer over warm room lighting
           if (this.roomLights.phantom) this.roomLights.phantom.intensity = 1.35;
 
-          // Wide translucent scan plane sweeps across entire room (-115 to +115)
           this.spatialScanPlane.visible = true;
           this.spatialScanPlane.position.x = -115 + scanP * 230;
 
-          // Dynamic sweep light travels with the scan plane
           if (this.scanSweepLight) {
             this.scanSweepLight.visible = true;
             this.scanSweepLight.position.x = this.spatialScanPlane.position.x;
             this.scanSweepLight.intensity = 2.8 * Math.sin(scanP * Math.PI);
           }
 
-          // Floating spatial markers on side table activate
           if (this.tableSpatialPoints) {
             this.tableSpatialPoints.visible = true;
           }
 
-          // Phone updates to 100% -> CHANGE DETECTED
           const scanProgress = 0.84 + scanP * 0.16;
           this.drawPhoneScreen('SCAN', '100%', scanProgress);
 
-          // Dora's attention transitions from phone towards the side table as scan sweeps
           if (this.phone) {
             this.phone.position.set(
               this.leftHandWorldPos.x - 0.25,
@@ -1979,17 +1831,13 @@
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
             this.phone.rotateY(0.32);
-
-            this.PHONE_LOOK_TARGET.set(this.phone.position.x, this.phone.position.y + 1.5, this.phone.position.z);
           }
 
           if (elapsed < 14.8) {
-            this.setHeadLookAt(this.PHONE_LOOK_TARGET, 1.0);
+            this.headRot.set(-0.24, 0.26, 0);
           } else {
-            // Head turns to side table as ghost begins to reconstruct
-            const turnToTable = this.easeInOutCubic((elapsed - 14.8) / 1.7);
-            const blendTarget = this.PHONE_LOOK_TARGET.clone().lerp(this.TABLE_LOOK_TARGET, turnToTable);
-            this.setHeadLookAt(blendTarget, 1.0);
+            const blend = this.easeInOutCubic((elapsed - 14.8) / 1.7);
+            this.headRot.set(-0.24 * (1 - blend) + -0.10 * blend, 0.26 * (1 - blend) - 0.25 * blend, 0);
           }
 
           this.updateDoraArms({
@@ -2009,11 +1857,10 @@
 
         // -------------------------------------------------------------
         // STEP 6 — MEMORY REVEAL & SIMULTANEOUS OLD + NEW (16.5s to 20.0s)
-        // Visual Climax Climax:
-        // OLD: Ghost glasses reconstruct on SIDE TABLE at exact origin with shimmer.
+        // Visual Climax:
+        // OLD: Ghost glasses reconstruct on SIDE TABLE at exact origin.
         // NEW: Physical glasses visible on BOOKSHELF SHELF 2 simultaneously.
-        // Glowing 3D memory trajectory connects OLD -> NEW.
-        // Dora's gaze chain of attention: ghost on table -> trail -> shelf!
+        // Delicate spatial-memory trail connects them.
         // -------------------------------------------------------------
         else if (elapsed < 20.0) {
           this.currentStoryPhase = 'MEMORY_REVEAL';
@@ -2026,61 +1873,46 @@
             this.targetFov = CAM_PRESETS.MEMORY_REVEAL.fov;
           }
 
-          // Scan plane fades at far side of room
           if (this.spatialScanPlane) this.spatialScanPlane.visible = false;
           if (this.scanSweepLight) this.scanSweepLight.intensity = Math.max(0, 2.0 - (elapsed - 16.5) * 1.5);
 
-          // BOTH OLD AND CURRENT LOCATIONS VISIBLE SIMULTANEOUSLY:
-          // 1. Ghost on side table
+          // Both locations visible simultaneously
           this.ghostGlasses.position.copy(this.glassesTablePos);
           this.ghostGlasses.rotation.copy(this.glassesTableRot);
           this.ghostGlasses.visible = true;
           this.highlightGhost.visible = true;
 
-          // 2. Physical glasses on shelf 2
           this.glasses.position.copy(this.glassesShelfPos);
           this.glasses.rotation.copy(this.glassesShelfRot);
           this.glasses.visible = true;
           this.highlightMoved.visible = true;
 
-          // 3. Glowing memory trajectory tube connecting them
           this.spatialTrail.visible = true;
 
           const pulse = 1 + Math.sin(now * 0.007) * 0.08;
           this.highlightGhost.scale.set(pulse, pulse, pulse);
           this.highlightMoved.scale.set(pulse, pulse, pulse);
 
-          // Dora's chain of attention:
-          // 16.5s - 18.0s: looks at ghost on side table
-          // 18.0s - 19.2s: gaze follows trajectory across room
-          // 19.2s - 20.0s: locks onto shelf 2
-          if (elapsed < 18.0) {
-            this.setHeadLookAt(this.TABLE_LOOK_TARGET, 1.0);
-          } else if (elapsed < 19.2) {
-            const trailP = (elapsed - 18.0) / 1.2;
-            const trailLook = new THREE.Vector3(
-              this.TABLE_LOOK_TARGET.x + (this.SHELF_LOOK_TARGET.x - this.TABLE_LOOK_TARGET.x) * trailP,
-              this.TABLE_LOOK_TARGET.y + (this.SHELF_LOOK_TARGET.y - this.TABLE_LOOK_TARGET.y) * trailP + 25 * Math.sin(trailP * Math.PI),
-              this.TABLE_LOOK_TARGET.z + (this.SHELF_LOOK_TARGET.z - this.TABLE_LOOK_TARGET.z) * trailP
-            );
-            this.setHeadLookAt(trailLook, 1.0);
+          if (elapsed < 18.2) {
+            this.headRot.set(-0.10, -0.30, 0); // look at ghost on table
           } else {
-            this.setHeadLookAt(this.SHELF_LOOK_TARGET, 1.0);
+            const p = (elapsed - 18.2) / 1.8;
+            this.headRot.set(-0.06, -0.30 * (1 - p) + 0.30 * p, 0); // sweep gaze across to shelf
           }
 
-          // Relax left arm slightly to lower phone toward waist
+          // Lower phone comfortably to waist
           const lowerP = Math.min((elapsed - 16.5) / 1.5, 1.0);
           this.updateDoraArms({
-            lShoulderRoll: -1.22 * (1 - lowerP) + -1.20 * lowerP,
-            lShoulderPitch: -0.55 * (1 - lowerP) + -0.28 * lowerP,
-            lElbowBend: 1.65 * (1 - lowerP) + 0.60 * lowerP,
+            lShoulderRoll: -1.22 * (1 - lowerP) + -1.25 * lowerP,
+            lShoulderPitch: -0.55 * (1 - lowerP) + -0.25 * lowerP,
+            lElbowBend: 1.65 * (1 - lowerP) + 0.50 * lowerP,
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15,
             rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.15, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, 0.20, 0);
           }
 
@@ -2093,10 +1925,11 @@
         }
 
         // -------------------------------------------------------------
-        // STEP 7 — NOTICE SHELF & TURN BODY (20.0s to 21.5s)
-        // Dora locks onto shelf, turns torso toward bookshelf heading (2.45 rad)
+        // STEP 7 — NOTICE SHELF & TURN BODY (20.0s to 21.2s)
+        // Dora turns entire body toward the walk heading (2.45 rad).
+        // Head aligns neutrally with body (0, 0, 0).
         // -------------------------------------------------------------
-        else if (elapsed < 21.5) {
+        else if (elapsed < 21.2) {
           this.currentStoryPhase = 'NOTICE_SHELF';
           this.glassesState = 'GLASSES_SHELF';
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
@@ -2107,40 +1940,43 @@
             this.targetFov = CAM_PRESETS.NOTICE_SHELF.fov;
           }
 
-          const turnP = this.easeInOutCubic((elapsed - 20.0) / 1.5);
-          // Turn body from 0.22 to walk heading 2.45 rad
+          const turnP = this.easeInOutCubic((elapsed - 20.0) / 1.2);
           this.charRot.y = 0.22 + (2.45 - 0.22) * turnP;
 
-          this.setHeadLookAt(this.SHELF_LOOK_TARGET, 1.0);
+          // Head aligns neutrally with body direction!
+          this.headRot.set(0, 0, 0);
 
           this.updateDoraArms({
-            lShoulderRoll: -1.20,
-            lShoulderPitch: -0.28,
-            lElbowBend: 0.55,
+            lShoulderRoll: -1.25,
+            lShoulderPitch: -0.25,
+            lElbowBend: 0.50,
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15,
-            rElbowBend: 0.30
+            rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
-            this.phone.rotation.set(-0.25, 0.25, 0);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.15, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
+            this.phone.rotation.set(-0.25, 0.20, 0);
           }
         }
 
         // -------------------------------------------------------------
-        // STEP 8 — REAL CASUAL WALK TO BOOKSHELF (21.5s to 25.2s)
-        // Bipedal articulated stride & step-lift (NO SLIDING!).
-        // Casual natural walking speed: accelerates, walks, decelerates.
-        // Faces walk heading (2.45 rad).
-        // Destination: SHELF_INTERACTION_POINT (76, 0, -64).
+        // STEP 8 — NATURAL CASUAL WALK TO BOOKSHELF (21.2s to 25.0s)
+        // BODY, HEAD, AND EYES ALL FACE BOOKSHELF.
+        // Physical root translation from CHAR_ORIGIN to SHELF_INTERACTION_POINT.
+        // Facing direction locked at 2.45 rad.
+        // Head is locked neutral (0, 0, 0) aligned with body direction.
+        // Subtle stride bob and natural arm swing.
+        // Spatial trail is hidden during walk so it doesn't cross her face.
         // -------------------------------------------------------------
-        else if (elapsed < 25.2) {
+        else if (elapsed < 25.0) {
           this.currentStoryPhase = 'WALK_TO_SHELF';
           this.glassesState = 'GLASSES_SHELF';
+          this.spatialTrail.visible = false;
 
-          const walkDuration = 3.7;
-          const p = this.easeInOutCubic(Math.min((elapsed - 21.5) / walkDuration, 1.0));
+          const walkDuration = 3.8;
+          const p = this.easeInOutCubic(Math.min((elapsed - 21.2) / walkDuration, 1.0));
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.WALK_TO_SHELF.pos);
@@ -2148,50 +1984,52 @@
             this.targetFov = CAM_PRESETS.WALK_TO_SHELF.fov;
           }
 
-          // Dora faces walk direction (2.45 rad)
+          // Dora faces walk direction
           this.charRot.y = 2.45;
 
-          // Physical root translation from CHAR_ORIGIN to SHELF_INTERACTION_POINT
+          // HEAD IS NEUTRAL AND 100% ALIGNED WITH BODY DIRECTION!
+          this.headRot.set(0, 0, 0);
+
+          // Physical root translation to destination
           this.charPos.x = CHAR_ORIGIN.x + (this.SHELF_INTERACTION_POINT.x - CHAR_ORIGIN.x) * p;
           this.charPos.z = CHAR_ORIGIN.z + (this.SHELF_INTERACTION_POINT.z - CHAR_ORIGIN.z) * p;
 
-          // Bipedal stride frequency & weight
-          const walkPhase = (elapsed - 21.5) * 8.0;
+          // Natural casual stride bounce
+          const walkStep = Math.sin((elapsed - 21.2) * 7.0);
           const walkWeight = p < 0.90 ? 1.0 : (1.0 - (p - 0.90) / 0.10);
+          this.charPos.y = Math.abs(walkStep) * 0.75 * walkWeight;
+          this.charRot.z = Math.sin((elapsed - 21.2) * 7.0) * 0.015 * walkWeight;
 
-          // Center of mass vertical bobbing & pelvic roll
-          this.charPos.y = walkWeight > 0.05 ? Math.abs(Math.sin(walkPhase)) * 1.3 * walkWeight : 0;
-          this.charRot.z = walkWeight > 0.05 ? Math.sin(walkPhase) * 0.025 * walkWeight : 0;
-
-          // Head looks ahead at bookshelf destination
-          this.setHeadLookAt(this.SHELF_LOOK_TARGET, 1.0);
-
-          // Alternating arm swing in opposition to stride
-          const swing = Math.sin(walkPhase) * 0.32 * walkWeight;
+          // Natural arm swing
+          const swing = Math.sin((elapsed - 21.2) * 7.0) * 0.25 * walkWeight;
           this.updateDoraArms({
-            lShoulderRoll: -1.20,
-            lShoulderPitch: -0.28 + Math.sin(walkPhase) * 0.10 * walkWeight,
-            lElbowBend: 0.55,
+            lShoulderRoll: -1.25,
+            lShoulderPitch: -0.22,
+            lElbowBend: 0.45,
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15 - swing,
-            rElbowBend: 0.32
-          }, walkPhase, walkWeight);
+            rElbowBend: 0.28
+          });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
-            this.phone.rotation.set(-0.25, 0.25, 0);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.15, this.leftHandWorldPos.y + 0.6, this.leftHandWorldPos.z + 0.4);
+            this.phone.rotation.set(-0.25, 0.20, 0);
           }
         }
 
         // -------------------------------------------------------------
-        // STEP 9 — APPROACH & BODY SETTLE (25.2s to 26.2s)
-        // Dora arrives at SHELF_INTERACTION_POINT (76, 0, -64).
-        // Weight settles harmonically. Torso rotates to face bookshelf (0.35 rad).
-        // Head locks onto glasses on shelf 2.
+        // STEP 9 — APPROACH & BODY SETTLE (25.0s to 26.2s)
+        // Dora stops at SHELF_INTERACTION_POINT (76, 0, -64).
+        // Torso turns smoothly to face bookshelf directly (0.35 rad).
+        // Head stays neutral aligned with body.
+        // Ghost glasses disappear as she arrives.
         // -------------------------------------------------------------
         else if (elapsed < 26.2) {
           this.currentStoryPhase = 'APPROACH';
           this.glassesState = 'GLASSES_SHELF';
+          this.ghostGlasses.visible = false;
+          this.highlightGhost.visible = false;
+          this.spatialTrail.visible = false;
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.APPROACH.pos);
@@ -2199,17 +2037,11 @@
             this.targetFov = CAM_PRESETS.APPROACH.fov;
           }
 
-          const settleT = Math.min((elapsed - 25.2) / 1.0, 1.0);
-          this.charPos.set(
-            this.SHELF_INTERACTION_POINT.x,
-            Math.sin(settleT * Math.PI * 2) * Math.exp(-settleT * 4) * 0.35,
-            this.SHELF_INTERACTION_POINT.z
-          );
+          this.charPos.set(this.SHELF_INTERACTION_POINT.x, 0, this.SHELF_INTERACTION_POINT.z);
 
-          // Torso smoothly turns to face bookshelf (0.35 rad)
-          this.charRot.y = 2.45 * (1 - settleT) + 0.35 * settleT;
-
-          this.setHeadLookAt(this.SHELF_LOOK_TARGET, 1.0);
+          const turnShelf = this.easeInOutCubic((elapsed - 25.0) / 1.2);
+          this.charRot.y = 2.45 * (1 - turnShelf) + 0.35 * turnShelf;
+          this.headRot.set(0, 0, 0);
 
           this.updateDoraArms({
             lShoulderRoll: -1.35,
@@ -2218,22 +2050,26 @@
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15,
             rElbowBend: 0.28
-          }, 0, 0);
+          });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, 0.15, 0);
           }
         }
 
         // -------------------------------------------------------------
-        // STEP 10 — REACH & PICKUP (26.2s to 28.2s)
-        // Right hand extends onto shelf 2.
-        // Contact moment at 27.2s -> glasses detach from shelf, attach to hand!
-        // Dora lifts hand to chest with relieved smile.
+        // STEP 10 — REACH & PICKUP (26.2s to 28.5s)
+        // Camera moves closer to Dora + shelf without plant in the way.
+        // 26.2s - 27.4s: Right arm extends forward onto shelf 2 (glasses remain on shelf).
+        // At 27.4s: CONTACT! glasses attach to right hand (GLASSES_HELD).
+        // 27.4s - 28.5s: Right arm flexes and brings glasses to chest with relieved smile.
         // -------------------------------------------------------------
-        else if (elapsed < 28.2) {
+        else if (elapsed < 28.5) {
           this.currentStoryPhase = 'PICKUP';
+          this.ghostGlasses.visible = false;
+          this.highlightGhost.visible = false;
+          this.spatialTrail.visible = false;
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.PICKUP.pos);
@@ -2244,43 +2080,43 @@
           this.charPos.set(this.SHELF_INTERACTION_POINT.x, 0, this.SHELF_INTERACTION_POINT.z);
           this.charRot.set(0, 0.35, 0);
 
-          if (elapsed < 27.2) {
-            // Reaching phase: right arm extends forward toward shelf 2
+          if (elapsed < 27.4) {
+            // Reaching phase: arm extends toward glasses on shelf 2
             this.glassesState = 'GLASSES_SHELF';
-            const reachF = this.easeInOutCubic((elapsed - 26.2) / 1.0);
+            const reachP = this.easeInOutCubic((elapsed - 26.2) / 1.2);
 
             this.updateDoraArms({
               lShoulderRoll: -1.35,
               lShoulderPitch: -0.15,
               lElbowBend: 0.28,
-              rShoulderRoll: -0.22 * reachF + -1.35 * (1 - reachF),
-              rShoulderPitch: -0.92 * reachF + -0.15 * (1 - reachF),
-              rElbowBend: 0.42 * reachF + 0.28 * (1 - reachF),
+              rShoulderRoll: -0.25 * reachP + -1.35 * (1 - reachP),
+              rShoulderPitch: -0.92 * reachP + -0.15 * (1 - reachP),
+              rElbowBend: 0.40 * reachP + 0.28 * (1 - reachP),
               rWristFlex: 0.20
             });
-            this.setHeadLookAt(this.SHELF_LOOK_TARGET, 1.0);
+            // Head looks at glasses on shelf
+            this.headRot.set(-0.06 * reachP, 0.12 * reachP, 0);
           } else {
-            // CONTACT & PICKUP: glasses attach to right hand!
+            // CONTACT & RETRIEVAL: glasses attach to hand!
             this.glassesState = 'GLASSES_HELD';
             this.shelfContactShadow.material.opacity = 0;
 
-            const liftF = this.easeInOutCubic((elapsed - 27.2) / 1.0);
+            const liftP = this.easeInOutCubic((elapsed - 27.4) / 1.1);
             this.updateDoraArms({
               lShoulderRoll: -1.35,
               lShoulderPitch: -0.15,
               lElbowBend: 0.28,
-              rShoulderRoll: -0.68 * liftF + -0.22 * (1 - liftF),
-              rShoulderPitch: -0.68 * liftF + -0.92 * (1 - liftF),
-              rElbowBend: 1.30 * liftF + 0.42 * (1 - liftF),
-              rWristFlex: 0.35
+              rShoulderRoll: -0.72 * liftP + -0.25 * (1 - liftP),
+              rShoulderPitch: -0.65 * liftP + -0.92 * (1 - liftP),
+              rElbowBend: 1.30 * liftP + 0.40 * (1 - liftP),
+              rWristFlex: 0.30
             });
 
-            // Relieved happy smile & head tilt
-            this.headRot.set(-0.06, 0.28, 0.12 * liftF);
+            this.headRot.set(-0.04, 0.20, 0.06 * liftP);
           }
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, 0.15, 0);
           }
 
@@ -2294,13 +2130,16 @@
         }
 
         // -------------------------------------------------------------
-        // STEP 11 — PEACEFUL RELIEF & MULTI-STATE REPLAY (28.2s+)
+        // STEP 11 — PEACEFUL RELIEF & MULTI-STATE REPLAY (28.5s+)
         // Calm idle with glasses in hand; warm sunlight restored.
         // Button transitions: "Story complete ✓" -> "Replay story ↻".
         // -------------------------------------------------------------
         else {
           this.currentStoryPhase = 'RELIEF';
           this.glassesState = 'GLASSES_HELD';
+          this.ghostGlasses.visible = false;
+          this.highlightGhost.visible = false;
+          this.spatialTrail.visible = false;
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.RELIEF.pos);
@@ -2308,31 +2147,28 @@
             this.targetFov = CAM_PRESETS.RELIEF.fov;
           }
 
-          if (this.roomLights.phantom) this.roomLights.phantom.intensity = Math.max(0, 1.35 - (elapsed - 28.2) * 0.4);
+          if (this.roomLights.phantom) this.roomLights.phantom.intensity = Math.max(0, 1.35 - (elapsed - 28.5) * 0.4);
 
           const happyBob = Math.sin(now * 0.0025) * 0.35;
           this.charPos.set(this.SHELF_INTERACTION_POINT.x, happyBob, this.SHELF_INTERACTION_POINT.z);
           this.charRot.set(0, 0.35, 0);
-          this.headRot.set(-0.04, 0.28 + Math.sin(now * 0.001) * 0.04, 0.08);
+          this.headRot.set(-0.04, 0.20, 0.06);
 
           this.updateDoraArms({
             lShoulderRoll: -1.35,
             lShoulderPitch: -0.15,
             lElbowBend: 0.28,
-            rShoulderRoll: -0.68,
-            rShoulderPitch: -0.68,
+            rShoulderRoll: -0.72,
+            rShoulderPitch: -0.65,
             rElbowBend: 1.30
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.7, this.leftHandWorldPos.z + 0.5);
             this.phone.rotation.set(-0.25, 0.15, 0);
           }
 
-          // Multi-state button logic:
-          // 28.2s - 30.2s: "Story complete ✓"
-          // 30.2s+: "Replay story ↻"
-          if (elapsed < 30.2) {
+          if (elapsed < 30.5) {
             if (this.ui.cta) {
               this.ui.cta.classList.remove('playing');
               this.ui.cta.classList.add('complete');
@@ -2367,8 +2203,14 @@
           this.glasses.position.copy(this.glassesShelfPos);
           this.glasses.rotation.copy(this.glassesShelfRot);
         } else if (this.glassesState === 'GLASSES_HELD') {
-          this.glasses.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.8, this.rightHandWorldPos.z + 1.0);
-          this.glasses.rotation.set(-0.25, 0.4, 0.1);
+          const handPos = new THREE.Vector3(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 0.8);
+          if (this.currentStoryPhase === 'PICKUP' && elapsed >= 27.4 && elapsed < 28.5) {
+            const liftP = this.easeInOutCubic((elapsed - 27.4) / 1.1);
+            this.glasses.position.lerpVectors(this.glassesShelfPos, handPos, liftP);
+          } else {
+            this.glasses.position.copy(handPos);
+          }
+          this.glasses.rotation.set(-0.20, 0.35, 0.10);
         }
       }
 
