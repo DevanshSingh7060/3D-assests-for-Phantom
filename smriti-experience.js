@@ -1718,19 +1718,19 @@
 
           // Left arm raises phone up to chest/chin level with elbow bent naturally
           this.updateDoraArms({
-            lShoulderRoll: -0.55 * p + -1.35 * (1 - p),
-            lShoulderPitch: -0.78 * p + -0.18 * (1 - p),
-            lShoulderYaw: 0.25 * p,
-            lElbowBend: 1.40 * p + 0.38 * (1 - p),
+            lShoulderRoll: -1.02 * p + -1.35 * (1 - p),
+            lShoulderPitch: -0.62 * p + -0.18 * (1 - p),
+            lShoulderYaw: 0.15 * p,
+            lElbowBend: 1.45 * p + 0.38 * (1 - p),
             lWristFlex: 0.38 * p,
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15,
             rElbowBend: 0.28
           });
 
-          // Phone position and orientation: screen on +Z faces directly at Dora's face!
+          // Phone position and orientation: screen on -Z faces directly at Dora's face!
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.1, this.leftHandWorldPos.y + 1.2, this.leftHandWorldPos.z + 0.8);
+            this.phone.position.set(this.leftHandWorldPos.x - 0.2, this.leftHandWorldPos.y + 0.6, this.leftHandWorldPos.z + 0.6);
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
           }
@@ -1785,16 +1785,16 @@
           this.headRot.set(0.14, 0.42, 0);
 
           this.updateDoraArms({
-            lShoulderRoll: -0.75,
-            lShoulderPitch: -0.65,
-            lElbowBend: 1.15,
+            lShoulderRoll: -1.02,
+            lShoulderPitch: -0.62,
+            lElbowBend: 1.35,
             rShoulderRoll: -1.35,
             rShoulderPitch: -0.15,
             rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.leftHandWorldPos.x + 0.1, this.leftHandWorldPos.y + 1.1, this.leftHandWorldPos.z + 0.8);
+            this.phone.position.set(this.leftHandWorldPos.x - 0.2, this.leftHandWorldPos.y + 0.6, this.leftHandWorldPos.z + 0.6);
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
           }
