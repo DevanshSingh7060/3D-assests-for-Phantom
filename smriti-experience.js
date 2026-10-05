@@ -1,72 +1,76 @@
-// =============================================================================
-// SMRITI — Visual Overhaul v3: Premium 3D Animated World & Interaction Polish
-// Art Direction: High-end animated film / Pixar & Ghibli warmth
-// Organic cinematic environment + natural character life + SMRITI smartphone interface
-// Physical glasses placement & settling physics + PHANTOM spatial memory scan
-// =============================================================================
+/**
+ * SMRITI — Spatial Memory Web Experience Engine (v4.0 Final Polish)
+ * ----------------------------------------------------------------------------
+ * Integrates:
+ * - 3D Assets: Dora (GLB), small_table.glb, sofa.glb, plant_with_pot.glb
+ * - Exact physical surface contact calculations (Zero penetration, zero floating)
+ * - Authoritative single-source-of-truth glasses state machine
+ * - Smartphone prop facing Dora's face with live OLED canvas UI & face glow
+ * - Real character root motion translation & directional walking to bookshelf
+ * - Physical hand-object reach and pickup synchronization
+ * - Translucent PHANTOM spatial scan & 26% memory ghost imprint at exact table origin
+ * - Multi-state CTA button: See how it works -> Playing… -> Story complete ✓ -> Replay story ↻
+ * - High-contrast warm editorial color palette
+ */
 
 (function() {
   'use strict';
 
-  // 70 / 20 / 10 Master Palette Constants
+  // 70 / 20 / 10 Master Palette Constants (High-Contrast Warm Editorial)
   const PALETTE = {
     // 70% Architectural Warmth
-    bg: 0xF7E7CF,             // Warm Peach/Cream Canvas (#F7E7CF)
-    wallPlaster: 0xF5E6D3,     // Soft Plaster Wall
-    floorWood: 0x966336,       // Rich Caramel Oak Floor
-    floorPlankDark: 0x7E4F25,  // Dark Parquet Inlay
-    rugBase: 0xECE1CE,         // Organic Sand Pebble Rug
-    rugBorder: 0xD8C6AC,       // Soft Woven Rug Border
-    
+    bg: 0xFAEBD5,              // Light cream canvas (#FAEBD5)
+    wallPlaster: 0xF2D7B5,     // Warm plaster wall (#F2D7B5)
+    floorWood: 0x8B6042,       // Rich walnut/caramel oak floor (#8B6042)
+    floorPlankDark: 0x5C381E,  // Dark parquet inlay (#5C381E)
+    rugBase: 0xFAEBD5,         // Organic pebble rug (#FAEBD5)
+    rugBorder: 0xDECAB0,       // Woven border
+
     // 20% Character & Furniture Anchors
-    charSweater: 0x223212,     // Deep Rich Olive Knit (#59663B)
-    charCollar: 0x18240D,      // Deep Olive Ribbed Trim
-    charAccent: 0xB54E29,      // Warm Terracotta Neckerchief / Accent (#C96B45)
-    charPants: 0xF5E9D3,       // Warm Cream Linen Trousers (#F6EBD7)
-    charShoes: 0x180D07,       // Dark Chestnut Loafers (#3B2A22)
-    charHair: 0x140B06,        // Rich Dark Espresso Sculpted Hair (#302119)
+    charSweater: 0x53613B,     // Deep Olive Knit (#53613B)
+    charCollar: 0x3B4628,      // Deep Olive Ribbed Trim
+    charAccent: 0xC95F3D,      // Terracotta Accent (#C95F3D)
+    charPants: 0xFAEBD5,       // Warm Cream Linen Trousers (#FAEBD5)
+    charShoes: 0x34251F,       // Dark Brown Loafers (#34251F)
+    charHair: 0x2A1C16,        // Deep Espresso Hair
     charSkin: 0xF7CBB6,        // Warm Peach Skin with Subsurface Glow
-    charBlush: 0xE06E50,       // Soft Coral Cheeks (#E4866D)
-    charEyes: 0x16100E,        // Glossy Dark Pupils
-    
-    furnitureWood: 0x915B2D,   // Warm Caramel Oak
-    furnitureDark: 0x5C381E,   // Roasted Walnut
-    armchairFabric: 0xE8E0D0,  // Soft Bouclé Off-White
-    blanketTerracotta: 0xBD4D28,// Warm Terracotta Throw (#C96B45)
-    cushionMustard: 0xD9941E,  // Warm Velvet Mustard (#D6A83E)
+    charBlush: 0xE06E50,       // Soft Coral Cheeks
+
+    furnitureWood: 0x8B6042,   // Rich warm wood (#8B6042)
+    furnitureDark: 0x34251F,   // Dark brown (#34251F)
+    armchairFabric: 0xF5ECD8,  // Soft Bouclé Fabric (#F5ECD8)
+    blanketTerracotta: 0xC95F3D,// Terracotta Throw (#C95F3D)
+    cushionMustard: 0xD5A63C,  // Warm Velvet Mustard (#D5A63C)
     lampBrass: 0xC8A050,       // Brushed Warm Brass
     lampShade: 0xFDF6E8,       // Fluted Parchment Shade
-    plantGreen: 0x324D22,      // Rich Monstera Foliage
-    plantDeep: 0x1B2C16,       // Deep Olive Shadow Foliage
-    plantPot: 0xB55730,        // Terracotta Planter
-    
+    plantGreen: 0x53613B,      // Deep Olive Foliage (#53613B)
+    plantDeep: 0x364024,       // Deep Olive Shadow Foliage
+    plantPot: 0xC95F3D,        // Warm Terracotta Planter (#C95F3D)
+
     // 10% PHANTOM Story Accents
-    glassesFrame: 0x22160F,    // Tortoise Espresso Frame
-    glassesBridge: 0xC29E52,   // Warm Gold Bridge
-    phantomTeal: 0x4E9C91,     // SMRITI Memory Teal (#4E9C91)
-    phantomTealGlow: 0x68BDB2, // Luminous Recall Shimmer
-    movementAmber: 0xD9A83E,   // Spatial Trajectory Amber (#D9A83E)
-    confirmGreen: 0x687A42     // Verified Memory Green (#687A42)
+    glassesFrame: 0x34251F,    // Dark Espresso Frame (#34251F)
+    glassesBridge: 0xD5A63C,   // Warm Gold Bridge (#D5A63C)
+    phantomTeal: 0x4D9D91,     // SMRITI Memory Teal (#4D9D91)
+    phantomTealGlow: 0x65B5A9, // Luminous Recall Shimmer
+    movementAmber: 0xD5A63C,   // Spatial Trajectory Mustard/Amber (#D5A63C)
+    confirmGreen: 0x53613B     // Verified Memory Green (#53613B)
   };
 
   // World Anchors & Physical Surfaces
-  // Table top surface is at y = 51.6; glasses rest on top at y = 53.8
-  const GLASSES_ORIGIN = { x: -74, y: 53.8, z: 8 };
-  // Bookshelf shelf 2 surface is at y = 83.5; glasses rest on top at y = 85.8
-  const GLASSES_DEST = { x: 104, y: 85.8, z: -85 };
   const CHAR_ORIGIN = { x: 4, y: 0, z: 10 };
+  const DORA_SHELF_POS = { x: 78, y: 0, z: -66 }; // Destination in front of bookshelf shelf 2
 
-  // Cinematic 3/4 Perspective Camera States (Slow, intentional, film-grade choreography)
+  // Cinematic Camera Choreography
   const CAM_PRESETS = {
-    HOME: { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 },
-    NOTICE: { pos: { x: 30, y: 94, z: 205 }, target: { x: -25, y: 52, z: 8 }, fov: 28 },
-    TRANSIT: { pos: { x: 42, y: 102, z: 245 }, target: { x: 10, y: 58, z: -20 }, fov: 30 },
-    SEARCH: { pos: { x: 22, y: 102, z: 220 }, target: { x: -35, y: 52, z: 5 }, fov: 29 },
-    PHONE: { pos: { x: 22, y: 88, z: 180 }, target: { x: 2, y: 56, z: 10 }, fov: 27 },
-    PHANTOM: { pos: { x: 62, y: 122, z: 285 }, target: { x: 14, y: 56, z: -25 }, fov: 32 },
-    REVEAL: { pos: { x: 52, y: 106, z: 240 }, target: { x: 42, y: 64, z: -40 }, fov: 30 },
-    DISCOVER: { pos: { x: 44, y: 98, z: 215 }, target: { x: 48, y: 62, z: -42 }, fov: 28 },
-    RESOLVE: { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 }
+    HOME:     { pos: { x: 50, y: 110, z: 275 }, target: { x: 4, y: 54, z: -10 }, fov: 31 },
+    NOTICE:   { pos: { x: 30, y: 94, z: 205 },  target: { x: -25, y: 52, z: 8 },  fov: 28 },
+    TRANSIT:  { pos: { x: 42, y: 102, z: 245 }, target: { x: 10, y: 58, z: -20 }, fov: 30 },
+    SEARCH:   { pos: { x: 22, y: 102, z: 220 }, target: { x: -35, y: 52, z: 5 },  fov: 29 },
+    PHONE:    { pos: { x: 20, y: 86, z: 175 },  target: { x: 2, y: 56, z: 10 },   fov: 26 },
+    PHANTOM:  { pos: { x: 62, y: 122, z: 285 }, target: { x: 14, y: 56, z: -25 }, fov: 32 },
+    REVEAL:   { pos: { x: 82, y: 104, z: 210 }, target: { x: 62, y: 60, z: -55 }, fov: 29 },
+    DISCOVER: { pos: { x: 74, y: 96, z: 185 },  target: { x: 78, y: 64, z: -68 }, fov: 27 },
+    RESOLVE:  { pos: { x: 60, y: 106, z: 250 }, target: { x: 44, y: 58, z: -40 }, fov: 30 }
   };
 
   class SmritiExperience {
@@ -82,7 +86,7 @@
       this.targetCamLook = new THREE.Vector3().copy(CAM_PRESETS.HOME.target);
       this.targetFov = CAM_PRESETS.HOME.fov;
 
-      // 3D Subject Handles (Hero Character: Dora the Explorer GLB)
+      // 3D Subject Handles (Hero Character: Dora GLB)
       this.character = null;
       this.characterHead = null;
       this.doraEyes = null;
@@ -93,6 +97,13 @@
       this.rightHandWorldPos = new THREE.Vector3();
       this.leftHandWorldPos = new THREE.Vector3();
 
+      // Environment 3D GLB Handles
+      this.tableGroup = null;
+      this.tableTopSurfaceY = 48.0; // Default calculated height
+      this.sofaGroup = null;
+      this.plantGroup = null;
+      this.shelfGroup = null;
+
       // Smartphone Prop Handles
       this.phone = null;
       this.phoneCanvas = null;
@@ -100,9 +111,14 @@
       this.phoneTexture = null;
       this.phoneScreenLight = null;
 
-      // Props & Physics Handles
+      // Authoritative Glasses State Machine & Physics Handles
+      // States: 'GLASSES_TABLE' | 'GLASSES_MOVING' | 'GLASSES_SHELF' | 'GLASSES_HELD'
+      this.glassesState = 'GLASSES_TABLE';
       this.glasses = null;
       this.ghostGlasses = null;
+      this.glassesTablePos = new THREE.Vector3(-78, 52.8, 8);
+      this.glassesTableRot = new THREE.Euler(0, 0.28, 0);
+      this.glassesShelfPos = new THREE.Vector3(104, 85.8, -85);
       this.tableContactShadow = null;
       this.shelfContactShadow = null;
       this.glassesPickedUp = false;
@@ -125,12 +141,12 @@
       this.isBlinking = false;
       this.blinkDuration = 120;
 
-      // Arm FK Pose State
+      // Arm FK Pose State (Default natural relaxed asymmetric idle)
       this.currentArmPose = {
         lShoulderRoll: -1.40,
         lShoulderPitch: -0.15,
         lShoulderYaw: 0.05,
-        lElbowBend: 0.30,
+        lElbowBend: 0.28,
         lWristFlex: 0.18,
         rShoulderRoll: -1.02,
         rShoulderPitch: -0.38,
@@ -144,7 +160,7 @@
       this.storyStartTime = 0;
       this.currentStoryPhase = 'IDLE';
 
-      // UI Handles (Compatible with both index.html and phantom- layouts)
+      // UI Handles
       this.ui = {
         overline: document.getElementById('storyStatusText') || document.getElementById('heroOverline'),
         narration: document.getElementById('heroCaptionWrap') || document.getElementById('heroNarration'),
@@ -152,6 +168,7 @@
         narrDetail: document.getElementById('heroCaptionSub') || document.getElementById('narrationDetail'),
         note: document.getElementById('memoryReceiptToast') || document.getElementById('heroMemoryNote'),
         cta: document.getElementById('btnStartExperience') || document.getElementById('hero-cta'),
+        ctaLabel: document.getElementById('btnExperienceLabel'),
         progress: document.getElementById('heroProgress'),
         progressFill: document.getElementById('storyProgress') || document.getElementById('heroProgressFill'),
         replay: document.getElementById('btnResetExperience') || document.getElementById('heroReplay')
@@ -161,7 +178,7 @@
     }
 
     init() {
-      // 1. Scene with Warm Peach Atmosphere
+      // 1. Scene with Warm Canvas Atmosphere
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(PALETTE.bg);
       this.scene.fog = new THREE.FogExp2(PALETTE.bg, 0.0006);
@@ -189,14 +206,17 @@
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       this.renderer.outputEncoding = THREE.sRGBEncoding;
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.02;
+      this.renderer.toneMappingExposure = 1.05;
 
       this.container.appendChild(this.renderer.domElement);
 
-      // 3. Assemble Organic Cinematic World
+      // 3. Assemble Organic Environment & Import 3D Assets
       this.setupCinematicLighting();
       this.buildOrganicEnvironment();
-      this.buildStylizedFurniture();
+      this.loadSmallTable();
+      this.loadSofa();
+      this.loadPlant();
+      this.buildBookshelf();
       this.buildSmartphone();
       this.loadDoraCharacter();
       this.buildHeroProps();
@@ -215,15 +235,15 @@
     }
 
     // =========================================================================
-    // 1. CINEMATIC LIGHTING (Warm sunlight, soft fill, subtle rim, cool PHANTOM layer)
+    // 1. CINEMATIC LIGHTING (Warm sunlight, soft bounce, rim light, PHANTOM layer)
     // =========================================================================
     setupCinematicLighting() {
-      const ambient = new THREE.AmbientLight(0xFFE2CB, 0.38);
+      const ambient = new THREE.AmbientLight(0xFFE5D0, 0.42);
       this.scene.add(ambient);
       this.roomLights.ambient = ambient;
 
       // Key Warm Sunlight
-      const sun = new THREE.DirectionalLight(0xFFF0DE, 1.25);
+      const sun = new THREE.DirectionalLight(0xFFF2E2, 1.35);
       sun.position.set(110, 240, 160);
       sun.castShadow = true;
       sun.shadow.mapSize.width = 2048;
@@ -241,18 +261,18 @@
       this.roomLights.sun = sun;
 
       // Soft Warm Window Bounce Fill
-      const windowFill = new THREE.DirectionalLight(0xF4DCB8, 0.45);
+      const windowFill = new THREE.DirectionalLight(0xF5DEC0, 0.50);
       windowFill.position.set(-150, 130, 80);
       this.scene.add(windowFill);
       this.roomLights.fill = windowFill;
 
-      // Character Rim Light (Backlight separating character from room)
-      const rimLight = new THREE.DirectionalLight(0xFFE8D6, 0.55);
+      // Character Backlight / Rim
+      const rimLight = new THREE.DirectionalLight(0xFFE8D6, 0.60);
       rimLight.position.set(-30, 140, -180);
       this.scene.add(rimLight);
       this.roomLights.rim = rimLight;
 
-      // PHANTOM Cool Teal Spatial Memory Light (starts off, gently blooms during scan)
+      // PHANTOM Teal Spatial Memory Light
       const phantomLight = new THREE.PointLight(PALETTE.phantomTealGlow, 0, 360);
       phantomLight.position.set(14, 110, -25);
       this.scene.add(phantomLight);
@@ -276,7 +296,7 @@
       this.scene.add(floor);
 
       // Fine Inlaid Oak Parquet Lines
-      const lineMat = new THREE.MeshBasicMaterial({ color: PALETTE.floorPlankDark, opacity: 0.35, transparent: true });
+      const lineMat = new THREE.MeshBasicMaterial({ color: PALETTE.floorPlankDark, opacity: 0.40, transparent: true });
       for (let i = -140; i <= 140; i += 32) {
         const plank = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 260), lineMat);
         plank.rotation.x = -Math.PI * 0.5;
@@ -321,163 +341,235 @@
     }
 
     // =========================================================================
-    // 3. STYLIZED FURNITURE (Round Bouclé Armchair, Pedestal Side Table, Bookshelf)
+    // 3. IMPORTED 3D GLB ASSETS (small_table.glb, sofa.glb, plant_with_pot.glb)
     // =========================================================================
-    buildStylizedFurniture() {
-      // 1. SCULPTED ROUNDED BOUCLÉ ARMCHAIR
-      const chairGroup = new THREE.Group();
-      chairGroup.position.set(-52, 0, -35);
-      chairGroup.rotation.y = 0.35;
 
-      const matBoucle = new THREE.MeshStandardMaterial({ color: PALETTE.armchairFabric, roughness: 0.8 });
-      const matWoodLeg = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureDark, roughness: 0.5 });
+    // 1. SMALL TABLE (small_table.glb) — Exact surface height calculated dynamically
+    loadSmallTable() {
+      this.tableGroup = new THREE.Group();
+      this.tableGroup.position.set(-78, 0, 8);
+      this.scene.add(this.tableGroup);
 
-      const seat = new THREE.Mesh(new THREE.CylinderGeometry(28, 30, 15, 32), matBoucle);
-      seat.position.set(0, 15, 0);
-      seat.scale.set(1.04, 1, 1);
-      seat.castShadow = true;
-      seat.receiveShadow = true;
-      chairGroup.add(seat);
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+        'small_table.glb',
+        (gltf) => {
+          const model = gltf.scene;
+          const box = new THREE.Box3().setFromObject(model);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
 
-      const backrest = new THREE.Mesh(new THREE.CylinderGeometry(32, 32, 36, 28, 1, true, 0, Math.PI * 1.15), matBoucle);
-      backrest.position.set(0, 31, -4);
-      backrest.rotation.y = Math.PI * 0.92;
-      backrest.scale.set(1, 1, 0.92);
-      backrest.castShadow = true;
-      chairGroup.add(backrest);
+          // Table height: ~48 units (waist height relative to Dora's 96)
+          const targetHeight = 48.0;
+          const scale = targetHeight / (size.y || 0.273);
+          model.scale.set(scale, scale, scale);
+          model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
 
-      const backCap = new THREE.Mesh(new THREE.TorusGeometry(32, 3.8, 16, 28, Math.PI * 1.15), matBoucle);
-      backCap.position.set(0, 49, -4);
-      backCap.rotation.set(Math.PI * 0.5, 0, Math.PI * 0.92);
-      chairGroup.add(backCap);
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+              if (child.material) {
+                child.material.roughness = 0.46;
+                child.material.metalness = 0.04;
+                if (child.material.name && child.material.name.toLowerCase().includes('metall')) {
+                  child.material.metalness = 0.82;
+                  child.material.roughness = 0.32;
+                }
+                child.material.needsUpdate = true;
+              }
+            }
+          });
 
-      const legGeo = new THREE.CylinderGeometry(1.6, 1.1, 16, 16);
-      [
-        { x: -18, z: -15, rx: -0.14, rz: 0.14 },
-        { x: 18, z: -15, rx: -0.14, rz: -0.14 },
-        { x: -16, z: 15, rx: 0.14, rz: 0.14 },
-        { x: 16, z: 15, rx: 0.14, rz: -0.14 }
-      ].forEach(p => {
-        const leg = new THREE.Mesh(legGeo, matWoodLeg);
-        leg.position.set(p.x, 8, p.z);
-        leg.rotation.set(p.rx, 0, p.rz);
-        leg.castShadow = true;
-        chairGroup.add(leg);
-      });
+          this.tableGroup.add(model);
+          this.tableTopSurfaceY = targetHeight; // Top tabletop surface height in world
 
-      const blanket = new THREE.Mesh(new THREE.BoxGeometry(20, 32, 16), new THREE.MeshStandardMaterial({ color: PALETTE.blanketTerracotta, roughness: 0.82 }));
-      blanket.position.set(15, 30, 2);
-      blanket.rotation.set(0.14, 0.22, -0.18);
-      blanket.castShadow = true;
-      chairGroup.add(blanket);
+          // Ground Contact Shadow under table base
+          const tableFloorShadow = new THREE.Mesh(
+            new THREE.PlaneGeometry(38, 38),
+            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.38, depthWrite: false })
+          );
+          tableFloorShadow.rotation.x = -Math.PI * 0.5;
+          tableFloorShadow.position.set(0, 0.04, 0);
+          this.tableGroup.add(tableFloorShadow);
 
-      const cushion = new THREE.Mesh(new THREE.SphereGeometry(10, 24, 16), new THREE.MeshStandardMaterial({ color: PALETTE.cushionMustard, roughness: 0.68 }));
-      cushion.scale.set(1, 0.65, 0.95);
-      cushion.position.set(-6, 24, -9);
-      cushion.rotation.set(-0.35, 0.15, 0.1);
-      cushion.castShadow = true;
-      chairGroup.add(cushion);
+          // Recalculate glasses placement with exact table dimensions
+          this.updateGlassesPlacement();
+        },
+        undefined,
+        (err) => console.error('Error loading small_table.glb:', err)
+      );
+    }
 
-      this.scene.add(chairGroup);
+    // 2. SOFA (sofa.glb) — Sits on floor with warm bouclé fabric
+    loadSofa() {
+      this.sofaGroup = new THREE.Group();
+      this.sofaGroup.position.set(-48, 0, -38);
+      this.sofaGroup.rotation.y = 0.40;
+      this.scene.add(this.sofaGroup);
 
-      // 2. ORGANIC ROUND PEDESTAL SIDE TABLE (Top surface at y = 51.6)
-      const tableGroup = new THREE.Group();
-      tableGroup.position.set(-74, 0, 8);
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+        'sofa.glb',
+        (gltf) => {
+          const model = gltf.scene;
+          const box = new THREE.Box3().setFromObject(model);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
 
-      const matTable = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureWood, roughness: 0.48 });
-      const tableTop = new THREE.Mesh(new THREE.CylinderGeometry(22, 22, 3.2, 32), matTable);
-      tableTop.position.set(0, 50, 0);
-      tableTop.castShadow = true;
-      tableTop.receiveShadow = true;
-      tableGroup.add(tableTop);
+          // Sofa height: ~58 units (hip/backrest scale relative to Dora's 96)
+          const targetHeight = 58.0;
+          const scale = targetHeight / (size.y || 0.793);
+          model.scale.set(scale, scale, scale);
+          model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
 
-      const stem = new THREE.Mesh(new THREE.CylinderGeometry(4, 5.5, 46, 24), matTable);
-      stem.position.set(0, 25, 0);
-      stem.castShadow = true;
-      tableGroup.add(stem);
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+              if (child.material) {
+                child.material.roughness = 0.78;
+                child.material.metalness = 0.02;
+                child.material.needsUpdate = true;
+              }
+            }
+          });
 
-      const basePlate = new THREE.Mesh(new THREE.CylinderGeometry(16, 18, 3.8, 32), matTable);
-      basePlate.position.set(0, 1.9, 0);
-      basePlate.castShadow = true;
-      tableGroup.add(basePlate);
+          this.sofaGroup.add(model);
 
-      this.scene.add(tableGroup);
+          // Floor Contact Shadow under sofa
+          const sofaShadow = new THREE.Mesh(
+            new THREE.PlaneGeometry(size.x * scale * 1.08, size.z * scale * 1.08),
+            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.42, depthWrite: false })
+          );
+          sofaShadow.rotation.x = -Math.PI * 0.5;
+          sofaShadow.position.set(0, 0.04, 0);
+          this.sofaGroup.add(sofaShadow);
+        },
+        undefined,
+        (err) => console.error('Error loading sofa.glb:', err)
+      );
+    }
 
-      // 3. ARCHED MODERN BOOKSHELF (Shelf 2 top surface at y = 83.5)
-      const shelfGroup = new THREE.Group();
-      shelfGroup.position.set(104, 0, -85);
+    // 3. PLANT WITH POT (plant_with_pot.glb) — Sits on floor, rich foliage
+    loadPlant() {
+      this.plantGroup = new THREE.Group();
+      // Positioned at z = -52 (safely behind Dora's walk path from (4,10) to (78,-66))
+      this.plantGroup.position.set(32, 0, -52);
+      this.scene.add(this.plantGroup);
+
+      const loader = new THREE.GLTFLoader();
+      loader.load(
+        'plant_with_pot.glb',
+        (gltf) => {
+          const model = gltf.scene;
+          const box = new THREE.Box3().setFromObject(model);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+
+          // Plant height: ~54 units (natural midground foliage)
+          const targetHeight = 54.0;
+          const scale = targetHeight / (size.y || 4.46);
+          model.scale.set(scale, scale, scale);
+          model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
+
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+              if (child.material) {
+                if (child.name.toLowerCase().includes('pot') || (child.material.name && child.material.name.includes('Material.002'))) {
+                  child.material.color = new THREE.Color(PALETTE.plantPot);
+                  child.material.roughness = 0.65;
+                } else {
+                  child.material.color = new THREE.Color(PALETTE.plantGreen);
+                  child.material.roughness = 0.52;
+                }
+                child.material.needsUpdate = true;
+              }
+            }
+          });
+
+          this.plantGroup.add(model);
+
+          // Floor Contact Shadow under pot
+          const potShadow = new THREE.Mesh(
+            new THREE.CylinderGeometry(11, 11, 0.1, 24),
+            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.38, depthWrite: false })
+          );
+          potShadow.position.set(0, 0.04, 0);
+          this.plantGroup.add(potShadow);
+        },
+        undefined,
+        (err) => console.error('Error loading plant_with_pot.glb:', err)
+      );
+    }
+
+    // 4. ARCHED MODERN BOOKSHELF (Shelf 2 top surface at y = 83.5)
+    buildBookshelf() {
+      this.shelfGroup = new THREE.Group();
+      this.shelfGroup.position.set(104, 0, -85);
 
       const matShelfWood = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureWood, roughness: 0.52 });
       const uprightGeo = new THREE.BoxGeometry(3.5, 145, 30);
       const uprightL = new THREE.Mesh(uprightGeo, matShelfWood);
       uprightL.position.set(-30, 72.5, 0);
       uprightL.castShadow = true;
-      shelfGroup.add(uprightL);
+      this.shelfGroup.add(uprightL);
 
       const uprightR = new THREE.Mesh(uprightGeo, matShelfWood);
       uprightR.position.set(30, 72.5, 0);
       uprightR.castShadow = true;
-      shelfGroup.add(uprightR);
+      this.shelfGroup.add(uprightR);
 
       const shelfCrown = new THREE.Mesh(new THREE.CylinderGeometry(31.5, 31.5, 30, 24, 1, false, 0, Math.PI), matShelfWood);
       shelfCrown.position.set(0, 145, 0);
       shelfCrown.rotation.z = Math.PI * 0.5;
       shelfCrown.rotation.y = Math.PI * 0.5;
       shelfCrown.castShadow = true;
-      shelfGroup.add(shelfCrown);
+      this.shelfGroup.add(shelfCrown);
 
       [40, 82, 122].forEach((yPos) => {
         const shelfSlab = new THREE.Mesh(new THREE.BoxGeometry(58, 3, 28), matShelfWood);
         shelfSlab.position.set(0, yPos, 0);
         shelfSlab.receiveShadow = true;
-        shelfGroup.add(shelfSlab);
+        this.shelfGroup.add(shelfSlab);
       });
 
-      // Books on Shelf 2
+      // Books on Shelf 2 (Leaving open landing space for glasses at x = 0, z = 0)
       const bookColors = [PALETTE.blanketTerracotta, PALETTE.phantomTeal, PALETTE.cushionMustard, PALETTE.charSweater, 0x8C567A];
       [
         { x: -22, h: 25, w: 5.5, d: 19, rotZ: 0, c: bookColors[0] },
-        { x: -15, h: 21, w: 6.5, d: 20, rotZ: 0, c: bookColors[1] },
-        { x: -7,  h: 23, w: 5,   d: 18, rotZ: 0.17, c: bookColors[2] },
-        { x: 20,  h: 24, w: 5.5, d: 19, rotZ: 0, c: bookColors[3] },
-        { x: 13,  h: 20, w: 6.5, d: 17, rotZ: -0.12, c: bookColors[4] }
+        { x: -16, h: 21, w: 5.5, d: 20, rotZ: 0, c: bookColors[1] },
+        { x: 16,  h: 24, w: 5.5, d: 19, rotZ: 0, c: bookColors[3] },
+        { x: 22,  h: 20, w: 5.5, d: 17, rotZ: -0.12, c: bookColors[4] }
       ].forEach((b) => {
         const bMesh = new THREE.Mesh(new THREE.BoxGeometry(b.w, b.h, b.d), new THREE.MeshStandardMaterial({ color: b.c, roughness: 0.65 }));
         bMesh.position.set(b.x, 82 + b.h / 2, 0);
         bMesh.rotation.z = b.rotZ;
         bMesh.castShadow = true;
-        shelfGroup.add(bMesh);
+        this.shelfGroup.add(bMesh);
       });
 
       const vase = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 6.5, 17, 20), new THREE.MeshStandardMaterial({ color: PALETTE.rugBase, roughness: 0.42 }));
       vase.position.set(-13, 132, 0);
       vase.castShadow = true;
-      shelfGroup.add(vase);
+      this.shelfGroup.add(vase);
 
-      this.scene.add(shelfGroup);
+      // Ground Contact Shadow under bookshelf
+      const shelfShadow = new THREE.Mesh(
+        new THREE.PlaneGeometry(64, 34),
+        new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.42, depthWrite: false })
+      );
+      shelfShadow.rotation.x = -Math.PI * 0.5;
+      shelfShadow.position.set(0, 0.04, 0);
+      this.shelfGroup.add(shelfShadow);
 
-      // Potted Plant on floor
-      const plantGroup = new THREE.Group();
-      plantGroup.position.set(38, 0, -25);
-      const pot = new THREE.Mesh(new THREE.CylinderGeometry(8.5, 6.5, 14, 24), new THREE.MeshStandardMaterial({ color: PALETTE.plantPot, roughness: 0.7 }));
-      pot.position.y = 7;
-      pot.castShadow = true;
-      plantGroup.add(pot);
-
-      const leafMat = new THREE.MeshStandardMaterial({ color: PALETTE.plantGreen, roughness: 0.5, side: THREE.DoubleSide });
-      for (let l = 0; l < 5; l++) {
-        const leaf = new THREE.Mesh(new THREE.SphereGeometry(7, 16, 8), leafMat);
-        leaf.scale.set(0.7, 1.8, 0.15);
-        leaf.position.set(Math.cos(l * 1.25) * 4.5, 16 + l * 2.2, Math.sin(l * 1.25) * 4.5);
-        leaf.rotation.set(0.35 + l * 0.1, l * 1.25, 0.4);
-        leaf.castShadow = true;
-        plantGroup.add(leaf);
-      }
-      this.scene.add(plantGroup);
+      this.scene.add(this.shelfGroup);
     }
 
     // =========================================================================
-    // 4. SMARTPHONE PROP (Held in right hand, dynamic OLED canvas screen UI)
+    // 4. SMARTPHONE PROP (Held in hand, screen facing Dora, live OLED UI & glow)
     // =========================================================================
     buildSmartphone() {
       this.phone = new THREE.Group();
@@ -498,16 +590,18 @@
       this.phoneTexture = new THREE.CanvasTexture(this.phoneCanvas);
       this.phoneTexture.encoding = THREE.sRGBEncoding;
 
+      // Screen mesh facing -Z, so lookAt(doraHead) faces Dora's eyes directly!
       const screenMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(3.3, 7.0),
         new THREE.MeshBasicMaterial({ map: this.phoneTexture })
       );
-      screenMesh.position.z = 0.25;
+      screenMesh.position.z = -0.25;
+      screenMesh.rotation.y = Math.PI;
       this.phone.add(screenMesh);
 
-      // Subtle screen illumination glow casting light on Dora's face
-      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0, 22);
-      this.phoneScreenLight.position.set(0, 0, 1.2);
+      // Cyan screen light illuminating Dora's face from below
+      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0.2, 26);
+      this.phoneScreenLight.position.set(0, 0, -1.2);
       this.phone.add(this.phoneScreenLight);
 
       this.scene.add(this.phone);
@@ -534,7 +628,7 @@
       ctx.fillText('99%', 204, 28);
 
       // SMRITI Header
-      ctx.fillStyle = '#D76B45';
+      ctx.fillStyle = '#C95F3D';
       ctx.beginPath();
       ctx.arc(28, 62, 5, 0, Math.PI * 2);
       ctx.fill();
@@ -557,7 +651,7 @@
       ctx.stroke();
 
       if (state === 'IDLE' || state === 'NOTICE') {
-        ctx.fillStyle = 'rgba(104, 122, 66, 0.28)';
+        ctx.fillStyle = 'rgba(83, 97, 59, 0.35)';
         ctx.beginPath();
         ctx.roundRect(30, 126, 86, 22, 6);
         ctx.fill();
@@ -573,7 +667,7 @@
         ctx.font = '700 20px Georgia, serif';
         ctx.fillText('Reading glasses', 30, 210);
 
-        ctx.fillStyle = '#D76B45';
+        ctx.fillStyle = '#C95F3D';
         ctx.font = '600 13px sans-serif';
         ctx.fillText('Side table', 30, 238);
 
@@ -581,11 +675,11 @@
         ctx.font = '12px sans-serif';
         ctx.fillText('Anchored · 2:10 PM', 30, 264);
       } else if (state === 'SEARCH') {
-        ctx.fillStyle = 'rgba(215, 107, 69, 0.28)';
+        ctx.fillStyle = 'rgba(201, 95, 61, 0.35)';
         ctx.beginPath();
         ctx.roundRect(30, 126, 115, 22, 6);
         ctx.fill();
-        ctx.fillStyle = '#D76B45';
+        ctx.fillStyle = '#C95F3D';
         ctx.font = '700 10px sans-serif';
         ctx.fillText('DISPLACED', 45, 141);
 
@@ -599,11 +693,11 @@
 
         ctx.fillStyle = '#8E929B';
         ctx.font = '12px sans-serif';
-        ctx.fillText('Checking room memory...', 30, 252);
+        ctx.fillText('Scanning room memory...', 30, 252);
       } else if (state === 'SCAN') {
-        ctx.fillStyle = 'rgba(78, 156, 145, 0.3)';
+        ctx.fillStyle = 'rgba(77, 157, 145, 0.35)';
         ctx.beginPath();
-        ctx.roundRect(30, 126, 125, 22, 6);
+        ctx.roundRect(30, 126, 130, 22, 6);
         ctx.fill();
         ctx.fillStyle = '#5CE1D2';
         ctx.font = '700 10px sans-serif';
@@ -622,7 +716,7 @@
         ctx.fillStyle = '#5CE1D2';
         ctx.fillRect(30, 248, (w - 60) * 0.84, 6);
       } else if (state === 'FOUND' || state === 'RESOLVE') {
-        ctx.fillStyle = 'rgba(104, 122, 66, 0.35)';
+        ctx.fillStyle = 'rgba(83, 97, 59, 0.40)';
         ctx.beginPath();
         ctx.roundRect(30, 126, 100, 22, 6);
         ctx.fill();
@@ -634,7 +728,7 @@
         ctx.font = '700 19px Georgia, serif';
         ctx.fillText('Bookshelf Shelf 2', 30, 182);
 
-        ctx.fillStyle = '#D76B45';
+        ctx.fillStyle = '#C95F3D';
         ctx.font = '600 13px sans-serif';
         ctx.fillText('+240 cm displacement', 30, 212);
 
@@ -686,9 +780,8 @@
             }
           });
 
-          // 1. FIX THE NOSE BLACK SPOT ARTIFACT:
-          // In Object_4 (Head), vertices 1034-1075 had UV coordinates pointing to black texture border.
-          // Remap them directly to the smooth peach facial skin tone (0.3086, 0.6934) and nudge position.
+          // 1. FIX NOSE BLACK SPOT ARTIFACT:
+          // Remap vertices 1034-1075 on Object_4 to smooth peach facial skin tone (0.3086, 0.6934)
           const objHead = model.getObjectByName('Object_4');
           if (objHead && objHead.geometry) {
             const headGeo = objHead.geometry;
@@ -713,7 +806,7 @@
             }
           }
 
-          // 2. SETUP FORWARD KINEMATICS ARM ENGINE:
+          // 2. SETUP FORWARD KINEMATICS ARM RIGGING:
           const bodyMesh = model.getObjectByName('Object_2');
           if (bodyMesh && bodyMesh.geometry) {
             this.setupDoraBodyRig(bodyMesh);
@@ -724,8 +817,7 @@
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
 
-          // Scale Dora to ~96 units height (~30% of visible hero frame)
-          const targetHeight = 96;
+          const targetHeight = 96; // 96 units tall
           const scale = targetHeight / (size.y || 3.81);
           model.scale.set(scale, scale, scale);
           model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
@@ -751,17 +843,23 @@
             this.doraEyes = objEyes;
           }
 
+          // Ground Contact Shadow under Dora's feet
+          const feetShadow = new THREE.Mesh(
+            new THREE.PlaneGeometry(28, 20),
+            new THREE.MeshBasicMaterial({ color: 0x241710, transparent: true, opacity: 0.40, depthWrite: false })
+          );
+          feetShadow.rotation.x = -Math.PI * 0.5;
+          feetShadow.position.set(0, 0.04, 0);
+          this.character.add(feetShadow);
+
           this.character.add(model);
           this.doraLoaded = true;
         },
         undefined,
-        (err) => {
-          console.error('Error loading Dora GLB:', err);
-        }
+        (err) => console.error('Error loading Dora GLB:', err)
       );
     }
 
-    // Forward Kinematics Arm Rigging & Vertex Deformation
     setupDoraBodyRig(bodyMesh) {
       this.doraBodyMesh = bodyMesh;
       const geo = bodyMesh.geometry;
@@ -779,53 +877,58 @@
       const base = this.baseBodyPositions;
       const count = posAttr.count;
 
-      const smoothstep = (e0, e1, x) => {
-        const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
-        return t * t * (3 - 2 * t);
+      const pCfg = {
+        lShoulderRoll: -1.40,
+        lShoulderPitch: -0.15,
+        lShoulderYaw: 0.05,
+        lElbowBend: 0.28,
+        lWristFlex: 0.18,
+        rShoulderRoll: -1.02,
+        rShoulderPitch: -0.38,
+        rShoulderYaw: -0.15,
+        rElbowBend: 0.92,
+        rWristFlex: 0.32,
+        ...config
       };
+
+      const sRollL = pCfg.lShoulderRoll, sPitchL = pCfg.lShoulderPitch, sYawL = pCfg.lShoulderYaw, eBendL = pCfg.lElbowBend, wFlexL = pCfg.lWristFlex;
+      const sRollR = pCfg.rShoulderRoll, sPitchR = pCfg.rShoulderPitch, sYawR = pCfg.rShoulderYaw, eBendR = pCfg.rElbowBend, wFlexR = pCfg.rWristFlex;
+
+      const cosRollL = Math.cos(sRollL), sinRollL = Math.sin(sRollL);
+      const cosPitchL = Math.cos(sPitchL), sinPitchL = Math.sin(sPitchL);
+      const cosYawL = Math.cos(sYawL), sinYawL = Math.sin(sYawL);
+      const sinEbL = Math.sin(eBendL);
+      const sinWfL = Math.sin(wFlexL);
+
+      const cosRollR = Math.cos(-sRollR), sinRollR = Math.sin(-sRollR);
+      const cosPitchR = Math.cos(sPitchR), sinPitchR = Math.sin(sPitchR);
+      const cosYawR = Math.cos(sYawR), sinYawR = Math.sin(sYawR);
+      const cosEbR = Math.cos(eBendR), sinEbR = Math.sin(eBendR);
+      const sinWfR = Math.sin(wFlexR);
 
       const sxL = 0.48, syL = -0.02, szL = 2.08;
       const sxR = -0.48, syR = -0.02, szR = 2.08;
 
-      const lSR = config.lShoulderRoll ?? -1.40;
-      const lSP = config.lShoulderPitch ?? -0.15;
-      const lSY = config.lShoulderYaw ?? 0.05;
-      const lEB = config.lElbowBend ?? 0.30;
-      const lWF = config.lWristFlex ?? 0.18;
-
-      const rSR = config.rShoulderRoll ?? -1.02;
-      const rSP = config.rShoulderPitch ?? -0.38;
-      const rSY = config.rShoulderYaw ?? -0.15;
-      const rEB = config.rElbowBend ?? 0.92;
-      const rWF = config.rWristFlex ?? 0.32;
-
-      const cosRollL = Math.cos(lSR), sinRollL = Math.sin(lSR);
-      const cosPitchL = Math.cos(lSP), sinPitchL = Math.sin(lSP);
-      const cosYawL = Math.cos(lSY), sinYawL = Math.sin(lSY);
-      const sinEbL = Math.sin(lEB), cosEbL = Math.cos(lEB);
-      const sinWfL = Math.sin(lWF);
-
-      const cosRollR = Math.cos(-rSR), sinRollR = Math.sin(-rSR);
-      const cosPitchR = Math.cos(rSP), sinPitchR = Math.sin(rSP);
-      const cosYawR = Math.cos(-rSY), sinYawR = Math.sin(-rSY);
-      const sinEbR = Math.sin(rEB), cosEbR = Math.cos(rEB);
-      const sinWfR = Math.sin(rWF);
-
-      let rHandX = -0.40, rHandY = -0.45, rHandZ = 1.45;
-      let lHandX = 0.45, lHandY = -0.20, lHandZ = 1.15;
+      let rHandX = -1.60, rHandY = 0, rHandZ = 2.08;
 
       for (let i = 0; i < count; i++) {
-        const i3 = i * 3;
-        const ox = base[i3];
-        const oy = base[i3 + 1];
-        const oz = base[i3 + 2];
+        const ox = base[i * 3];
+        const oy = base[i * 3 + 1];
+        const oz = base[i * 3 + 2];
+        const absX = Math.abs(ox);
 
-        // Left arm
-        if (ox > 0.40 && oz > 0.70) {
-          const wSh = smoothstep(0.42, 0.58, ox);
-          const wEl = smoothstep(0.88, 1.06, ox);
-          const wWr = smoothstep(1.30, 1.48, ox);
+        if (absX < 0.38) {
+          posAttr.setXYZ(i, ox, oy, oz);
+          continue;
+        }
 
+        const tArm = Math.min(Math.max((absX - 0.40) / 0.28, 0), 1);
+        const wSh = tArm * tArm * (3 - 2 * tArm);
+        const wEl = Math.min(Math.max((absX - 0.96) / 0.25, 0), 1);
+        const wWr = Math.min(Math.max((absX - 1.36) / 0.18, 0), 1);
+
+        if (ox > 0) {
+          // Left Arm (Hanging naturally beside hip)
           const dx = ox - sxL;
           const dy = oy - syL;
           const dz = oz - szL;
@@ -842,36 +945,18 @@
           let pz = szL + rz;
 
           if (wEl > 0) {
-            const distEl = ox - 0.96;
-            py -= distEl * sinEbL * 0.92 * wEl;
-            pz += distEl * (1.0 - cosEbL) * 0.42 * wEl;
-            px -= distEl * sinEbL * 0.22 * wEl;
+            const distEl = absX - 0.96;
+            py -= distEl * sinEbL * 0.85 * wEl;
+            pz -= distEl * 0.25 * wEl;
           }
-
           if (wWr > 0) {
-            const distWr = ox - 1.36;
-            py -= distWr * sinWfL * 0.55 * wWr;
-            px -= distWr * 0.15 * wWr;
+            const distWr = absX - 1.36;
+            py -= distWr * sinWfL * 0.4 * wWr;
           }
 
-          const fx = ox * (1 - wSh) + px * wSh;
-          const fy = oy * (1 - wSh) + py * wSh;
-          const fz = oz * (1 - wSh) + pz * wSh;
-          posAttr.setXYZ(i, fx, fy, fz);
-
-          if (ox > 1.50) {
-            lHandX = fx;
-            lHandY = fy;
-            lHandZ = fz;
-          }
-        }
-        // Right arm
-        else if (ox < -0.40 && oz > 0.70) {
-          const absX = -ox;
-          const wSh = smoothstep(0.42, 0.58, absX);
-          const wEl = smoothstep(0.88, 1.06, absX);
-          const wWr = smoothstep(1.30, 1.48, absX);
-
+          posAttr.setXYZ(i, ox * (1 - wSh) + px * wSh, oy * (1 - wSh) + py * wSh, oz * (1 - wSh) + pz * wSh);
+        } else {
+          // Right Arm (Holding phone / reaching for glasses)
           const dx = ox - sxR;
           const dy = oy - syR;
           const dz = oz - szR;
@@ -890,7 +975,7 @@
           if (wEl > 0) {
             const distEl = absX - 0.96;
             py -= distEl * sinEbR * 0.92 * wEl;
-            pz += distEl * (1.0 - cosEbR) * 0.42 * wEl;
+            pz -= distEl * (1.0 - cosEbR) * 0.42 * wEl;
             px += distEl * sinEbR * 0.22 * wEl;
           }
 
@@ -918,14 +1003,12 @@
 
       // Transform hand coordinates to world space for phone/glasses attachment
       if (this.doraModel) {
-        // Dora GLTF has a 90 deg rotation on Node 0; convert model coordinates (X, Y, Z) to world
         const scale = this.doraModel.scale.x;
         const charWorld = this.character.position;
         const charRotY = this.character.rotation.y;
 
-        // Model space to character group local space
         const lx = rHandX * scale + this.doraModel.position.x;
-        const ly = rHandZ * scale + this.doraModel.position.y; // Z is up in model space
+        const ly = rHandZ * scale + this.doraModel.position.y;
         const lz = -rHandY * scale + this.doraModel.position.z;
 
         const cosY = Math.cos(charRotY);
@@ -939,19 +1022,19 @@
     }
 
     // =========================================================================
-    // 6. HERO PROPS (Reading Glasses, Contact Shadows, Spatial Trail, Ghost)
+    // 6. HERO PROPS & ZERO-CLIPPING PHYSICAL PLACEMENT ENGINE
     // =========================================================================
     buildHeroProps() {
       // 1. Reading Glasses
       this.glasses = new THREE.Group();
       const matFrame = new THREE.MeshStandardMaterial({
         color: PALETTE.glassesFrame,
-        roughness: 0.32,
-        metalness: 0.25
+        roughness: 0.35,
+        metalness: 0.20
       });
       const matBridge = new THREE.MeshStandardMaterial({
         color: PALETTE.glassesBridge,
-        roughness: 0.2,
+        roughness: 0.25,
         metalness: 0.85
       });
       const matLens = new THREE.MeshPhysicalMaterial({
@@ -999,8 +1082,6 @@
       this.glasses.add(templeR);
 
       this.glasses.scale.set(1.25, 1.25, 1.25);
-      this.glasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.glasses.rotation.set(0, 0.28, 0);
       this.scene.add(this.glasses);
 
       // 2. Physical Soft Contact Shadows (Zero Penetration, Zero Floating)
@@ -1012,7 +1093,6 @@
       });
       this.tableContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 11), shadowMatTable);
       this.tableContactShadow.rotation.x = -Math.PI * 0.5;
-      this.tableContactShadow.position.set(GLASSES_ORIGIN.x, 51.65, GLASSES_ORIGIN.z);
       this.scene.add(this.tableContactShadow);
 
       const shadowMatShelf = new THREE.MeshBasicMaterial({
@@ -1023,22 +1103,9 @@
       });
       this.shelfContactShadow = new THREE.Mesh(new THREE.PlaneGeometry(16, 11), shadowMatShelf);
       this.shelfContactShadow.rotation.x = -Math.PI * 0.5;
-      this.shelfContactShadow.position.set(GLASSES_DEST.x, 83.55, GLASSES_DEST.z);
       this.scene.add(this.shelfContactShadow);
 
-      // 3. Side Table Personal Objects
-      const mug = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 2.8, 6.5, 24), new THREE.MeshStandardMaterial({ color: PALETTE.blanketTerracotta, roughness: 0.62 }));
-      mug.position.set(-84, 55, -2);
-      mug.castShadow = true;
-      this.scene.add(mug);
-
-      const medBox = new THREE.Mesh(new THREE.BoxGeometry(9, 4.5, 6), new THREE.MeshStandardMaterial({ color: 0xFDFBEE, roughness: 0.55 }));
-      medBox.position.set(-64, 54, -4);
-      medBox.rotation.y = -0.22;
-      medBox.castShadow = true;
-      this.scene.add(medBox);
-
-      // 4. PHANTOM GHOST GLASSES (26% Translucent Memory Imprint at Exact Origin)
+      // 3. PHANTOM GHOST GLASSES (26% Translucent Memory Imprint at Exact Origin)
       this.ghostGlasses = new THREE.Group();
       const matGhost = new THREE.MeshPhysicalMaterial({
         color: PALETTE.phantomTeal,
@@ -1064,71 +1131,137 @@
       gBridge.position.y = 0.5;
       this.ghostGlasses.add(gBridge);
 
-      const gTempL = new THREE.Mesh(templeGeo, matGhost);
-      gTempL.position.set(-8.4, 0, -5.2);
-      gTempL.rotation.x = Math.PI * 0.5;
-      this.ghostGlasses.add(gTempL);
+      const gTempleL = new THREE.Mesh(templeGeo, matGhost);
+      gTempleL.position.set(-8.4, 0, -5.2);
+      gTempleL.rotation.x = Math.PI * 0.5;
+      this.ghostGlasses.add(gTempleL);
 
-      const gTempR = new THREE.Mesh(templeGeo, matGhost);
-      gTempR.position.set(8.4, 0, -5.2);
-      gTempR.rotation.x = Math.PI * 0.5;
-      this.ghostGlasses.add(gTempR);
+      const gTempleR = new THREE.Mesh(templeGeo, matGhost);
+      gTempleR.position.set(8.4, 0, -5.2);
+      gTempleR.rotation.x = Math.PI * 0.5;
+      this.ghostGlasses.add(gTempleR);
 
       this.ghostGlasses.scale.set(1.25, 1.25, 1.25);
-      this.ghostGlasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.ghostGlasses.rotation.set(0, 0.28, 0);
       this.ghostGlasses.visible = false;
       this.scene.add(this.ghostGlasses);
 
-      // 5. SPATIAL SCAN PLANE & ANCHOR RINGS
-      this.spatialScanPlane = new THREE.Mesh(
-        new THREE.PlaneGeometry(240, 160),
-        new THREE.MeshBasicMaterial({
-          color: PALETTE.phantomTeal,
-          transparent: true,
-          opacity: 0.18,
-          side: THREE.DoubleSide,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        })
-      );
-      this.spatialScanPlane.rotation.y = Math.PI * 0.15;
-      this.spatialScanPlane.position.set(-80, 80, -20);
-      this.spatialScanPlane.visible = false;
-      this.scene.add(this.spatialScanPlane);
-
-      const ringGeo = new THREE.RingGeometry(11, 13.5, 32);
-      const ringMatGhost = new THREE.MeshBasicMaterial({ color: PALETTE.phantomTeal, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
-      this.highlightGhost = new THREE.Mesh(ringGeo, ringMatGhost);
-      this.highlightGhost.rotation.x = -Math.PI * 0.5;
-      this.highlightGhost.position.set(GLASSES_ORIGIN.x, 51.7, GLASSES_ORIGIN.z);
+      // 4. Spatial Highlight Rings & Crosshairs
+      this.highlightGhost = this.createSpatialRing(PALETTE.phantomTeal);
       this.highlightGhost.visible = false;
       this.scene.add(this.highlightGhost);
 
-      const ringMatMoved = new THREE.MeshBasicMaterial({ color: PALETTE.confirmGreen, transparent: true, opacity: 0.65, side: THREE.DoubleSide });
-      this.highlightMoved = new THREE.Mesh(ringGeo, ringMatMoved);
-      this.highlightMoved.rotation.x = -Math.PI * 0.5;
-      this.highlightMoved.position.set(GLASSES_DEST.x, 83.6, GLASSES_DEST.z);
+      this.highlightMoved = this.createSpatialRing(PALETTE.movementAmber);
       this.highlightMoved.visible = false;
       this.scene.add(this.highlightMoved);
 
-      // 6. LUMINOUS SPATIAL TRAIL (Side Table -> Bookshelf)
-      const curve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y + 2, GLASSES_ORIGIN.z),
-        new THREE.Vector3(-25, 96, -20),
-        new THREE.Vector3(35, 112, -45),
-        new THREE.Vector3(GLASSES_DEST.x, GLASSES_DEST.y + 2, GLASSES_DEST.z)
-      ]);
-      const tubeGeo = new THREE.TubeGeometry(curve, 64, 0.7, 8, false);
-      const tubeMat = new THREE.MeshBasicMaterial({
-        color: PALETTE.movementAmber,
+      // 5. Translucent Sweeping Scan Plane
+      const scanGeo = new THREE.PlaneGeometry(3, 140);
+      const scanMat = new THREE.MeshBasicMaterial({
+        color: PALETTE.phantomTeal,
         transparent: true,
-        opacity: 0.55,
-        blending: THREE.AdditiveBlending
+        opacity: 0.22,
+        side: THREE.DoubleSide,
+        depthWrite: false
       });
-      this.spatialTrail = new THREE.Mesh(tubeGeo, tubeMat);
+      this.spatialScanPlane = new THREE.Mesh(scanGeo, scanMat);
+      this.spatialScanPlane.rotation.y = Math.PI * 0.5;
+      this.spatialScanPlane.position.set(0, 60, 0);
+      this.spatialScanPlane.visible = false;
+      this.scene.add(this.spatialScanPlane);
+
+      // 6. Spatial Trajectory Trail
+      this.spatialTrail = new THREE.Mesh(
+        new THREE.BufferGeometry(),
+        new THREE.MeshBasicMaterial({
+          color: PALETTE.movementAmber,
+          transparent: true,
+          opacity: 0.55,
+          blending: THREE.AdditiveBlending
+        })
+      );
       this.spatialTrail.visible = false;
       this.scene.add(this.spatialTrail);
+
+      this.updateGlassesPlacement();
+    }
+
+    createSpatialRing(color) {
+      const g = new THREE.Group();
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(8, 9.2, 32),
+        new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, transparent: true, opacity: 0.72 })
+      );
+      ring.rotation.x = -Math.PI * 0.5;
+      g.add(ring);
+
+      const crossGeo = new THREE.PlaneGeometry(1.2, 19);
+      const crossMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45 });
+      const barH = new THREE.Mesh(crossGeo, crossMat);
+      barH.rotation.x = -Math.PI * 0.5;
+      g.add(barH);
+      const barV = new THREE.Mesh(crossGeo, crossMat);
+      barV.rotation.x = -Math.PI * 0.5;
+      barV.rotation.z = Math.PI * 0.5;
+      g.add(barV);
+
+      return g;
+    }
+
+    // Helper: Exact surface height calculation (Zero-penetration logic)
+    calculateContactY(object, surfaceY, offset = 0.05) {
+      object.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(object);
+      const bottomRel = box.min.y - object.position.y;
+      return surfaceY - bottomRel + offset;
+    }
+
+    updateGlassesPlacement() {
+      if (!this.glasses) return;
+
+      const tableSurfaceY = this.tableTopSurfaceY || 48.0;
+      const shelf2SurfaceY = 83.5;
+
+      const tableContactY = this.calculateContactY(this.glasses, tableSurfaceY);
+      const shelfContactY = this.calculateContactY(this.glasses, shelf2SurfaceY);
+
+      this.glassesTablePos.set(-78, tableContactY, 8);
+      this.glassesShelfPos.set(104, shelfContactY, -85);
+
+      if (this.tableContactShadow) {
+        this.tableContactShadow.position.set(this.glassesTablePos.x, tableSurfaceY + 0.08, this.glassesTablePos.z);
+      }
+      if (this.shelfContactShadow) {
+        this.shelfContactShadow.position.set(this.glassesShelfPos.x, shelf2SurfaceY + 0.08, this.glassesShelfPos.z);
+      }
+
+      if (this.ghostGlasses) {
+        this.ghostGlasses.position.copy(this.glassesTablePos);
+        this.ghostGlasses.rotation.copy(this.glassesTableRot);
+        this.ghostGlasses.scale.copy(this.glasses.scale);
+      }
+
+      if (this.highlightGhost) {
+        this.highlightGhost.position.set(this.glassesTablePos.x, tableSurfaceY + 0.15, this.glassesTablePos.z);
+      }
+      if (this.highlightMoved) {
+        this.highlightMoved.position.set(this.glassesShelfPos.x, shelf2SurfaceY + 0.15, this.glassesShelfPos.z);
+      }
+
+      // Rebuild curved spatial trajectory
+      if (this.spatialTrail) {
+        const curve = new THREE.CatmullRomCurve3([
+          new THREE.Vector3(this.glassesTablePos.x, this.glassesTablePos.y + 1, this.glassesTablePos.z),
+          new THREE.Vector3((this.glassesTablePos.x + this.glassesShelfPos.x) * 0.45, 115, (this.glassesTablePos.z + this.glassesShelfPos.z) * 0.5),
+          new THREE.Vector3(this.glassesShelfPos.x, this.glassesShelfPos.y + 1, this.glassesShelfPos.z)
+        ]);
+        if (this.spatialTrail.geometry) this.spatialTrail.geometry.dispose();
+        this.spatialTrail.geometry = new THREE.TubeGeometry(curve, 64, 0.7, 8, false);
+      }
+
+      if (!this.isStoryActive || this.glassesState === 'GLASSES_TABLE') {
+        this.glasses.position.copy(this.glassesTablePos);
+        this.glasses.rotation.copy(this.glassesTableRot);
+      }
     }
 
     // =========================================================================
@@ -1136,10 +1269,20 @@
     // =========================================================================
     setupUIListeners() {
       if (this.ui.cta) {
-        this.ui.cta.addEventListener('click', () => this.startStory());
+        this.ui.cta.addEventListener('click', () => {
+          if (this.ui.cta.classList.contains('replay') || this.currentStoryPhase === 'RESOLVE') {
+            this.resetStory();
+            this.startStory();
+          } else if (!this.isStoryActive) {
+            this.startStory();
+          }
+        });
       }
       if (this.ui.replay) {
-        this.ui.replay.addEventListener('click', () => this.resetStory());
+        this.ui.replay.addEventListener('click', () => {
+          this.resetStory();
+          this.startStory();
+        });
       }
     }
 
@@ -1147,19 +1290,30 @@
       if (this.isStoryActive) return;
       this.isStoryActive = true;
       this.storyStartTime = performance.now();
+      this.glassesState = 'GLASSES_TABLE';
       this.glassesPickedUp = false;
 
       if (this.ui.cta) {
+        this.ui.cta.classList.remove('complete', 'replay');
         this.ui.cta.classList.add('playing');
-        this.ui.cta.innerHTML = 'Story playing... <span class="action-arrow">→</span>';
+        if (this.ui.ctaLabel) {
+          this.ui.ctaLabel.textContent = 'Playing…';
+        } else {
+          this.ui.cta.innerHTML = 'Playing… <span class="action-arrow">→</span>';
+        }
       }
       if (this.ui.progress) this.ui.progress.classList.add('visible');
-      if (this.ui.replay) this.ui.replay.classList.remove('visible');
+      if (this.ui.replay) {
+        this.ui.replay.classList.remove('visible');
+        this.ui.replay.hidden = true;
+      }
     }
 
     resetStory() {
       this.isStoryActive = false;
+      this.glassesState = 'GLASSES_TABLE';
       this.glassesPickedUp = false;
+      this.currentStoryPhase = 'IDLE';
 
       this.ghostGlasses.visible = false;
       this.highlightGhost.visible = false;
@@ -1167,10 +1321,10 @@
       this.spatialTrail.visible = false;
       this.spatialScanPlane.visible = false;
 
-      this.glasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.glasses.rotation.set(0, 0.28, 0);
-      this.tableContactShadow.material.opacity = 0.42;
-      this.shelfContactShadow.material.opacity = 0.0;
+      this.glasses.position.copy(this.glassesTablePos);
+      this.glasses.rotation.copy(this.glassesTableRot);
+      if (this.tableContactShadow) this.tableContactShadow.material.opacity = 0.42;
+      if (this.shelfContactShadow) this.shelfContactShadow.material.opacity = 0.0;
 
       this.charPos.copy(CHAR_ORIGIN);
       this.charRot.set(0, 0.22, 0);
@@ -1182,13 +1336,20 @@
       this.drawPhoneScreen('IDLE', 'Anchored');
 
       if (this.ui.cta) {
-        this.ui.cta.classList.remove('playing');
-        this.ui.cta.innerHTML = 'See how it works <span class="action-arrow">→</span>';
+        this.ui.cta.classList.remove('playing', 'complete', 'replay');
+        if (this.ui.ctaLabel) {
+          this.ui.ctaLabel.textContent = 'See how it works';
+        } else {
+          this.ui.cta.innerHTML = 'See how it works <span class="action-arrow">→</span>';
+        }
       }
       if (this.ui.narration) this.ui.narration.classList.remove('visible');
       if (this.ui.note) this.ui.note.classList.remove('visible');
       if (this.ui.progress) this.ui.progress.classList.remove('visible');
-      if (this.ui.replay) this.ui.replay.classList.remove('visible');
+      if (this.ui.replay) {
+        this.ui.replay.classList.remove('visible');
+        this.ui.replay.hidden = true;
+      }
     }
 
     easeInOutCubic(x) {
@@ -1202,18 +1363,17 @@
       requestAnimationFrame(this.animate);
       const now = timestamp || performance.now();
 
-      // Mouse Parallax Easing
-      this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
-      this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
+      // Mouse Lerp
+      this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.045;
+      this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.045;
 
-      // 1. NATURAL RANDOMIZED BLINKING (Cartoon eyelid animation)
+      // Natural Irregular Blinking Loop
       if (this.doraEyes) {
         if (!this.isBlinking && now - this.lastBlinkTime > this.nextBlinkInterval) {
           this.isBlinking = true;
           this.lastBlinkTime = now;
-          this.nextBlinkInterval = 2800 + Math.random() * 2600;
+          this.nextBlinkInterval = 2400 + Math.random() * 3800; // Irregular cadence
         }
-
         if (this.isBlinking) {
           const blinkProgress = (now - this.lastBlinkTime) / this.blinkDuration;
           if (blinkProgress >= 1.0) {
@@ -1231,13 +1391,14 @@
       // ================= IDLE STATE =================
       if (!this.isStoryActive) {
         this.currentStoryPhase = 'IDLE';
+        this.glassesState = 'GLASSES_TABLE';
         const t = (now % 16000) / 1000;
 
-        // Diaphragm breathing & slight weight shifts
+        // Subtle breathing & weight shifts
         const breath = Math.sin(now * 0.0022) * 0.42;
         this.charPos.y = breath;
 
-        // Poses: natural casual posture (left arm down beside hip, right arm holding phone)
+        // Asymmetric casual posture (left arm hanging down beside hip, right arm holding phone)
         const armPose = {
           lShoulderRoll: -1.40,
           lShoulderPitch: -0.15 + Math.sin(now * 0.0018) * 0.03,
@@ -1252,21 +1413,17 @@
         };
 
         if (t < 4.5) {
-          // Relaxed forward gaze
           this.headRot.set(0.02, 0.04 + Math.sin(now * 0.001) * 0.03, 0);
           this.charRot.y = 0.22 + Math.sin(now * 0.0008) * 0.02;
         } else if (t < 8.0) {
-          // Glance at reading glasses on side table
           const f = this.easeInOutCubic(Math.min((t - 4.5) / 1.2, 1));
           this.headRot.set(0.12 * f, -0.42 * f, -0.04 * f);
           this.charRot.y = 0.22 - 0.22 * f;
         } else if (t < 11.5) {
-          // Glance back forward
           const f = this.easeInOutCubic(Math.min((t - 8.0) / 1.2, 1));
           this.headRot.set(0.12 * (1 - f), -0.42 * (1 - f) + 0.04 * f, 0);
           this.charRot.y = 0.0 + 0.22 * f;
         } else {
-          // Gentle posture pause
           this.headRot.set(0.04, 0.12, 0);
           this.charRot.y = 0.22;
         }
@@ -1275,11 +1432,12 @@
 
         // Position phone casually in right hand
         if (this.phone) {
-          this.phone.position.set(this.rightHandWorldPos.x - 0.5, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 1.4);
-          this.phone.rotation.set(-0.35, 0.22, -0.15);
+          this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
+          this.phone.rotation.set(-0.25, 0.15, -0.1);
           if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.25;
         }
 
+        // Camera HOME
         if (isMobile) {
           this.targetCamPos.set(10, 115, 340);
           this.targetCamLook.set(4, 58, -15);
@@ -1304,6 +1462,7 @@
         // -------------------------------------------------------------
         if (elapsed < 2.8) {
           this.currentStoryPhase = 'NOTICE';
+          this.glassesState = 'GLASSES_TABLE';
           const p = this.easeInOutCubic(Math.min(elapsed / 1.8, 1));
 
           if (!isMobile) {
@@ -1325,8 +1484,8 @@
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.5, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 1.4);
-            this.phone.rotation.set(-0.35, 0.22, -0.15);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
+            this.phone.rotation.set(-0.25, 0.15, -0.1);
           }
 
           if (this.ui.narration && p > 0.3) {
@@ -1338,12 +1497,13 @@
 
         // -------------------------------------------------------------
         // STEP 2 — LOOKS AWAY & GLASSES PHYSICAL FLIGHT (2.8s to 6.2s)
-        // Dora looks away; glasses physically arc to bookshelf with settling
+        // Dora looks away; glasses physically travel to Bookshelf Shelf 2
         // -------------------------------------------------------------
         else if (elapsed < 6.2) {
           this.currentStoryPhase = 'TRANSIT';
-          this.headRot.set(-0.04, 0.35, 0); // Looks away toward right window
-          this.charRot.y = 0.15;
+          const pLookAway = this.easeInOutCubic(Math.min((elapsed - 2.8) / 1.2, 1));
+          this.headRot.set(-0.06 * pLookAway, 0.45 * pLookAway, 0.08 * pLookAway);
+          this.charRot.y = -0.10 + 0.38 * pLookAway;
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.TRANSIT.pos);
@@ -1353,13 +1513,14 @@
 
           const flight = (elapsed - 3.2) / 2.2;
           if (flight >= 0 && flight <= 1.0) {
+            this.glassesState = 'GLASSES_MOVING';
             const p = this.easeInOutCubic(flight);
             const arcY = Math.sin(p * Math.PI) * 36;
 
             this.glasses.position.set(
-              GLASSES_ORIGIN.x + (GLASSES_DEST.x - GLASSES_ORIGIN.x) * p,
-              GLASSES_ORIGIN.y + (GLASSES_DEST.y - GLASSES_ORIGIN.y) * p + arcY,
-              GLASSES_ORIGIN.z + (GLASSES_DEST.z - GLASSES_ORIGIN.z) * p
+              this.glassesTablePos.x + (this.glassesShelfPos.x - this.glassesTablePos.x) * p,
+              this.glassesTablePos.y + (this.glassesShelfPos.y - this.glassesTablePos.y) * p + arcY,
+              this.glassesTablePos.z + (this.glassesShelfPos.z - this.glassesTablePos.z) * p
             );
             this.glasses.rotation.set(0.15 * Math.sin(p * Math.PI), 0.28 + p * Math.PI * 0.85, 0.1 * Math.sin(p * Math.PI));
 
@@ -1368,9 +1529,10 @@
             this.shelfContactShadow.material.opacity = Math.max(0, 0.42 * ((p - 0.5) * 2));
           } else if (flight > 1.0) {
             // Damped harmonic settling bounce on shelf
+            this.glassesState = 'GLASSES_SHELF';
             const settleT = (flight - 1.0) / 0.25;
             const bounce = Math.sin(settleT * Math.PI * 3) * Math.exp(-settleT * 4) * 0.8;
-            this.glasses.position.set(GLASSES_DEST.x, GLASSES_DEST.y + Math.max(0, bounce), GLASSES_DEST.z);
+            this.glasses.position.set(this.glassesShelfPos.x, this.glassesShelfPos.y + Math.max(0, bounce), this.glassesShelfPos.z);
             this.tableContactShadow.material.opacity = 0;
             this.shelfContactShadow.material.opacity = 0.42;
           }
@@ -1385,8 +1547,8 @@
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.5, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 1.4);
-            this.phone.rotation.set(-0.35, 0.22, -0.15);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
+            this.phone.rotation.set(-0.25, 0.15, -0.1);
           }
         }
 
@@ -1396,7 +1558,7 @@
         // -------------------------------------------------------------
         else if (elapsed < 9.8) {
           this.currentStoryPhase = 'SEARCH';
-          this.glasses.position.set(GLASSES_DEST.x, GLASSES_DEST.y, GLASSES_DEST.z);
+          this.glassesState = 'GLASSES_SHELF';
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.SEARCH.pos);
@@ -1405,7 +1567,6 @@
           }
 
           if (elapsed < 7.6) {
-            // Realizes glasses missing from table
             const p = this.easeInOutCubic(Math.min((elapsed - 6.2) / 1.0, 1));
             this.headRot.set(0.24 * p, -0.55 * p, -0.22 * p);
             this.charRot.y = -0.18 * p;
@@ -1419,7 +1580,6 @@
               rElbowBend: 0.95
             });
           } else {
-            // Questioning searching shrug (arms gesture slightly outward)
             const scanW = Math.sin((elapsed - 7.6) * 3.8);
             this.headRot.set(0.20, -0.30 + scanW * 0.35, -0.15);
 
@@ -1434,8 +1594,8 @@
           }
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.4, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 1.4);
-            this.phone.rotation.set(-0.4, 0.2, -0.15);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.9, this.rightHandWorldPos.z + 0.7);
+            this.phone.rotation.set(-0.35, 0.2, -0.15);
           }
 
           this.drawPhoneScreen('SEARCH', 'Missing');
@@ -1452,6 +1612,7 @@
         // -------------------------------------------------------------
         else if (elapsed < 13.5) {
           this.currentStoryPhase = 'PHONE';
+          this.glassesState = 'GLASSES_SHELF';
           const p = this.easeInOutCubic(Math.min((elapsed - 9.8) / 1.2, 1));
 
           if (!isMobile) {
@@ -1461,30 +1622,31 @@
           }
 
           // Dora tilts head downward directly toward phone screen
-          this.headRot.set(0.38 * p, -0.15 * p, 0);
-          this.charRot.y = 0.05 * p;
+          this.headRot.set(0.38 * p, -0.18 * p, 0);
+          this.charRot.y = 0.08 * p;
 
-          // Right arm raises phone to chest/chin level; left arm supports or relaxes
+          // Right arm raises phone to chest/chin level
           this.updateDoraArms({
             lShoulderRoll: -1.35,
             lShoulderPitch: -0.18,
             lElbowBend: 0.38,
             rShoulderRoll: -0.55 * p + -1.02 * (1 - p),
-            rShoulderPitch: -0.78 * p + -0.38 * (1 - p),
+            rShoulderPitch: -0.82 * p + -0.38 * (1 - p),
             rShoulderYaw: -0.25 * p,
-            rElbowBend: 1.38 * p + 0.92 * (1 - p),
-            rWristFlex: 0.45 * p
+            rElbowBend: 1.42 * p + 0.92 * (1 - p),
+            rWristFlex: 0.40 * p
           });
 
-          // Phone screen faces Dora's face
+          // Phone position and orientation facing Dora's face
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.5, this.rightHandWorldPos.z + 1.0);
-            this.phone.rotation.set(-0.75 * p, 0.25, -0.1);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 0.8);
+            const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
+            this.phone.lookAt(headTarget);
           }
 
           // Screen light illuminates Dora's face
           if (this.phoneScreenLight) {
-            this.phoneScreenLight.intensity = 0.85 * p;
+            this.phoneScreenLight.intensity = 0.95 * p;
           }
 
           this.drawPhoneScreen('SCAN', '84%');
@@ -1501,6 +1663,7 @@
         // -------------------------------------------------------------
         else if (elapsed < 17.0) {
           this.currentStoryPhase = 'PHANTOM';
+          this.glassesState = 'GLASSES_SHELF';
           const p = (elapsed - 13.5) / 3.5;
 
           if (!isMobile) {
@@ -1514,7 +1677,7 @@
 
           // Translucent scan plane sweeps across room
           this.spatialScanPlane.visible = true;
-          this.spatialScanPlane.position.x = -90 + p * 210;
+          this.spatialScanPlane.position.x = -95 + p * 215;
 
           // Ghost of glasses fades in at original side table position
           this.ghostGlasses.visible = true;
@@ -1539,8 +1702,9 @@
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.4, this.rightHandWorldPos.z + 1.2);
-            this.phone.rotation.set(-0.6, 0.25, -0.1);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 0.8);
+            const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
+            this.phone.lookAt(headTarget);
           }
 
           this.drawPhoneScreen('FOUND', 'Bookshelf');
@@ -1552,12 +1716,14 @@
         }
 
         // -------------------------------------------------------------
-        // STEP 6 — FOLLOW MEMORY & WALK TO BOOKSHELF (17.0s to 20.5s)
-        // Dora walks across oak floor with weight shifting & arm swing
+        // STEP 6 — REAL WALK TO BOOKSHELF (17.0s to 20.5s)
+        // Dora turns toward bookshelf and physically translates across the room!
         // -------------------------------------------------------------
         else if (elapsed < 20.5) {
           this.currentStoryPhase = 'WALK';
-          const p = this.easeInOutCubic(Math.min((elapsed - 17.0) / 3.0, 1));
+          this.glassesState = 'GLASSES_SHELF';
+          const walkDuration = 3.5;
+          const p = this.easeInOutCubic(Math.min((elapsed - 17.0) / walkDuration, 1.0));
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.REVEAL.pos);
@@ -1565,21 +1731,27 @@
             this.targetFov = CAM_PRESETS.REVEAL.fov;
           }
 
-          // Dora turns and steps toward bookshelf
-          this.charRot.y = 0.52;
-          this.headRot.set(0.06, 0.52, 0); // Looking at bookshelf
+          // Direction of travel from CHAR_ORIGIN to DORA_SHELF_POS
+          // Vector (74, 0, -76) -> Heading angle ~2.37 rad
+          const walkHeading = 2.37;
+          const settleHeading = 0.35; // Face bookshelf upon arrival
+          this.charRot.y = p < 0.88 ? walkHeading : (walkHeading * (1 - (p - 0.88) / 0.12) + settleHeading * ((p - 0.88) / 0.12));
 
-          this.charPos.x = CHAR_ORIGIN.x + 48 * p;
-          this.charPos.z = CHAR_ORIGIN.z - 38 * p;
+          // Physical root translation through the room
+          this.charPos.x = CHAR_ORIGIN.x + (DORA_SHELF_POS.x - CHAR_ORIGIN.x) * p;
+          this.charPos.z = CHAR_ORIGIN.z + (DORA_SHELF_POS.z - CHAR_ORIGIN.z) * p;
 
           // Walking cadence & weight transfer
           const walkPhase = (elapsed - 17.0) * 7.5;
-          const isWalking = p < 0.95;
+          const isWalking = p < 0.94;
           this.charPos.y = isWalking ? Math.abs(Math.sin(walkPhase)) * 1.6 : 0;
           this.charRot.z = isWalking ? Math.sin(walkPhase) * 0.035 : 0;
 
-          // Natural arm swing during walking
-          const swing = isWalking ? Math.sin(walkPhase) * 0.22 : 0;
+          // Head looks toward the bookshelf destination
+          this.headRot.set(0.06, 0.32, 0);
+
+          // Alternating arm swing during walking
+          const swing = isWalking ? Math.sin(walkPhase) * 0.25 : 0;
           this.updateDoraArms({
             lShoulderRoll: -1.35,
             lShoulderPitch: -0.15 + swing,
@@ -1590,18 +1762,17 @@
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 1.2);
+            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
             this.phone.rotation.set(-0.35, 0.45, -0.1);
           }
         }
 
         // -------------------------------------------------------------
-        // STEP 7 — DISCOVER & PICK UP GLASSES (20.5s to 23.5s)
-        // Hand extends, reaches shelf, picks up glasses, lifts with smile
+        // STEP 7 — REACH & PICK UP GLASSES (20.5s to 23.5s)
+        // Hand extends onto shelf, touches glasses, detaches, lifts with smile
         // -------------------------------------------------------------
         else if (elapsed < 23.5) {
           this.currentStoryPhase = 'DISCOVER';
-          const p = (elapsed - 20.5) / 3.0;
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.DISCOVER.pos);
@@ -1609,38 +1780,39 @@
             this.targetFov = CAM_PRESETS.DISCOVER.fov;
           }
 
-          if (p < 0.45) {
-            // Reaching hand out to shelf 2
-            const reachF = this.easeInOutCubic(p / 0.45);
+          // Dora is at bookshelf facing shelf 2
+          this.charPos.set(DORA_SHELF_POS.x, 0, DORA_SHELF_POS.z);
+          this.charRot.set(0, 0.35, 0);
+
+          if (elapsed < 21.8) {
+            // Reaching phase: hand moves toward glasses on shelf 2
+            this.glassesState = 'GLASSES_SHELF';
+            const reachF = this.easeInOutCubic((elapsed - 20.5) / 1.3);
             this.updateDoraArms({
               lShoulderRoll: -1.40,
               lShoulderPitch: -0.15,
               lElbowBend: 0.25,
               rShoulderRoll: -0.22 * reachF + -0.95 * (1 - reachF),
-              rShoulderPitch: -0.92 * reachF + -0.35 * (1 - reachF),
-              rElbowBend: 0.45 * reachF + 0.85 * (1 - reachF),
+              rShoulderPitch: -0.95 * reachF + -0.35 * (1 - reachF),
+              rElbowBend: 0.40 * reachF + 0.85 * (1 - reachF),
               rWristFlex: 0.20
             });
             this.headRot.set(0.14, 0.48, 0);
           } else {
-            // Glasses picked up and brought toward chest/face
-            this.glassesPickedUp = true;
+            // Contact & Pickup phase: glasses attach to right hand!
+            this.glassesState = 'GLASSES_HELD';
             this.shelfContactShadow.material.opacity = 0;
 
-            const liftF = this.easeInOutCubic((p - 0.45) / 0.55);
+            const liftF = this.easeInOutCubic((elapsed - 21.8) / 1.7);
             this.updateDoraArms({
               lShoulderRoll: -1.40,
               lShoulderPitch: -0.15,
               lElbowBend: 0.25,
               rShoulderRoll: -0.65 * liftF + -0.22 * (1 - liftF),
-              rShoulderPitch: -0.72 * liftF + -0.92 * (1 - liftF),
-              rElbowBend: 1.25 * liftF + 0.45 * (1 - liftF),
+              rShoulderPitch: -0.72 * liftF + -0.95 * (1 - liftF),
+              rElbowBend: 1.30 * liftF + 0.40 * (1 - liftF),
               rWristFlex: 0.40
             });
-
-            // Glasses attached to right hand!
-            this.glasses.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 2.0, this.rightHandWorldPos.z + 1.0);
-            this.glasses.rotation.set(-0.25, 0.4, 0.1);
 
             // Relieved happy smile & head tilt
             this.headRot.set(-0.06, 0.32, 0.12 * liftF);
@@ -1656,11 +1828,12 @@
         }
 
         // -------------------------------------------------------------
-        // STEP 8 — PEACEFUL RESOLUTION & RETURN (23.5s+)
+        // STEP 8 — PEACEFUL RESOLUTION & MULTI-STATE REPLAY (23.5s+)
         // Calm idle with glasses in hand; warm sunlight restored
         // -------------------------------------------------------------
         else {
           this.currentStoryPhase = 'RESOLVE';
+          this.glassesState = 'GLASSES_HELD';
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.RESOLVE.pos);
@@ -1669,10 +1842,6 @@
           }
 
           if (this.roomLights.phantom) this.roomLights.phantom.intensity = Math.max(0, 1.15 - (elapsed - 23.5) * 0.4);
-
-          // Holds glasses happily in hand
-          this.glasses.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 2.0, this.rightHandWorldPos.z + 1.0);
-          this.glasses.rotation.set(-0.25, 0.4, 0.1);
 
           const happyBob = Math.sin(now * 0.0025) * 0.35;
           this.charPos.y = happyBob;
@@ -1684,10 +1853,49 @@
             lElbowBend: 0.28,
             rShoulderRoll: -0.72,
             rShoulderPitch: -0.65,
-            rElbowBend: 1.25
+            rElbowBend: 1.30
           });
 
-          if (this.ui.replay) this.ui.replay.classList.add('visible');
+          // Multi-state button logic:
+          // 23.5s - 25.5s: "Story complete ✓"
+          // 25.5s+: "Replay story ↻"
+          if (elapsed < 25.5) {
+            if (this.ui.cta) {
+              this.ui.cta.classList.remove('playing');
+              this.ui.cta.classList.add('complete');
+              if (this.ui.ctaLabel) {
+                this.ui.ctaLabel.textContent = 'Story complete ✓';
+              } else {
+                this.ui.cta.innerHTML = 'Story complete ✓';
+              }
+            }
+          } else {
+            if (this.ui.cta) {
+              this.ui.cta.classList.remove('complete');
+              this.ui.cta.classList.add('replay');
+              if (this.ui.ctaLabel) {
+                this.ui.ctaLabel.textContent = 'Replay story ↻';
+              } else {
+                this.ui.cta.innerHTML = 'Replay story ↻';
+              }
+            }
+            if (this.ui.replay) {
+              this.ui.replay.classList.add('visible');
+              this.ui.replay.hidden = false;
+            }
+          }
+        }
+
+        // ================= GLASSES STATE MACHINE ENFORCEMENT =================
+        if (this.glassesState === 'GLASSES_TABLE') {
+          this.glasses.position.copy(this.glassesTablePos);
+          this.glasses.rotation.copy(this.glassesTableRot);
+        } else if (this.glassesState === 'GLASSES_SHELF') {
+          this.glasses.position.copy(this.glassesShelfPos);
+          this.glasses.rotation.set(0, 0.28, 0);
+        } else if (this.glassesState === 'GLASSES_HELD') {
+          this.glasses.position.set(this.rightHandWorldPos.x, this.rightHandWorldPos.y + 1.8, this.rightHandWorldPos.z + 1.0);
+          this.glasses.rotation.set(-0.25, 0.4, 0.1);
         }
       }
 
@@ -1731,14 +1939,14 @@
     }
   }
 
-  const initApp = () => {
-    const cid = document.getElementById('spatialViewport') ? 'spatialViewport' : 'splineCanvas';
-    window.smritiApp = new SmritiExperience(cid);
-  };
+  // Mount on DOM Ready
   if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', initApp);
+    document.addEventListener('DOMContentLoaded', () => {
+      window.smritiApp = new SmritiExperience('spatialViewport');
+    });
   } else {
-    initApp();
+    window.smritiApp = new SmritiExperience('spatialViewport');
   }
 
+  window.SmritiExperience = SmritiExperience;
 })();
