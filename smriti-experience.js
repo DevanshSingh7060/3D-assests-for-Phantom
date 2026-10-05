@@ -849,6 +849,63 @@
           const objEyes = model.getObjectByName('Object_3');
           const objMouth = model.getObjectByName('Object_5');
 
+          // 4. DEDICATED WARM NOSE MATERIAL (#8B5A3C):
+          // The nose in the raw GLB was mapped to the dark hair texture (#3E2A21 / near-black).
+          // We cleanly separate the nose geometry (58 triangles) into its own child mesh Dora_Nose,
+          // preserving the exact original vertex positions, normals, and shape with warm skin-shadow tone #8B5A3C.
+          if (objHead && objHead.geometry && objHead.geometry.index) {
+            const headGeo = objHead.geometry;
+            const posAttr = headGeo.attributes.position;
+            const normAttr = headGeo.attributes.normal;
+            const uvAttr = headGeo.attributes.uv;
+            const indArray = headGeo.index.array;
+
+            const isNoseVert = (idx) => {
+              const x = posAttr.getX(idx);
+              const y = posAttr.getY(idx);
+              const z = posAttr.getZ(idx);
+              const u = uvAttr ? uvAttr.getX(idx) : 1;
+              const v = uvAttr ? uvAttr.getY(idx) : 1;
+              return z > 3.5 && y > 0.05 && y < 0.25 && Math.abs(x) < 0.2 && u > 0.94 && v > 0.65;
+            };
+
+            const headIndices = [];
+            const noseIndices = [];
+            for (let i = 0; i < indArray.length; i += 3) {
+              const a = indArray[i];
+              const b = indArray[i + 1];
+              const c = indArray[i + 2];
+              if (isNoseVert(a) && isNoseVert(b) && isNoseVert(c)) {
+                noseIndices.push(a, b, c);
+              } else {
+                headIndices.push(a, b, c);
+              }
+            }
+
+            if (noseIndices.length > 0) {
+              headGeo.setIndex(new THREE.BufferAttribute(new Uint32Array(headIndices), 1));
+
+              const noseGeo = new THREE.BufferGeometry();
+              noseGeo.setAttribute('position', posAttr);
+              noseGeo.setAttribute('normal', normAttr);
+              noseGeo.setAttribute('uv', uvAttr);
+              noseGeo.setIndex(new THREE.BufferAttribute(new Uint32Array(noseIndices), 1));
+
+              const noseMat = new THREE.MeshStandardMaterial({
+                color: new THREE.Color(0x9E603C),
+                emissive: new THREE.Color(0x2A150A),
+                roughness: 0.60,
+                metalness: 0.0
+              });
+
+              const noseMesh = new THREE.Mesh(noseGeo, noseMat);
+              noseMesh.name = 'Dora_Nose';
+              noseMesh.castShadow = true;
+              noseMesh.receiveShadow = true;
+              objHead.add(noseMesh);
+            }
+          }
+
           if (node1 && objHead && objEyes && objMouth) {
             const headPivot = new THREE.Group();
             headPivot.name = 'doraHeadPivot';
