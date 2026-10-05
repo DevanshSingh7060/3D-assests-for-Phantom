@@ -1,0 +1,340 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    pointer-events: none;
+    user-select: none;
+  }
+  .smriti-dock {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    background: rgba(26, 24, 22, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .smriti-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #34d399;
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.8);
+    transition: background 0.3s ease;
+  }
+  .status-dot.active {
+    background: #fbbf24;
+    box-shadow: 0 0 12px rgba(251, 191, 36, 0.9);
+  }
+  .status-dot.resolved {
+    background: #60a5fa;
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.9);
+  }
+  .status-text {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #ede8df;
+  }
+  .smriti-btn {
+    border: none;
+    background: #ffffff;
+    color: #12100e;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+  }
+  .smriti-btn:hover {
+    background: #f3efe6;
+    transform: scale(1.04);
+  }
+  .smriti-btn:active {
+    transform: scale(0.97);
+  }
+  .smriti-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(24, 22, 20, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  }
+  .smriti-toast.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+  .toast-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .toast-detail {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: 0.01em;
+  }
+  .toast-badge {
+    background: rgba(52, 211, 153, 0.18);
+    color: #34d399;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+</style>
+</head>
+<body>
+
+<script>
+(async () => {
+  await spline.ready;
+
+  // Object Lookup
+  const glasses = await spline.findObjectByName('Glasses_Group');
+  const ghostGlasses = await spline.findObjectByName('Ghost_Glasses_Group');
+  const highlightGhost = await spline.findObjectByName('Highlight_Ghost_Ring');
+  const highlightMoved = await spline.findObjectByName('Highlight_Moved_Ring');
+  const spatialTrail = await spline.findObjectByName('SpatialTrail_Group');
+  const character = await spline.findObjectByName('Character');
+  const charHead = await spline.findObjectByName('Character_Head_Group');
+  const charArmR = await spline.findObjectByName('Character_Arm_R');
+  const cameras = {};
+  for (const name of ['Camera_Home','Camera_Character','Camera_Search','Camera_Phantom','Camera_Reveal','Camera_Resolution']) {
+    cameras[name] = await spline.findObjectByName(name);
+  }
+
+  // Baseline coordinates matching newly aligned layout
+  const ORIGIN_GLASSES = { x: -115, y: 53.5, z: -35 };
+  const DEST_GLASSES = { x: 125, y: 92, z: -218 };
+  const BASE_CHAR_Y = 68;
+
+  // Easing helpers
+  const clamp01 = (x) => Math.min(1, Math.max(0, x));
+  const easeOutCubic = (p) => 1 - Math.pow(1 - p, 3);
+  const easeInOutSine = (p) => 0.5 - Math.cos(Math.PI * p) / 2;
+  const easeOutBack = (p) => {
+    const c = 1.70158; const q = p - 1;
+    return 1 + (c + 1) * q * q * q + c * q * q;
+  };
+
+  // UI Handles
+  const statusDot = { className: '' };
+  const statusText = { textContent: '' };
+  const btnPlay = { textContent: '', addEventListener() {} };
+  const toast = { classList: { add() {}, remove() {} } };
+
+  let isStoryActive = false;
+  let storyStartTime = 0;
+
+  function startStory() {
+    isStoryActive = true;
+    storyStartTime = performance.now();
+    btnPlay.textContent = '↺ Restart';
+    statusDot.className = 'status-dot active';
+    toast.classList.remove('visible');
+  }
+
+  function resetStory() {
+    isStoryActive = false;
+    btnPlay.textContent = '▶ Play Story';
+    statusDot.className = 'status-dot';
+    statusText.textContent = 'A living room at peace';
+    toast.classList.remove('visible');
+
+    // Reset 3D object states
+    if (glasses) spline.updateObject(glasses.id, { position: ORIGIN_GLASSES, rotation: { x: 0, y: 0, z: 0 } });
+    if (ghostGlasses) spline.updateObject(ghostGlasses.id, { visible: false });
+    if (highlightGhost) spline.updateObject(highlightGhost.id, { visible: false });
+    if (highlightMoved) spline.updateObject(highlightMoved.id, { visible: false });
+    if (spatialTrail) spline.updateObject(spatialTrail.id, { visible: false });
+    if (charHead) spline.updateObject(charHead.id, { rotation: { x: 4, y: -6, z: 3 } });
+    if (charArmR) spline.updateObject(charArmR.id, { rotation: { x: 5, y: 0, z: 8 } });
+  }
+
+  // Keep the Spline layer headless. The authored file runs as a silent world demo.
+  window.setTimeout(startStory, 2200);
+
+  const activeCameras = Object.values(cameras).filter(Boolean);
+  const initialCamera = cameras.Camera_Home;
+  const smoothCamera = {
+    position: { ...initialCamera.position },
+    rotation: { ...initialCamera.rotation }
+  };
+  const cameraForPhase = (seconds) => {
+    if (!isStoryActive) return cameras.Camera_Home || initialCamera;
+    if (seconds < 1.8) return cameras.Camera_Character || initialCamera;
+    if (seconds < 5) return cameras.Camera_Character || initialCamera;
+    if (seconds < 8) return cameras.Camera_Search || initialCamera;
+    if (seconds < 11.5) return cameras.Camera_Phantom || initialCamera;
+    if (seconds < 15) return cameras.Camera_Reveal || initialCamera;
+    return cameras.Camera_Resolution || initialCamera;
+  };
+  const t0 = performance.now();
+
+  function tick(now) {
+    const elapsedTotal = (now - t0) / 1000;
+    const storySeconds = isStoryActive ? (now - storyStartTime) / 1000 : 0;
+    const cameraGoal = cameraForPhase(storySeconds);
+    if (initialCamera && cameraGoal) {
+      for (const axis of ['x','y','z']) {
+        smoothCamera.position[axis] += (cameraGoal.position[axis] - smoothCamera.position[axis]) * 0.035;
+        smoothCamera.rotation[axis] += (cameraGoal.rotation[axis] - smoothCamera.rotation[axis]) * 0.035;
+      }
+      spline.updateObject(initialCamera.id, { position: smoothCamera.position, rotation: smoothCamera.rotation });
+    }
+
+    // 1. Ambient Breathing & Idle Life (Runs continuously)
+    const breath = Math.sin(elapsedTotal * 1.8) * 0.8;
+    if (character) {
+      spline.updateObject(character.id, { position: { y: BASE_CHAR_Y + breath } });
+    }
+
+    // 2. Interactive Story Flow
+    if (isStoryActive) {
+      const storyT = (now - storyStartTime) / 1000;
+
+      // Phase 1: Routine (0s - 1.8s)
+      if (storyT < 1.8) {
+        statusText.textContent = 'Routine: Reading glasses at side table';
+      }
+      // Phase 2: Displaced transit to bookshelf (1.8s - 5.0s)
+      else if (storyT < 5.0) {
+        const p = clamp01((storyT - 1.8) / 3.2);
+        const ep = easeInOutSine(p);
+
+        // Smooth parabolic arc across room
+        const curX = ORIGIN_GLASSES.x + (DEST_GLASSES.x - ORIGIN_GLASSES.x) * ep;
+        const curZ = ORIGIN_GLASSES.z + (DEST_GLASSES.z - ORIGIN_GLASSES.z) * ep;
+        const arcY = Math.sin(p * Math.PI) * 45;
+        const curY = ORIGIN_GLASSES.y + (DEST_GLASSES.y - ORIGIN_GLASSES.y) * ep + arcY;
+
+        if (glasses) {
+          spline.updateObject(glasses.id, {
+            position: { x: curX, y: curY, z: curZ },
+            rotation: { y: ep * 25 }
+          });
+        }
+        if (spatialTrail) spline.updateObject(spatialTrail.id, { visible: true });
+
+        statusText.textContent = 'Object moved: Glasses → Bookshelf';
+      }
+      // Phase 3: The Search (5.0s - 8.0s)
+      else if (storyT < 8.0) {
+        const p = clamp01((storyT - 5.0) / 3.0);
+        const lookP = Math.sin(p * Math.PI);
+
+        if (glasses) spline.updateObject(glasses.id, { position: DEST_GLASSES });
+        if (charHead) {
+          spline.updateObject(charHead.id, {
+            rotation: { x: 8, y: -24 * lookP, z: -4 * lookP }
+          });
+        }
+        if (charArmR) {
+          spline.updateObject(charArmR.id, {
+            rotation: { x: -28 * lookP, y: 0, z: 12 }
+          });
+        }
+
+        statusText.textContent = "The Search: 'Where did I leave my glasses?'";
+      }
+      // Phase 4: SMRITI PHANTOM Spatial Reveal (8.0s - 11.5s)
+      else if (storyT < 11.5) {
+        const p = clamp01((storyT - 8.0) / 3.5);
+
+        if (ghostGlasses) spline.updateObject(ghostGlasses.id, { visible: true });
+        if (highlightGhost) spline.updateObject(highlightGhost.id, { visible: true });
+        if (highlightMoved) spline.updateObject(highlightMoved.id, { visible: true });
+        if (spatialTrail) spline.updateObject(spatialTrail.id, { visible: true });
+
+        // Character turns smoothly toward bookshelf with relief
+        if (charHead) {
+          spline.updateObject(charHead.id, {
+            rotation: { x: -2, y: 22 * easeOutCubic(p), z: 2 }
+          });
+        }
+        if (charArmR) {
+          spline.updateObject(charArmR.id, {
+            rotation: { x: 5, y: 0, z: 8 }
+          });
+        }
+
+        statusDot.className = 'status-dot resolved';
+        statusText.textContent = 'SMRITI Recall: Found at Bookshelf (Shelf 2)';
+        toast.classList.add('visible');
+      }
+      // Phase 5: Settled & Resolved (11.5s+)
+      else {
+        const settle = easeInOutSine(clamp01((storyT - 11.5) / 2.4));
+        if (character) spline.updateObject(character.id, { position: { x: 15 + 74 * settle, y: BASE_CHAR_Y + breath, z: 20 - 155 * settle } });
+        if (charHead) spline.updateObject(charHead.id, { rotation: { x: -2, y: 22, z: 1 } });
+        if (charArmR) {
+          const reach = clamp01((storyT - 13.6) / 1.2);
+          spline.updateObject(charArmR.id, { rotation: { x: -22 * reach, y: 0, z: 8 + 19 * reach } });
+        }
+        const pickup = easeInOutSine(clamp01((storyT - 14.4) / 1.4));
+        if (glasses) spline.updateObject(glasses.id, {
+          position: { x: 125 - 14 * pickup, y: 92 + 13 * pickup, z: -218 + 62 * pickup },
+          rotation: { x: 0, y: 25 * (1 - pickup), z: -15 * pickup }
+        });
+        statusText.textContent = 'Living room at peace · Memory retained';
+      }
+    } else {
+      // Gentle head sway while idle
+      if (charHead) {
+        spline.updateObject(charHead.id, {
+          rotation: {
+            x: 4 + Math.sin(elapsedTotal * 0.9) * 2,
+            y: -6 + Math.cos(elapsedTotal * 0.7) * 3,
+            z: 3
+          }
+        });
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

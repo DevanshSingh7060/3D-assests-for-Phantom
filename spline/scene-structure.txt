@@ -1,0 +1,106 @@
+103 object(s) across 1 page(s). Nothing selected.
+Page: background #f4f0e8.
+HTML content: 11549 chars (read with get_html_content).
+Plant_Leaf_Center [Mesh/SphereGeometry] 131d3268-39d7-413d-a2ea-ee4ea6cec072 p=185,47,-180 s=0.1,0.5,0.07 size=100,100,100
+Plant_Leaf_Right [Mesh/SphereGeometry] 9df064cc-65c0-4a9f-9046-9f8114f793b1 p=197,43,-180 r=0,0,20 s=0.12,0.42,0.08 size=100,100,100
+Plant_Leaf_Left [Mesh/SphereGeometry] 1e94abf0-574e-402f-91c4-fe4fa760a874 p=173,43,-180 r=0,0,-20 s=0.12,0.42,0.08 size=100,100,100
+Window_Rail_Right [Mesh/CubeGeometry] cb494ade-8cd0-48e1-a6f9-75d9bd78ac3c p=-246,170,97 size=6,124,6
+Window_Rail_Left [Mesh/CubeGeometry] 9042c4ae-3582-461f-b93d-3967be428f5c p=-246,170,-57 size=6,124,6
+Window_Rail_Bottom [Mesh/CubeGeometry] 3a071765-c5f6-4d69-87b9-bf611a68c19c p=-246,108,20 size=6,6,152
+Window_Rail_Top [Mesh/CubeGeometry] 5b8eed67-fbbe-44e6-b953-c124c5d72dd7 p=-246,232,20 size=6,6,152
+Room_Wall_Window_Return_R [Mesh/CubeGeometry] cc2f3615-1397-433d-8911-c20e5aa9dc66 p=-250,170,233 size=16,130,274
+Room_Wall_Window_Return_L [Mesh/CubeGeometry] 8f2f602c-2b4b-42d4-aab7-f4603e6fe736 p=-250,170,-193 size=16,130,274
+Room_Wall_Window_Upper [Mesh/CubeGeometry] f079a5ae-b299-4bcf-b400-e129a9d9e633 p=-250,286.5,20 size=16,103,700
+Room_Wall_Window_Lower [Mesh/CubeGeometry] 49cdcd0c-1b56-4a54-874c-26ea78935ba3 p=-250,52.5,20 size=16,105,700
+Camera_Resolution [PerspectiveCamera] cbf5cd09-46c7-4ddb-917f-d6b31390507c p=-35,130,330 r=-12,7,0
+Camera_Reveal [PerspectiveCamera] 3c301f1a-c604-41bd-858d-ec41f8536628 p=75,115,120 r=-10,-24,0
+Camera_Phantom [PerspectiveCamera] 6614c72c-d976-4075-b96b-4224a6d68f39 p=15,145,320 r=-16,-6,0
+Camera_Search [PerspectiveCamera] 909e1d31-856d-4202-8bfd-7018449de5d2 p=-60,120,260 r=-12,18,0
+Camera_Character [PerspectiveCamera] bb7c62db-b3a8-47d2-830a-1f8590865058 p=-10,110,220 r=-9,3,0
+Baseboard_Left [Mesh/CubeGeometry] 7cbe670c-610e-471b-b327-bf4974e6105f p=-240,6.25,0 size=6,12.5,480
+Baseboard_Back [Mesh/CubeGeometry] fe0f726c-d2aa-4655-8f05-bbe8e5c7e8dd p=10,6,-240 size=680,12,6
+Camera_Home [PerspectiveCamera] ca713942-7fa8-4c64-9baa-49058c8fd960 p=10,155,420 r=-10,0,0
+Window_Bar_V [Mesh/CubeGeometry] 7c26aef1-1e3b-4001-bab3-b5ce2981261d p=-245.4,170,20 size=3,122,4
+Window_Bar_H [Mesh/CubeGeometry] cb081034-55e4-41d8-a1d4-92fe1ba0d4fe p=-246,170,20 size=3,4,152
+Frame_Art_Sun [Mesh/SphereGeometry] 27023c75-58ae-4e2d-9838-4a9ce66ef279 p=-125,160,-238 size=18,18,1
+Frame_Canvas [Mesh/CubeGeometry] 048e6013-2399-42ba-bb20-36a096678353 p=-125,160,-239 size=38,50,1
+Frame_Border [Mesh/CubeGeometry] 7561aacd-aae1-4b03-9c3b-4b73ad785fb4 p=-125,160,-241 size=44,56,2
+Keys_Ring [Mesh/TorusGeometry] ab1606ab-83d9-4358-888e-ba63c97abc48 p=-100,47,-225 r=90,0,0 s=0.04,0.04,0.04 size=100,100,25
+Key_Tray [Mesh/CylinderGeometry] c55afe3a-1800-4193-99fc-27bb8ee17d19 p=-100,46,-225 size=16,1.5,16
+Medicine_Box_Label [Mesh/CubeGeometry] be3484a2-9d53-4a12-8d5f-8bcf74179a6d p=-105,57.2,-48 size=4,0.8,6
+Medicine_Box [Mesh/CubeGeometry] be422530-984c-4341-9e09-9532a3dd6b25 p=-105,54.5,-48 size=10,5,7
+Ceramic_Mug [Mesh/CylinderGeometry] 21a7ff73-9587-47e3-81ee-0a9d800705ae p=-125,55.5,-45 size=7,7,7
+Book_4 [Mesh/CubeGeometry] 1c98b145-c408-49c5-91ea-c5f9f4a11797 p=106,103,-218 size=14,24,8
+Bookshelf_Back [Mesh/CubeGeometry] 0506f2ce-68cd-4cb4-89d6-a5ecf90f718d p=130,80,-241 size=70,160,2
+Bookshelf_Top [Mesh/CubeGeometry] d60fbdf2-851e-4ed4-bbf6-933d2bfd78ae p=130,160,-218 size=74,4,36
+Bookshelf_Side_R [Mesh/CubeGeometry] b77256e5-eee7-43a1-86ee-3b61f18eb687 p=165,80,-218 size=4,160,36
+Bookshelf_Side_L [Mesh/CubeGeometry] e0cc409b-09a9-4a50-bc02-3924050e4847 p=95,80,-218 size=4,160,36
+Character [Empty] 53673360-460c-46a9-89e8-df93a9386dce p=15,68,20 r=0,-6,0 s=1.28,1.28,1.28 size=34,103.76,22.73
+  Character_Head_Group [Empty] dd93d6fb-b0a9-4fbc-a9ba-f2cf35ae33db p=0,39.75,0 r=4,-6,3 s=0.82,0.82,0.82 size=28.77,29.13,30.28
+    Character_Blush_R [Mesh/SphereGeometry] 7f3eb71c-8102-4e2d-9141-fe50063c4a60 p=7.52,-3.9,11.23 r=-3.7,6.19,-2.59 size=3.5,2,1.2
+    Character_Blush_L [Mesh/SphereGeometry] dde0b918-4afb-4409-a22f-ed5efffe476e p=-5.39,-3.22,12.59 r=-3.7,6.19,-2.59 size=3.5,2,1.2
+    Character_Eye_R [Mesh/SphereGeometry] 275dbc0a-f70c-4592-a192-eeb35a9fa79d p=5.24,-0.26,11.64 r=-3.7,6.19,-2.59 size=2.2,2.6,1.5
+    Character_Eye_L [Mesh/SphereGeometry] 00c2b21f-1df1-44c0-8ab2-8fa1b06cf410 p=-2.71,0.16,12.48 r=-3.7,6.19,-2.59 size=2.2,2.6,1.5
+    Character_Bangs [Mesh/SphereGeometry] 05f59476-187b-4ca4-9fc3-7fa15bac1d71 p=-0.77,8.76,7.48 r=-3.7,6.19,-12.59 size=14,8,9
+    Character_Hair [Mesh/SphereGeometry] 36ed6103-e1c4-4e69-9802-31c32c865eca p=0.12,4.12,-0.88 r=-3.7,6.19,-2.59 size=25.5,18,24.5
+    Character_Head [Mesh/SphereGeometry] 7e2f4284-480d-4ec0-91b1-68fbf7c7b495 p=0.06,-0.77,0.95 r=-3.7,6.19,-2.59 size=24,25,23
+    Character_Nose [Mesh/SphereGeometry] 86656e82-13e4-4963-bac4-8c5cc3504ac7 p=0,-2,14 r=-3.43,12.18,-2.63 s=0.02,0.03,0.02 size=100,100,100
+    Character_Brow_L [Mesh/SphereGeometry] 26c330ed-d700-48c7-95cb-f266989ab004 p=-4,2.5,13 r=-3.43,12.18,-2.63 s=0.03,0.01,0.01 size=100,100,100
+    Character_Brow_R [Mesh/SphereGeometry] 9a4fbb4a-2172-438a-9549-33027d9a4189 p=4,2.5,13 r=-3.43,12.18,-2.63 s=0.03,0.01,0.01 size=100,100,100
+    Character_Mouth [Mesh/TorusGeometry] bf2f0f20-63ed-4d97-9b5f-74573ee852fe p=0,-4.5,14 r=-3.43,12.18,-2.63 s=0.02,0.01,0.01 hidden
+  Character_Hand_R [Mesh/SphereGeometry] 11ba7643-b578-4bfa-abb5-dcc1af6143ec p=14.5,-6.08,0.9 size=5,5,5
+  Character_Arm_R [Mesh/CylinderGeometry] ec95d5b4-866b-410e-a481-d23db5ebd1eb p=12.5,6.92,0.9 r=5,0,8 size=5.4,22,5.4
+  Character_Hand_L [Mesh/SphereGeometry] 8fd1417a-aeae-4e63-9519-58b17d960fe5 p=-14.5,-6.08,0.9 size=5,5,5
+  Character_Arm_L [Mesh/CylinderGeometry] bf0bfac8-2cba-471b-89fa-88324a1c25f1 p=-12.5,6.92,0.9 r=-4,0,-8 size=5.4,22,5.4
+  Character_Neck [Mesh/CylinderGeometry] 8e570732-cf04-4c25-9c30-9fba1a398b2d p=0,24.92,0.9 size=6,7,6
+  Character_Collar [Mesh/CylinderGeometry] b9dda584-2668-41da-aee6-82d48313cece p=0,21.42,0.9 size=11,3,11
+  Character_Hips [Mesh/CubeGeometry] e5224884-4478-4510-9729-fcfa2be822cc p=0,-9.08,0.9 size=19,8,13
+  Character_Leg_R [Mesh/CylinderGeometry] 645cc549-5d37-4cce-bc76-c3d990f398bc p=6,-29.08,0.9 size=7,36,7
+  Character_Leg_L [Mesh/CylinderGeometry] 9315fb30-3a4e-41af-8a63-d7333598f2de p=-6,-29.08,0.9 size=7,36,7
+  Character_Shoe_R [Mesh/CubeGeometry] 9030bfad-85e4-4627-8198-0b22a2f813b4 p=6,-50.08,0.9 size=8,6,15
+  Character_Shoe_L [Mesh/CubeGeometry] 6ca97453-0add-4a09-b7f7-c1eb3e4f6065 p=-6,-50.08,0.9 size=8,6,15
+  Character_Torso_Sculpt [Mesh/NonParametricGeometry] 26d14bda-8e02-49ef-b0da-4da9bd870862 p=0.09,6.91,0.89 r=0,6,0 s=0.78,0.78,0.78 size=27,35,18
+Phantom_ScanPlane [Mesh/CubeGeometry] 53404b70-b3f1-4ef6-8dc8-4fb02586051f p=-10,105,-20 hidden
+SpatialTrail_Group [Empty] c99984ce-0914-45a4-bf9b-cdd8dfb76269 p=20,85.5,-25 size=136.4,27.4,74.4 hidden
+  Trail_Pt4 [Mesh/SphereGeometry] 8e132c61-4135-4693-bd57-27eb9d0a22b8 p=66,11.5,-35 size=4.4,4.4,4.4
+  Trail_Pt3 [Mesh/SphereGeometry] 5845f06b-208f-4f12-849e-011585484088 p=22,9.5,-10 size=4.4,4.4,4.4
+  Trail_Pt2 [Mesh/SphereGeometry] 26b2cf42-8655-489f-a0cc-e247ea8ff763 p=-22,2.5,15 size=4.4,4.4,4.4
+  Trail_Pt1 [Mesh/SphereGeometry] 73a11447-3802-4e13-aa92-6e0a5f416bd3 p=-66,-11.5,35 size=4.4,4.4,4.4
+Highlight_Ghost_Ring [Mesh/TorusGeometry] 3115146f-24ee-4676-8629-466e922887e9 p=-115,51.5,-35 r=90,0,0 hidden
+Highlight_Moved_Ring [Mesh/TorusGeometry] 72f1ec57-9bac-4841-ba05-d0ad7bd69eba p=130,92,-218 r=90,0,0 hidden
+Ghost_Glasses_Group [Empty] f92616f5-0953-46c9-8518-2a52b60f3e0b p=-115,53.5,-35 s=0.23,0.23,0.23 size=108,25,100 hidden
+  Ghost_Bridge [Mesh/CylinderGeometry] 64814c7f-3bba-4837-a175-f0f59e3edddb p=0,0,0 r=0,0,90 size=1,4,1
+  Ghost_Rim_R [Mesh/TorusGeometry] b81c9a22-e62d-4bbd-9295-5a37bb0f546d p=4,0,0 r=90,0,0 size=100,100,25
+  Ghost_Rim_L [Mesh/TorusGeometry] 39590adf-da4d-40f2-ab19-efb56c54922e p=-4,0,0 r=90,0,0 size=100,100,25
+Glasses_Group [Empty] fb30baa9-dad6-4d38-951c-e60c57563441 p=-115,53.5,-35 s=0.23,0.23,0.23 size=108,25,100
+  Glasses_Temple_R [Mesh/CylinderGeometry] 03747ee4-f0ba-47ea-8445-ce005a8d139d p=7.5,0,-5.5 r=90,0,0 size=0.9,11,0.9
+  Glasses_Temple_L [Mesh/CylinderGeometry] ba2d26b9-0cbc-410c-8b59-6a6dd3ea4168 p=-7.5,0,-5.5 r=90,0,0 size=0.9,11,0.9
+  Glasses_Bridge [Mesh/CylinderGeometry] a5618443-42d0-4b7f-9963-c766879020f1 p=0,0,0 r=0,0,90 size=1,4,1
+  Glasses_Rim_R [Mesh/TorusGeometry] 9b1cdeca-dd8f-4f49-baf7-becc17c59f31 p=4,0,0 r=90,0,0 size=100,100,25
+  Glasses_Rim_L [Mesh/TorusGeometry] 0735a268-79db-4621-9d0e-b634a0ceb0d0 p=-4,0,0 r=90,0,0 size=100,100,25
+Lamp_Interior_Light [PointLight] 3b18594c-4515-43fe-8372-90988c4e6135 p=-150,68,-220
+Lamp_Rod [Mesh/CylinderGeometry] 999b8c68-b867-47b9-8d2f-5a251952b648 p=-150,55,-225 size=2,24,2
+Lamp_Shade [Mesh/ConeGeometry] b2de7db8-304d-46ce-bf2f-209cd74d7e04 p=-150,68,-225 size=20,14,20
+Cabinet_Body [Mesh/CubeGeometry] 93fe9b2a-e443-4d46-ace7-063ecdff3501 p=-125,25,-225 size=80,40,30
+Plant_Leaves [Mesh/SphereGeometry] ff86dc02-908f-4b92-91bb-850f9f3d24b3 p=185,36,-180 hidden
+Plant_Pot [Mesh/CylinderGeometry] 69da2ca7-189e-46b7-a678-2b4920b69d60 p=185,14,-180 size=30,22,30
+Chair_Cushion_Olive [Mesh/CubeGeometry] d545a755-b9a3-47b5-8510-aa4c8dad29b7 p=-55,28,-58 r=-10,0,0 size=28,22,10
+Chair_Arm_R [Mesh/CubeGeometry] 90aaba64-8356-4949-aa4e-922c0c7f2129 p=-25,28,-40 size=12,26,60
+Chair_Arm_L [Mesh/CubeGeometry] 5fe2b4c9-a30e-4b26-a3f5-152d6235e2eb p=-85,28,-40 size=12,26,60
+Chair_Backrest [Mesh/CubeGeometry] d51c72b1-aef6-4961-bd5c-0b84cf19faca p=-55,44,-65 size=64,48,14
+Chair_Seat [Mesh/CubeGeometry] 5212c042-c5dd-41c8-b503-234bcab9d8e9 p=-55,15,-40 size=64,14,64
+Book_3 [Mesh/CubeGeometry] e829f598-e4c4-4321-aeee-1760dee4b98a p=148,105,-218 size=12,28,5
+Book_2 [Mesh/CubeGeometry] 237cdd0d-9f97-410b-9543-da0bc958d4cf p=132,102,-218 size=16,22,7
+Book_1 [Mesh/CubeGeometry] e57ba93c-22db-4e81-8785-3352d3f4ec7b p=114,104,-218 size=14,26,6
+Bookshelf_Shelf_3 [Mesh/CubeGeometry] 86144b5f-d7b4-4d20-812e-f07c79b878f8 p=130,130,-218 size=66,3,34
+Bookshelf_Shelf_2 [Mesh/CubeGeometry] bc01c3c7-aeb4-463c-9407-b6953afd33e1 p=130,90,-218 size=66,3,34
+Bookshelf_Shelf_1 [Mesh/CubeGeometry] df078df6-b774-4309-b3ec-4c428fbed3d3 p=130,50,-218 size=66,3,34
+SideTable_Leg3 [Mesh/CylinderGeometry] 0ee350e1-2429-44ff-ad77-409612736e35 p=-115,25,-28 r=9,0,0 size=4,50,4
+SideTable_Leg2 [Mesh/CylinderGeometry] 3751f790-3599-4a1b-8cc7-5f263a912e82 p=-102,25,-48 r=-5,0,-8 size=4,50,4
+SideTable_Leg1 [Mesh/CylinderGeometry] 120e698e-d317-4e07-b59c-e67219dadb86 p=-128,25,-48 r=-5,0,8 size=4,50,4
+SideTable_Top [Mesh/CylinderGeometry] 07f29dee-70f5-48d2-8700-25ff39f2fa65 p=-115,50,-40 size=56,4,56
+Window_Glass [Mesh/CubeGeometry] 43385441-bf4e-4fb2-b302-2953d45bb580 p=-247.5,170,20 size=2,122,152
+Room_Rug [Mesh/CubeGeometry] 8b21e7e6-78a3-4eee-881f-06e2ba245736 p=0,2,-30 size=400,4,320
+Room_Wall_Back [Mesh/CubeGeometry] fcea6af1-c9e8-45e2-80f5-626c939b21db p=20,170,-250 size=700,340,16
+Room_Floor [Mesh/CubeGeometry] dfe67170-3eab-418d-bcda-c0aca04ce5be p=0,-6,0 size=850,12,850
+Directional Light [DirectionalLight] 830a2708-8ed9-49cf-a68e-085299899103 p=-280,380,240 r=-48,35,0

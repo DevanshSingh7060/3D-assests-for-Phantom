@@ -1,0 +1,21 @@
+{
+  "name": "3d-assets-for-phantom",
+  "version": "1.0.0",
+  "description": "3D Assets and Interactive Spatial Experience for SMRITI / PHANTOM",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "start": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "3d",
+    "spline",
+    "threejs",
+    "phantom",
+    "smriti",
+    "spatial-computing",
+    "spatial-memory"
+  ],
+  "author": "Devansh Singh",
+  "license": "MIT"
+}

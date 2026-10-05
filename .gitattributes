@@ -1,0 +1,23 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Web & Code Files
+*.html text
+*.css text
+*.js text
+*.json text
+*.md text
+
+# 3D & Binary Assets (Do not alter line endings or normalize)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.gltf text
+*.bin binary
+*.glb binary
+*.spline binary
+*.obj text
+*.mtl text
+*.fbx binary
