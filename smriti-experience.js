@@ -458,9 +458,10 @@
               child.castShadow = true;
               child.receiveShadow = true;
               if (child.material) {
-                // Harmonized warm caramel/terracotta upholstery
+                // Harmonized warm caramel/terracotta upholstery (Unbind dark green GLB base texture)
+                child.material.map = null;
                 child.material.color = new THREE.Color(PALETTE.armchairFabric);
-                child.material.roughness = 0.74;
+                child.material.roughness = 0.76;
                 child.material.metalness = 0.02;
                 child.material.needsUpdate = true;
               }
@@ -623,18 +624,17 @@
       this.phoneTexture = new THREE.CanvasTexture(this.phoneCanvas);
       this.phoneTexture.encoding = THREE.sRGBEncoding;
 
-      // Screen mesh facing -Z, so lookAt(doraHead) faces Dora's eyes directly!
+      // Screen mesh facing +Z (so phone.lookAt(doraHead) faces Dora's eyes directly!)
       const screenMesh = new THREE.Mesh(
         new THREE.PlaneGeometry(3.3, 7.0),
         new THREE.MeshBasicMaterial({ map: this.phoneTexture })
       );
-      screenMesh.position.z = -0.25;
-      screenMesh.rotation.y = Math.PI;
+      screenMesh.position.z = 0.25;
       this.phone.add(screenMesh);
 
-      // Cyan screen light illuminating Dora's face from below
-      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0.2, 26);
-      this.phoneScreenLight.position.set(0, 0, -1.2);
+      // Cyan screen light illuminating Dora's face from the screen surface
+      this.phoneScreenLight = new THREE.PointLight(0x5CE1D2, 0.35, 30);
+      this.phoneScreenLight.position.set(0, 0, 1.2);
       this.phone.add(this.phoneScreenLight);
 
       this.scene.add(this.phone);
@@ -943,6 +943,7 @@
       const sxR = -0.48, syR = -0.02, szR = 2.08;
 
       let rHandX = -1.60, rHandY = 0, rHandZ = 2.08;
+      let lHandX = 1.60, lHandY = 0, lHandZ = 2.08;
 
       for (let i = 0; i < count; i++) {
         const ox = base[i * 3];
@@ -961,7 +962,7 @@
         const wWr = Math.min(Math.max((absX - 1.36) / 0.18, 0), 1);
 
         if (ox > 0) {
-          // Left Arm (Hanging naturally beside hip)
+          // Left Arm (Holding smartphone prop)
           const dx = ox - sxL;
           const dy = oy - syL;
           const dz = oz - szL;
@@ -987,9 +988,18 @@
             py -= distWr * sinWfL * 0.4 * wWr;
           }
 
-          posAttr.setXYZ(i, ox * (1 - wSh) + px * wSh, oy * (1 - wSh) + py * wSh, oz * (1 - wSh) + pz * wSh);
+          const fx = ox * (1 - wSh) + px * wSh;
+          const fy = oy * (1 - wSh) + py * wSh;
+          const fz = oz * (1 - wSh) + pz * wSh;
+          posAttr.setXYZ(i, fx, fy, fz);
+
+          if (ox > 1.50) {
+            lHandX = fx;
+            lHandY = fy;
+            lHandZ = fz;
+          }
         } else {
-          // Right Arm (Holding phone / reaching for glasses)
+          // Right Arm (Reaching for & holding reading glasses)
           const dx = ox - sxR;
           const dy = oy - syR;
           const dz = oz - szR;
@@ -1039,18 +1049,26 @@
         const scale = this.doraModel.scale.x;
         const charWorld = this.character.position;
         const charRotY = this.character.rotation.y;
-
-        const lx = rHandX * scale + this.doraModel.position.x;
-        const ly = rHandZ * scale + this.doraModel.position.y;
-        const lz = -rHandY * scale + this.doraModel.position.z;
-
         const cosY = Math.cos(charRotY);
         const sinY = Math.sin(charRotY);
-        const wx = charWorld.x + lx * cosY + lz * sinY;
-        const wy = charWorld.y + ly;
-        const wz = charWorld.z - lx * sinY + lz * cosY;
 
-        this.rightHandWorldPos.set(wx, wy, wz);
+        // Right Hand (Glasses pickup & hold)
+        const rx = rHandX * scale + this.doraModel.position.x;
+        const ry = rHandZ * scale + this.doraModel.position.y;
+        const rz = -rHandY * scale + this.doraModel.position.z;
+        const rwx = charWorld.x + rx * cosY + rz * sinY;
+        const rwy = charWorld.y + ry;
+        const rwz = charWorld.z - rx * sinY + rz * cosY;
+        this.rightHandWorldPos.set(rwx, rwy, rwz);
+
+        // Left Hand (Smartphone prop)
+        const lx = lHandX * scale + this.doraModel.position.x;
+        const ly = lHandZ * scale + this.doraModel.position.y;
+        const lz = -lHandY * scale + this.doraModel.position.z;
+        const lwx = charWorld.x + lx * cosY + lz * sinY;
+        const lwy = charWorld.y + ly;
+        const lwz = charWorld.z - lx * sinY + lz * cosY;
+        this.leftHandWorldPos.set(lwx, lwy, lwz);
       }
     }
 
@@ -1368,6 +1386,12 @@
       this.charRot.set(0, 0.22, 0);
       this.headRot.set(0, 0, 0);
 
+      if (this.camera) {
+        this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
+        this.targetCamLook.copy(CAM_PRESETS.HOME.target);
+        this.targetFov = CAM_PRESETS.HOME.fov;
+      }
+
       if (this.roomLights.phantom) this.roomLights.phantom.intensity = 0;
       if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.2;
 
@@ -1382,6 +1406,8 @@
         }
       }
       if (this.ui.narration) this.ui.narration.classList.remove('visible');
+      if (this.ui.narrTitle) this.ui.narrTitle.textContent = '';
+      if (this.ui.narrDetail) this.ui.narrDetail.textContent = '';
       if (this.ui.note) this.ui.note.classList.remove('visible');
       if (this.ui.progress) this.ui.progress.classList.remove('visible');
       if (this.ui.replay) {
@@ -1394,14 +1420,18 @@
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
 
-    // =========================================================================
-    // 8. RENDER LOOP & REAL-TIME ANIMATION CONTROLLER
-    // =========================================================================
     animate(timestamp) {
       requestAnimationFrame(this.animate);
       const now = timestamp || performance.now();
 
-      // Mouse Lerp
+      // Telemetry in document title for reliable headless QA inspection
+      if (this.isStoryActive) {
+        const el = (now - this.storyStartTime) / 1000;
+        document.title = `[SMRITI] t=${el.toFixed(1)}s | ${this.currentStoryPhase} | Dora=(${this.charPos.x.toFixed(0)},${this.charPos.y.toFixed(0)},${this.charPos.z.toFixed(0)}) | G=${this.glassesState}`;
+      } else {
+        document.title = `[SMRITI] IDLE | G=${this.glassesState}`;
+      }
+
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.045;
       this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.045;
 
@@ -1434,20 +1464,20 @@
 
         // Subtle breathing & weight shifts
         const breath = Math.sin(now * 0.0022) * 0.42;
-        this.charPos.y = breath;
+        this.charPos.set(CHAR_ORIGIN.x, breath, CHAR_ORIGIN.z);
 
-        // Asymmetric casual posture (left arm hanging down beside hip, right arm holding phone)
+        // Relaxed natural bilateral arm posture (both arms resting naturally beside hips)
         const armPose = {
-          lShoulderRoll: -1.40,
+          lShoulderRoll: -1.35,
           lShoulderPitch: -0.15 + Math.sin(now * 0.0018) * 0.03,
           lShoulderYaw: 0.05,
-          lElbowBend: 0.28,
-          lWristFlex: 0.18,
-          rShoulderRoll: -1.02,
-          rShoulderPitch: -0.38 + Math.cos(now * 0.0016) * 0.03,
-          rShoulderYaw: -0.15,
-          rElbowBend: 0.92,
-          rWristFlex: 0.32
+          lElbowBend: 0.32,
+          lWristFlex: 0.22,
+          rShoulderRoll: -1.35,
+          rShoulderPitch: -0.15 + Math.cos(now * 0.0016) * 0.03,
+          rShoulderYaw: -0.05,
+          rElbowBend: 0.28,
+          rWristFlex: 0.18
         };
 
         if (t < 4.5) {
@@ -1468,11 +1498,11 @@
 
         this.updateDoraArms(armPose);
 
-        // Position phone casually in right hand
+        // Position phone casually inside left hand at hip
         if (this.phone) {
-          this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
-          this.phone.rotation.set(-0.25, 0.15, -0.1);
-          if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.25;
+          this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+          this.phone.rotation.set(-0.25, -0.15, 0.1);
+          if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.2;
         }
 
         // Camera HOME
@@ -1511,19 +1541,20 @@
 
           this.headRot.set(0.14 * p, -0.48 * p, -0.05 * p);
           this.charRot.y = 0.22 - 0.32 * p;
+          this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
           this.updateDoraArms({
             lShoulderRoll: -1.35,
-            lShoulderPitch: -0.22 * p,
-            lElbowBend: 0.35,
-            rShoulderRoll: -1.02,
-            rShoulderPitch: -0.38,
-            rElbowBend: 0.92
+            lShoulderPitch: -0.15,
+            lElbowBend: 0.32,
+            rShoulderRoll: -1.25,
+            rShoulderPitch: -0.22 * p,
+            rElbowBend: 0.35
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
-            this.phone.rotation.set(-0.25, 0.15, -0.1);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+            this.phone.rotation.set(-0.25, -0.15, 0.1);
           }
 
           if (this.ui.narration && p > 0.3) {
@@ -1542,6 +1573,7 @@
           const pLookAway = this.easeInOutCubic(Math.min((elapsed - 2.8) / 1.2, 1));
           this.headRot.set(-0.06 * pLookAway, 0.45 * pLookAway, 0.08 * pLookAway);
           this.charRot.y = -0.10 + 0.38 * pLookAway;
+          this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.TRANSIT.pos);
@@ -1581,17 +1613,17 @@
           }
 
           this.updateDoraArms({
-            lShoulderRoll: -1.40,
+            lShoulderRoll: -1.35,
             lShoulderPitch: -0.15,
-            lElbowBend: 0.28,
-            rShoulderRoll: -1.02,
-            rShoulderPitch: -0.38,
-            rElbowBend: 0.92
+            lElbowBend: 0.32,
+            rShoulderRoll: -1.35,
+            rShoulderPitch: -0.15,
+            rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
-            this.phone.rotation.set(-0.25, 0.15, -0.1);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.25, this.leftHandWorldPos.y + 0.85, this.leftHandWorldPos.z + 0.55);
+            this.phone.rotation.set(-0.25, -0.15, 0.1);
           }
         }
 
@@ -1602,6 +1634,7 @@
         else if (elapsed < 9.8) {
           this.currentStoryPhase = 'SEARCH';
           this.glassesState = 'GLASSES_SHELF';
+          this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.SEARCH.pos);
@@ -1617,10 +1650,10 @@
             this.updateDoraArms({
               lShoulderRoll: -1.15,
               lShoulderPitch: -0.28,
-              lElbowBend: 0.65,
-              rShoulderRoll: -0.92,
-              rShoulderPitch: -0.42,
-              rElbowBend: 0.95
+              lElbowBend: 0.55,
+              rShoulderRoll: -1.15,
+              rShoulderPitch: -0.25,
+              rElbowBend: 0.35
             });
           } else {
             const scanW = Math.sin((elapsed - 7.6) * 3.8);
@@ -1629,16 +1662,16 @@
             this.updateDoraArms({
               lShoulderRoll: -1.05 + scanW * 0.08,
               lShoulderPitch: -0.35,
-              lElbowBend: 0.75,
-              rShoulderRoll: -0.85 - scanW * 0.08,
-              rShoulderPitch: -0.45,
-              rElbowBend: 0.98
+              lElbowBend: 0.65,
+              rShoulderRoll: -1.15,
+              rShoulderPitch: -0.25,
+              rElbowBend: 0.35
             });
           }
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.9, this.rightHandWorldPos.z + 0.7);
-            this.phone.rotation.set(-0.35, 0.2, -0.15);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.9, this.leftHandWorldPos.z + 0.6);
+            this.phone.rotation.set(-0.35, -0.2, 0.15);
           }
 
           this.drawPhoneScreen('SEARCH', 'Missing');
@@ -1651,11 +1684,12 @@
 
         // -------------------------------------------------------------
         // STEP 4 — SMRITI PHONE INTERACTION (9.8s to 13.5s)
-        // Dora raises phone, tilts head down, eyes look at screen, face illuminates
+        // Dora raises phone in left hand, tilts head down, screen faces HER face!
         // -------------------------------------------------------------
         else if (elapsed < 13.5) {
           this.currentStoryPhase = 'PHONE';
           this.glassesState = 'GLASSES_SHELF';
+          this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
           const p = this.easeInOutCubic(Math.min((elapsed - 9.8) / 1.2, 1));
 
           if (!isMobile) {
@@ -1665,24 +1699,24 @@
           }
 
           // Dora tilts head downward directly toward phone screen
-          this.headRot.set(0.38 * p, -0.18 * p, 0);
-          this.charRot.y = 0.08 * p;
+          this.headRot.set(0.36 * p, 0.16 * p, 0);
+          this.charRot.y = -0.06 * p;
 
-          // Right arm raises phone to chest/chin level
+          // Left arm raises phone up to chest/chin level with elbow bent naturally
           this.updateDoraArms({
-            lShoulderRoll: -1.35,
-            lShoulderPitch: -0.18,
-            lElbowBend: 0.38,
-            rShoulderRoll: -0.55 * p + -1.02 * (1 - p),
-            rShoulderPitch: -0.82 * p + -0.38 * (1 - p),
-            rShoulderYaw: -0.25 * p,
-            rElbowBend: 1.42 * p + 0.92 * (1 - p),
-            rWristFlex: 0.40 * p
+            lShoulderRoll: -0.55 * p + -1.35 * (1 - p),
+            lShoulderPitch: -0.78 * p + -0.18 * (1 - p),
+            lShoulderYaw: 0.25 * p,
+            lElbowBend: 1.40 * p + 0.38 * (1 - p),
+            lWristFlex: 0.38 * p,
+            rShoulderRoll: -1.35,
+            rShoulderPitch: -0.15,
+            rElbowBend: 0.28
           });
 
-          // Phone position and orientation facing Dora's face
+          // Phone position and orientation: screen on +Z faces directly at Dora's face!
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 0.8);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.1, this.leftHandWorldPos.y + 1.2, this.leftHandWorldPos.z + 0.8);
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
           }
@@ -1707,6 +1741,7 @@
         else if (elapsed < 17.0) {
           this.currentStoryPhase = 'PHANTOM';
           this.glassesState = 'GLASSES_SHELF';
+          this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
           const p = (elapsed - 13.5) / 3.5;
 
           if (!isMobile) {
@@ -1732,20 +1767,20 @@
           this.highlightGhost.scale.set(pulse, pulse, pulse);
           this.highlightMoved.scale.set(pulse, pulse, pulse);
 
-          // Dora looks at side table ghost imprint
-          this.headRot.set(0.18, -0.45, 0);
+          // Dora looks at side table ghost imprint, then turns gaze toward bookshelf
+          this.headRot.set(0.14, 0.42, 0);
 
           this.updateDoraArms({
-            lShoulderRoll: -1.35,
-            lShoulderPitch: -0.18,
-            lElbowBend: 0.38,
-            rShoulderRoll: -0.75,
-            rShoulderPitch: -0.55,
-            rElbowBend: 1.15
+            lShoulderRoll: -0.75,
+            lShoulderPitch: -0.65,
+            lElbowBend: 1.15,
+            rShoulderRoll: -1.35,
+            rShoulderPitch: -0.15,
+            rElbowBend: 0.28
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 1.2, this.rightHandWorldPos.z + 0.8);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.1, this.leftHandWorldPos.y + 1.1, this.leftHandWorldPos.z + 0.8);
             const headTarget = new THREE.Vector3(this.charPos.x, this.charPos.y + 68, this.charPos.z);
             this.phone.lookAt(headTarget);
           }
@@ -1793,20 +1828,20 @@
           // Head looks toward the bookshelf destination
           this.headRot.set(0.06, 0.32, 0);
 
-          // Alternating arm swing during walking
+          // Alternating arm swing during walking (phone held in left hand at waist)
           const swing = isWalking ? Math.sin(walkPhase) * 0.25 : 0;
           this.updateDoraArms({
-            lShoulderRoll: -1.35,
-            lShoulderPitch: -0.15 + swing,
-            lElbowBend: 0.32,
-            rShoulderRoll: -0.95,
-            rShoulderPitch: -0.35 - swing,
-            rElbowBend: 0.85
+            lShoulderRoll: -1.20,
+            lShoulderPitch: -0.28,
+            lElbowBend: 0.55,
+            rShoulderRoll: -1.35,
+            rShoulderPitch: -0.15 + swing,
+            rElbowBend: 0.32
           });
 
           if (this.phone) {
-            this.phone.position.set(this.rightHandWorldPos.x - 0.2, this.rightHandWorldPos.y + 0.8, this.rightHandWorldPos.z + 0.6);
-            this.phone.rotation.set(-0.35, 0.45, -0.1);
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.rotation.set(-0.25, 0.25, 0);
           }
         }
 
@@ -1828,16 +1863,16 @@
           this.charRot.set(0, 0.35, 0);
 
           if (elapsed < 21.8) {
-            // Reaching phase: hand moves toward glasses on shelf 2
+            // Reaching phase: right hand moves toward glasses on shelf 2
             this.glassesState = 'GLASSES_SHELF';
             const reachF = this.easeInOutCubic((elapsed - 20.5) / 1.3);
             this.updateDoraArms({
-              lShoulderRoll: -1.40,
+              lShoulderRoll: -1.35,
               lShoulderPitch: -0.15,
-              lElbowBend: 0.25,
-              rShoulderRoll: -0.22 * reachF + -0.95 * (1 - reachF),
-              rShoulderPitch: -0.95 * reachF + -0.35 * (1 - reachF),
-              rElbowBend: 0.40 * reachF + 0.85 * (1 - reachF),
+              lElbowBend: 0.28,
+              rShoulderRoll: -0.22 * reachF + -1.35 * (1 - reachF),
+              rShoulderPitch: -0.95 * reachF + -0.15 * (1 - reachF),
+              rElbowBend: 0.40 * reachF + 0.28 * (1 - reachF),
               rWristFlex: 0.20
             });
             this.headRot.set(0.14, 0.48, 0);
@@ -1848,9 +1883,9 @@
 
             const liftF = this.easeInOutCubic((elapsed - 21.8) / 1.7);
             this.updateDoraArms({
-              lShoulderRoll: -1.40,
+              lShoulderRoll: -1.35,
               lShoulderPitch: -0.15,
-              lElbowBend: 0.25,
+              lElbowBend: 0.28,
               rShoulderRoll: -0.65 * liftF + -0.22 * (1 - liftF),
               rShoulderPitch: -0.72 * liftF + -0.95 * (1 - liftF),
               rElbowBend: 1.30 * liftF + 0.40 * (1 - liftF),
@@ -1859,6 +1894,11 @@
 
             // Relieved happy smile & head tilt
             this.headRot.set(-0.06, 0.32, 0.12 * liftF);
+          }
+
+          if (this.phone) {
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.rotation.set(-0.25, 0.15, 0);
           }
 
           this.drawPhoneScreen('RESOLVE', 'Retrieved');
@@ -1887,17 +1927,23 @@
           if (this.roomLights.phantom) this.roomLights.phantom.intensity = Math.max(0, 1.15 - (elapsed - 23.5) * 0.4);
 
           const happyBob = Math.sin(now * 0.0025) * 0.35;
-          this.charPos.y = happyBob;
+          this.charPos.set(DORA_SHELF_POS.x, happyBob, DORA_SHELF_POS.z);
+          this.charRot.set(0, 0.35, 0);
           this.headRot.set(-0.04, 0.28 + Math.sin(now * 0.001) * 0.04, 0.08);
 
           this.updateDoraArms({
-            lShoulderRoll: -1.40,
+            lShoulderRoll: -1.35,
             lShoulderPitch: -0.15,
             lElbowBend: 0.28,
             rShoulderRoll: -0.72,
             rShoulderPitch: -0.65,
             rElbowBend: 1.30
           });
+
+          if (this.phone) {
+            this.phone.position.set(this.leftHandWorldPos.x + 0.2, this.leftHandWorldPos.y + 0.8, this.leftHandWorldPos.z + 0.5);
+            this.phone.rotation.set(-0.25, 0.15, 0);
+          }
 
           // Multi-state button logic:
           // 23.5s - 25.5s: "Story complete ✓"
@@ -1979,6 +2025,24 @@
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
+    }
+
+    findGlasses() {
+      if (this.currentStoryPhase === 'RESOLVE') {
+        this.resetStory();
+      }
+      this.startStory();
+    }
+
+    scrubRealityDiff(ratio) {
+      if (this.isStoryActive) return;
+      // Gently adjust camera and ghost visibility based on reality diff scrub
+      if (this.ghostGlasses) {
+        this.ghostGlasses.visible = ratio > 0.45;
+      }
+      if (this.highlightGhost) {
+        this.highlightGhost.visible = ratio > 0.45;
+      }
     }
   }
 
