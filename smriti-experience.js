@@ -1,25 +1,66 @@
-// ==========================================================================
-// SMRITI — Premium Interactive 3D Product Experience
-// Architecture: Pure 3D World (Character + Home + Props + Camera + Animation)
-// Strictly separated from Website HTML UI (Branding + Typography + Evidence)
-// ==========================================================================
+// =============================================================================
+// SMRITI — Visual Overhaul v3: Premium 3D Animated World
+// Art Direction: High-end animated film / Pixar & Ghibli warmth
+// Organic cinematic environment + stylized expressive character + rich 70/20/10 palette
+// =============================================================================
 
 (function() {
   'use strict';
 
-  // Coordinate Constants exactly matching Spline Scene
-  const GLASSES_ORIGIN = { x: -115, y: 53.5, z: -35 };
-  const GLASSES_DEST = { x: 125, y: 92, z: -218 };
-  const CHAR_ORIGIN = { x: 15, y: 0, z: 20 };
+  // 70 / 20 / 10 Master Palette Constants (Deepened to retain rich saturation under 3D lighting)
+  const PALETTE = {
+    // 70% Architectural Warmth
+    bg: 0xF7E7CF,             // Warm Peach/Cream Canvas (#F7E7CF)
+    wallPlaster: 0xF5E6D3,     // Soft Plaster Wall
+    floorWood: 0x966336,       // Rich Caramel Oak Floor
+    floorPlankDark: 0x7E4F25,  // Dark Parquet Inlay
+    rugBase: 0xECE1CE,         // Organic Sand Pebble Rug
+    rugBorder: 0xD8C6AC,       // Soft Woven Rug Border
+    
+    // 20% Character & Furniture Anchors
+    charSweater: 0x223212,     // Deep Rich Olive Knit (#59663B)
+    charCollar: 0x18240D,      // Deep Olive Ribbed Trim
+    charAccent: 0xB54E29,      // Warm Terracotta Neckerchief / Accent (#C96B45)
+    charPants: 0xF5E9D3,       // Warm Cream Linen Trousers (#F6EBD7)
+    charShoes: 0x180D07,       // Dark Chestnut Loafers (#3B2A22)
+    charHair: 0x140B06,        // Rich Dark Espresso Sculpted Hair (#302119)
+    charSkin: 0xF7CBB6,        // Warm Peach Skin with Subsurface Glow
+    charBlush: 0xE06E50,       // Soft Coral Cheeks (#E4866D)
+    charEyes: 0x16100E,        // Glossy Dark Pupils
+    
+    furnitureWood: 0x915B2D,   // Warm Caramel Oak
+    furnitureDark: 0x5C381E,   // Roasted Walnut
+    armchairFabric: 0xE8E0D0,  // Soft Bouclé Off-White
+    blanketTerracotta: 0xBD4D28,// Warm Terracotta Throw (#C96B45)
+    cushionMustard: 0xD9941E,  // Warm Velvet Mustard (#D6A83E)
+    lampBrass: 0xC8A050,       // Brushed Warm Brass
+    lampShade: 0xFDF6E8,       // Fluted Parchment Shade
+    plantGreen: 0x324D22,      // Rich Monstera Foliage
+    plantDeep: 0x1B2C16,       // Deep Olive Shadow Foliage
+    plantPot: 0xB55730,        // Terracotta Planter
+    
+    // 10% PHANTOM Story Accents
+    glassesFrame: 0x22160F,    // Tortoise Espresso Frame
+    glassesBridge: 0xC29E52,   // Warm Gold Bridge
+    phantomTeal: 0x4E9C91,     // SMRITI Memory Teal (#4E9C91)
+    phantomTealGlow: 0x68BDB2, // Luminous Recall Shimmer
+    movementAmber: 0xD9A83E,   // Spatial Trajectory Amber (#D9A83E)
+    confirmGreen: 0x687A42     // Verified Memory Green (#687A42)
+  };
 
-  // Cinematic Camera States (Front-stage architectural perspective matching Spline)
+  // World Anchors
+  const GLASSES_ORIGIN = { x: -74, y: 53.5, z: 8 };
+  const GLASSES_DEST = { x: 104, y: 86.5, z: -85 };
+  const CHAR_ORIGIN = { x: 4, y: 0, z: 10 };
+
+  // Cinematic 3/4 Perspective Camera States (35–45mm focal depth, character occupies 28–32% height)
   const CAM_PRESETS = {
-    HOME: { pos: { x: 10, y: 155, z: 420 }, target: { x: 10, y: 75, z: -50 }, fov: 32 },
-    CHARACTER: { pos: { x: 15, y: 115, z: 250 }, target: { x: 15, y: 72, z: 10 }, fov: 28 },
-    SEARCH: { pos: { x: -40, y: 125, z: 270 }, target: { x: -85, y: 60, z: -35 }, fov: 29 },
-    PHANTOM: { pos: { x: 10, y: 165, z: 430 }, target: { x: 10, y: 80, z: -80 }, fov: 33 },
-    REVEAL: { pos: { x: 75, y: 120, z: 190 }, target: { x: 125, y: 92, z: -218 }, fov: 28 },
-    RESOLUTION: { pos: { x: 10, y: 155, z: 420 }, target: { x: 10, y: 75, z: -50 }, fov: 32 }
+    HOME: { pos: { x: 55, y: 118, z: 285 }, target: { x: 6, y: 60, z: -10 }, fov: 31 },
+    CHARACTER: { pos: { x: 38, y: 98, z: 205 }, target: { x: 4, y: 64, z: 10 }, fov: 28 },
+    SEARCH: { pos: { x: 15, y: 110, z: 230 }, target: { x: -48, y: 54, z: 0 }, fov: 29 },
+    PHANTOM: { pos: { x: 72, y: 130, z: 310 }, target: { x: 15, y: 62, z: -35 }, fov: 32 },
+    REVEAL: { pos: { x: 68, y: 98, z: 160 }, target: { x: 104, y: 86, z: -85 }, fov: 27 },
+    RESOLUTION: { pos: { x: 55, y: 118, z: 285 }, target: { x: 6, y: 60, z: -10 }, fov: 31 }
   };
 
   class SmritiExperience {
@@ -30,15 +71,19 @@
       this.scene = null;
       this.camera = null;
       this.renderer = null;
-      this.camTarget = new THREE.Vector3(10, 75, -50);
+      this.camTarget = new THREE.Vector3().copy(CAM_PRESETS.HOME.target);
       this.targetCamPos = new THREE.Vector3().copy(CAM_PRESETS.HOME.pos);
       this.targetCamLook = new THREE.Vector3().copy(CAM_PRESETS.HOME.target);
       this.targetFov = CAM_PRESETS.HOME.fov;
 
-      // 3D Objects
+      // 3D Subject Handles
       this.character = null;
       this.characterHead = null;
-      this.characterEyes = [];
+      this.characterEyelids = [];
+      this.characterEyebrows = [];
+      this.characterMouth = null;
+      this.characterArmR = null;
+      this.characterArmL = null;
       this.glasses = null;
       this.ghostGlasses = null;
       this.highlightGhost = null;
@@ -46,18 +91,18 @@
       this.spatialTrail = null;
       this.roomLights = {};
 
-      // Animation State
+      // Dynamic Animation State Machine
       this.isStoryActive = false;
-      this.diffProgress = 1;
       this.storyStartTime = 0;
       this.lastBlinkTime = 0;
+      this.nextBlinkInterval = 3200;
       this.charPos = new THREE.Vector3().copy(CHAR_ORIGIN);
-      this.charRot = new THREE.Euler(0, -0.1, 0);
+      this.charRot = new THREE.Euler(0, 0.22, 0); // Warmly oriented towards camera & viewer
       this.headRot = new THREE.Euler(0, 0, 0);
 
-      // External Website UI References (Isolated in HTML)
+      // DOM UI Elements
       this.ui = {
-        statusDot: document.getElementById('storyStatusDot'),
+        statusDot: document.getElementById('storyStatusDot') || document.querySelector('.live-indicator'),
         statusText: document.getElementById('storyStatusText'),
         receiptToast: document.getElementById('memoryReceiptToast'),
         captionWrap: document.getElementById('heroCaptionWrap'),
@@ -72,42 +117,44 @@
     }
 
     init() {
+      // 1. Scene with Warm Peach Atmosphere
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0xf4f0e8);
-      this.scene.fog = new THREE.Fog(0xf4f0e8, 900, 2400);
+      this.scene.background = new THREE.Color(PALETTE.bg);
+      this.scene.fog = new THREE.FogExp2(PALETTE.bg, 0.0006);
 
       const isMobile = window.innerWidth < 640;
       const initialFov = isMobile ? 38 : CAM_PRESETS.HOME.fov;
       const aspect = this.container.clientWidth / this.container.clientHeight;
-      this.camera = new THREE.PerspectiveCamera(initialFov, aspect, 10, 3500);
+      this.camera = new THREE.PerspectiveCamera(initialFov, aspect, 10, 3000);
 
       if (isMobile) {
-        this.camera.position.set(10, 185, 600);
-        this.camTarget.set(10, 95, -50);
-        this.camera.fov = 35;
-        this.camera.updateProjectionMatrix();
+        this.camera.position.set(10, 115, 340);
+        this.camTarget.set(4, 58, -15);
+        this.camera.fov = 36;
       } else {
         this.camera.position.copy(CAM_PRESETS.HOME.pos);
         this.camTarget.copy(CAM_PRESETS.HOME.target);
       }
       this.camera.lookAt(this.camTarget);
 
+      // 2. High-Fidelity Renderer with Controlled Tone Mapping
       this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 700 ? 1.35 : 1.7));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       this.renderer.shadowMap.enabled = true;
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       this.renderer.outputEncoding = THREE.sRGBEncoding;
       this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      this.renderer.toneMappingExposure = 1.02;
+      this.renderer.toneMappingExposure = 0.98;
 
       this.container.appendChild(this.renderer.domElement);
 
-      this.setupLights();
-      this.buildRoom();
-      this.buildFurniture();
-      this.buildCharacter();
-      this.buildProps();
+      // 3. Assemble Organic Cinematic World
+      this.setupCinematicLighting();
+      this.buildOrganicEnvironment();
+      this.buildStylizedFurniture();
+      this.buildCharacterV3();
+      this.buildHeroProps();
 
       window.addEventListener('resize', () => this.onResize());
       this.setupUIListeners();
@@ -122,565 +169,799 @@
       requestAnimationFrame(this.animate);
     }
 
-    setupLights() {
-      // Warm, balanced lighting with filmic exposure — avoiding blown-out ambient wash
-      const ambient = new THREE.AmbientLight(0xfdf2e2, 0.58);
+    // =========================================================================
+    // 1. CINEMATIC LIGHTING (Controlled Contrast, Rich Warmth, Punchy Colors)
+    // =========================================================================
+    setupCinematicLighting() {
+      // Warm ambient base - soft and gentle, keeping deep saturated tones
+      const ambient = new THREE.AmbientLight(0xFFE2CB, 0.35);
       this.scene.add(ambient);
       this.roomLights.ambient = ambient;
 
-      const sun = new THREE.DirectionalLight(0xfff0db, 0.98);
-      sun.position.set(320, 480, 360);
-      sun.castShadow = true;
-      sun.shadow.mapSize.width = 1024;
-      sun.shadow.mapSize.height = 1024;
-      sun.shadow.camera.near = 100;
-      sun.shadow.camera.far = 1300;
-      const d = 360;
-      sun.shadow.camera.left = -d;
-      sun.shadow.camera.right = d;
-      sun.shadow.camera.top = d;
-      sun.shadow.camera.bottom = -d;
-      sun.shadow.bias = -0.0004;
-      this.scene.add(sun);
-      this.roomLights.sun = sun;
+      // Primary Key Light — Warm golden sunlight from upper left
+      const sunKey = new THREE.DirectionalLight(0xFFD8AF, 0.88);
+      sunKey.position.set(-220, 360, 200);
+      sunKey.castShadow = true;
+      sunKey.shadow.mapSize.width = 2048;
+      sunKey.shadow.mapSize.height = 2048;
+      sunKey.shadow.camera.near = 50;
+      sunKey.shadow.camera.far = 950;
+      const d = 280;
+      sunKey.shadow.camera.left = -d;
+      sunKey.shadow.camera.right = d;
+      sunKey.shadow.camera.top = d;
+      sunKey.shadow.camera.bottom = -d;
+      sunKey.shadow.bias = -0.0004;
+      this.scene.add(sunKey);
+      this.roomLights.sun = sunKey;
 
-      const lampLight = new THREE.PointLight(0xffdeaa, 2.2, 260, 1.6);
-      lampLight.position.set(-55, 68, -175);
-      this.scene.add(lampLight);
-      this.roomLights.lamp = lampLight;
+      // Soft Back/Rim Light — Defines hair silhouette and sweater volume
+      const rimLight = new THREE.DirectionalLight(0xFFEBC7, 0.36);
+      rimLight.position.set(150, 200, -240);
+      this.scene.add(rimLight);
+      this.roomLights.rim = rimLight;
 
-      const windowFill = new THREE.DirectionalLight(0xfffaed, 0.35);
-      windowFill.position.set(-280, 300, 100);
-      this.scene.add(windowFill);
+      // Cozy Floor Lamp Warm Glow
+      const lampPoint = new THREE.PointLight(0xFFA55A, 1.3, 200, 1.7);
+      lampPoint.position.set(-110, 85, -95);
+      this.scene.add(lampPoint);
+      this.roomLights.lamp = lampPoint;
+
+      // PHANTOM Atmospheric Accent Light (Activated in story phase 4)
+      const phantomFill = new THREE.PointLight(PALETTE.phantomTeal, 0, 320, 1.5);
+      phantomFill.position.set(15, 85, -35);
+      this.scene.add(phantomFill);
+      this.roomLights.phantom = phantomFill;
     }
 
-    buildRoom() {
-      // 1. Warm Hardwood Oak/Parquet Floor
-      const matFloor = new THREE.MeshStandardMaterial({ color: 0xb58d67, roughness: 0.65, metalness: 0.05 });
-      const floor = new THREE.Mesh(new THREE.BoxGeometry(900, 8, 900), matFloor);
-      floor.position.set(0, -4, 0);
-      floor.receiveShadow = true;
-      this.scene.add(floor);
-
-      // 2. Warm Architectural Plaster Walls
-      const matWallBack = new THREE.MeshStandardMaterial({ color: 0xf0e9dc, roughness: 0.88 });
-      const wallBack = new THREE.Mesh(new THREE.BoxGeometry(700, 340, 16), matWallBack);
-      wallBack.position.set(20, 170, -250);
-      wallBack.receiveShadow = true;
-      this.scene.add(wallBack);
-
-      const matWallLeft = new THREE.MeshStandardMaterial({ color: 0xe8dfce, roughness: 0.88 });
-      // Four plaster returns leave a real opening for the window. A single
-      // opaque slab behind the frame made the glazing read as a wall sticker.
-      const wallLeftSegments = [
-        { size: [16, 105, 700], at: [-250, 52.5, 20] },
-        { size: [16, 103, 700], at: [-250, 286.5, 20] },
-        { size: [16, 130, 270], at: [-250, 170, -195] },
-        { size: [16, 130, 270], at: [-250, 170, 235] }
-      ];
-      wallLeftSegments.forEach(({ size, at }) => {
-        const panel = new THREE.Mesh(new THREE.BoxGeometry(...size), matWallLeft);
-        panel.position.set(...at);
-        panel.receiveShadow = true;
-        this.scene.add(panel);
+    // =========================================================================
+    // 2. ORGANIC ENVIRONMENT (Seamless Floor, Soft Backdrop, Layered Foreground)
+    // =========================================================================
+    buildOrganicEnvironment() {
+      // 1. Seamless Warm Oak Floor extending naturally
+      const matFloor = new THREE.MeshStandardMaterial({
+        color: PALETTE.floorWood,
+        roughness: 0.52,
+        metalness: 0.04
       });
+      const floorDisc = new THREE.Mesh(new THREE.CylinderGeometry(440, 460, 8, 48), matFloor);
+      floorDisc.position.set(0, -4, -30);
+      floorDisc.receiveShadow = true;
+      this.scene.add(floorDisc);
 
-      // 3. Architectural Baseboard Molding (grounds walls to floor)
-      const matBaseboard = new THREE.MeshStandardMaterial({ color: 0x8c6b48, roughness: 0.7 });
-      const baseboardBack = new THREE.Mesh(new THREE.BoxGeometry(680, 12, 6), matBaseboard);
-      baseboardBack.position.set(10, 6, -241);
-      baseboardBack.castShadow = true;
-      baseboardBack.receiveShadow = true;
-      this.scene.add(baseboardBack);
+      // Parquet floor plank accents
+      const matPlankDark = new THREE.MeshStandardMaterial({ color: PALETTE.floorPlankDark, roughness: 0.58 });
+      for (let i = -4; i <= 4; i++) {
+        const strip = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.35, 600), matPlankDark);
+        strip.position.set(i * 68, 0.2, -30);
+        strip.receiveShadow = true;
+        this.scene.add(strip);
+      }
 
-      const baseboardLeft = new THREE.Mesh(new THREE.BoxGeometry(6, 12.5, 480), matBaseboard);
-      baseboardLeft.position.set(-241, 6.25, 0);
-      baseboardLeft.castShadow = true;
-      baseboardLeft.receiveShadow = true;
-      this.scene.add(baseboardLeft);
+      // 2. Soft Architectural Curved Backdrop Wall
+      const wallMat = new THREE.MeshStandardMaterial({ color: PALETTE.wallPlaster, roughness: 0.88 });
+      const wallCurve = new THREE.Mesh(
+        new THREE.CylinderGeometry(380, 380, 320, 36, 1, true, Math.PI * 0.72, Math.PI * 0.85),
+        wallMat
+      );
+      wallCurve.position.set(0, 155, -95);
+      wallCurve.rotation.y = -Math.PI * 0.55;
+      wallCurve.receiveShadow = true;
+      this.scene.add(wallCurve);
 
-      // 4. Window Frame & Glass
-      const matWoodFrame = new THREE.MeshStandardMaterial({ color: 0x9e7549, roughness: 0.65 });
-      const matGlass = new THREE.MeshPhysicalMaterial({ color: 0xe6f3fa, roughness: 0.1, transmission: 0.7, transparent: true, opacity: 0.65 });
+      // 3. Large Organic Pebble / Rounded Oval Rug
+      const rugGroup = new THREE.Group();
+      rugGroup.position.set(6, 0.5, 0);
 
-      const winGroup = new THREE.Group();
-      winGroup.position.set(-246, 170, 20);
+      const rugMat = new THREE.MeshStandardMaterial({ color: PALETTE.rugBase, roughness: 0.9 });
+      const rugBorderMat = new THREE.MeshStandardMaterial({ color: PALETTE.rugBorder, roughness: 0.9 });
 
-      const frameRailTop = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 152), matWoodFrame);
-      frameRailTop.position.y = 62;
-      winGroup.add(frameRailTop);
-      const frameRailBottom = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 152), matWoodFrame);
-      frameRailBottom.position.y = -62;
-      winGroup.add(frameRailBottom);
-      const frameRailLeft = new THREE.Mesh(new THREE.BoxGeometry(6, 118, 6), matWoodFrame);
-      frameRailLeft.position.z = -77;
-      winGroup.add(frameRailLeft);
-      const frameRailRight = new THREE.Mesh(new THREE.BoxGeometry(6, 118, 6), matWoodFrame);
-      frameRailRight.position.z = 77;
-      winGroup.add(frameRailRight);
+      // Sculpted Pebble Rug shape
+      const rugMesh = new THREE.Mesh(new THREE.CylinderGeometry(140, 150, 2.5, 36), rugMat);
+      rugMesh.scale.set(1.32, 1, 0.96);
+      rugMesh.receiveShadow = true;
+      rugGroup.add(rugMesh);
 
-      const hBar = new THREE.Mesh(new THREE.BoxGeometry(3, 4, 152), matWoodFrame);
-      winGroup.add(hBar);
+      const rugRim = new THREE.Mesh(new THREE.CylinderGeometry(144, 154, 1.8, 36), rugBorderMat);
+      rugRim.scale.set(1.32, 1, 0.96);
+      rugRim.position.y = -0.4;
+      rugRim.receiveShadow = true;
+      rugGroup.add(rugRim);
 
-      const vBar = new THREE.Mesh(new THREE.BoxGeometry(3, 122, 4), matWoodFrame);
-      vBar.position.x = 0.6;
-      winGroup.add(vBar);
+      this.scene.add(rugGroup);
 
-      const glass = new THREE.Mesh(new THREE.BoxGeometry(2, 122, 152), matGlass);
-      glass.position.x = -1.5;
-      winGroup.add(glass);
+      // 4. Cinematic Foreground Layer: Organic Monstera Leaf gracefully framing bottom-right
+      const fgPlantGroup = new THREE.Group();
+      fgPlantGroup.position.set(92, 32, 145); // Closer to camera, partially cropping lower right frame
 
-      this.scene.add(winGroup);
+      const leafMat = new THREE.MeshStandardMaterial({ color: PALETTE.plantGreen, roughness: 0.45 });
+      const leafMatDeep = new THREE.MeshStandardMaterial({ color: PALETTE.plantDeep, roughness: 0.55 });
 
-      // 5. Warm Woven Wool Rug with border
-      const matRug = new THREE.MeshStandardMaterial({ color: 0xd2c6b2, roughness: 0.9 });
-      const rug = new THREE.Mesh(new THREE.BoxGeometry(396, 2, 316), matRug);
-      rug.position.set(0, 3, -30);
-      rug.receiveShadow = true;
-      this.scene.add(rug);
+      const leaf1 = new THREE.Mesh(new THREE.SphereGeometry(30, 16, 16), leafMat);
+      leaf1.scale.set(0.18, 1.45, 0.9);
+      leaf1.rotation.set(0.42, 0.3, -0.65);
+      leaf1.castShadow = true;
+      fgPlantGroup.add(leaf1);
 
-      const matRugBorder = new THREE.MeshStandardMaterial({ color: 0xb5a794, roughness: 0.9 });
-      const rugBorder = new THREE.Mesh(new THREE.BoxGeometry(408, 2.5, 328), matRugBorder);
-      rugBorder.position.set(0, 1, -30);
-      rugBorder.receiveShadow = true;
-      this.scene.add(rugBorder);
+      const leaf2 = new THREE.Mesh(new THREE.SphereGeometry(22, 16, 16), leafMatDeep);
+      leaf2.scale.set(0.15, 1.35, 0.85);
+      leaf2.position.set(-16, -14, 12);
+      leaf2.rotation.set(0.25, 0.5, -0.45);
+      leaf2.castShadow = true;
+      fgPlantGroup.add(leaf2);
+
+      this.scene.add(fgPlantGroup);
     }
 
-    buildFurniture() {
-      const matWoodWarm = new THREE.MeshStandardMaterial({ color: 0x987148, roughness: 0.65 });
-      const matWoodDark = new THREE.MeshStandardMaterial({ color: 0x7c5833, roughness: 0.72 });
-      const matTableWood = new THREE.MeshStandardMaterial({ color: 0xba9570, roughness: 0.6 });
-      const matChairFabric = new THREE.MeshStandardMaterial({ color: 0xddd5c4, roughness: 0.88 });
-      const matCushionOlive = new THREE.MeshStandardMaterial({ color: 0x5b6641, roughness: 0.8 });
-
-      // 1. SIDE TABLE
-      const sideTableGroup = new THREE.Group();
-      const tableTop = new THREE.Mesh(new THREE.CylinderGeometry(28, 28, 4, 32), matTableWood);
-      tableTop.position.set(-115, 50, -40);
-      tableTop.castShadow = true;
-      tableTop.receiveShadow = true;
-      sideTableGroup.add(tableTop);
-
-      const legGeo = new THREE.CylinderGeometry(2, 2, 50, 16);
-      const leg1 = new THREE.Mesh(legGeo, matWoodDark);
-      leg1.position.set(-128, 25, -48);
-      leg1.rotation.set(-0.09, 0, 0.14);
-      leg1.castShadow = true;
-      sideTableGroup.add(leg1);
-
-      const leg2 = new THREE.Mesh(legGeo, matWoodDark);
-      leg2.position.set(-102, 25, -48);
-      leg2.rotation.set(-0.09, 0, -0.14);
-      leg2.castShadow = true;
-      sideTableGroup.add(leg2);
-
-      const leg3 = new THREE.Mesh(legGeo, matWoodDark);
-      leg3.position.set(-115, 25, -28);
-      leg3.rotation.set(0.16, 0, 0);
-      leg3.castShadow = true;
-      sideTableGroup.add(leg3);
-
-      this.scene.add(sideTableGroup);
-
-      // 2. OPEN BOOKSHELF
-      const bookshelfGroup = new THREE.Group();
-      const uprightGeo = new THREE.BoxGeometry(4, 160, 36);
-      const uprightL = new THREE.Mesh(uprightGeo, matWoodWarm);
-      uprightL.position.set(95, 80, -218);
-      uprightL.castShadow = true;
-      bookshelfGroup.add(uprightL);
-
-      const uprightR = new THREE.Mesh(uprightGeo, matWoodWarm);
-      uprightR.position.set(165, 80, -218);
-      uprightR.castShadow = true;
-      bookshelfGroup.add(uprightR);
-
-      const shelfTop = new THREE.Mesh(new THREE.BoxGeometry(74, 4, 36), matWoodWarm);
-      shelfTop.position.set(130, 160, -218);
-      bookshelfGroup.add(shelfTop);
-
-      const shelfBack = new THREE.Mesh(new THREE.BoxGeometry(70, 160, 2), matWoodDark);
-      shelfBack.position.set(130, 80, -235);
-      bookshelfGroup.add(shelfBack);
-
-      const shelfGeo = new THREE.BoxGeometry(66, 3, 34);
-      const shelf1 = new THREE.Mesh(shelfGeo, matWoodWarm);
-      shelf1.position.set(130, 50, -218);
-      shelf1.receiveShadow = true;
-      bookshelfGroup.add(shelf1);
-
-      const shelf2 = new THREE.Mesh(shelfGeo, matWoodWarm);
-      shelf2.position.set(130, 90, -218);
-      shelf2.receiveShadow = true;
-      bookshelfGroup.add(shelf2);
-
-      const shelf3 = new THREE.Mesh(shelfGeo, matWoodWarm);
-      shelf3.position.set(130, 130, -218);
-      shelf3.receiveShadow = true;
-      bookshelfGroup.add(shelf3);
-
-      // Books on Shelf 2
-      const bookMatRose = new THREE.MeshStandardMaterial({ color: 0xdc728e, roughness: 0.8 });
-      const bookMatBlue = new THREE.MeshStandardMaterial({ color: 0x3d78a8, roughness: 0.8 });
-      const bookMatAmber = new THREE.MeshStandardMaterial({ color: 0xd59a45, roughness: 0.8 });
-      const bookMatOlive = new THREE.MeshStandardMaterial({ color: 0x6f7655, roughness: 0.8 });
-
-      const book1 = new THREE.Mesh(new THREE.BoxGeometry(8, 26, 18), bookMatRose);
-      book1.position.set(106, 103, -218);
-      book1.castShadow = true;
-      bookshelfGroup.add(book1);
-
-      const book2 = new THREE.Mesh(new THREE.BoxGeometry(10, 22, 19), bookMatBlue);
-      book2.position.set(114, 104, -218);
-      book2.castShadow = true;
-      bookshelfGroup.add(book2);
-
-      const book3 = new THREE.Mesh(new THREE.BoxGeometry(9, 28, 17), bookMatAmber);
-      book3.position.set(148, 105, -218);
-      book3.castShadow = true;
-      bookshelfGroup.add(book3);
-
-      const book4 = new THREE.Mesh(new THREE.BoxGeometry(8, 24, 18), bookMatOlive);
-      book4.position.set(156, 102, -218);
-      book4.castShadow = true;
-      bookshelfGroup.add(book4);
-
-      const vase = new THREE.Mesh(new THREE.CylinderGeometry(5, 7, 18, 16), new THREE.MeshStandardMaterial({ color: 0xebdcc7, roughness: 0.5 }));
-      vase.position.set(130, 140, -218);
-      bookshelfGroup.add(vase);
-
-      this.scene.add(bookshelfGroup);
-
-      // 3. ARMCHAIR IN MIDGROUND
+    // =========================================================================
+    // 3. STYLIZED FURNITURE (Curved Armchair, Pedestal Table, Arched Bookshelf)
+    // =========================================================================
+    buildStylizedFurniture() {
+      // 1. SCULPTED ROUNDED BOUCLÉ ARMCHAIR
       const chairGroup = new THREE.Group();
-      const seat = new THREE.Mesh(new THREE.BoxGeometry(64, 14, 64), matChairFabric);
-      seat.position.set(-55, 15, -40);
+      chairGroup.position.set(-52, 0, -35);
+      chairGroup.rotation.y = 0.35;
+
+      const matBoucle = new THREE.MeshStandardMaterial({ color: PALETTE.armchairFabric, roughness: 0.8 });
+      const matWoodLeg = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureDark, roughness: 0.5 });
+
+      // Curved Round Seat Cushion
+      const seat = new THREE.Mesh(new THREE.CylinderGeometry(28, 30, 15, 32), matBoucle);
+      seat.position.set(0, 15, 0);
+      seat.scale.set(1.04, 1, 1);
       seat.castShadow = true;
       seat.receiveShadow = true;
       chairGroup.add(seat);
 
-      const backrest = new THREE.Mesh(new THREE.BoxGeometry(64, 48, 14), matChairFabric);
-      backrest.position.set(-55, 44, -65);
+      // Rounded Wrap-around Barrel Backrest
+      const backrest = new THREE.Mesh(new THREE.CylinderGeometry(32, 32, 36, 28, 1, true, 0, Math.PI * 1.15), matBoucle);
+      backrest.position.set(0, 31, -4);
+      backrest.rotation.y = Math.PI * 0.92;
+      backrest.scale.set(1, 1, 0.92);
       backrest.castShadow = true;
       chairGroup.add(backrest);
 
-      const armL = new THREE.Mesh(new THREE.BoxGeometry(12, 26, 60), matChairFabric);
-      armL.position.set(-85, 28, -40);
-      armL.castShadow = true;
-      chairGroup.add(armL);
+      // Backrest Soft Cap
+      const backCap = new THREE.Mesh(new THREE.TorusGeometry(32, 3.8, 16, 28, Math.PI * 1.15), matBoucle);
+      backCap.position.set(0, 49, -4);
+      backCap.rotation.set(Math.PI * 0.5, 0, Math.PI * 0.92);
+      chairGroup.add(backCap);
 
-      const armR = new THREE.Mesh(new THREE.BoxGeometry(12, 26, 60), matChairFabric);
-      armR.position.set(-25, 28, -40);
-      armR.castShadow = true;
-      chairGroup.add(armR);
+      // Angled Rounded Wooden Legs
+      const legGeo = new THREE.CylinderGeometry(1.6, 1.1, 16, 16);
+      const legPositions = [
+        { x: -18, z: -15, rx: -0.14, rz: 0.14 },
+        { x: 18, z: -15, rx: -0.14, rz: -0.14 },
+        { x: -16, z: 15, rx: 0.14, rz: 0.14 },
+        { x: 16, z: 15, rx: 0.14, rz: -0.14 }
+      ];
+      legPositions.forEach(p => {
+        const leg = new THREE.Mesh(legGeo, matWoodLeg);
+        leg.position.set(p.x, 8, p.z);
+        leg.rotation.set(p.rx, 0, p.rz);
+        leg.castShadow = true;
+        chairGroup.add(leg);
+      });
 
-      const cushion = new THREE.Mesh(new THREE.BoxGeometry(28, 22, 10), matCushionOlive);
-      cushion.position.set(-55, 28, -58);
-      cushion.rotation.set(-0.17, 0, 0);
+      // Casually Draped Warm Terracotta Throw Blanket
+      const matBlanket = new THREE.MeshStandardMaterial({ color: PALETTE.blanketTerracotta, roughness: 0.82 });
+      const blanket = new THREE.Mesh(new THREE.BoxGeometry(20, 32, 16), matBlanket);
+      blanket.position.set(15, 30, 2);
+      blanket.rotation.set(0.14, 0.22, -0.18);
+      blanket.castShadow = true;
+      chairGroup.add(blanket);
+
+      // Mustard Velvet Round Cushion
+      const matCushion = new THREE.MeshStandardMaterial({ color: PALETTE.cushionMustard, roughness: 0.68 });
+      const cushion = new THREE.Mesh(new THREE.SphereGeometry(10, 24, 16), matCushion);
+      cushion.scale.set(1, 0.65, 0.95);
+      cushion.position.set(-6, 24, -9);
+      cushion.rotation.set(-0.35, 0.15, 0.1);
       cushion.castShadow = true;
       chairGroup.add(cushion);
 
       this.scene.add(chairGroup);
 
-      // 4. CABINET & LAMP
-      const cabinet = new THREE.Mesh(new THREE.BoxGeometry(80, 40, 30), matTableWood);
-      cabinet.position.set(-125, 25, -225);
-      cabinet.castShadow = true;
-      this.scene.add(cabinet);
+      // 2. ORGANIC ROUND PEDESTAL SIDE TABLE
+      const tableGroup = new THREE.Group();
+      tableGroup.position.set(-74, 0, 8);
 
-      const lampBase = new THREE.Mesh(new THREE.CylinderGeometry(7, 7, 2, 16), new THREE.MeshStandardMaterial({ color: 0x333 }));
-      lampBase.position.set(-150, 46, -225);
-      this.scene.add(lampBase);
+      const matTable = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureWood, roughness: 0.48 });
 
-      const lampRod = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 22, 12), new THREE.MeshStandardMaterial({ color: 0x333 }));
-      lampRod.position.set(-150, 57, -225);
-      this.scene.add(lampRod);
+      // Sculpted Table Top with soft chamfered edge
+      const tableTop = new THREE.Mesh(new THREE.CylinderGeometry(22, 22, 3.2, 32), matTable);
+      tableTop.position.set(0, 50, 0);
+      tableTop.castShadow = true;
+      tableTop.receiveShadow = true;
+      tableGroup.add(tableTop);
 
-      const lampShade = new THREE.Mesh(new THREE.ConeGeometry(10, 14, 24), new THREE.MeshStandardMaterial({ color: 0xfcf7ea, roughness: 0.4, emissive: 0xffeed0, emissiveIntensity: 0.65 }));
-      lampShade.position.set(-150, 68, -225);
-      this.scene.add(lampShade);
+      // Fluted Central Pedestal Stem
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(4, 5.5, 46, 24), matTable);
+      stem.position.set(0, 25, 0);
+      stem.castShadow = true;
+      tableGroup.add(stem);
 
-      // 5. POTTED PLANT
-      const plantPot = new THREE.Mesh(new THREE.CylinderGeometry(15, 12, 22, 24), new THREE.MeshStandardMaterial({ color: 0xc49673, roughness: 0.8 }));
-      plantPot.position.set(195, 14, -200);
-      plantPot.castShadow = true;
-      this.scene.add(plantPot);
+      const basePlate = new THREE.Mesh(new THREE.CylinderGeometry(16, 18, 3.8, 32), matTable);
+      basePlate.position.set(0, 1.9, 0);
+      basePlate.castShadow = true;
+      tableGroup.add(basePlate);
 
-      const plantLeaves = new THREE.Mesh(new THREE.SphereGeometry(18, 24, 24), new THREE.MeshStandardMaterial({ color: 0x5b7b52, roughness: 0.85 }));
-      plantLeaves.position.set(195, 36, -200);
-      plantLeaves.castShadow = true;
-      this.scene.add(plantLeaves);
+      this.scene.add(tableGroup);
 
-      // 6. FRAMED WALL ART
-      const frameBorder = new THREE.Mesh(new THREE.BoxGeometry(44, 56, 2), matWoodWarm);
-      frameBorder.position.set(-125, 160, -241);
-      this.scene.add(frameBorder);
+      // 3. ARCHED MODERN BOOKSHELF (Hero secondary anchor on right)
+      const shelfGroup = new THREE.Group();
+      shelfGroup.position.set(104, 0, -85);
 
-      const frameCanvas = new THREE.Mesh(new THREE.BoxGeometry(38, 50, 1), new THREE.MeshStandardMaterial({ color: 0xede4d3 }));
-      frameCanvas.position.set(-125, 160, -239);
-      this.scene.add(frameCanvas);
+      const matShelfWood = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureWood, roughness: 0.52 });
 
-      const frameSun = new THREE.Mesh(new THREE.SphereGeometry(9, 20, 20), new THREE.MeshStandardMaterial({ color: 0xb99a79 }));
-      frameSun.position.set(-125, 160, -238);
-      frameSun.scale.set(1, 1, 0.1);
-      this.scene.add(frameSun);
+      // Frame Sides
+      const uprightGeo = new THREE.BoxGeometry(3.5, 145, 30);
+      const uprightL = new THREE.Mesh(uprightGeo, matShelfWood);
+      uprightL.position.set(-30, 72.5, 0);
+      uprightL.castShadow = true;
+      shelfGroup.add(uprightL);
+
+      const uprightR = new THREE.Mesh(uprightGeo, matShelfWood);
+      uprightR.position.set(30, 72.5, 0);
+      uprightR.castShadow = true;
+      shelfGroup.add(uprightR);
+
+      // Arched Top Crown
+      const shelfCrown = new THREE.Mesh(new THREE.CylinderGeometry(31.5, 31.5, 30, 24, 1, false, 0, Math.PI), matShelfWood);
+      shelfCrown.position.set(0, 145, 0);
+      shelfCrown.rotation.z = Math.PI * 0.5;
+      shelfCrown.rotation.y = Math.PI * 0.5;
+      shelfCrown.castShadow = true;
+      shelfGroup.add(shelfCrown);
+
+      // 3 Horizontal Shelves
+      [40, 82, 122].forEach((yPos) => {
+        const shelfSlab = new THREE.Mesh(new THREE.BoxGeometry(58, 3, 28), matShelfWood);
+        shelfSlab.position.set(0, yPos, 0);
+        shelfSlab.receiveShadow = true;
+        shelfGroup.add(shelfSlab);
+      });
+
+      // Lived-in, Tilted & Leaning Books on Shelf 2
+      const bookColors = [PALETTE.blanketTerracotta, PALETTE.phantomTeal, PALETTE.cushionMustard, PALETTE.charSweater, 0x8C567A];
+      const booksData = [
+        { x: -22, h: 25, w: 5.5, d: 19, rotZ: 0, c: bookColors[0] },
+        { x: -15, h: 21, w: 6.5, d: 20, rotZ: 0, c: bookColors[1] },
+        { x: -7,  h: 23, w: 5,   d: 18, rotZ: 0.17, c: bookColors[2] }, // Leaning book
+        { x: 20,  h: 24, w: 5.5, d: 19, rotZ: 0, c: bookColors[3] },
+        { x: 13,  h: 20, w: 6.5, d: 17, rotZ: -0.12, c: bookColors[4] }
+      ];
+
+      booksData.forEach((b) => {
+        const bMat = new THREE.MeshStandardMaterial({ color: b.c, roughness: 0.65 });
+        const bMesh = new THREE.Mesh(new THREE.BoxGeometry(b.w, b.h, b.d), bMat);
+        bMesh.position.set(b.x, 82 + b.h / 2, 0);
+        bMesh.rotation.z = b.rotZ;
+        bMesh.castShadow = true;
+        shelfGroup.add(bMesh);
+      });
+
+      // Minimalist Ceramic Vases on Shelf 3
+      const matCeramicVase = new THREE.MeshStandardMaterial({ color: PALETTE.rugBase, roughness: 0.42 });
+      const vase = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 6.5, 17, 20), matCeramicVase);
+      vase.position.set(-13, 132, 0);
+      vase.castShadow = true;
+      shelfGroup.add(vase);
+
+      const vaseSmall = new THREE.Mesh(
+        new THREE.SphereGeometry(5.5, 16, 16),
+        new THREE.MeshStandardMaterial({ color: PALETTE.cushionMustard, roughness: 0.5 })
+      );
+      vaseSmall.position.set(11, 128, 0);
+      vaseSmall.castShadow = true;
+      shelfGroup.add(vaseSmall);
+
+      this.scene.add(shelfGroup);
+
+      // 4. CURVED BRASS GOOSENECK FLOOR LAMP (Left corner)
+      const lampGroup = new THREE.Group();
+      lampGroup.position.set(-110, 0, -90);
+
+      const matBrass = new THREE.MeshStandardMaterial({ color: PALETTE.lampBrass, roughness: 0.28, metalness: 0.85 });
+      const matShade = new THREE.MeshStandardMaterial({
+        color: PALETTE.lampShade,
+        roughness: 0.35,
+        emissive: 0xFFDC99,
+        emissiveIntensity: 0.8
+      });
+
+      const lampBase = new THREE.Mesh(new THREE.CylinderGeometry(13, 15, 2.8, 24), matBrass);
+      lampBase.position.y = 1.4;
+      lampBase.castShadow = true;
+      lampGroup.add(lampBase);
+
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0, 105, 0),
+        new THREE.Vector3(12, 145, 0),
+        new THREE.Vector3(26, 160, 0),
+        new THREE.Vector3(36, 150, 0)
+      ]);
+      const tubeGeo = new THREE.TubeGeometry(curve, 24, 1.3, 12, false);
+      const stemMesh = new THREE.Mesh(tubeGeo, matBrass);
+      lampGroup.add(stemMesh);
+
+      const shade = new THREE.Mesh(new THREE.ConeGeometry(11, 13, 24), matShade);
+      shade.position.set(36, 146, 0);
+      shade.castShadow = true;
+      lampGroup.add(shade);
+
+      this.scene.add(lampGroup);
+
+      // 5. POTTED FIG PLANT (Between Armchair and Shelf)
+      const plantGroup = new THREE.Group();
+      plantGroup.position.set(45, 0, -115);
+
+      const potMat = new THREE.MeshStandardMaterial({ color: PALETTE.plantPot, roughness: 0.72 });
+      const pot = new THREE.Mesh(new THREE.CylinderGeometry(13, 10, 22, 24), potMat);
+      pot.position.y = 11;
+      pot.castShadow = true;
+      plantGroup.add(pot);
+
+      const pLeafMat = new THREE.MeshStandardMaterial({ color: PALETTE.plantGreen, roughness: 0.52 });
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2;
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(11, 16, 16), pLeafMat);
+        leaf.scale.set(0.2, 1.35, 0.75);
+        leaf.position.set(Math.cos(angle) * 9, 24 + i * 3.8, Math.sin(angle) * 9);
+        leaf.rotation.set(0.38, angle, 0.38);
+        leaf.castShadow = true;
+        plantGroup.add(leaf);
+      }
+
+      this.scene.add(plantGroup);
+
+      // 6. FRAMED BAUHAUS SUN ART (On Curved Wall)
+      const frameGroup = new THREE.Group();
+      frameGroup.position.set(-25, 150, -155);
+      frameGroup.rotation.y = 0.18;
+
+      const frameMat = new THREE.MeshStandardMaterial({ color: PALETTE.furnitureDark, roughness: 0.5 });
+      const frameBorder = new THREE.Mesh(new THREE.BoxGeometry(38, 48, 2.2), frameMat);
+      frameGroup.add(frameBorder);
+
+      const canvasMat = new THREE.MeshStandardMaterial({ color: PALETTE.rugBase, roughness: 0.85 });
+      const canvas = new THREE.Mesh(new THREE.BoxGeometry(33, 43, 1), canvasMat);
+      canvas.position.z = 1.1;
+      frameGroup.add(canvas);
+
+      const sunArt = new THREE.Mesh(
+        new THREE.SphereGeometry(9, 20, 20),
+        new THREE.MeshStandardMaterial({ color: PALETTE.blanketTerracotta, roughness: 0.58 })
+      );
+      sunArt.position.set(0, 3.5, 1.7);
+      sunArt.scale.set(1, 1, 0.1);
+      frameGroup.add(sunArt);
+
+      this.scene.add(frameGroup);
     }
 
-    buildCharacter() {
-      // Signature Outfit: Olive Knit Sweater + Cream Trousers + Chestnut Shoes
-      const matSkin = new THREE.MeshStandardMaterial({ color: 0xe9bda5, roughness: 0.7 });
-      const matHair = new THREE.MeshStandardMaterial({ color: 0x30221d, roughness: 0.76 });
-      const matSweater = new THREE.MeshStandardMaterial({ color: 0x59634b, roughness: 0.9 });
-      const matSeam = new THREE.MeshStandardMaterial({ color: 0x424b39, roughness: 0.92 });
-      const matPants = new THREE.MeshStandardMaterial({ color: 0xd8cdbb, roughness: 0.92 });
-      const matShoes = new THREE.MeshStandardMaterial({ color: 0x47382d, roughness: 0.72 });
-      const matEyes = new THREE.MeshStandardMaterial({ color: 0x30231f, roughness: 0.42 });
-      const matEyeLight = new THREE.MeshBasicMaterial({ color: 0xfff8ed });
-      const matBlush = new THREE.MeshBasicMaterial({ color: 0xd88e79, transparent: true, opacity: 0.28, depthWrite: false });
-      const matMouth = new THREE.MeshBasicMaterial({ color: 0x9a5f51 });
-      const smoothSphere = new THREE.SphereGeometry(1, 32, 24);
-      const addEllipsoid = (parent, material, position, scale, castShadow = true) => {
-        const mesh = new THREE.Mesh(smoothSphere, material);
-        mesh.position.set(...position);
-        mesh.scale.set(...scale);
-        mesh.castShadow = castShadow;
-        parent.add(mesh);
-        return mesh;
-      };
+    // =========================================================================
+    // 4. CHARACTER REDESIGN V3 (Stylized Animated Character with Soul & Personality)
+    // Proportions: Oversized sculpted head, compact body, drop-shoulder olive sweater
+    // =========================================================================
+    buildCharacterV3() {
+      // Materials with rich contrast and soft cartoon lighting
+      const matSkin = new THREE.MeshStandardMaterial({
+        color: PALETTE.charSkin,
+        roughness: 0.44,
+        metalness: 0.02
+      });
+      const matHair = new THREE.MeshStandardMaterial({ color: PALETTE.charHair, roughness: 0.6 });
+      const matSweater = new THREE.MeshStandardMaterial({ color: PALETTE.charSweater, roughness: 0.72 });
+      const matCollar = new THREE.MeshStandardMaterial({ color: PALETTE.charCollar, roughness: 0.76 });
+      const matAccent = new THREE.MeshStandardMaterial({ color: PALETTE.charAccent, roughness: 0.75 });
+      const matPants = new THREE.MeshStandardMaterial({ color: PALETTE.charPants, roughness: 0.7 });
+      const matShoes = new THREE.MeshStandardMaterial({ color: PALETTE.charShoes, roughness: 0.5 });
+      const matBlush = new THREE.MeshBasicMaterial({ color: PALETTE.charBlush, transparent: true, opacity: 0.78 });
 
       this.character = new THREE.Group();
       this.character.position.copy(CHAR_ORIGIN);
-      this.character.scale.set(1.28, 1.28, 1.28);
-      this.character.rotation.set(0, -0.21, 0); // naturally facing viewer and room
+      this.character.scale.set(1.22, 1.22, 1.22);
+      this.character.rotation.copy(this.charRot);
 
-      // Shoes
-      [-6, 6].forEach(x => {
-        addEllipsoid(this.character, matShoes, [x, 4, 2], [4.5, 3.4, 8.2]);
-        addEllipsoid(this.character, matSeam, [x, 1.4, 2.2], [4.4, 1.05, 7.9]);
+      // 1. Stylized Chestnut Loafers (Rounded moccasin toe box + dark sole)
+      [-5.8, 5.8].forEach((xPos) => {
+        const shoeGroup = new THREE.Group();
+        shoeGroup.position.set(xPos, 0, 0);
+
+        // Rounded Shoe Body
+        const shoeMesh = new THREE.Mesh(new THREE.SphereGeometry(4.2, 16, 16), matShoes);
+        shoeMesh.scale.set(1.05, 0.75, 1.6);
+        shoeMesh.position.set(0, 3.2, 1.2);
+        shoeMesh.castShadow = true;
+        shoeGroup.add(shoeMesh);
+
+        // Dark Leather Sole
+        const sole = new THREE.Mesh(new THREE.CylinderGeometry(4.4, 4.4, 1.4, 16), matShoes);
+        sole.scale.set(1.05, 1, 1.55);
+        sole.position.set(0, 0.7, 1.2);
+        shoeGroup.add(sole);
+
+        this.character.add(shoeGroup);
       });
 
-      // Legs (Cream Linen Trousers)
-      const legGeo = new THREE.CylinderGeometry(3.7, 4.5, 35, 24, 1);
-      const legL = new THREE.Mesh(legGeo, matPants);
-      legL.position.set(-6, 24, 0);
-      legL.castShadow = true;
-      this.character.add(legL);
+      // 2. Cream Linen Relaxed Tapered Trousers
+      [-5.5, 5.5].forEach((xPos) => {
+        const legGroup = new THREE.Group();
+        legGroup.position.set(xPos, 5, 0);
 
-      const legR = new THREE.Mesh(legGeo, matPants);
-      legR.position.set(6, 24, 0);
-      legR.castShadow = true;
-      this.character.add(legR);
+        // Tapered Leg Volume
+        const legCylinder = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 3.2, 28, 20), matPants);
+        legCylinder.position.set(0, 14, 0);
+        legCylinder.castShadow = true;
+        legGroup.add(legCylinder);
 
-      // Hips
-      addEllipsoid(this.character, matPants, [0, 43, 0], [9.3, 5.3, 6.5]);
-      [-6, 6].forEach(x => addEllipsoid(this.character, matPants, [x, 8, 0], [3.7, 5, 4]));
+        // Trouser Ankle Cuff
+        const cuff = new THREE.Mesh(new THREE.TorusGeometry(3.4, 0.65, 12, 20), matPants);
+        cuff.position.set(0, 1.5, 0);
+        cuff.rotation.x = Math.PI * 0.5;
+        legGroup.add(cuff);
 
-      // Torso / Sweater (Warm Olive Knit)
-      addEllipsoid(this.character, matSweater, [0, 60, 0], [11.8, 15.5, 8.7]);
-      const placket = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 19, 10), matSeam);
-      placket.position.set(0, 59, 9.15);
-      this.character.add(placket);
-      [68, 63, 58].forEach(y => addEllipsoid(this.character, matSeam, [0, y, 9.2], [0.48, 0.48, 0.22], false));
+        this.character.add(legGroup);
+      });
 
-      const collar = new THREE.Mesh(new THREE.TorusGeometry(4.2, 0.8, 10, 28), matSeam);
-      collar.position.set(0, 72.5, 0);
-      collar.rotation.x = Math.PI / 2;
-      this.character.add(collar);
+      // Hips / Pelvis (Smooth rounded junction)
+      const hips = new THREE.Mesh(new THREE.SphereGeometry(10.5, 20, 20), matPants);
+      hips.scale.set(1.15, 0.65, 0.95);
+      hips.position.set(0, 36, 0);
+      hips.castShadow = true;
+      this.character.add(hips);
 
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 7, 16), matSkin);
-      neck.position.set(0, 78, 0);
+      // 3. Cozy Drop-Shoulder Deep Olive Knit Sweater (Soft sculpted volume)
+      const sweaterGroup = new THREE.Group();
+      sweaterGroup.position.set(0, 52, 0);
+
+      // Main Torso Body (Smooth rounded cylinder)
+      const torso = new THREE.Mesh(new THREE.CylinderGeometry(9.8, 11.2, 24, 24), matSweater);
+      torso.scale.set(1.12, 1, 0.92);
+      torso.castShadow = true;
+      sweaterGroup.add(torso);
+
+      // Ribbed Sweater Hem at Waist
+      const hem = new THREE.Mesh(new THREE.TorusGeometry(10.8, 1.2, 14, 24), matCollar);
+      hem.position.set(0, -11.5, 0);
+      hem.scale.set(1.12, 1, 0.92);
+      hem.rotation.x = Math.PI * 0.5;
+      sweaterGroup.add(hem);
+
+      // Drop-Shoulder Soft Rounded Caps
+      [-12, 12].forEach((xPos) => {
+        const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(4.2, 16, 16), matSweater);
+        shoulderCap.position.set(xPos, 8.5, 0);
+        shoulderCap.scale.set(1, 1.1, 0.95);
+        sweaterGroup.add(shoulderCap);
+      });
+
+      // Warm Terracotta Neckerchief / Scarf Accent (Memorable visual feature!)
+      const scarf = new THREE.Mesh(new THREE.TorusGeometry(5.6, 1.5, 14, 20), matAccent);
+      scarf.position.set(0, 12, 0);
+      scarf.rotation.set(Math.PI * 0.5, 0.12, 0.2);
+      sweaterGroup.add(scarf);
+
+      // Ribbed Mock-Neck Collar
+      const collar = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 3.5, 20), matCollar);
+      collar.position.set(0, 13.5, 0);
+      sweaterGroup.add(collar);
+
+      // Cozy Cardigan Placket & Wooden Buttons (Memorable Visual Feature)
+      const placket = new THREE.Mesh(new THREE.BoxGeometry(1.8, 22, 0.8), matCollar);
+      placket.position.set(0, 0, 10.6);
+      placket.castShadow = true;
+      sweaterGroup.add(placket);
+
+      [-6, 0, 6].forEach((yBtn) => {
+        const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.5, 12), matShoes);
+        btn.rotation.x = Math.PI * 0.5;
+        btn.position.set(0, yBtn, 11.1);
+        btn.castShadow = true;
+        sweaterGroup.add(btn);
+      });
+
+      this.character.add(sweaterGroup);
+
+      // Smooth Neck
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 2.8, 6, 16), matSkin);
+      neck.position.set(0, 68, 0);
       this.character.add(neck);
 
-      // Arms & Hands
-      const armGeo = new THREE.CylinderGeometry(3.1, 2.5, 20, 24, 1);
-      const armL = new THREE.Mesh(armGeo, matSweater);
-      armL.position.set(-12.5, 60, 0);
-      armL.rotation.set(0, 0, -0.14);
-      armL.castShadow = true;
-      this.character.add(armL);
+      // 4. Arms with articulated pivots
+      // Left Arm (Relaxed at side)
+      this.characterArmL = new THREE.Group();
+      this.characterArmL.position.set(-12.8, 60, 0);
 
-      const handL = new THREE.Mesh(new THREE.SphereGeometry(2.8, 24, 20), matSkin);
-      handL.position.set(-14.5, 47, 0);
+      const sleeveGeo = new THREE.CylinderGeometry(3.0, 2.6, 19, 16);
+      const armSleeveL = new THREE.Mesh(sleeveGeo, matSweater);
+      armSleeveL.position.set(-0.8, -9, 0);
+      armSleeveL.rotation.z = -0.12;
+      armSleeveL.castShadow = true;
+      this.characterArmL.add(armSleeveL);
+
+      const wristCuffL = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.6, 12, 16), matCollar);
+      wristCuffL.position.set(-1.8, -18.5, 0);
+      wristCuffL.rotation.x = Math.PI * 0.5;
+      this.characterArmL.add(wristCuffL);
+
+      const handL = new THREE.Mesh(new THREE.SphereGeometry(2.5, 16, 16), matSkin);
+      handL.position.set(-2.0, -21.5, 0);
+      handL.scale.set(0.9, 1.15, 0.85);
       handL.castShadow = true;
-      this.character.add(handL);
+      this.characterArmL.add(handL);
+      this.character.add(this.characterArmL);
 
-      const armR = new THREE.Mesh(armGeo, matSweater);
-      armR.position.set(12.5, 60, 0);
-      armR.rotation.set(0, 0, 0.14);
-      armR.castShadow = true;
-      this.character.add(armR);
+      // Right Arm (Animated during search phase)
+      this.characterArmR = new THREE.Group();
+      this.characterArmR.position.set(12.8, 60, 0);
 
-      const handR = new THREE.Mesh(new THREE.SphereGeometry(2.8, 24, 20), matSkin);
-      handR.position.set(14.5, 47, 0);
+      const armSleeveR = new THREE.Mesh(sleeveGeo, matSweater);
+      armSleeveR.position.set(0.8, -9, 0);
+      armSleeveR.rotation.z = 0.12;
+      armSleeveR.castShadow = true;
+      this.characterArmR.add(armSleeveR);
+
+      const wristCuffR = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.6, 12, 16), matCollar);
+      wristCuffR.position.set(1.8, -18.5, 0);
+      wristCuffR.rotation.x = Math.PI * 0.5;
+      this.characterArmR.add(wristCuffR);
+
+      const handR = new THREE.Mesh(new THREE.SphereGeometry(2.5, 16, 16), matSkin);
+      handR.position.set(2.0, -21.5, 0);
+      handR.scale.set(0.9, 1.15, 0.85);
       handR.castShadow = true;
-      this.character.add(handR);
+      this.characterArmR.add(handR);
+      this.character.add(this.characterArmR);
 
-      // Head Pivot Group
+      // 5. Stylized Head Pivot (Carries glances, nods, confused tilts)
       this.characterHead = new THREE.Group();
-      this.characterHead.position.set(0, 80, 0);
+      this.characterHead.position.set(0, 71, 0);
 
-      // Head
-      const head = new THREE.Mesh(new THREE.SphereGeometry(10.5, 40, 32), matSkin);
-      head.position.set(0, 12, 0);
-      head.scale.set(1, 1.05, 0.96);
+      // Sculpted Head with Rounded Cheeks
+      const head = new THREE.Mesh(new THREE.SphereGeometry(13.2, 32, 32), matSkin);
+      head.position.set(0, 13, 0);
+      head.scale.set(1.08, 1.02, 1.05);
       head.castShadow = true;
       this.characterHead.add(head);
 
-      // Hair
-      addEllipsoid(this.characterHead, matHair, [0, 17, -1.5], [11.4, 8.2, 10.7]);
-      addEllipsoid(this.characterHead, matHair, [-3.7, 18.5, 6.1], [5.6, 3.1, 4.2]);
-      addEllipsoid(this.characterHead, matHair, [-8.8, 9.5, 0], [2.1, 8.2, 3.1]);
-      addEllipsoid(this.characterHead, matHair, [8.8, 9.5, 0], [2.1, 8.2, 3.1]);
-      addEllipsoid(this.characterHead, matSkin, [-10.2, 10.5, 0], [1.4, 2.1, 1.3], false);
-      addEllipsoid(this.characterHead, matSkin, [10.2, 10.5, 0], [1.4, 2.1, 1.3], false);
+      // Volumetric Sculpted Espresso Hair
+      const hairMain = new THREE.Mesh(new THREE.SphereGeometry(13.8, 32, 32), matHair);
+      hairMain.position.set(0, 17.5, -1.2);
+      hairMain.scale.set(1.04, 0.82, 1.04);
+      hairMain.castShadow = true;
+      this.characterHead.add(hairMain);
 
-      // Expressive Eyes with specular highlight
-      const eyeGeo = new THREE.SphereGeometry(0.82, 20, 16);
-      const eyeL = new THREE.Mesh(eyeGeo, matEyes);
-      eyeL.position.set(-3.7, 12, 10.05);
-      this.characterHead.add(eyeL);
-      this.characterEyes.push(eyeL);
+      // Front Bangs Wave
+      const hairBangs = new THREE.Mesh(new THREE.SphereGeometry(7.5, 20, 20), matHair);
+      hairBangs.position.set(-2.5, 22.5, 7.8);
+      hairBangs.rotation.set(-0.25, 0.15, -0.3);
+      hairBangs.scale.set(1.15, 0.65, 0.85);
+      this.characterHead.add(hairBangs);
 
-      const eyeR = new THREE.Mesh(eyeGeo, matEyes);
-      eyeR.position.set(3.7, 12, 10.05);
-      this.characterHead.add(eyeR);
-      this.characterEyes.push(eyeR);
+      const hairSideLock = new THREE.Mesh(new THREE.SphereGeometry(5.5, 16, 16), matHair);
+      hairSideLock.position.set(9.5, 18, 4.5);
+      hairSideLock.rotation.set(0.1, 0.2, 0.4);
+      hairSideLock.scale.set(0.65, 1.2, 0.75);
+      this.characterHead.add(hairSideLock);
 
-      [-3.7, 3.7].forEach(x => addEllipsoid(this.characterHead, matEyeLight, [x + 0.22, 12.28, 10.72], [0.2, 0.2, 0.12], false));
-      [-3.7, 3.7].forEach(x => {
-        const brow = addEllipsoid(this.characterHead, matHair, [x, 14.2, 10.15], [1.5, 0.32, 0.3], false);
-        brow.rotation.z = x < 0 ? 0.08 : -0.08;
+      // Stylized Eyebrows
+      [-4.6, 4.6].forEach((xPos, idx) => {
+        const brow = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.42, 0.35, 3.8, 12),
+          new THREE.MeshBasicMaterial({ color: PALETTE.charHair })
+        );
+        brow.position.set(xPos, 16.5, 13.0);
+        brow.rotation.z = idx === 0 ? 0.12 : -0.12;
+        this.characterEyebrows.push(brow);
+        this.characterHead.add(brow);
       });
-      addEllipsoid(this.characterHead, matSkin, [0, 9.5, 10.35], [0.85, 1.35, 0.95], false);
-      addEllipsoid(this.characterHead, matMouth, [0, 6.3, 10.12], [1.05, 0.24, 0.18], false);
 
-      // Cheeks (Rosy Blush)
-      const blushGeo = new THREE.SphereGeometry(1.8, 16, 16);
-      const blushL = new THREE.Mesh(blushGeo, matBlush);
-      blushL.position.set(-6.5, 8.5, 9.5);
-      blushL.scale.set(1, 0.55, 0.4);
-      this.characterHead.add(blushL);
+      // Expressive Eyes with Glossy Highlights & Eyelid Morphing
+      [-4.6, 4.6].forEach((xPos) => {
+        const eyeGroup = new THREE.Group();
+        eyeGroup.position.set(xPos, 13, 12.8);
 
-      const blushR = new THREE.Mesh(blushGeo, matBlush);
-      blushR.position.set(6.5, 8.5, 9.5);
-      blushR.scale.set(1, 0.55, 0.4);
-      this.characterHead.add(blushR);
+        // Pupil / Iris
+        const pupil = new THREE.Mesh(
+          new THREE.SphereGeometry(1.65, 16, 16),
+          new THREE.MeshBasicMaterial({ color: PALETTE.charEyes })
+        );
+        eyeGroup.add(pupil);
+
+        // Specular Catchlights (Gives life and warmth!)
+        const catchlight1 = new THREE.Mesh(
+          new THREE.SphereGeometry(0.55, 12, 12),
+          new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
+        );
+        catchlight1.position.set(0.45, 0.5, 1.2);
+        eyeGroup.add(catchlight1);
+
+        const catchlight2 = new THREE.Mesh(
+          new THREE.SphereGeometry(0.28, 12, 12),
+          new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
+        );
+        catchlight2.position.set(-0.35, -0.35, 1.3);
+        eyeGroup.add(catchlight2);
+
+        // Eyelid for Natural Blinking
+        const eyelid = new THREE.Mesh(
+          new THREE.SphereGeometry(1.75, 16, 16, 0, Math.PI * 2, 0, Math.PI * 0.5),
+          matSkin
+        );
+        eyelid.position.set(0, 0, 0.1);
+        eyelid.rotation.x = -Math.PI * 0.5;
+        eyelid.visible = false;
+        eyeGroup.add(eyelid);
+        this.characterEyelids.push(eyelid);
+
+        this.characterHead.add(eyeGroup);
+      });
+
+      // Soft Coral Cheeks (Blush)
+      [-7.2, 7.2].forEach((xPos) => {
+        const blush = new THREE.Mesh(new THREE.SphereGeometry(2.2, 16, 16), matBlush);
+        blush.position.set(xPos, 9.2, 12.2);
+        blush.scale.set(1, 0.55, 0.35);
+        this.characterHead.add(blush);
+      });
+
+      // Cute Button Nose
+      const nose = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), matSkin);
+      nose.position.set(0, 11.6, 14.3);
+      this.characterHead.add(nose);
+
+      // Expressive Mouth (Curved subtle smile)
+      const mouthMat = new THREE.MeshBasicMaterial({ color: 0x8A4839 });
+      this.characterMouth = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.35, 12, 16, Math.PI * 0.85), mouthMat);
+      this.characterMouth.position.set(0, 8.2, 13.8);
+      this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08); // Warm, gentle smile
+      this.characterHead.add(this.characterMouth);
 
       this.character.add(this.characterHead);
       this.scene.add(this.character);
     }
 
-    buildProps() {
-      // 1. Reading Glasses (The Hero Object)
+    // =========================================================================
+    // 5. HERO PROPS (Reading Glasses, Ghost Imprint, Glowing Spatial Trail)
+    // =========================================================================
+    buildHeroProps() {
+      // 1. Reading Glasses (The Hero Prop — recognizable, reflective, tactile)
       this.glasses = new THREE.Group();
-      const matFrame = new THREE.MeshStandardMaterial({ color: 0x2b2623, roughness: 0.45, metalness: 0.2 });
-      const matBridge = new THREE.MeshStandardMaterial({ color: 0xb99a79, roughness: 0.3, metalness: 0.8 });
+      const matFrame = new THREE.MeshStandardMaterial({
+        color: PALETTE.glassesFrame,
+        roughness: 0.32,
+        metalness: 0.25
+      });
+      const matBridge = new THREE.MeshStandardMaterial({
+        color: PALETTE.glassesBridge,
+        roughness: 0.2,
+        metalness: 0.85
+      });
+      const matLens = new THREE.MeshPhysicalMaterial({
+        color: 0xEEF8FC,
+        roughness: 0.05,
+        transmission: 0.88,
+        transparent: true,
+        opacity: 0.75,
+        reflectivity: 0.8
+      });
 
-      const rimGeo = new THREE.TorusGeometry(3.8, 0.7, 16, 28);
+      const rimGeo = new THREE.TorusGeometry(3.6, 0.65, 16, 28);
       const rimL = new THREE.Mesh(rimGeo, matFrame);
-      rimL.position.set(-5, 0, 0);
+      rimL.position.set(-4.8, 0, 0);
       this.glasses.add(rimL);
 
+      const lensL = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 0.4, 24), matLens);
+      lensL.position.set(-4.8, 0, 0);
+      lensL.rotation.x = Math.PI * 0.5;
+      this.glasses.add(lensL);
+
       const rimR = new THREE.Mesh(rimGeo, matFrame);
-      rimR.position.set(5, 0, 0);
+      rimR.position.set(4.8, 0, 0);
       this.glasses.add(rimR);
 
-      const bridge = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 3.5, 12), matBridge);
-      bridge.rotation.set(0, 0, Math.PI / 2);
+      const lensR = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 0.4, 24), matLens);
+      lensR.position.set(4.8, 0, 0);
+      lensR.rotation.x = Math.PI * 0.5;
+      this.glasses.add(lensR);
+
+      const bridge = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 3.2, 12), matBridge);
+      bridge.rotation.z = Math.PI * 0.5;
+      bridge.position.y = 0.5;
       this.glasses.add(bridge);
 
-      const templeGeo = new THREE.CylinderGeometry(0.5, 0.5, 11, 12);
+      // Temples / Arms
+      const templeGeo = new THREE.CylinderGeometry(0.45, 0.45, 10.5, 12);
       const templeL = new THREE.Mesh(templeGeo, matFrame);
-      templeL.position.set(-8.8, 0, -5.5);
-      templeL.rotation.set(Math.PI / 2, 0, 0);
+      templeL.position.set(-8.4, 0, -5.2);
+      templeL.rotation.x = Math.PI * 0.5;
       this.glasses.add(templeL);
 
       const templeR = new THREE.Mesh(templeGeo, matFrame);
-      templeR.position.set(8.8, 0, -5.5);
-      templeR.rotation.set(Math.PI / 2, 0, 0);
+      templeR.position.set(8.4, 0, -5.2);
+      templeR.rotation.x = Math.PI * 0.5;
       this.glasses.add(templeR);
 
-      this.glasses.scale.set(1.4, 1.4, 1.4);
+      this.glasses.scale.set(1.35, 1.35, 1.35);
       this.glasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.glasses.rotation.set(0, 0, 0);
+      this.glasses.rotation.set(0, 0.28, 0);
       this.scene.add(this.glasses);
 
-      // 2. Terracotta Ceramic Mug & Medicine Box
-      const mug = new THREE.Mesh(
-        new THREE.CylinderGeometry(3.5, 3.5, 7, 24),
-        new THREE.MeshStandardMaterial({ color: 0xc47a58, roughness: 0.7 })
-      );
-      mug.position.set(-125, 55.5, -45);
+      // 2. Personal Lived-in Objects on Side Table (Warm Ceramic Mug + Medicine Box)
+      const mugMat = new THREE.MeshStandardMaterial({ color: PALETTE.blanketTerracotta, roughness: 0.62 });
+      const mug = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 2.8, 6.5, 24), mugMat);
+      mug.position.set(-84, 55, -2);
       mug.castShadow = true;
       this.scene.add(mug);
 
-      const medBox = new THREE.Mesh(
-        new THREE.BoxGeometry(10, 5, 7),
-        new THREE.MeshStandardMaterial({ color: 0xf7f4ed, roughness: 0.6 })
-      );
-      medBox.position.set(-105, 54.5, -48);
+      const medBox = new THREE.Mesh(new THREE.BoxGeometry(9, 4.5, 6), new THREE.MeshStandardMaterial({ color: 0xFDFBEE, roughness: 0.55 }));
+      medBox.position.set(-64, 54, -4);
+      medBox.rotation.y = -0.22;
       medBox.castShadow = true;
       this.scene.add(medBox);
 
-      const medLabel = new THREE.Mesh(
-        new THREE.BoxGeometry(4, 0.8, 6),
-        new THREE.MeshStandardMaterial({ color: 0x6f7655 })
-      );
-      medLabel.position.set(-105, 57.2, -48);
-      this.scene.add(medLabel);
-
-      // 3. Ghost Glasses (Translucent Cyan Silhouette at Origin)
+      // 3. Ghost Glasses (Translucent Cyan Memory Imprint — 26% opacity)
       this.ghostGlasses = new THREE.Group();
-      const matGhost = new THREE.MeshBasicMaterial({ color: 0x8de4f0, transparent: true, opacity: 0.44 });
+      const matGhost = new THREE.MeshStandardMaterial({
+        color: PALETTE.phantomTeal,
+        emissive: PALETTE.phantomTealGlow,
+        emissiveIntensity: 0.45,
+        transparent: true,
+        opacity: 0.28,
+        roughness: 0.3
+      });
 
       const gRimL = new THREE.Mesh(rimGeo, matGhost);
-      gRimL.position.set(-5, 0, 0);
+      gRimL.position.set(-4.8, 0, 0);
       this.ghostGlasses.add(gRimL);
 
       const gRimR = new THREE.Mesh(rimGeo, matGhost);
-      gRimR.position.set(5, 0, 0);
+      gRimR.position.set(4.8, 0, 0);
       this.ghostGlasses.add(gRimR);
 
-      const gBridge = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 3.5, 12), matGhost);
-      gBridge.rotation.set(0, 0, Math.PI / 2);
+      const gBridge = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 3.2, 12), matGhost);
+      gBridge.rotation.z = Math.PI * 0.5;
       this.ghostGlasses.add(gBridge);
 
-      this.ghostGlasses.scale.set(1.4, 1.4, 1.4);
+      this.ghostGlasses.scale.set(1.35, 1.35, 1.35);
       this.ghostGlasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.ghostGlasses.rotation.set(0, 0, 0);
+      this.ghostGlasses.rotation.set(0, 0.28, 0);
       this.ghostGlasses.visible = false;
       this.scene.add(this.ghostGlasses);
 
-      // 4. Highlight Rings
-      const ringGeo = new THREE.TorusGeometry(18, 0.9, 16, 36);
+      // 4. Highlight Rings (Subtle pulse at origin & destination)
+      const ringGeo = new THREE.TorusGeometry(14, 0.75, 16, 36);
       this.highlightGhost = new THREE.Mesh(
         ringGeo,
-        new THREE.MeshBasicMaterial({ color: 0x78d8ea, transparent: true, opacity: 0.7 })
+        new THREE.MeshBasicMaterial({ color: PALETTE.phantomTeal, transparent: true, opacity: 0.65 })
       );
-      this.highlightGhost.rotation.set(Math.PI / 2, 0, 0);
-      this.highlightGhost.position.set(GLASSES_ORIGIN.x, 51.5, GLASSES_ORIGIN.z);
+      this.highlightGhost.rotation.x = Math.PI * 0.5;
+      this.highlightGhost.position.set(GLASSES_ORIGIN.x, 52, GLASSES_ORIGIN.z);
       this.highlightGhost.visible = false;
       this.scene.add(this.highlightGhost);
 
       this.highlightMoved = new THREE.Mesh(
         ringGeo,
-        new THREE.MeshBasicMaterial({ color: 0xd59a45, transparent: true, opacity: 0.85 })
+        new THREE.MeshBasicMaterial({ color: PALETTE.movementAmber, transparent: true, opacity: 0.85 })
       );
-      this.highlightMoved.rotation.set(Math.PI / 2, 0, 0);
-      this.highlightMoved.position.set(125, 92, -218);
+      this.highlightMoved.rotation.x = Math.PI * 0.5;
+      this.highlightMoved.position.set(GLASSES_DEST.x, GLASSES_DEST.y - 1, GLASSES_DEST.z);
       this.highlightMoved.visible = false;
       this.scene.add(this.highlightMoved);
 
-      // 5. Parabolic Spatial Trail
+      // 5. Parabolic Spatial Trail (Luminous golden amber trajectory points)
       this.spatialTrail = new THREE.Group();
-      const trailPoints = 8;
-      const ptGeo = new THREE.SphereGeometry(2.2, 12, 12);
-      const matPt = new THREE.MeshBasicMaterial({ color: 0xd59a45, transparent: true, opacity: 0.75 });
+      const trailPointsCount = 9;
+      const ptGeo = new THREE.SphereGeometry(1.8, 12, 12);
+      const ptMat = new THREE.MeshBasicMaterial({ color: PALETTE.movementAmber, transparent: true, opacity: 0.85 });
 
-      for (let i = 0; i < trailPoints; i++) {
-        const p = (i + 1) / (trailPoints + 1);
-        const arcY = Math.sin(p * Math.PI) * 48;
-        const pt = new THREE.Mesh(ptGeo, matPt);
+      for (let i = 0; i < trailPointsCount; i++) {
+        const p = (i + 1) / (trailPointsCount + 1);
+        const arcY = Math.sin(p * Math.PI) * 44;
+        const pt = new THREE.Mesh(ptGeo, ptMat);
         pt.position.set(
           GLASSES_ORIGIN.x + (GLASSES_DEST.x - GLASSES_ORIGIN.x) * p,
           GLASSES_ORIGIN.y + (GLASSES_DEST.y - GLASSES_ORIGIN.y) * p + arcY,
@@ -692,6 +973,9 @@
       this.scene.add(this.spatialTrail);
     }
 
+    // =========================================================================
+    // 6. INTERACTIVE STORY & TIMELINE MACHINE
+    // =========================================================================
     setupUIListeners() {
       if (this.ui.btnStart) {
         this.ui.btnStart.addEventListener('click', () => {
@@ -712,9 +996,6 @@
     startStory() {
       this.isStoryActive = true;
       this.storyStartTime = performance.now();
-      this.resetSceneForStory();
-      const progress = document.querySelector('.hero-progress');
-      if (progress) progress.classList.add('active');
       if (this.ui.btnLabel) this.ui.btnLabel.textContent = 'Story playing...';
       if (this.ui.btnStart) {
         this.ui.btnStart.style.pointerEvents = 'none';
@@ -727,7 +1008,7 @@
     resetStory() {
       this.isStoryActive = false;
       this.charPos.copy(CHAR_ORIGIN);
-      this.charRot.set(0, -0.1, 0);
+      this.charRot.set(0, 0.22, 0);
       this.headRot.set(0, 0, 0);
 
       this.glasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
@@ -736,11 +1017,15 @@
       this.highlightMoved.visible = false;
       this.spatialTrail.visible = false;
 
+      if (this.roomLights.phantom) this.roomLights.phantom.intensity = 0;
+      if (this.characterArmR) this.characterArmR.rotation.set(0, 0, 0);
+      if (this.characterMouth) this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08);
+
       const isMobile = window.innerWidth < 640;
       if (isMobile) {
-        this.targetCamPos.set(10, 185, 600);
-        this.targetCamLook.set(10, 95, -50);
-        this.targetFov = 35;
+        this.targetCamPos.set(10, 115, 340);
+        this.targetCamLook.set(4, 58, -15);
+        this.targetFov = 36;
       } else {
         this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
         this.targetCamLook.copy(CAM_PRESETS.HOME.target);
@@ -749,8 +1034,8 @@
 
       if (this.ui.receiptToast) this.ui.receiptToast.classList.remove('visible');
       if (this.ui.captionWrap) this.ui.captionWrap.classList.remove('visible');
-      if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot';
-      if (this.ui.statusText) this.ui.statusText.textContent = 'A living room at peace';
+      if (this.ui.statusDot) this.ui.statusDot.className = 'live-indicator';
+      if (this.ui.statusText) this.ui.statusText.textContent = 'A quiet afternoon at home';
       if (this.ui.captionText) this.ui.captionText.textContent = '';
       if (this.ui.captionSub) this.ui.captionSub.textContent = '';
       if (this.ui.btnLabel) this.ui.btnLabel.textContent = 'See how it works';
@@ -758,56 +1043,7 @@
         this.ui.btnStart.style.pointerEvents = 'auto';
         this.ui.btnStart.style.opacity = '1';
       }
-      if (this.ui.btnReset) { this.ui.btnReset.style.display = 'none'; this.ui.btnReset.hidden = true; }
-      const progress = document.querySelector('.hero-progress');
-      if (progress) progress.classList.remove('active');
-      if (this.ui.receiptToast) this.ui.receiptToast.setAttribute('aria-hidden', 'true');
-      this.diffProgress = 1;
-    }
-
-    resetSceneForStory() {
-      this.charPos.copy(CHAR_ORIGIN);
-      this.glasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.ghostGlasses.visible = false;
-      this.highlightGhost.visible = false;
-      this.highlightMoved.visible = false;
-      this.spatialTrail.visible = false;
-    }
-
-    findGlasses() {
-      this.resetSceneForStory();
-      this.isStoryActive = false;
-      this.charRot.set(0, -0.1, 0);
-      this.headRot.set(0, 0, 0);
-      this.glasses.position.set(GLASSES_DEST.x, GLASSES_DEST.y, GLASSES_DEST.z);
-      this.highlightMoved.visible = true;
-      this.targetCamPos.copy(CAM_PRESETS.REVEAL.pos);
-      this.targetCamLook.copy(CAM_PRESETS.REVEAL.target);
-      this.targetFov = CAM_PRESETS.REVEAL.fov;
-      if (this.ui.statusText) this.ui.statusText.textContent = 'Last seen on the bookshelf · 4:40 pm';
-      if (this.ui.captionWrap) this.ui.captionWrap.classList.add('visible');
-      if (this.ui.captionText) this.ui.captionText.textContent = 'Your glasses are on the bookshelf.';
-      if (this.ui.captionSub) this.ui.captionSub.textContent = 'Last seen at 4:40 pm · Confirmed';
-      if (this.ui.receiptToast) {
-        this.ui.receiptToast.classList.add('visible');
-        this.ui.receiptToast.setAttribute('aria-hidden', 'false');
-      }
-    }
-
-    scrubRealityDiff(progress) {
-      this.diffProgress = Math.max(0, Math.min(1, progress));
-      if (this.isStoryActive && performance.now() - this.storyStartTime < 16000) return;
-      const p = this.easeInOutCubic(this.diffProgress);
-      this.glasses.position.set(
-        GLASSES_ORIGIN.x + (GLASSES_DEST.x - GLASSES_ORIGIN.x) * p,
-        GLASSES_ORIGIN.y + (GLASSES_DEST.y - GLASSES_ORIGIN.y) * p + Math.sin(p * Math.PI) * 44,
-        GLASSES_ORIGIN.z + (GLASSES_DEST.z - GLASSES_ORIGIN.z) * p
-      );
-      this.ghostGlasses.position.set(GLASSES_ORIGIN.x, GLASSES_ORIGIN.y, GLASSES_ORIGIN.z);
-      this.ghostGlasses.visible = this.diffProgress > 0.68;
-      this.highlightGhost.visible = this.diffProgress > 0.68;
-      this.highlightMoved.visible = this.diffProgress > 0.88;
-      this.spatialTrail.visible = this.diffProgress > 0.7;
+      if (this.ui.btnReset) this.ui.btnReset.hidden = true;
     }
 
     easeInOutCubic(t) {
@@ -819,41 +1055,32 @@
       const s = (now - this.storyStartTime) / 1000;
 
       if (s < 1.8) {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot';
-        if (this.ui.statusText) this.ui.statusText.textContent = 'A quiet afternoon at home';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'A quiet afternoon.';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'The glasses are right where they belong.';
-      } else if (s < 4.0) {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot active';
-        if (this.ui.statusText) this.ui.statusText.textContent = 'Something has changed';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'While no one was looking…';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'The glasses have moved across the room.';
-      } else if (s < 7.2) {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot active';
-        if (this.ui.statusText) this.ui.statusText.textContent = 'Looking for the glasses';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'Where did they go?';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'The side table is empty. Where could they be?';
-      } else if (s < 9.8) {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot revealed';
-        if (this.ui.statusText) this.ui.statusText.textContent = 'SMRITI remembers';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'Wait. The room remembers.';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'They were here. Now they are on the bookshelf.';
-        if (this.ui.receiptToast) {
-          this.ui.receiptToast.classList.add('visible');
-          this.ui.receiptToast.setAttribute('aria-hidden', 'false');
-        }
-      } else if (s < 13.0) {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot revealed';
-        if (this.ui.statusText) this.ui.statusText.textContent = 'The glasses are on the bookshelf';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'There they are.';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Side table → bookshelf · 4:40 pm';
+        if (this.ui.statusText) this.ui.statusText.textContent = 'Peaceful afternoon · Reading glasses on side table';
+        if (this.ui.captionText) this.ui.captionText.textContent = 'A home at rest.';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Everyday things resting in their familiar places.';
+      } else if (s < 4.2) {
+        if (this.ui.statusText) this.ui.statusText.textContent = 'Object moved unnoticed';
+        if (this.ui.captionText) this.ui.captionText.textContent = 'An everyday displacement occurs.';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Glasses shift across the room without conscious memory.';
+      } else if (s < 7.5) {
+        if (this.ui.statusText) this.ui.statusText.textContent = 'Searching for glasses...';
+        if (this.ui.captionText) this.ui.captionText.textContent = '“Where did I leave my glasses?”';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Checking the side table, armchair, and floor.';
+      } else if (s < 10.5) {
+        if (this.ui.statusText) this.ui.statusText.textContent = 'PHANTOM Spatial Memory Activated';
+        if (this.ui.captionText) this.ui.captionText.textContent = 'Your home remembers.';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Translucent imprint marks origin. Golden trajectory points to bookshelf.';
+        if (this.ui.receiptToast) this.ui.receiptToast.classList.add('visible');
+      } else if (s < 13.5) {
+        if (this.ui.statusText) this.ui.statusText.textContent = 'Found on Bookshelf Shelf 2';
+        if (this.ui.captionText) this.ui.captionText.textContent = 'Relief restored.';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'Displaced 240 cm · 99.4% confidence';
       } else {
-        if (this.ui.statusDot) this.ui.statusDot.className = 'status-dot revealed';
         if (this.ui.statusText) this.ui.statusText.textContent = 'SMRITI — Memory Restored';
-        if (this.ui.captionText) this.ui.captionText.textContent = 'A little help, right on time.';
-        if (this.ui.captionSub) this.ui.captionSub.textContent = 'SMRITI remembers where everyday things were.';
-        if (this.ui.btnReset) { this.ui.btnReset.hidden = false; this.ui.btnReset.style.display = 'inline-flex'; }
-        if (this.ui.btnLabel) this.ui.btnLabel.textContent = 'Play again';
+        if (this.ui.captionText) this.ui.captionText.textContent = '“Sometimes you don’t need a search. You need a memory.”';
+        if (this.ui.captionSub) this.ui.captionSub.textContent = 'SMRITI · Spatial memory for everyday life';
+        if (this.ui.btnReset) this.ui.btnReset.hidden = false;
+        if (this.ui.btnLabel) this.ui.btnLabel.textContent = 'Replay Story';
         if (this.ui.btnStart) {
           this.ui.btnStart.style.pointerEvents = 'auto';
           this.ui.btnStart.style.opacity = '1';
@@ -863,69 +1090,66 @@
       setTimeout(() => this.updateStoryUI(performance.now()), 250);
     }
 
+    // =========================================================================
+    // 7. MULTI-PHASE ORGANIC IDLE & STORY ANIMATION LOOP
+    // =========================================================================
     animate(now) {
       requestAnimationFrame(this.animate);
 
-      const storyProgress = document.getElementById('storyProgress');
-      if (storyProgress && this.isStoryActive) {
-        storyProgress.style.width = `${Math.min(100, (now - this.storyStartTime) / 160)}%`;
-      }
-
+      // Smooth Mouse Parallax
       this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
       this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
 
-      if (now - this.lastBlinkTime > 4200) {
+      // Realistic Natural Eyelid Blinking
+      if (now - this.lastBlinkTime > this.nextBlinkInterval) {
         this.lastBlinkTime = now;
-        this.characterEyes.forEach(eye => {
-          eye.scale.y = 0.15;
-          setTimeout(() => { if (eye) eye.scale.y = 1; }, 140);
+        this.nextBlinkInterval = 2800 + Math.random() * 2400; // Unpredictable natural blinking
+        this.characterEyelids.forEach(lid => {
+          lid.visible = true;
+          setTimeout(() => { if (lid) lid.visible = false; }, 130);
         });
       }
 
       const isMobile = window.innerWidth < 640;
 
       if (!this.isStoryActive) {
-        // ================= IDLE BEHAVIOR (14s Loop) =================
-        const t = (now % 14000) / 1000;
-        const breath = Math.sin(now * 0.0022) * 0.45;
+        // ================= MULTI-STEP 16s IDLE CYCLE =================
+        const t = (now % 16000) / 1000;
+        
+        // Gentle diaphragm breathing
+        const breath = Math.sin(now * 0.0024) * 0.45;
         this.charPos.y = breath;
 
-        if (t < 3.5) {
-          this.headRot.y = 0.06 + Math.sin(now * 0.001) * 0.04;
-          this.headRot.x = 0.02;
-          this.headRot.z = 0;
-          this.charRot.y = 0.26;
-        } else if (t < 7.0) {
-          // Glances toward side table glasses
-          const f = this.easeInOutCubic(Math.min((t - 3.5) / 1.0, 1));
-          this.headRot.y = -0.62 * f;
-          this.headRot.x = 0.14 * f;
-          this.headRot.z = -0.04 * f;
-          this.charRot.y = 0.26 - 0.2 * f;
-        } else if (t < 9.5) {
-          // Returns to center
-          const f = this.easeInOutCubic(Math.min((t - 7.0) / 1.0, 1));
-          this.headRot.y = -0.62 * (1 - f) + 0.06 * f;
-          this.headRot.x = 0.14 * (1 - f) + 0.02 * f;
-          this.charRot.y = 0.06 + 0.2 * f;
-        } else if (t < 13.0) {
-          // Glances toward bookshelf
-          const f = this.easeInOutCubic(Math.min((t - 9.5) / 1.0, 1));
-          this.headRot.y = 0.52 * f;
-          this.headRot.x = 0.07 * f;
-          this.charRot.y = 0.26 + 0.15 * f;
+        if (t < 4.0) {
+          // Relaxed forward gaze with subtle weight sway
+          this.headRot.set(0.02, 0.04 + Math.sin(now * 0.001) * 0.03, 0);
+          this.charRot.y = 0.22 + Math.sin(now * 0.0008) * 0.02;
+        } else if (t < 7.5) {
+          // Glances over at reading glasses on side table
+          const f = this.easeInOutCubic(Math.min((t - 4.0) / 1.0, 1));
+          this.headRot.set(0.12 * f, -0.42 * f, -0.04 * f);
+          this.charRot.y = 0.22 - 0.25 * f;
+        } else if (t < 10.5) {
+          // Returns gently to center
+          const f = this.easeInOutCubic(Math.min((t - 7.5) / 1.0, 1));
+          this.headRot.set(0.12 * (1 - f), -0.42 * (1 - f) + 0.04 * f, 0);
+          this.charRot.y = -0.03 + 0.25 * f;
+        } else if (t < 14.0) {
+          // Curious glance toward bookshelf
+          const f = this.easeInOutCubic(Math.min((t - 10.5) / 1.0, 1));
+          this.headRot.set(0.06 * f, 0.35 * f, 0.03 * f);
+          this.charRot.y = 0.22 + 0.15 * f;
         } else {
-          // Returns to center
-          const f = this.easeInOutCubic(Math.min((t - 13.0) / 1.0, 1));
-          this.headRot.y = 0.52 * (1 - f);
-          this.headRot.x = 0.07 * (1 - f);
-          this.charRot.y = 0.41 - 0.15 * f;
+          // Settles back to resting breath
+          const f = this.easeInOutCubic(Math.min((t - 14.0) / 1.0, 1));
+          this.headRot.set(0.06 * (1 - f), 0.35 * (1 - f), 0);
+          this.charRot.y = 0.37 - 0.15 * f;
         }
 
         if (isMobile) {
-          this.targetCamPos.set(10, 185, 600);
-          this.targetCamLook.set(10, 95, -50);
-          this.targetFov = 35;
+          this.targetCamPos.set(10, 115, 340);
+          this.targetCamLook.set(4, 58, -15);
+          this.targetFov = 36;
         } else {
           this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
           this.targetCamLook.copy(CAM_PRESETS.HOME.target);
@@ -933,121 +1157,118 @@
         }
 
       } else {
-        // ================= CINEMATIC STORY SEQUENCE =================
+        // ================= CINEMATIC STORY ARC =================
         const elapsed = (now - this.storyStartTime) / 1000;
 
-        // Phase 1: Camera Glides In & Notice Glasses (0 to 1.8s)
+        // Phase 1: Camera pushes in & character notices glasses (0 to 1.8s)
         if (elapsed < 1.8) {
           const p = this.easeInOutCubic(Math.min(elapsed / 1.4, 1));
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.CHARACTER.pos);
             this.targetCamLook.copy(CAM_PRESETS.CHARACTER.target);
           }
-          this.headRot.y = -0.72 * p;
-          this.headRot.x = 0.18 * p;
-          this.charRot.y = 0.26 - 0.3 * p;
+          this.headRot.set(0.14 * p, -0.48 * p, -0.05 * p);
+          this.charRot.y = 0.22 - 0.35 * p;
         }
 
-        // Phase 2: Glasses Move to Bookshelf (1.8 to 4.0s)
-        else if (elapsed < 4.0) {
-          this.headRot.y = 0.35; // looks away
-          this.headRot.x = -0.04;
+        // Phase 2: Glasses transit in parabolic arc to Bookshelf (1.8 to 4.2s)
+        else if (elapsed < 4.2) {
+          this.headRot.set(-0.04, 0.25, 0); // Character looks away
 
-          const transit = (elapsed - 2.0) / 1.5;
+          const transit = (elapsed - 2.0) / 1.6;
           if (transit >= 0 && transit <= 1) {
             const p = this.easeInOutCubic(transit);
-            const arcY = Math.sin(p * Math.PI) * 50;
+            const arcY = Math.sin(p * Math.PI) * 44;
             this.glasses.position.set(
               GLASSES_ORIGIN.x + (GLASSES_DEST.x - GLASSES_ORIGIN.x) * p,
               GLASSES_ORIGIN.y + (GLASSES_DEST.y - GLASSES_ORIGIN.y) * p + arcY,
               GLASSES_ORIGIN.z + (GLASSES_DEST.z - GLASSES_ORIGIN.z) * p
             );
-            this.glasses.rotation.y = 0.35 + p * Math.PI;
+            this.glasses.rotation.y = 0.28 + p * Math.PI * 0.8;
           }
         }
 
-        // Phase 3: Character Returns, Confused Search (4.0 to 7.2s)
-        else if (elapsed < 7.2) {
+        // Phase 3: The Confused Search (4.2 to 7.5s)
+        else if (elapsed < 7.5) {
           this.glasses.position.set(GLASSES_DEST.x, GLASSES_DEST.y, GLASSES_DEST.z);
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.SEARCH.pos);
             this.targetCamLook.copy(CAM_PRESETS.SEARCH.target);
           }
 
-          if (elapsed < 5.2) {
-            const p = this.easeInOutCubic(Math.min((elapsed - 4.0) / 0.8, 1));
-            this.headRot.y = -0.72 * p;
-            this.headRot.x = 0.38 * p;
-            this.headRot.z = -0.25 * p; // puzzled tilt
-            this.charRot.y = -0.15 * p;
-          } else if (elapsed < 6.2) {
-            this.headRot.y = -0.17 + Math.sin(elapsed * 4) * 0.26;
-            this.headRot.x = 0.31;
-            this.headRot.z = -0.17;
+          if (elapsed < 5.6) {
+            // Turns to table, realizes glasses are gone!
+            const p = this.easeInOutCubic(Math.min((elapsed - 4.2) / 0.9, 1));
+            this.headRot.set(0.28 * p, -0.58 * p, -0.2 * p); // Puzzled head tilt
+            this.charRot.y = -0.28 * p;
+            if (this.characterArmR) this.characterArmR.rotation.set(-0.45 * p, 0, 0.25 * p); // Raises hand quizzically
+          } else if (elapsed < 6.8) {
+            // Scans side to side looking around
+            this.headRot.set(0.22, -0.25 + Math.sin(elapsed * 4.5) * 0.3, -0.14);
           } else {
-            this.headRot.y = 0.26;
-            this.headRot.x = 0.09;
-            this.headRot.z = 0.21;
+            this.headRot.set(0.12, 0.16, 0.14);
           }
         }
 
-        // Phase 4: PHANTOM Spatial Reveal (7.2 to 9.8s)
-        else if (elapsed < 9.8) {
+        // Phase 4: SMRITI PHANTOM Spatial Reveal (7.5 to 10.5s)
+        else if (elapsed < 10.5) {
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.PHANTOM.pos);
             this.targetCamLook.copy(CAM_PRESETS.PHANTOM.target);
           }
 
+          // Activate memory imprint & glowing spatial trail
           this.ghostGlasses.visible = true;
           this.highlightGhost.visible = true;
           this.highlightMoved.visible = true;
           this.spatialTrail.visible = true;
 
+          if (this.roomLights.phantom) this.roomLights.phantom.intensity = 1.1;
+
           const pulse = 1 + Math.sin(now * 0.006) * 0.08;
           this.highlightMoved.scale.set(pulse, pulse, pulse);
           this.highlightGhost.scale.set(pulse, pulse, pulse);
 
-          this.headRot.y = -0.61;
-          this.headRot.x = 0.28;
-          this.headRot.z = 0;
+          this.headRot.set(0.18, -0.45, 0); // Looking at the ghost origin
         }
 
-        // Phase 5: Spotting & Walking to Bookshelf (9.8 to 13.0s)
-        else if (elapsed < 13.0) {
+        // Phase 5: Spotting Bookshelf & Relief (10.5 to 13.5s)
+        else if (elapsed < 13.5) {
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.REVEAL.pos);
             this.targetCamLook.copy(CAM_PRESETS.REVEAL.target);
           }
 
-          const p = this.easeInOutCubic(Math.min((elapsed - 9.8) / 1.3, 1));
-          this.headRot.y = -0.61 * (1 - p) + 0.84 * p;
-          this.headRot.x = 0.28 * (1 - p) + 0.14 * p;
-          this.headRot.z = 0;
-          this.charRot.y = -0.15 * (1 - p) + 0.61 * p;
+          const p = this.easeInOutCubic(Math.min((elapsed - 10.5) / 1.4, 1));
+          this.headRot.set(0.18 * (1 - p) + 0.05 * p, -0.45 * (1 - p) + 0.55 * p, 0);
+          this.charRot.y = -0.28 * (1 - p) + 0.38 * p;
 
-          this.charPos.x = CHAR_ORIGIN.x + 24 * p;
-          this.charPos.z = CHAR_ORIGIN.z - 14 * p;
-          this.charPos.y = Math.sin(p * Math.PI * 4) * 1.8;
+          // Arm lowers happily, mouth relaxes into smile
+          if (this.characterArmR) this.characterArmR.rotation.set(-0.45 * (1 - p), 0, 0);
+          if (this.characterMouth) this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08);
+
+          this.charPos.x = CHAR_ORIGIN.x + 16 * p;
+          this.charPos.z = CHAR_ORIGIN.z - 10 * p;
+          this.charPos.y = Math.sin(p * Math.PI * 3) * 1.3; // Happy little stepping bounce
         }
 
-        // Phase 6: Resolution & Happy Relief (13.0s+)
+        // Phase 6: Resolution & Peace (13.5s+)
         else {
           if (!isMobile) {
             this.targetCamPos.copy(CAM_PRESETS.RESOLUTION.pos);
             this.targetCamLook.copy(CAM_PRESETS.RESOLUTION.target);
           } else {
-            this.targetCamPos.set(10, 185, 600);
-            this.targetCamLook.set(10, 95, -50);
-            this.targetFov = 35;
+            this.targetCamPos.set(10, 115, 340);
+            this.targetCamLook.set(4, 58, -15);
           }
 
-          const happyBob = Math.sin(now * 0.003) * 0.6;
+          const happyBob = Math.sin(now * 0.003) * 0.5;
           this.charPos.y = happyBob;
-          this.headRot.y = 0.66 + Math.sin(now * 0.001) * 0.07;
-          this.headRot.x = -0.07;
+          this.headRot.set(-0.04, 0.38 + Math.sin(now * 0.001) * 0.05, 0);
         }
       }
 
+      // Apply animated transforms
       if (this.character) {
         this.character.position.copy(this.charPos);
         this.character.rotation.copy(this.charRot);
@@ -1056,14 +1277,11 @@
         this.characterHead.rotation.copy(this.headRot);
       }
 
-      const camLerp = 0.035;
-      this.camera.position.x += (this.targetCamPos.x + this.mouse.x * 7 - this.camera.position.x) * camLerp;
-      this.camera.position.y += (this.targetCamPos.y - this.mouse.y * 4 - this.camera.position.y) * camLerp;
+      // Smooth Cinematic Camera Lerp
+      const camLerp = 0.045;
+      this.camera.position.x += (this.targetCamPos.x + this.mouse.x * 16 - this.camera.position.x) * camLerp;
+      this.camera.position.y += (this.targetCamPos.y - this.mouse.y * 10 - this.camera.position.y) * camLerp;
       this.camera.position.z += (this.targetCamPos.z - this.camera.position.z) * camLerp;
-      if (Math.abs(this.targetFov - this.camera.fov) > 0.01) {
-        this.camera.fov += (this.targetFov - this.camera.fov) * camLerp;
-        this.camera.updateProjectionMatrix();
-      }
 
       this.camTarget.x += (this.targetCamLook.x - this.camTarget.x) * camLerp;
       this.camTarget.y += (this.targetCamLook.y - this.camTarget.y) * camLerp;
@@ -1084,13 +1302,45 @@
 
       const isMobile = window.innerWidth < 640;
       if (isMobile) {
-        this.targetCamPos.set(10, 185, 600);
-        this.targetCamLook.set(10, 95, -50);
-        this.targetFov = 35;
+        this.targetCamPos.set(10, 115, 340);
+        this.targetCamLook.set(4, 58, -15);
+        this.targetFov = 36;
       } else {
         this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
         this.targetCamLook.copy(CAM_PRESETS.HOME.target);
         this.targetFov = CAM_PRESETS.HOME.fov;
+      }
+    }
+
+    findGlasses() {
+      if (!this.isStoryActive) {
+        this.startStory();
+      }
+    }
+
+    scrubRealityDiff(progress) {
+      if (this.isStoryActive) return;
+      const p = this.easeInOutCubic(Math.max(0, Math.min(progress, 1)));
+      const arcY = Math.sin(p * Math.PI) * 44;
+      this.glasses.position.set(
+        GLASSES_ORIGIN.x + (GLASSES_DEST.x - GLASSES_ORIGIN.x) * p,
+        GLASSES_ORIGIN.y + (GLASSES_DEST.y - GLASSES_ORIGIN.y) * p + arcY,
+        GLASSES_ORIGIN.z + (GLASSES_DEST.z - GLASSES_ORIGIN.z) * p
+      );
+      this.glasses.rotation.y = 0.28 + p * Math.PI * 0.8;
+
+      if (p > 0.05) {
+        this.ghostGlasses.visible = true;
+        this.highlightGhost.visible = true;
+        this.highlightMoved.visible = p > 0.85;
+        this.spatialTrail.visible = true;
+        if (this.roomLights.phantom) this.roomLights.phantom.intensity = p * 0.9;
+      } else {
+        this.ghostGlasses.visible = false;
+        this.highlightGhost.visible = false;
+        this.highlightMoved.visible = false;
+        this.spatialTrail.visible = false;
+        if (this.roomLights.phantom) this.roomLights.phantom.intensity = 0;
       }
     }
   }
