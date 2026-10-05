@@ -1,0 +1,2738 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SMRITI — “Your home remembers.”</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SMRITI is an assistive spatial memory product powered by the PHANTOM engine. SMRITI remembers where everyday things were and shows what changed.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+
+html { background: transparent !important; }
+body { background: transparent !important; }
+.section-hero { pointer-events: none; }
+.hero-editorial-col { pointer-events: auto; }
+.snapshot-header-tag, .focal-glasses-card, .spatial-timeline-bar { pointer-events: auto; }
+/* ==========================================================================
+   SMRITI — “Your home remembers.”
+   Apple / Adobe Art-Directed Editorial Design System & Styling
+   ========================================================================== */
+
+:root {
+  /* Warm Human Surface Palette */
+  --color-paper: #F4F0E8;
+  --color-warm-white: #FAF8F3;
+  --color-ink: #171717;
+  --color-muted-text: #5B5852;
+  --color-subtle-border: rgba(229, 223, 211, 0.75);
+  --color-olive: #6F7655;
+  --color-sand: #B59A7E;
+
+  /* Cold Luminous Reality Layer (PHANTOM Engine) */
+  --color-reality-glow: #B8D8D0;
+  --color-status-moved: #D59A45;
+  --color-status-added: #4FA36A;
+  --color-status-gone: #D65C5C;
+  --color-status-uncertain: #8068B7;
+
+  /* Dark Technical Engine Surface */
+  --color-dark-bg: #111111;
+  --color-dark-surface: #181818;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+
+  /* Typography */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Layout */
+  --max-width: 1320px;
+  --section-padding: 120px 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-paper);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ==========================================================================
+   Navigation Bar (Simplified & Restrained per Item 9)
+   ========================================================================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 500;
+  background: rgba(244, 240, 232, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-subtle-border);
+  transition: all 0.25s ease;
+}
+
+.nav-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.brand-name {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--color-ink);
+}
+
+.brand-engine-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-olive);
+  background: rgba(111, 118, 85, 0.1);
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: var(--color-muted-text);
+  font-weight: 400;
+  transition: color 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-ink);
+}
+
+.btn-nav-senior {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-warm-white);
+  border: 1.5px solid var(--color-ink);
+  color: var(--color-ink);
+  padding: 9px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-nav-senior:hover {
+  background: var(--color-ink);
+  color: var(--color-warm-white);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   01 — Hero Section (Seamless Two-Zone Editorial Spread — Zero Clutter)
+   ========================================================================== */
+.section-hero {
+  min-height: calc(100vh - 75px);
+  padding: 48px 32px 80px 32px;
+  display: flex;
+  align-items: center;
+}
+
+.hero-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42% 58%;
+  gap: 48px;
+  align-items: center;
+}
+
+/* Left Column: Pure Editorial Narrative (Floating, No Box Card) */
+.hero-editorial-col {
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  color: var(--color-olive);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.eyebrow-accent {
+  color: var(--color-ink);
+}
+
+.hero-headline {
+  font-family: var(--font-serif);
+  font-size: 92px;
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color: var(--color-ink);
+  margin-bottom: 24px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-sand);
+}
+
+.hero-subcopy-block {
+  margin-bottom: 32px;
+}
+
+.hero-lead-copy {
+  font-size: 21px;
+  line-height: 1.42;
+  color: var(--color-ink);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.hero-body-copy {
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--color-muted-text);
+  font-weight: 400;
+}
+
+.hero-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-ink);
+  color: var(--color-warm-white);
+  padding: 14px 26px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(23, 23, 23, 0.08);
+}
+
+.btn-hero-primary:hover {
+  background: #333;
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 24px rgba(23, 23, 23, 0.12);
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-subtle-border);
+  color: var(--color-ink);
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-hero-secondary:hover {
+  background: #EDE6DC;
+  border-color: rgba(23, 23, 23, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Callout Banner for the "Simulate a change" climax */
+.change-callout-banner {
+  background: rgba(213, 154, 69, 0.08);
+  border: 1px solid rgba(213, 154, 69, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  margin-bottom: 26px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateY(-8px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.change-callout-banner.visible {
+  opacity: 1;
+  max-height: 85px;
+  transform: translateY(0);
+}
+
+.change-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--color-status-moved);
+  margin-bottom: 2px;
+}
+
+.change-detail {
+  font-size: 15px;
+  color: var(--color-ink);
+}
+
+.change-meta {
+  font-size: 12.5px;
+  color: var(--color-muted-text);
+  margin-top: 2px;
+}
+
+.hero-tech-attribution {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--color-sand);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.tech-sep {
+  opacity: 0.5;
+}
+
+.tech-desc {
+  color: var(--color-muted-text);
+}
+
+/* Right Column: 3D Stage (Scaled Up ~20% per Item 2) */
+.hero-spatial-col {
+  width: 100%;
+}
+
+.spatial-stage-wrapper {
+  position: relative;
+  width: 100%;
+  height: 650px;
+  background: radial-gradient(circle at 50% 50%, rgba(250, 248, 243, 0.85) 0%, rgba(244, 240, 232, 0.35) 100%);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Product-oriented Snapshot Tag (Replaces "3D Viewport" per Item 3) */
+.snapshot-header-tag {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-muted-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(250, 248, 243, 0.85);
+  padding: 6px 12px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-subtle-border);
+}
+
+.snapshot-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-status-added);
+}
+
+.snapshot-title {
+  color: var(--color-ink);
+  font-weight: 500;
+}
+
+.snapshot-sep {
+  opacity: 0.4;
+}
+
+/* "Where are my glasses?" Interactive Focal Card per Item 10 */
+.focal-glasses-card {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  z-index: 25;
+  background: rgba(250, 248, 243, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--color-status-moved);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  box-shadow: 0 12px 32px rgba(213, 154, 69, 0.15);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 260px;
+}
+
+.focal-glasses-card.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.focal-card-kicker {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  color: var(--color-status-moved);
+  margin-bottom: 4px;
+}
+
+.focal-card-location {
+  font-size: 15px;
+  color: var(--color-ink);
+  margin-bottom: 6px;
+}
+
+.focal-card-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-muted-text);
+}
+
+.focal-status-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--color-status-moved);
+  background: rgba(213, 154, 69, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.focal-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 12px;
+  color: var(--color-muted-text);
+  cursor: pointer;
+  padding: 2px;
+}
+
+/* SVG / 3D Canvas Stage */
+.spatial-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.isometric-stage-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Signature Ghost Styling per Item 7 */
+.glyph-ghost {
+  opacity: 0.28;
+  filter: drop-shadow(0 0 6px rgba(184, 216, 208, 0.45)) blur(0.4px);
+  color: var(--color-reality-glow);
+}
+
+/* Minimal Sleek Timeline Control (Redesigned per Item 8) */
+.spatial-timeline-bar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: 90%;
+  max-width: 520px;
+  background: rgba(250, 248, 243, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--color-subtle-border);
+  box-shadow: 0 8px 30px rgba(23, 23, 23, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.minimal-timeline-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.node-bullet {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-sand);
+  margin-bottom: 2px;
+  transition: all 0.2s ease;
+}
+
+.node-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-muted-text);
+}
+
+.node-title {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.8px;
+  color: var(--color-sand);
+}
+
+.node-time {
+  font-size: 10px;
+  color: var(--color-muted-text);
+  opacity: 0.8;
+}
+
+.timeline-node.active .node-bullet {
+  background: var(--color-status-moved);
+  box-shadow: 0 0 8px rgba(213, 154, 69, 0.7);
+  transform: scale(1.3);
+}
+
+.timeline-node.active .node-id {
+  color: var(--color-ink);
+}
+
+.timeline-node.active .node-time {
+  color: var(--color-status-moved);
+  font-weight: 600;
+  opacity: 1;
+}
+
+.track-connector {
+  flex-grow: 1;
+  height: 1.5px;
+  background: var(--color-subtle-border);
+  margin: 0 8px;
+}
+
+.timeline-secondary-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.action-link-btn {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-muted-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s ease;
+}
+
+.action-link-btn:hover {
+  color: var(--color-ink);
+}
+
+.action-link-btn .icon {
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   02 — The Problem Section (Editorial Statement + Objects Visual per Item 15)
+   ========================================================================== */
+.section-problem {
+  padding: var(--section-padding);
+  background-color: var(--color-paper);
+}
+
+.content-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.problem-statement-header {
+  max-width: 820px;
+  margin-bottom: 60px;
+}
+
+.editorial-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--color-olive);
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.problem-display-title {
+  font-family: var(--font-serif);
+  font-size: 64px;
+  line-height: 1.05;
+  font-weight: 400;
+  color: var(--color-ink);
+  margin-bottom: 20px;
+}
+
+.problem-display-title em {
+  font-style: italic;
+  color: var(--color-sand);
+}
+
+.problem-lead-text {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--color-muted-text);
+}
+
+/* Everyday Items Visual Strip per Item 15 */
+.problem-objects-visual-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 56px;
+}
+
+.uncertain-object-card {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-subtle-border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.uncertain-object-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(23, 23, 23, 0.04);
+}
+
+.object-stage-glyph {
+  position: relative;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.object-stage-glyph .glyph-solid {
+  font-size: 44px;
+  position: relative;
+  z-index: 2;
+  transform: translateX(14px);
+}
+
+.object-stage-glyph .glyph-ghost {
+  font-size: 44px;
+  position: absolute;
+  z-index: 1;
+  transform: translateX(-14px);
+  opacity: 0.28;
+  filter: blur(0.4px);
+}
+
+.object-narrative {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.object-label {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--color-ink);
+}
+
+.object-path {
+  font-size: 14px;
+  color: var(--color-muted-text);
+}
+
+.object-diff-badge {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.object-diff-badge.moved {
+  background: rgba(213, 154, 69, 0.12);
+  color: var(--color-status-moved);
+}
+
+.object-diff-badge.added {
+  background: rgba(79, 163, 106, 0.12);
+  color: var(--color-status-added);
+}
+
+.problem-resolution-banner {
+  border-top: 1px solid var(--color-subtle-border);
+  padding-top: 36px;
+  text-align: center;
+}
+
+.resolution-quote {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+/* ==========================================================================
+   03 — How It Works (3 Clear Visual Steps per Item 16)
+   ========================================================================== */
+.section-how {
+  padding: var(--section-padding);
+  background-color: var(--color-warm-white);
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.how-header-block {
+  max-width: 720px;
+  margin-bottom: 56px;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 54px;
+  color: var(--color-ink);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: 18.5px;
+  color: var(--color-muted-text);
+  line-height: 1.55;
+}
+
+.steps-editorial-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.step-editorial-item {
+  text-align: left;
+  background: var(--color-paper);
+  border: 1px solid var(--color-subtle-border);
+  border-radius: var(--radius-lg);
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 240px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.step-editorial-item:hover, .step-editorial-item.active {
+  background: var(--color-warm-white);
+  border-color: var(--color-ink);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(23, 23, 23, 0.05);
+}
+
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-sand);
+}
+
+.step-name {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--color-ink);
+  margin: 12px 0 8px 0;
+}
+
+.step-description {
+  font-size: 15.5px;
+  color: var(--color-muted-text);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.step-meta-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 1px;
+  color: var(--color-olive);
+  background: rgba(111, 118, 85, 0.1);
+  padding: 4px 8px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+/* ==========================================================================
+   04 — Reality Diff (Interactive Scrubber per Item 17)
+   ========================================================================== */
+.section-diff {
+  padding: var(--section-padding);
+  background-color: var(--color-paper);
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.diff-header-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+}
+
+.diff-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: var(--color-status-moved);
+  background: rgba(213, 154, 69, 0.12);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.diff-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-status-moved);
+  box-shadow: 0 0 6px var(--color-status-moved);
+}
+
+.diff-scrubber-container {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-subtle-border);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  box-shadow: 0 16px 40px rgba(23, 23, 23, 0.04);
+}
+
+.diff-scrubber-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.scrub-label-t0, .scrub-label-t1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.scrub-label-t1 {
+  align-items: flex-end;
+}
+
+.time-stamp {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  color: var(--color-ink);
+}
+
+.state-name {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  color: var(--color-sand);
+}
+
+.scrub-label-center {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-status-moved);
+  background: rgba(213, 154, 69, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.diff-range-slider {
+  width: 100%;
+  height: 8px;
+  -webkit-appearance: none;
+  background: #E5DFD3;
+  border-radius: 4px;
+  outline: none;
+  margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.diff-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-status-moved);
+  border: 3px solid var(--color-warm-white);
+  box-shadow: 0 4px 12px rgba(213, 154, 69, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.diff-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Interactive Visual Diff Stage */
+.diff-interactive-stage {
+  display: grid;
+  grid-template-columns: 38% 24% 38%;
+  align-items: center;
+  gap: 20px;
+  background: var(--color-paper);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  margin-bottom: 40px;
+}
+
+.stage-location-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.zone-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--color-muted-text);
+  margin-bottom: 14px;
+}
+
+.zone-badge.highlight {
+  color: var(--color-status-moved);
+  font-weight: 600;
+}
+
+.zone-visual {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.zone-glasses-solid {
+  font-size: 40px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.zone-glasses-ghost {
+  position: absolute;
+  font-size: 40px;
+  opacity: 0.28;
+  filter: blur(0.4px);
+  color: var(--color-reality-glow);
+  transition: opacity 0.3s ease;
+}
+
+.dest-amber-ring {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  border: 2px dashed var(--color-status-moved);
+  border-radius: 50%;
+  animation: pulseAmber 2.5s infinite ease-in-out;
+  opacity: 1;
+}
+
+@keyframes pulseAmber {
+  0% { transform: scale(0.92); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(0.92); opacity: 0.6; }
+}
+
+.zone-label {
+  font-size: 13.5px;
+  color: var(--color-muted-text);
+}
+
+.zone-label.highlight {
+  color: var(--color-status-moved);
+  font-weight: 500;
+}
+
+.stage-vector-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vector-line {
+  width: 100%;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, var(--color-status-moved) 0, var(--color-status-moved) 6px, transparent 6px, transparent 12px);
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.vector-pulse-head {
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-status-moved);
+}
+
+.vector-distance-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-sand);
+}
+
+/* Taxonomy Grid */
+.diff-taxonomy-strip {
+  border-top: 1px solid var(--color-subtle-border);
+  padding-top: 28px;
+}
+
+.taxonomy-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 1px;
+  color: var(--color-sand);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.taxonomy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.taxonomy-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--color-muted-text);
+}
+
+.tax-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.tax-indicator.moved { background: var(--color-status-moved); }
+.tax-indicator.added { background: var(--color-status-added); }
+.tax-indicator.gone { background: var(--color-status-gone); }
+.tax-indicator.uncertain { background: var(--color-status-uncertain); }
+
+/* ==========================================================================
+   05 — The Memory Receipt (Clean Dignified Evidence per Item 18)
+   ========================================================================== */
+.section-receipt {
+  padding: var(--section-padding);
+  background-color: var(--color-warm-white);
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.receipt-header-center {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px auto;
+}
+
+.receipt-card-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.receipt-document {
+  width: 440px;
+  background: var(--color-paper);
+  border: 1.5px solid var(--color-ink);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 16px 48px rgba(23, 23, 23, 0.08);
+}
+
+.receipt-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.receipt-brand-logo {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  color: var(--color-ink);
+}
+
+.receipt-doc-num {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--color-sand);
+}
+
+.receipt-classification {
+  font-size: 12px;
+  color: var(--color-muted-text);
+  margin-bottom: 18px;
+}
+
+.receipt-hairline-dashed {
+  height: 1px;
+  border-top: 1px dashed rgba(23, 23, 23, 0.2);
+  margin: 18px 0;
+}
+
+.receipt-hero-item {
+  margin-bottom: 14px;
+}
+
+.receipt-item-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--color-sand);
+}
+
+.receipt-item-name {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  color: var(--color-ink);
+  font-weight: 400;
+}
+
+.receipt-flow-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.receipt-flow-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.receipt-flow-box.highlight .flow-loc {
+  color: var(--color-status-moved);
+  font-weight: 600;
+}
+
+.flow-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-sand);
+}
+
+.flow-loc {
+  font-size: 16px;
+  color: var(--color-ink);
+}
+
+.receipt-flow-arrow {
+  font-size: 22px;
+  color: var(--color-sand);
+}
+
+.receipt-status-callout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-stamp {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: var(--color-status-moved);
+  background: rgba(213, 154, 69, 0.12);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.confidence-val {
+  font-size: 11.5px;
+  color: var(--color-muted-text);
+}
+
+.receipt-motto-block {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  text-align: center;
+  color: var(--color-muted-text);
+  margin: 18px 0 22px 0;
+}
+
+.btn-share-receipt {
+  width: 100%;
+  background: var(--color-ink);
+  color: var(--color-warm-white);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-share-receipt:hover {
+  background: #333;
+}
+
+/* ==========================================================================
+   06 — For Families / Elder Mode (Radically Simpler per Item 19)
+   ========================================================================== */
+.section-elder {
+  padding: var(--section-padding);
+  background-color: var(--color-paper);
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.elder-header-block {
+  max-width: 720px;
+  margin-bottom: 56px;
+}
+
+.elder-touch-canvas {
+  display: flex;
+  justify-content: center;
+}
+
+.elder-question-card {
+  width: 640px;
+  max-width: 100%;
+  background: var(--color-warm-white);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-xl);
+  padding: 56px 48px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(23, 23, 23, 0.08);
+}
+
+.elder-huge-prompt {
+  font-family: var(--font-serif);
+  font-size: 52px;
+  color: var(--color-ink);
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.elder-arrow-down {
+  font-size: 28px;
+  color: var(--color-sand);
+  margin: 8px 0;
+}
+
+.elder-answer-box {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-style: italic;
+  color: var(--color-status-moved);
+  margin-bottom: 12px;
+}
+
+.elder-large-visual {
+  margin: 20px 0 32px 0;
+}
+
+.elder-big-glyph {
+  font-size: 72px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.elder-shelf-callout {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-muted-text);
+}
+
+.btn-elder-focal {
+  background: var(--color-ink);
+  color: var(--color-warm-white);
+  padding: 16px 36px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-elder-focal:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   07 — PHANTOM Engine (Dark Technical Identity per Item 20)
+   ========================================================================== */
+.section-phantom {
+  padding: var(--section-padding);
+  background-color: var(--color-dark-bg);
+  color: #EDE6DC;
+}
+
+.phantom-header-block {
+  max-width: 720px;
+  margin-bottom: 64px;
+}
+
+.phantom-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  color: var(--color-reality-glow);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.phantom-title {
+  font-family: var(--font-serif);
+  font-size: 60px;
+  color: #FFF;
+  margin-bottom: 6px;
+}
+
+.phantom-subtext {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--color-sand);
+}
+
+/* Pipeline Flow: SNAPSHOT → OBJECTS → SPATIAL STATE → COMPARISON → CHANGE → EVIDENCE */
+.phantom-pipeline-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 24px 0;
+}
+
+.pipe-node {
+  background: var(--color-dark-surface);
+  border: 1px solid var(--color-dark-border);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  min-width: 155px;
+  flex: 1;
+}
+
+.pipe-node.highlight {
+  border-color: var(--color-status-moved);
+}
+
+.pipe-step {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--color-sand);
+  margin-bottom: 6px;
+}
+
+.pipe-title {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #FFF;
+  margin-bottom: 4px;
+}
+
+.pipe-sub {
+  font-size: 11.5px;
+  color: #8E8880;
+}
+
+.pipe-divider {
+  font-size: 18px;
+  color: var(--color-dark-border);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   08 — Trust & Privacy (Calm Integrity per Item 21)
+   ========================================================================== */
+.section-trust {
+  padding: var(--section-padding);
+  background-color: var(--color-paper);
+}
+
+.trust-header-block {
+  max-width: 720px;
+  margin-bottom: 56px;
+}
+
+.trust-pillars-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  border-top: 1px solid var(--color-subtle-border);
+  padding-top: 48px;
+}
+
+.trust-pillar {
+  display: flex;
+  flex-direction: column;
+}
+
+.trust-pillar-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--color-ink);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.trust-pillar-desc {
+  font-size: 15.5px;
+  color: var(--color-muted-text);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   09 — Final CTA & Footer
+   ========================================================================== */
+.section-footer {
+  padding: 100px 32px 60px 32px;
+  background-color: var(--color-paper);
+  border-top: 1px solid var(--color-subtle-border);
+}
+
+.footer-cta-area {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 80px auto;
+}
+
+.footer-headline {
+  font-family: var(--font-serif);
+  font-size: 60px;
+  color: var(--color-ink);
+  margin-bottom: 18px;
+  line-height: 1.05;
+}
+
+.footer-lead {
+  font-size: 18.5px;
+  color: var(--color-muted-text);
+  margin-bottom: 36px;
+}
+
+.footer-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.footer-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-subtle-border);
+  padding-top: 28px;
+  font-size: 13px;
+  color: var(--color-muted-text);
+}
+
+.footer-brand-info .brand-text {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--color-ink);
+  margin-right: 12px;
+}
+
+.footer-brand-info .brand-sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--color-sand);
+}
+
+/* ==========================================================================
+   Modal Overlay
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(23, 23, 23, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--color-warm-white);
+  border: 1.5px solid var(--color-ink);
+  border-radius: var(--radius-xl);
+  width: 480px;
+  max-width: 90vw;
+  padding: 36px;
+  box-shadow: 0 24px 60px rgba(23, 23, 23, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-subtle-border);
+  padding-bottom: 14px;
+}
+
+.modal-brand {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--color-sand);
+}
+
+.modal-close-btn {
+  font-size: 18px;
+  color: var(--color-muted-text);
+  cursor: pointer;
+}
+
+.modal-lead {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--color-ink);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.modal-specs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-muted-text);
+}
+
+.spec-row strong {
+  color: var(--color-ink);
+}
+
+.btn-hero-primary.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Responsive Adaptations (Item 22 & Item 24)
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .hero-headline {
+    font-size: 72px;
+  }
+  .spatial-stage-wrapper {
+    height: 520px;
+  }
+  .phantom-pipeline-strip {
+    flex-wrap: wrap;
+  }
+  .pipe-divider {
+    display: none;
+  }
+  .trust-pillars-row {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .hero-headline {
+    font-size: 54px;
+  }
+  .problem-display-title, .section-title, .phantom-title, .footer-headline {
+    font-size: 40px;
+  }
+  .problem-objects-visual-strip, .steps-editorial-row, .taxonomy-grid, .diff-interactive-stage {
+    grid-template-columns: 1fr;
+  }
+  .stage-vector-connector {
+    transform: rotate(90deg);
+    margin: 20px 0;
+  }
+  .spatial-stage-wrapper {
+    height: 420px;
+  }
+  .spatial-timeline-bar {
+    width: 95%;
+    bottom: 16px;
+    padding: 10px 14px;
+  }
+  .footer-meta-bar {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- Minimalist Editorial Navigation (Simplified per Art Direction) -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand">
+        <span class="brand-name">SMRITI</span>
+        <span class="brand-engine-tag">PHANTOM</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#how-it-works" class="nav-link">How it works</a>
+        <a href="#reality-diff" class="nav-link">Reality Diff</a>
+        <a href="#for-families" class="nav-link">For families</a>
+        <a href="#trust" class="nav-link">Trust</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-nav-senior" id="navSeniorBtn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="12" r="4"/>
+            <circle cx="18" cy="12" r="4"/>
+            <path d="M10 12h4"/>
+          </svg>
+          Where are my glasses?
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 01 — HERO (Seamless Two-Zone Editorial Spread — Zero Clutter, No Card Box on Left) -->
+  <header class="section-hero" id="hero">
+    <div class="hero-container">
+      <!-- LEFT ZONE: Editorial Storytelling (Floating Naturally on Warm Paper) -->
+      <div class="hero-editorial-col">
+        <div class="hero-brand-eyebrow">
+          <span class="eyebrow-accent">SMRITI</span>
+        </div>
+
+        <h1 class="hero-headline">
+          Your home<br>
+          <em>remembers.</em>
+        </h1>
+
+        <div class="hero-subcopy-block">
+          <p class="hero-lead-copy">
+            When memory fades, SMRITI remembers what changed.
+          </p>
+          <p class="hero-body-copy">
+            SMRITI remembers where everyday things were — and shows what changed.
+          </p>
+        </div>
+
+        <div class="hero-actions-row">
+          <button class="btn-hero-primary" id="btnHeroSeeHow">
+            See how it works →
+          </button>
+          <button class="btn-hero-secondary" id="btnHeroSimulate">
+            Simulate a change
+          </button>
+        </div>
+
+        <!-- Notification Banner that appears during the "Simulate a change" climax -->
+        <div class="change-callout-banner" id="changeCalloutBanner">
+          <div class="change-tag">MOVED</div>
+          <div class="change-detail">
+            <strong>Glasses</strong> · Side table → bookshelf
+          </div>
+          <div class="change-meta">1 meaningful change detected.</div>
+        </div>
+
+        <div class="hero-tech-attribution">
+          <span class="tech-tag">POWERED BY PHANTOM</span>
+          <span class="tech-sep">·</span>
+          <span class="tech-desc">SPATIAL MEMORY ENGINE</span>
+        </div>
+      </div>
+
+      <!-- RIGHT ZONE: 3D Miniature Room (Scaled up ~20% to Occupy Right Territory) -->
+      <div class="hero-spatial-col">
+        <div class="spatial-stage-wrapper">
+          <!-- Product-oriented subtle snapshot tag (Replaces developer 3D Viewport) -->
+          <div class="snapshot-header-tag">
+            <span class="snapshot-dot"></span>
+            <span class="snapshot-title">HOME MEMORY</span>
+            <span class="snapshot-sep">·</span>
+            <span class="snapshot-timestamp" id="snapshotTimestamp">Snapshot · 2:10 PM</span>
+          </div>
+
+          <!-- "Where are my glasses?" Interactive Product Demonstration Card -->
+          <div class="focal-glasses-card" id="focalGlassesCard">
+            <div class="focal-card-kicker">WHERE ARE MY GLASSES?</div>
+            <div class="focal-card-location">Last seen: <strong>Bookshelf</strong></div>
+            <div class="focal-card-details">
+              <span>Observed: <strong>4:40 PM</strong></span>
+              <span class="focal-status-badge">STATUS: CONFIRMED</span>
+            </div>
+            <button class="focal-close-btn" id="focalCloseBtn">✕</button>
+          </div>
+
+          <!-- 3D Room Area (Spline WebGL / Architectural SVG Stage) -->
+          <div class="spatial-viewport" id="spatialViewport">
+            <svg class="isometric-stage-svg" viewBox="0 0 640 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Soft Glow Filter for Ghost Object -->
+                <filter id="ghostGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="1.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+                <!-- Radial Ambient Floor Shadow -->
+                <radialGradient id="floorAmbientShadow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#171717" stop-opacity="0.08"/>
+                  <stop offset="100%" stop-color="#171717" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <!-- Floor Drop Shadow -->
+              <ellipse cx="320" cy="275" rx="270" ry="145" fill="url(#floorAmbientShadow)"/>
+
+              <!-- Room Isometric Floor Slab -->
+              <polygon points="320,80 570,205 320,330 70,205" fill="#EDE6DC" stroke="#DCD5C8" stroke-width="2"/>
+              <!-- Architectural Floor Rug -->
+              <polygon points="280,165 415,232 300,290 165,222" fill="#DFD8CB" stroke="#D1C9BC" stroke-width="1.5"/>
+
+              <!-- Back-Left Wall -->
+              <polygon points="70,205 320,80 320,-5 70,120" fill="#FAF8F3" stroke="#E5DFD3" stroke-width="1.5"/>
+              <!-- Back-Right Wall -->
+              <polygon points="320,80 570,205 570,120 320,-5" fill="#F4F0E8" stroke="#E5DFD3" stroke-width="1.5"/>
+
+              <!-- Architectural Window on Left Wall with Soft Ambient Daylight -->
+              <polygon points="110,160 250,90 250,45 110,115" fill="#EAF2F2" stroke="#D8D1C3" stroke-width="2" opacity="0.6"/>
+
+              <!-- Bookshelf on Back-Right Wall (Destination for Glasses) -->
+              <g id="svgBookshelf" transform="translate(425, 110)">
+                <polygon points="0,48 58,77 58,0 0,-29" fill="#A68A70"/>
+                <polygon points="58,77 72,70 72,-7 58,0" fill="#8A6F54"/>
+                <polygon points="0,-29 58,0 72,-7 14,-36" fill="#B59A7E"/>
+                <!-- Shelves -->
+                <polygon points="2,13 56,40 68,34 14,7" fill="#B59A7E"/>
+                <polygon points="2,30 56,57 68,51 14,24" fill="#B59A7E"/>
+                <!-- Shelf 2 Highlight Destination (Amber Ring) -->
+                <ellipse id="svgMovedHighlight" cx="36" cy="27" rx="18" ry="9" fill="rgba(213, 154, 69, 0.16)" stroke="#D59A45" stroke-width="2" opacity="0"/>
+                <!-- Solid Glasses settled on Shelf Tier 2 -->
+                <text x="36" y="31" id="svgGlassesOnShelf" font-size="16" text-anchor="middle" opacity="0">👓</text>
+              </g>
+
+              <!-- Credenza Cabinet on Back Wall -->
+              <g id="svgCabinet" transform="translate(245, 65)">
+                <polygon points="0,38 72,74 72,28 0,-8" fill="#A68A70"/>
+                <polygon points="72,74 92,64 92,18 72,28" fill="#8A6F54"/>
+                <polygon points="0,-8 72,28 92,18 20,-18" fill="#B59A7E"/>
+                <!-- Table Lamp on Cabinet -->
+                <polygon points="38,18 48,23 52,6 42,1" fill="#FAF8F3" stroke="#C7A250" stroke-width="1.5"/>
+              </g>
+
+              <!-- Comfortable Armchair in Center-Left -->
+              <g id="svgArmchair" transform="translate(205, 185)">
+                <polygon points="0,34 52,60 76,48 24,22" fill="#F2EDE4" stroke="#D8D1C3" stroke-width="1.5"/>
+                <polygon points="0,17 52,43 52,-4 0,-30" fill="#EDE6DC" stroke="#D8D1C3" stroke-width="1.5"/>
+                <!-- Signature Olive Throw Cushion -->
+                <polygon points="15,23 38,35 42,21 19,9" fill="#6F7655"/>
+              </g>
+
+              <!-- Assistive Mobility Walker -->
+              <g id="svgWalker" transform="translate(125, 215)">
+                <line x1="0" y1="0" x2="0" y2="42" stroke="#8E8880" stroke-width="2.5"/>
+                <line x1="18" y1="9" x2="18" y2="51" stroke="#8E8880" stroke-width="2.5"/>
+                <line x1="0" y1="0" x2="18" y2="9" stroke="#4A4844" stroke-width="3"/>
+                <line x1="0" y1="21" x2="18" y2="30" stroke="#8E8880" stroke-width="2"/>
+              </g>
+
+              <!-- Side Table in Front-Left (Origin of Glasses) -->
+              <g id="svgSideTable" transform="translate(155, 240)">
+                <!-- Table Legs -->
+                <line x1="14" y1="22" x2="8" y2="54" stroke="#8A6F54" stroke-width="2"/>
+                <line x1="32" y1="31" x2="32" y2="64" stroke="#8A6F54" stroke-width="2"/>
+                <line x1="50" y1="22" x2="56" y2="54" stroke="#8A6F54" stroke-width="2"/>
+                <!-- Table Top -->
+                <ellipse cx="32" cy="22" rx="32" ry="16" fill="#B59A7E" stroke="#8A6F54" stroke-width="1.5"/>
+
+                <!-- Signature Ghost Glasses Residue (Room Remembering Where It Used to Be) -->
+                <g id="svgGhostGroup" opacity="0">
+                  <ellipse id="svgGhostHighlight" cx="32" cy="21" rx="18" ry="9" fill="rgba(184, 216, 208, 0.22)" stroke="#B8D8D0" stroke-dasharray="3,3" stroke-width="1.5"/>
+                  <text x="32" y="26" id="svgGhostGlasses" font-size="16" text-anchor="middle" fill="#88B8AF" opacity="0.32" filter="url(#ghostGlow)">👓</text>
+                  <!-- Spatial Memory Micro-Particles -->
+                  <circle cx="20" cy="16" r="1" fill="#B8D8D0" opacity="0.6"/>
+                  <circle cx="44" cy="18" r="1.2" fill="#B8D8D0" opacity="0.7"/>
+                  <circle cx="32" cy="12" r="0.9" fill="#B8D8D0" opacity="0.5"/>
+                </g>
+
+                <!-- Solid Reading Glasses at T0 Baseline -->
+                <text x="32" y="26" id="svgSolidGlasses" font-size="16" text-anchor="middle" opacity="1">👓</text>
+              </g>
+
+              <!-- Restrained Spatial Trajectory Arc -->
+              <path id="svgSpatialArc" d="M 187 261 Q 295 165 461 137" fill="none" stroke="#D59A45" stroke-width="2" stroke-dasharray="4,4" opacity="0"/>
+
+              <!-- PHANTOM Spatial Scan Sweep Line -->
+              <line id="svgScanBeam" x1="100" y1="20" x2="100" y2="390" stroke="#B8D8D0" stroke-width="2.5" opacity="0" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Minimal Elegant Timeline Control (Not a Clunky Dashboard Bar) -->
+          <div class="spatial-timeline-bar">
+            <div class="minimal-timeline-track">
+              <button class="timeline-node active" id="btnTimelineT0">
+                <span class="node-bullet"></span>
+                <span class="node-id">T0</span>
+                <span class="node-title">BASELINE</span>
+                <span class="node-time">2:10 PM</span>
+              </button>
+
+              <div class="track-connector"></div>
+
+              <button class="timeline-node" id="btnTimelineT1">
+                <span class="node-bullet"></span>
+                <span class="node-id">T1</span>
+                <span class="node-title">CHANGE</span>
+                <span class="node-time">4:40 PM</span>
+              </button>
+
+              <div class="track-connector"></div>
+
+              <button class="timeline-node" id="btnTimelineT2">
+                <span class="node-bullet"></span>
+                <span class="node-id">T2</span>
+                <span class="node-title">EVIDENCE</span>
+                <span class="node-time">CURRENT</span>
+              </button>
+            </div>
+
+            <div class="timeline-secondary-actions">
+              <button class="action-link-btn" id="btnQuickScan">
+                <span class="icon">⚡</span> Scan Room
+              </button>
+              <button class="action-link-btn" id="btnQuickReceipt">
+                <span class="icon">📄</span> Receipt
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 02 — THE PROBLEM (Editorial Statement + Simple Everyday Objects with Ghost States) -->
+  <section class="section-problem" id="problem">
+    <div class="content-container">
+      <div class="problem-statement-header">
+        <span class="editorial-kicker">01 / THE PROBLEM</span>
+        <h2 class="problem-display-title">
+          When memory fades,<br>
+          <em>ordinary objects become uncertain.</em>
+        </h2>
+        <p class="problem-lead-text">
+          When an older adult misplaces a personal item, the item doesn't feel casually forgotten. It can feel stolen, mysteriously vanished, or withheld.
+        </p>
+      </div>
+
+      <!-- Restrained visual of everyday items with subtle ghost states per Item 15 -->
+      <div class="problem-objects-visual-strip">
+        <div class="uncertain-object-card">
+          <div class="object-stage-glyph">
+            <span class="glyph-ghost">👓</span>
+            <span class="glyph-solid">👓</span>
+          </div>
+          <div class="object-narrative">
+            <span class="object-label">Reading Glasses</span>
+            <span class="object-path">Side table → Bookshelf</span>
+            <span class="object-diff-badge moved">GHOST REMEMBERS ORIGIN</span>
+          </div>
+        </div>
+
+        <div class="uncertain-object-card">
+          <div class="object-stage-glyph">
+            <span class="glyph-ghost">🔑</span>
+            <span class="glyph-solid">🔑</span>
+          </div>
+          <div class="object-narrative">
+            <span class="object-label">Key Ring</span>
+            <span class="object-path">Entryway bowl → Coat pocket</span>
+            <span class="object-diff-badge added">COGNITIVE ANCHOR</span>
+          </div>
+        </div>
+
+        <div class="uncertain-object-card">
+          <div class="object-stage-glyph">
+            <span class="glyph-ghost">💊</span>
+            <span class="glyph-solid">💊</span>
+          </div>
+          <div class="object-narrative">
+            <span class="object-label">Daily Medicine</span>
+            <span class="object-path">Kitchen counter → Nightstand</span>
+            <span class="object-diff-badge moved">CRITICAL EVIDENCE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-resolution-banner">
+        <h3 class="resolution-quote">“SMRITI gives families a shared memory of the home.”</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — HOW SMRITI REMEMBERS (3 Understandable Steps Demonstrating the Room) -->
+  <section class="section-how" id="how-it-works">
+    <div class="content-container">
+      <div class="how-header-block">
+        <span class="editorial-kicker">02 / HOW IT WORKS</span>
+        <h2 class="section-title">Remember. Compare. Explain.</h2>
+        <p class="section-subtitle">
+          SMRITI operates on periodic visual snapshots. PHANTOM computes topological differences between states.
+        </p>
+      </div>
+
+      <div class="steps-editorial-row">
+        <button class="step-editorial-item active" id="stepBtn01">
+          <span class="step-num">01</span>
+          <h4 class="step-name">Remember</h4>
+          <p class="step-description">
+            SMRITI captures a volumetric snapshot of the room.
+          </p>
+          <div class="step-meta-tag">T0 · BASELINE SNAPSHOT</div>
+        </button>
+
+        <button class="step-editorial-item" id="stepBtn02">
+          <span class="step-num">02</span>
+          <h4 class="step-name">Compare</h4>
+          <p class="step-description">
+            PHANTOM compares the new state against the remembered state.
+          </p>
+          <div class="step-meta-tag">Δ · SPATIAL MESH DIFF</div>
+        </button>
+
+        <button class="step-editorial-item" id="stepBtn03">
+          <span class="step-num">03</span>
+          <h4 class="step-name">Explain</h4>
+          <p class="step-description">
+            SMRITI shows what changed.
+          </p>
+          <div class="step-meta-tag">CALM EVIDENCE</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 — REALITY DIFF (Scrub Between T0 and T1 — Second Biggest Visual Moment) -->
+  <section class="section-diff" id="reality-diff">
+    <div class="content-container">
+      <div class="diff-header-layout">
+        <div>
+          <span class="editorial-kicker">03 / REALITY DIFF</span>
+          <h2 class="section-title">A git diff for the physical world.</h2>
+        </div>
+        <div class="diff-badge-pill">
+          <span class="diff-status-dot"></span>
+          <span>1 MEANINGFUL CHANGE DETECTED</span>
+        </div>
+      </div>
+
+      <!-- Interactive Scrubber between T0 and T1 -->
+      <div class="diff-scrubber-container">
+        <div class="diff-scrubber-labels">
+          <div class="scrub-label-t0" id="scrubLabelT0">
+            <span class="time-stamp">2:10 PM</span>
+            <span class="state-name">T0 · BASELINE</span>
+          </div>
+          <div class="scrub-label-center" id="scrubCenterText">
+            MOVED: Side table → Bookshelf
+          </div>
+          <div class="scrub-label-t1" id="scrubLabelT1">
+            <span class="time-stamp">4:40 PM</span>
+            <span class="state-name">T1 · CHANGE DETECTED</span>
+          </div>
+        </div>
+
+        <input type="range" min="0" max="100" value="100" class="diff-range-slider" id="diffRangeSlider" aria-label="Scrub temporal difference">
+
+        <!-- Visual Diff Stage -->
+        <div class="diff-interactive-stage">
+          <div class="stage-location-zone origin-zone" id="zoneOrigin">
+            <div class="zone-badge">SIDE TABLE</div>
+            <div class="zone-visual">
+              <span class="zone-glasses-ghost" id="zoneGhostGlasses">👓</span>
+              <span class="zone-glasses-solid" id="zoneSolidOrigin">👓</span>
+            </div>
+            <div class="zone-label" id="zoneOriginLabel">Ghost silhouette remains</div>
+          </div>
+
+          <div class="stage-vector-connector">
+            <div class="vector-line">
+              <div class="vector-pulse-head" id="vectorPulseHead"></div>
+            </div>
+            <div class="vector-distance-text">240 cm displacement</div>
+          </div>
+
+          <div class="stage-location-zone dest-zone" id="zoneDest">
+            <div class="zone-badge highlight">BOOKSHELF (TIER 2)</div>
+            <div class="zone-visual">
+              <div class="dest-amber-ring" id="destAmberRing"></div>
+              <span class="zone-glasses-solid" id="zoneSolidDest">👓</span>
+            </div>
+            <div class="zone-label highlight" id="zoneDestLabel">Confirmed new position</div>
+          </div>
+        </div>
+
+        <!-- Four Reusable State Badges -->
+        <div class="diff-taxonomy-strip">
+          <div class="taxonomy-label">TAXONOMY OF SPATIAL CHANGE:</div>
+          <div class="taxonomy-grid">
+            <div class="taxonomy-entry">
+              <span class="tax-indicator moved"></span>
+              <span><strong>MOVED</strong> — Previous location retains ghost silhouette; current location receives amber contour.</span>
+            </div>
+            <div class="taxonomy-entry">
+              <span class="tax-indicator added"></span>
+              <span><strong>ADDED</strong> — New object introduced into environment since baseline snapshot.</span>
+            </div>
+            <div class="taxonomy-entry">
+              <span class="tax-indicator gone"></span>
+              <span><strong>GONE</strong> — Confirmed removed from room; ghost remains at origin with boundary.</span>
+            </div>
+            <div class="taxonomy-entry">
+              <span class="tax-indicator uncertain"></span>
+              <span><strong>UNCERTAIN</strong> — Occluded or not visible. SMRITI transparently reports uncertainty.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 — THE MEMORY RECEIPT (Clean, Dignified Evidence per Item 18) -->
+  <section class="section-receipt" id="receipt">
+    <div class="content-container">
+      <div class="receipt-header-center">
+        <span class="editorial-kicker">04 / CALM EVIDENCE</span>
+        <h2 class="section-title">The Memory Receipt</h2>
+        <p class="section-subtitle">
+          It transforms “I think someone took it” into “Here is what happened.”
+        </p>
+      </div>
+
+      <div class="receipt-card-wrapper">
+        <div class="receipt-document">
+          <div class="receipt-content-area">
+            <div class="receipt-top-row">
+              <div class="receipt-brand-logo">SMRITI</div>
+              <div class="receipt-doc-num">MEMORY RECEIPT #SM-8492</div>
+            </div>
+            <div class="receipt-classification">Spatial Memory Evidence Document</div>
+
+            <div class="receipt-hairline-dashed"></div>
+
+            <div class="receipt-hero-item">
+              <span class="receipt-item-eyebrow">SUBJECT OBJECT</span>
+              <h3 class="receipt-item-name">GLASSES</h3>
+            </div>
+
+            <div class="receipt-flow-container">
+              <div class="receipt-flow-box">
+                <span class="flow-time">2:10 PM</span>
+                <span class="flow-loc">Side table</span>
+              </div>
+              <div class="receipt-flow-arrow">→</div>
+              <div class="receipt-flow-box highlight">
+                <span class="flow-time">4:40 PM</span>
+                <span class="flow-loc">Bookshelf</span>
+              </div>
+            </div>
+
+            <div class="receipt-hairline-dashed"></div>
+
+            <div class="receipt-status-callout">
+              <span class="status-stamp">CONFIRMED MOVED</span>
+              <span class="confidence-val">99.4% confidence · Local Edge Mesh</span>
+            </div>
+
+            <div class="receipt-hairline-dashed"></div>
+
+            <div class="receipt-motto-block">
+              “When memory fades, SMRITI remembers what changed.”
+            </div>
+
+            <button class="btn-share-receipt" id="btnShareReceipt">
+              Share memory
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 — FOR FAMILIES / ELDER MODE (Radically Simpler per Item 19) -->
+  <section class="section-elder" id="for-families">
+    <div class="content-container">
+      <div class="elder-header-block">
+        <span class="editorial-kicker">05 / FOR FAMILIES</span>
+        <h2 class="section-title">Designed for the elder, not just the engineer.</h2>
+        <p class="section-subtitle">
+          No complex dashboards. High contrast, large typography, and warm, reassuring clarity.
+        </p>
+      </div>
+
+      <div class="elder-touch-canvas">
+        <div class="elder-question-card">
+          <div class="elder-huge-prompt">WHERE ARE MY GLASSES?</div>
+          <div class="elder-arrow-down">↓</div>
+          <div class="elder-answer-box">
+            Last seen on the bookshelf.
+          </div>
+          <div class="elder-arrow-down">↓</div>
+          <div class="elder-large-visual">
+            <span class="elder-big-glyph">👓</span>
+            <div class="elder-shelf-callout">Bookshelf · Second shelf tier · 4:40 PM</div>
+          </div>
+          <button class="btn-elder-focal" id="btnElderHighlight">
+            Show on 3D Room
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 — PHANTOM ENGINE (Dark Technical Identity per Item 20) -->
+  <section class="section-phantom" id="phantom">
+    <div class="content-container">
+      <div class="phantom-header-block">
+        <span class="phantom-kicker">06 / UNDERLYING ENGINE</span>
+        <h2 class="phantom-title">PHANTOM</h2>
+        <p class="phantom-subtext">SPATIAL MEMORY ENGINE</p>
+      </div>
+
+      <!-- Pipeline Flow: SNAPSHOT → OBJECTS → SPATIAL STATE → COMPARISON → CHANGE → EVIDENCE -->
+      <div class="phantom-pipeline-strip">
+        <div class="pipe-node">
+          <span class="pipe-step">01</span>
+          <span class="pipe-title">SNAPSHOT</span>
+          <span class="pipe-sub">Volumetric capture</span>
+        </div>
+        <div class="pipe-divider">→</div>
+
+        <div class="pipe-node">
+          <span class="pipe-step">02</span>
+          <span class="pipe-title">OBJECTS</span>
+          <span class="pipe-sub">Everyday items</span>
+        </div>
+        <div class="pipe-divider">→</div>
+
+        <div class="pipe-node">
+          <span class="pipe-step">03</span>
+          <span class="pipe-title">SPATIAL STATE</span>
+          <span class="pipe-sub">Coordinate anchor</span>
+        </div>
+        <div class="pipe-divider">→</div>
+
+        <div class="pipe-node">
+          <span class="pipe-step">04</span>
+          <span class="pipe-title">COMPARISON</span>
+          <span class="pipe-sub">Temporal diff</span>
+        </div>
+        <div class="pipe-divider">→</div>
+
+        <div class="pipe-node">
+          <span class="pipe-step">05</span>
+          <span class="pipe-title">CHANGE</span>
+          <span class="pipe-sub">Ghost & moved vector</span>
+        </div>
+        <div class="pipe-divider">→</div>
+
+        <div class="pipe-node highlight">
+          <span class="pipe-step">06</span>
+          <span class="pipe-title">EVIDENCE</span>
+          <span class="pipe-sub">Memory receipt</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 — TRUST & PRIVACY (Calm Integrity per Item 21) -->
+  <section class="section-trust" id="trust">
+    <div class="content-container">
+      <div class="trust-header-block">
+        <span class="editorial-kicker">07 / ETHICAL INTEGRITY</span>
+        <h2 class="section-title">Objects, not people. Evidence, not surveillance.</h2>
+        <p class="section-subtitle">
+          SMRITI was intentionally engineered as the antithesis of surveillance capitalism.
+        </p>
+      </div>
+
+      <div class="trust-pillars-row">
+        <div class="trust-pillar">
+          <h3 class="trust-pillar-title">OBJECTS, NOT PEOPLE</h3>
+          <p class="trust-pillar-desc">
+            SMRITI does not recognize human faces, analyze daily routines, or monitor private behavior. It perceives rooms purely as static collections of furniture and physical objects.
+          </p>
+        </div>
+
+        <div class="trust-pillar">
+          <h3 class="trust-pillar-title">CONSENT FIRST</h3>
+          <p class="trust-pillar-desc">
+            Spatial coordinate meshes never leave the local home network. PHANTOM computes diffs entirely on local edge hardware, eliminating third-party cloud vulnerability.
+          </p>
+        </div>
+
+        <div class="trust-pillar">
+          <h3 class="trust-pillar-title">UNCERTAINTY WHEN UNCERTAIN</h3>
+          <p class="trust-pillar-desc">
+            When an object is occluded or outside the field of scan, SMRITI never hallucinates certainty. It explicitly displays “UNCERTAIN” — because in caregiving, false certainty is hazardous.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 — FINAL CALL TO ACTION & FOOTER -->
+  <footer class="section-footer">
+    <div class="content-container">
+      <div class="footer-cta-area">
+        <h2 class="footer-headline">Give the home a memory.</h2>
+        <p class="footer-lead">
+          Help families replace tension with calm clarity. SMRITI is currently onboarding pilot caregiver programs.
+        </p>
+        <div class="footer-action-buttons">
+          <button class="btn-hero-primary" id="btnFooterPilot">Request Family Pilot</button>
+          <a href="#hero" class="btn-hero-secondary">Back to Top</a>
+        </div>
+      </div>
+
+      <div class="footer-meta-bar">
+        <div class="footer-brand-info">
+          <span class="brand-text">SMRITI</span>
+          <span class="brand-sub">Powered by PHANTOM™ Spatial Reality Engine</span>
+        </div>
+        <div class="footer-copyright">
+          © 2026 SMRITI Assistive Systems · Ethical Spatial Intelligence
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Receipt Share Modal -->
+  <div class="modal-overlay" id="receiptModalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-brand">SMRITI MEMORY RECEIPT #SM-8492</div>
+        <button class="modal-close-btn" id="modalCloseBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-lead">Reading glasses confirmed displaced from Side Table to Bookshelf (Shelf Tier 2).</p>
+        <div class="modal-specs">
+          <div class="spec-row"><span>Displacement:</span> <strong>240 cm North-East</strong></div>
+          <div class="spec-row"><span>Delta Time:</span> <strong>2h 30m (2:10 PM → 4:40 PM)</strong></div>
+          <div class="spec-row"><span>Status:</span> <strong style="color: #D59A45;">CONFIRMED MOVED</strong></div>
+          <div class="spec-row"><span>Confidence:</span> <strong>99.4% Match</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-hero-primary full-width" id="modalCloseBtn2">Acknowledge Evidence</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+// ==========================================================================
+// SMRITI — Client Interaction & Spline Bridge Integration
+// Final Art Direction Pass
+// ==========================================================================
+
+document.addEventListener('DOMContentLoaded', async () => {
+  // DOM Elements — Hero & Timeline
+  const btnTimelineT0 = document.getElementById('btnTimelineT0');
+  const btnTimelineT1 = document.getElementById('btnTimelineT1');
+  const btnTimelineT2 = document.getElementById('btnTimelineT2');
+  const btnHeroSeeHow = document.getElementById('btnHeroSeeHow');
+  const btnHeroSimulate = document.getElementById('btnHeroSimulate');
+  const btnQuickScan = document.getElementById('btnQuickScan');
+  const btnQuickReceipt = document.getElementById('btnQuickReceipt');
+  const snapshotTimestamp = document.getElementById('snapshotTimestamp');
+  const changeCalloutBanner = document.getElementById('changeCalloutBanner');
+
+  // Focal "Where are my glasses?" Card
+  const focalGlassesCard = document.getElementById('focalGlassesCard');
+  const focalCloseBtn = document.getElementById('focalCloseBtn');
+  const navSeniorBtn = document.getElementById('navSeniorBtn');
+  const btnElderHighlight = document.getElementById('btnElderHighlight');
+
+  // Modal Receipt
+  const receiptModalOverlay = document.getElementById('receiptModalOverlay');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalCloseBtn2 = document.getElementById('modalCloseBtn2');
+  const btnShareReceipt = document.getElementById('btnShareReceipt');
+
+  // Interactive Reality Diff Scrubber Elements
+  const diffRangeSlider = document.getElementById('diffRangeSlider');
+  const scrubLabelT0 = document.getElementById('scrubLabelT0');
+  const scrubLabelT1 = document.getElementById('scrubLabelT1');
+  const zoneSolidOrigin = document.getElementById('zoneSolidOrigin');
+  const zoneGhostGlasses = document.getElementById('zoneGhostGlasses');
+  const zoneSolidDest = document.getElementById('zoneSolidDest');
+  const destAmberRing = document.getElementById('destAmberRing');
+  const vectorPulseHead = document.getElementById('vectorPulseHead');
+
+  // "How It Works" Step Buttons
+  const stepBtn01 = document.getElementById('stepBtn01');
+  const stepBtn02 = document.getElementById('stepBtn02');
+  const stepBtn03 = document.getElementById('stepBtn03');
+
+  // Hero SVG Elements
+  const svgSolidGlasses = document.getElementById('svgSolidGlasses');
+  const svgGhostGroup = document.getElementById('svgGhostGroup');
+  const svgSpatialArc = document.getElementById('svgSpatialArc');
+  const svgMovedHighlight = document.getElementById('svgMovedHighlight');
+  const svgGlassesOnShelf = document.getElementById('svgGlassesOnShelf');
+  const svgScanBeam = document.getElementById('svgScanBeam');
+
+  // 3D Physical Object Coordinates for Spline
+  const SIDE_TABLE_POS = { x: -90, y: 55.5, z: 30 };
+  const BOOKSHELF_POS = { x: 130, y: 94, z: -75 };
+
+  // Detect live Spline runtime bridge
+  let splineBridge = null;
+  if (window.spline) {
+    try {
+      await window.spline.ready;
+      splineBridge = window.spline;
+      console.log('[SMRITI] Live Spline 3D bridge established.');
+    } catch (e) {
+      console.warn('[SMRITI] Spline bridge deferred:', e);
+    }
+  }
+
+  // Active state tracker
+  let currentState = 'T0';
+
+  function setTimelineNodeActive(step) {
+    currentState = step;
+    btnTimelineT0?.classList.toggle('active', step === 'T0');
+    btnTimelineT1?.classList.toggle('active', step === 'T1');
+    btnTimelineT2?.classList.toggle('active', step === 'T2');
+  }
+
+  // 1. T0 Baseline State (2:10 PM)
+  async function applyT0() {
+    setTimelineNodeActive('T0');
+    if (snapshotTimestamp) snapshotTimestamp.textContent = 'Snapshot · 2:10 PM';
+    if (changeCalloutBanner) changeCalloutBanner.classList.remove('visible');
+    if (focalGlassesCard) focalGlassesCard.classList.remove('active');
+
+    // SVG elements reset
+    if (svgSolidGlasses) svgSolidGlasses.style.opacity = '1';
+    if (svgGhostGroup) svgGhostGroup.style.opacity = '0';
+    if (svgSpatialArc) svgSpatialArc.style.opacity = '0';
+    if (svgMovedHighlight) svgMovedHighlight.style.opacity = '0';
+    if (svgGlassesOnShelf) svgGlassesOnShelf.style.opacity = '0';
+
+    // Spline 3D objects reset
+    if (splineBridge) {
+      try {
+        await splineBridge.updateObject('Glasses_Group', { position: SIDE_TABLE_POS, visible: true });
+        await splineBridge.updateObject('Ghost_Glasses_Group', { visible: false });
+        await splineBridge.updateObject('Highlight_Moved_Ring', { visible: false });
+        await splineBridge.updateObject('Highlight_Ghost_Ring', { visible: false });
+        await splineBridge.updateObject('SpatialTrail_Group', { visible: false });
+        await splineBridge.updateObject('Highlight_Uncertain_Ring', { visible: false });
+        await splineBridge.updateObject('Highlight_Gone_Ring', { visible: false });
+        await splineBridge.updateObject('Phantom_ScanPlane', { visible: false });
+      } catch (err) {
+        console.warn('[SMRITI] Spline update deferred:', err);
+      }
+    }
+  }
+
+  // 2. The Hero "Damn" Moment — Simulate a Change (T0 → T1 Choreographed Sequence)
+  async function simulateHeroChange() {
+    setTimelineNodeActive('T1');
+    if (snapshotTimestamp) snapshotTimestamp.textContent = 'Change Detected · 4:40 PM';
+    if (focalGlassesCard) focalGlassesCard.classList.remove('active');
+
+    // Step 1: Subtle spatial scan passes through
+    if (svgScanBeam) {
+      svgScanBeam.style.opacity = '0.7';
+      const startScan = performance.now();
+      const scanDur = 850;
+      function sweep(now) {
+        const p = Math.min((now - startScan) / scanDur, 1);
+        const curX = 100 + p * 420;
+        svgScanBeam.setAttribute('x1', curX);
+        svgScanBeam.setAttribute('x2', curX);
+        if (p < 1) requestAnimationFrame(sweep);
+        else svgScanBeam.style.opacity = '0';
+      }
+      requestAnimationFrame(sweep);
+    }
+
+    if (splineBridge) {
+      try {
+        await splineBridge.updateObject('Phantom_ScanPlane', {
+          position: { x: -210, y: 105, z: -20 },
+          visible: true
+        });
+        setTimeout(async () => {
+          await splineBridge.updateObject('Phantom_ScanPlane', { visible: false });
+        }, 850);
+      } catch (e) {}
+    }
+
+    // Step 2: Glasses smoothly move & ghost stays behind (after 350ms delay)
+    setTimeout(async () => {
+      // Reveal ghost silhouette at side table (origin)
+      if (svgGhostGroup) svgGhostGroup.style.opacity = '1';
+      if (svgSpatialArc) svgSpatialArc.style.opacity = '1';
+
+      if (splineBridge) {
+        try {
+          await splineBridge.updateObject('Ghost_Glasses_Group', { position: SIDE_TABLE_POS, visible: true });
+          await splineBridge.updateObject('Highlight_Ghost_Ring', { visible: true });
+        } catch (e) {}
+      }
+
+      // Smooth arc transit of solid glasses
+      const moveStart = performance.now();
+      const moveDuration = 1200;
+
+      function stepMove(now) {
+        const progress = Math.min((now - moveStart) / moveDuration, 1);
+        // Easing: easeInOutCubic
+        const ease = progress < 0.5 
+          ? 4 * progress * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+        if (splineBridge) {
+          const cx = (1 - ease) * SIDE_TABLE_POS.x + ease * BOOKSHELF_POS.x;
+          const cy = (1 - ease) * SIDE_TABLE_POS.y + ease * BOOKSHELF_POS.y + Math.sin(ease * Math.PI) * 34;
+          const cz = (1 - ease) * SIDE_TABLE_POS.z + ease * BOOKSHELF_POS.z;
+          splineBridge.updateObject('Glasses_Group', { position: { x: cx, y: cy, z: cz } });
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(stepMove);
+        } else {
+          // Destination highlight & notification banner
+          if (svgSolidGlasses) svgSolidGlasses.style.opacity = '0';
+          if (svgGlassesOnShelf) svgGlassesOnShelf.style.opacity = '1';
+          if (svgMovedHighlight) svgMovedHighlight.style.opacity = '1';
+
+          if (splineBridge) {
+            try {
+              splineBridge.updateObject('Glasses_Group', { position: BOOKSHELF_POS });
+              splineBridge.updateObject('Highlight_Moved_Ring', { visible: true });
+              splineBridge.updateObject('SpatialTrail_Group', { visible: true });
+            } catch (e) {}
+          }
+
+          // Show editorial notification callout
+          if (changeCalloutBanner) {
+            changeCalloutBanner.classList.add('visible');
+          }
+        }
+      }
+      requestAnimationFrame(stepMove);
+    }, 350);
+  }
+
+  // 3. T2 Current State — Multi-Object Evidence
+  async function applyT2() {
+    setTimelineNodeActive('T2');
+    if (snapshotTimestamp) snapshotTimestamp.textContent = 'Evidence Confirmed · Current';
+    if (changeCalloutBanner) changeCalloutBanner.classList.add('visible');
+    if (focalGlassesCard) focalGlassesCard.classList.remove('active');
+
+    // Immediate placement
+    if (svgSolidGlasses) svgSolidGlasses.style.opacity = '0';
+    if (svgGhostGroup) svgGhostGroup.style.opacity = '1';
+    if (svgSpatialArc) svgSpatialArc.style.opacity = '1';
+    if (svgGlassesOnShelf) svgGlassesOnShelf.style.opacity = '1';
+    if (svgMovedHighlight) svgMovedHighlight.style.opacity = '1';
+
+    if (splineBridge) {
+      try {
+        await splineBridge.updateObject('Glasses_Group', { position: BOOKSHELF_POS, visible: true });
+        await splineBridge.updateObject('Ghost_Glasses_Group', { position: SIDE_TABLE_POS, visible: true });
+        await splineBridge.updateObject('Highlight_Moved_Ring', { visible: true });
+        await splineBridge.updateObject('Highlight_Ghost_Ring', { visible: true });
+        await splineBridge.updateObject('SpatialTrail_Group', { visible: true });
+        await splineBridge.updateObject('Highlight_Gone_Ring', { visible: true });
+        await splineBridge.updateObject('Highlight_Uncertain_Ring', { visible: true });
+      } catch (e) {}
+    }
+  }
+
+  // 4. "Where are my glasses?" Product Demonstration (Item 10)
+  function showWhereAreMyGlasses() {
+    // Scroll hero smoothly into view if needed
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Ensure glasses are at bookshelf
+    if (svgSolidGlasses) svgSolidGlasses.style.opacity = '0';
+    if (svgGhostGroup) svgGhostGroup.style.opacity = '1';
+    if (svgSpatialArc) svgSpatialArc.style.opacity = '1';
+    if (svgGlassesOnShelf) svgGlassesOnShelf.style.opacity = '1';
+    if (svgMovedHighlight) svgMovedHighlight.style.opacity = '1';
+
+    if (splineBridge) {
+      try {
+        splineBridge.updateObject('Glasses_Group', { position: BOOKSHELF_POS, visible: true });
+        splineBridge.updateObject('Ghost_Glasses_Group', { position: SIDE_TABLE_POS, visible: true });
+        splineBridge.updateObject('Highlight_Moved_Ring', { visible: true });
+      } catch (e) {}
+    }
+
+    // Reveal focal prompt card
+    if (focalGlassesCard) {
+      focalGlassesCard.classList.add('active');
+    }
+  }
+
+  // 5. Interactive Reality Diff Scrubber (Item 17)
+  function updateDiffScrubber(val) {
+    const fraction = val / 100;
+
+    // Origin (Side table)
+    if (zoneSolidOrigin) zoneSolidOrigin.style.opacity = (1 - fraction).toString();
+    if (zoneGhostGlasses) zoneGhostGlasses.style.opacity = (0.28 * fraction).toString();
+
+    // Destination (Bookshelf)
+    if (zoneSolidDest) {
+      zoneSolidDest.style.opacity = fraction.toString();
+      zoneSolidDest.style.transform = `scale(${0.7 + 0.3 * fraction})`;
+    }
+    if (destAmberRing) {
+      destAmberRing.style.opacity = fraction.toString();
+    }
+    if (vectorPulseHead) {
+      vectorPulseHead.style.right = `${100 - fraction * 100}%`;
+    }
+  }
+
+  diffRangeSlider?.addEventListener('input', (e) => {
+    updateDiffScrubber(e.target.value);
+  });
+
+  scrubLabelT0?.addEventListener('click', () => {
+    if (diffRangeSlider) {
+      diffRangeSlider.value = 0;
+      updateDiffScrubber(0);
+    }
+  });
+
+  scrubLabelT1?.addEventListener('click', () => {
+    if (diffRangeSlider) {
+      diffRangeSlider.value = 100;
+      updateDiffScrubber(100);
+    }
+  });
+
+  // "How It Works" 3 Steps
+  stepBtn01?.addEventListener('click', () => {
+    stepBtn01.classList.add('active');
+    stepBtn02?.classList.remove('active');
+    stepBtn03?.classList.remove('active');
+    applyT0();
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  stepBtn02?.addEventListener('click', () => {
+    stepBtn02.classList.add('active');
+    stepBtn01?.classList.remove('active');
+    stepBtn03?.classList.remove('active');
+    simulateHeroChange();
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  stepBtn03?.addEventListener('click', () => {
+    stepBtn03.classList.add('active');
+    stepBtn01?.classList.remove('active');
+    stepBtn02?.classList.remove('active');
+    applyT2();
+    document.getElementById('hero')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Event Listeners — Timeline & Hero
+  btnTimelineT0?.addEventListener('click', () => applyT0());
+  btnTimelineT1?.addEventListener('click', () => simulateHeroChange());
+  btnTimelineT2?.addEventListener('click', () => applyT2());
+
+  btnHeroSimulate?.addEventListener('click', () => simulateHeroChange());
+
+  btnHeroSeeHow?.addEventListener('click', () => {
+    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  btnQuickScan?.addEventListener('click', () => {
+    simulateHeroChange();
+  });
+
+  focalCloseBtn?.addEventListener('click', () => {
+    focalGlassesCard?.classList.remove('active');
+  });
+
+  // Modal Receipt
+  btnQuickReceipt?.addEventListener('click', () => {
+    receiptModalOverlay?.classList.add('open');
+  });
+  btnShareReceipt?.addEventListener('click', () => {
+    receiptModalOverlay?.classList.add('open');
+  });
+  modalCloseBtn?.addEventListener('click', () => {
+    receiptModalOverlay?.classList.remove('open');
+  });
+  modalCloseBtn2?.addEventListener('click', () => {
+    receiptModalOverlay?.classList.remove('open');
+  });
+
+  // Senior "Where are my glasses?" triggers
+  navSeniorBtn?.addEventListener('click', () => {
+    showWhereAreMyGlasses();
+  });
+
+  btnElderHighlight?.addEventListener('click', () => {
+    showWhereAreMyGlasses();
+  });
+
+  // Initialize
+  updateDiffScrubber(100);
+  await applyT0();
+});
+
+</script>
+</body>
+</html>

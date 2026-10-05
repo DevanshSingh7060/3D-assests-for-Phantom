@@ -607,55 +607,56 @@
       });
 
       // Hips / Pelvis (Smooth rounded junction)
-      const hips = new THREE.Mesh(new THREE.SphereGeometry(10.5, 20, 20), matPants);
+      const hips = new THREE.Mesh(new THREE.SphereGeometry(10.2, 20, 20), matPants);
       hips.scale.set(1.15, 0.65, 0.95);
-      hips.position.set(0, 36, 0);
+      hips.position.set(0, 33, 0);
       hips.castShadow = true;
       this.character.add(hips);
 
       // 3. Cozy Drop-Shoulder Deep Olive Knit Sweater (Soft sculpted volume)
       const sweaterGroup = new THREE.Group();
-      sweaterGroup.position.set(0, 52, 0);
+      sweaterGroup.position.set(0, 48, 0);
 
       // Main Torso Body (Smooth rounded cylinder)
-      const torso = new THREE.Mesh(new THREE.CylinderGeometry(9.8, 11.2, 24, 24), matSweater);
+      const torso = new THREE.Mesh(new THREE.CylinderGeometry(9.8, 11.2, 26, 24), matSweater);
       torso.scale.set(1.12, 1, 0.92);
+      torso.position.set(0, -1, 0);
       torso.castShadow = true;
       sweaterGroup.add(torso);
 
       // Ribbed Sweater Hem at Waist
       const hem = new THREE.Mesh(new THREE.TorusGeometry(10.8, 1.2, 14, 24), matCollar);
-      hem.position.set(0, -11.5, 0);
+      hem.position.set(0, -14, 0);
       hem.scale.set(1.12, 1, 0.92);
       hem.rotation.x = Math.PI * 0.5;
       sweaterGroup.add(hem);
 
       // Drop-Shoulder Soft Rounded Caps
-      [-12, 12].forEach((xPos) => {
-        const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(4.2, 16, 16), matSweater);
+      [-11.5, 11.5].forEach((xPos) => {
+        const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(3.6, 16, 16), matSweater);
         shoulderCap.position.set(xPos, 8.5, 0);
-        shoulderCap.scale.set(1, 1.1, 0.95);
+        shoulderCap.scale.set(1.05, 0.95, 0.95);
         sweaterGroup.add(shoulderCap);
       });
 
       // Warm Terracotta Neckerchief / Scarf Accent (Memorable visual feature!)
-      const scarf = new THREE.Mesh(new THREE.TorusGeometry(5.6, 1.5, 14, 20), matAccent);
-      scarf.position.set(0, 12, 0);
-      scarf.rotation.set(Math.PI * 0.5, 0.12, 0.2);
+      const scarf = new THREE.Mesh(new THREE.TorusGeometry(5.2, 1.4, 14, 20), matAccent);
+      scarf.position.set(0, 12.8, 0);
+      scarf.rotation.set(Math.PI * 0.5, 0.1, 0.15);
       sweaterGroup.add(scarf);
 
       // Ribbed Mock-Neck Collar
-      const collar = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 3.5, 20), matCollar);
-      collar.position.set(0, 13.5, 0);
+      const collar = new THREE.Mesh(new THREE.CylinderGeometry(4.8, 4.8, 3.2, 20), matCollar);
+      collar.position.set(0, 13.8, 0);
       sweaterGroup.add(collar);
 
-      // Cozy Cardigan Placket & Wooden Buttons (Memorable Visual Feature)
-      const placket = new THREE.Mesh(new THREE.BoxGeometry(1.8, 22, 0.8), matCollar);
-      placket.position.set(0, 0, 10.6);
+      // Cozy Cardigan Placket & Wooden Buttons
+      const placket = new THREE.Mesh(new THREE.BoxGeometry(1.8, 25, 0.8), matCollar);
+      placket.position.set(0, -1, 10.6);
       placket.castShadow = true;
       sweaterGroup.add(placket);
 
-      [-6, 0, 6].forEach((yBtn) => {
+      [-8, -2, 4].forEach((yBtn) => {
         const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.5, 12), matShoes);
         btn.rotation.x = Math.PI * 0.5;
         btn.position.set(0, yBtn, 11.1);
@@ -665,30 +666,30 @@
 
       this.character.add(sweaterGroup);
 
-      // Smooth Neck
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 2.8, 6, 16), matSkin);
-      neck.position.set(0, 68, 0);
+      // Smooth Neck (Snug support)
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 2.8, 5, 16), matSkin);
+      neck.position.set(0, 60, 0);
       this.character.add(neck);
 
-      // 4. Arms with articulated pivots
-      // Left Arm (Relaxed at side)
+      // 4. Arms with articulated pivots (Relaxed, natural drape)
       this.characterArmL = new THREE.Group();
-      this.characterArmL.position.set(-12.8, 60, 0);
+      this.characterArmL.position.set(-12.4, 55, 0);
+      this.characterArmL.rotation.set(0.06, 0.05, 0.08);
 
-      const sleeveGeo = new THREE.CylinderGeometry(3.0, 2.6, 19, 16);
+      const sleeveGeo = new THREE.CylinderGeometry(2.8, 2.4, 19, 16);
       const armSleeveL = new THREE.Mesh(sleeveGeo, matSweater);
       armSleeveL.position.set(-0.8, -9, 0);
-      armSleeveL.rotation.z = -0.12;
+      armSleeveL.rotation.z = -0.06;
       armSleeveL.castShadow = true;
       this.characterArmL.add(armSleeveL);
 
-      const wristCuffL = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.6, 12, 16), matCollar);
-      wristCuffL.position.set(-1.8, -18.5, 0);
+      const wristCuffL = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.55, 12, 16), matCollar);
+      wristCuffL.position.set(-1.4, -18.5, 0);
       wristCuffL.rotation.x = Math.PI * 0.5;
       this.characterArmL.add(wristCuffL);
 
-      const handL = new THREE.Mesh(new THREE.SphereGeometry(2.5, 16, 16), matSkin);
-      handL.position.set(-2.0, -21.5, 0);
+      const handL = new THREE.Mesh(new THREE.SphereGeometry(2.3, 16, 16), matSkin);
+      handL.position.set(-1.6, -21.2, 0);
       handL.scale.set(0.9, 1.15, 0.85);
       handL.castShadow = true;
       this.characterArmL.add(handL);
@@ -696,53 +697,54 @@
 
       // Right Arm (Animated during search phase)
       this.characterArmR = new THREE.Group();
-      this.characterArmR.position.set(12.8, 60, 0);
+      this.characterArmR.position.set(12.4, 55, 0);
+      this.characterArmR.rotation.set(0.06, -0.05, -0.08);
 
       const armSleeveR = new THREE.Mesh(sleeveGeo, matSweater);
       armSleeveR.position.set(0.8, -9, 0);
-      armSleeveR.rotation.z = 0.12;
+      armSleeveR.rotation.z = 0.06;
       armSleeveR.castShadow = true;
       this.characterArmR.add(armSleeveR);
 
-      const wristCuffR = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.6, 12, 16), matCollar);
-      wristCuffR.position.set(1.8, -18.5, 0);
+      const wristCuffR = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.55, 12, 16), matCollar);
+      wristCuffR.position.set(1.4, -18.5, 0);
       wristCuffR.rotation.x = Math.PI * 0.5;
       this.characterArmR.add(wristCuffR);
 
-      const handR = new THREE.Mesh(new THREE.SphereGeometry(2.5, 16, 16), matSkin);
-      handR.position.set(2.0, -21.5, 0);
+      const handR = new THREE.Mesh(new THREE.SphereGeometry(2.3, 16, 16), matSkin);
+      handR.position.set(1.6, -21.2, 0);
       handR.scale.set(0.9, 1.15, 0.85);
       handR.castShadow = true;
       this.characterArmR.add(handR);
       this.character.add(this.characterArmR);
 
-      // 5. Stylized Head Pivot (Carries glances, nods, confused tilts)
+      // 5. Stylized Head Pivot (Snug on neck, Pixar/Ghibli warmth)
       this.characterHead = new THREE.Group();
-      this.characterHead.position.set(0, 71, 0);
+      this.characterHead.position.set(0, 64, 0);
 
       // Sculpted Head with Rounded Cheeks
       const head = new THREE.Mesh(new THREE.SphereGeometry(13.2, 32, 32), matSkin);
-      head.position.set(0, 13, 0);
+      head.position.set(0, 3.5, 0);
       head.scale.set(1.08, 1.02, 1.05);
       head.castShadow = true;
       this.characterHead.add(head);
 
       // Volumetric Sculpted Espresso Hair
       const hairMain = new THREE.Mesh(new THREE.SphereGeometry(13.8, 32, 32), matHair);
-      hairMain.position.set(0, 17.5, -1.2);
+      hairMain.position.set(0, 8.0, -1.2);
       hairMain.scale.set(1.04, 0.82, 1.04);
       hairMain.castShadow = true;
       this.characterHead.add(hairMain);
 
       // Front Bangs Wave
       const hairBangs = new THREE.Mesh(new THREE.SphereGeometry(7.5, 20, 20), matHair);
-      hairBangs.position.set(-2.5, 22.5, 7.8);
+      hairBangs.position.set(-2.5, 13.0, 7.8);
       hairBangs.rotation.set(-0.25, 0.15, -0.3);
       hairBangs.scale.set(1.15, 0.65, 0.85);
       this.characterHead.add(hairBangs);
 
       const hairSideLock = new THREE.Mesh(new THREE.SphereGeometry(5.5, 16, 16), matHair);
-      hairSideLock.position.set(9.5, 18, 4.5);
+      hairSideLock.position.set(9.5, 8.5, 4.5);
       hairSideLock.rotation.set(0.1, 0.2, 0.4);
       hairSideLock.scale.set(0.65, 1.2, 0.75);
       this.characterHead.add(hairSideLock);
@@ -753,7 +755,7 @@
           new THREE.CylinderGeometry(0.42, 0.35, 3.8, 12),
           new THREE.MeshBasicMaterial({ color: PALETTE.charHair })
         );
-        brow.position.set(xPos, 16.5, 13.0);
+        brow.position.set(xPos, 7.0, 13.0);
         brow.rotation.z = idx === 0 ? 0.12 : -0.12;
         this.characterEyebrows.push(brow);
         this.characterHead.add(brow);
@@ -762,7 +764,7 @@
       // Expressive Eyes with Glossy Highlights & Eyelid Morphing
       [-4.6, 4.6].forEach((xPos) => {
         const eyeGroup = new THREE.Group();
-        eyeGroup.position.set(xPos, 13, 12.8);
+        eyeGroup.position.set(xPos, 3.5, 12.8);
 
         // Pupil / Iris
         const pupil = new THREE.Mesh(
@@ -803,20 +805,20 @@
       // Soft Coral Cheeks (Blush)
       [-7.2, 7.2].forEach((xPos) => {
         const blush = new THREE.Mesh(new THREE.SphereGeometry(2.2, 16, 16), matBlush);
-        blush.position.set(xPos, 9.2, 12.2);
+        blush.position.set(xPos, -0.3, 12.2);
         blush.scale.set(1, 0.55, 0.35);
         this.characterHead.add(blush);
       });
 
       // Cute Button Nose
       const nose = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), matSkin);
-      nose.position.set(0, 11.6, 14.3);
+      nose.position.set(0, 2.1, 14.3);
       this.characterHead.add(nose);
 
       // Expressive Mouth (Curved subtle smile)
       const mouthMat = new THREE.MeshBasicMaterial({ color: 0x8A4839 });
       this.characterMouth = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.35, 12, 16, Math.PI * 0.85), mouthMat);
-      this.characterMouth.position.set(0, 8.2, 13.8);
+      this.characterMouth.position.set(0, -1.3, 13.8);
       this.characterMouth.rotation.set(0.15, 0, Math.PI * 1.08); // Warm, gentle smile
       this.characterHead.add(this.characterMouth);
 
