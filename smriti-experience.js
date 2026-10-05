@@ -1345,6 +1345,12 @@
           this.startStory();
         });
       }
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'r' || e.key === 'R') {
+          this.resetStory();
+          this.startStory();
+        }
+      });
     }
 
     startStory() {
