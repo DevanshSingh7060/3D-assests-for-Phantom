@@ -21,8 +21,8 @@
   // 70 / 20 / 10 Master Palette Constants (High-Contrast Warm Editorial)
   const PALETTE = {
     // 70% Architectural Warmth
-    bg: 0xFAEBD5,              // Light cream canvas (#FAEBD5)
-    wallPlaster: 0xF2D7B5,     // Warm plaster wall (#F2D7B5)
+    bg: 0xD1B28E,              // Warm midtone backdrop with visible contrast
+    wallPlaster: 0xB28A66,     // Soft caramel plaster, distinct from the pale sofa and rug
     floorWood: 0x8B6042,       // Rich walnut/caramel oak floor (#8B6042)
     floorPlankDark: 0x5C381E,  // Dark parquet inlay (#5C381E)
     rugBase: 0xFAEBD5,         // Organic pebble rug (#FAEBD5)
@@ -40,14 +40,14 @@
 
     furnitureWood: 0x8B6042,   // Rich warm wood (#8B6042)
     furnitureDark: 0x34251F,   // Dark brown (#34251F)
-    armchairFabric: 0xA65F38,  // Warm Terracotta/Caramel Armchair (#A65F38)
+    armchairFabric: 0x754832,  // Muted caramel upholstery
     blanketTerracotta: 0xC95F3D,// Terracotta Throw (#C95F3D)
     cushionMustard: 0xD5A63C,  // Warm Velvet Mustard (#D5A63C)
     lampBrass: 0xC8A050,       // Brushed Warm Brass
     lampShade: 0xFDF6E8,       // Fluted Parchment Shade
-    plantGreen: 0x53613B,      // Deep Olive Foliage (#53613B)
-    plantDeep: 0x364024,       // Deep Olive Shadow Foliage
-    plantPot: 0xC95F3D,        // Warm Terracotta Planter (#C95F3D)
+    plantGreen: 0x53613B,      // Natural deep olive foliage
+    plantDeep: 0x364024,       // Deep olive shadow foliage
+    plantPot: 0xB66A4A,        // Soft terracotta planter
 
     // 10% PHANTOM Story Accents
     glassesFrame: 0x34251F,    // Dark Espresso Frame (#34251F)
@@ -215,7 +215,7 @@
       // 1. Scene with Warm Canvas Atmosphere
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(PALETTE.bg);
-      this.scene.fog = new THREE.FogExp2(PALETTE.bg, 0.0006);
+      this.scene.fog = new THREE.FogExp2(PALETTE.bg, 0.00022);
 
       this.shadowTexture = this.createRadialShadowTexture();
 
@@ -468,14 +468,16 @@
             if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
-              if (child.material) {
-                // Harmonized warm caramel/terracotta upholstery (Unbind dark green GLB base texture)
-                child.material.map = null;
-                child.material.color = new THREE.Color(PALETTE.armchairFabric);
-                child.material.roughness = 0.76;
-                child.material.metalness = 0.02;
-                child.material.needsUpdate = true;
-              }
+              const materials = Array.isArray(child.material) ? child.material : [child.material];
+              materials.filter(Boolean).forEach((material) => {
+                // Keep each sofa part's original shader and surface response while
+                // replacing its dark/washed source texture with a consistent fabric tone.
+                material.map = null;
+                material.color.setHex(PALETTE.armchairFabric);
+                material.roughness = 0.84;
+                material.metalness = 0;
+                material.needsUpdate = true;
+              });
             }
           });
 
@@ -498,8 +500,8 @@
     // 3. PLANT WITH POT (plant_with_pot.glb) — Sits on floor, rich foliage
     loadPlant() {
       this.plantGroup = new THREE.Group();
-      // Positioned beside sofa arm at (-28, 0, -42) so it frames the sofa and is 100% clear of pickup
-      this.plantGroup.position.set(-28, 0, -42);
+      // Place the plant beside the bookshelf, clear of the sofa and Dora.
+      this.plantGroup.position.set(44, 0, -84);
       this.scene.add(this.plantGroup);
 
       const loader = new THREE.GLTFLoader();
@@ -511,8 +513,8 @@
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
 
-          // Plant height: ~54 units (natural midground foliage)
-          const targetHeight = 54.0;
+          // Keep the broad, leafy silhouette visible above the sofa back.
+          const targetHeight = 52.0;
           const scale = targetHeight / (size.y || 4.46);
           model.scale.set(scale, scale, scale);
           model.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale);
@@ -521,16 +523,15 @@
             if (child.isMesh) {
               child.castShadow = true;
               child.receiveShadow = true;
-              if (child.material) {
-                if (child.name.toLowerCase().includes('pot') || (child.material.name && child.material.name.includes('Material.002'))) {
-                  child.material.color = new THREE.Color(PALETTE.plantPot);
-                  child.material.roughness = 0.65;
-                } else {
-                  child.material.color = new THREE.Color(PALETTE.plantGreen);
-                  child.material.roughness = 0.52;
-                }
-                child.material.needsUpdate = true;
-              }
+              const materials = Array.isArray(child.material) ? child.material : [child.material];
+              materials.filter(Boolean).forEach((material) => {
+                const isPot = child.name.toLowerCase().includes('pot') ||
+                  (material.name && material.name.includes('Material.002'));
+                material.color.setHex(isPot ? PALETTE.plantPot : PALETTE.plantGreen);
+                if (material.emissive) material.emissive.setHex(0x000000);
+                material.roughness = isPot ? 0.72 : 0.7;
+                material.needsUpdate = true;
+              });
             }
           });
 
@@ -849,59 +850,53 @@
           const objEyes = model.getObjectByName('Object_3');
           const objMouth = model.getObjectByName('Object_5');
 
-          // 4. DEDICATED WARM NOSE MATERIAL (#8B5A3C):
-          // The nose in the raw GLB was mapped to the dark hair texture (#3E2A21 / near-black).
-          // We cleanly separate the nose geometry (58 triangles) into its own child mesh Dora_Nose,
-          // preserving the exact original vertex positions, normals, and shape with warm skin-shadow tone #8B5A3C.
-          if (objHead && objHead.geometry && objHead.geometry.index) {
+          // 4. REPLACE THE BAKED DARK NOSE MARK WITH A SMALL, ROUNDED SKIN-TONE NOSE.
+          // The dark mark is a textured head triangle at UV (0.95, 0.697), not a separate nose mesh.
+          if (objHead?.geometry?.index && objHead.geometry.attributes.uv) {
             const headGeo = objHead.geometry;
-            const posAttr = headGeo.attributes.position;
-            const normAttr = headGeo.attributes.normal;
-            const uvAttr = headGeo.attributes.uv;
-            const indArray = headGeo.index.array;
-
-            const isNoseVert = (idx) => {
-              const x = posAttr.getX(idx);
-              const y = posAttr.getY(idx);
-              const z = posAttr.getZ(idx);
-              const u = uvAttr ? uvAttr.getX(idx) : 1;
-              const v = uvAttr ? uvAttr.getY(idx) : 1;
-              return z > 3.5 && y > 0.05 && y < 0.25 && Math.abs(x) < 0.2 && u > 0.94 && v > 0.65;
-            };
-
+            const pos = headGeo.attributes.position;
+            const uv = headGeo.attributes.uv;
+            const sourceIndices = headGeo.index.array;
             const headIndices = [];
             const noseIndices = [];
-            for (let i = 0; i < indArray.length; i += 3) {
-              const a = indArray[i];
-              const b = indArray[i + 1];
-              const c = indArray[i + 2];
-              if (isNoseVert(a) && isNoseVert(b) && isNoseVert(c)) {
-                noseIndices.push(a, b, c);
-              } else {
-                headIndices.push(a, b, c);
-              }
+            const noseVertexIds = new Set();
+
+            for (let i = 0; i < sourceIndices.length; i += 3) {
+              const a = sourceIndices[i];
+              const b = sourceIndices[i + 1];
+              const c = sourceIndices[i + 2];
+              const centerX = (pos.getX(a) + pos.getX(b) + pos.getX(c)) / 3;
+              const centerY = (pos.getY(a) + pos.getY(b) + pos.getY(c)) / 3;
+              const centerZ = (pos.getZ(a) + pos.getZ(b) + pos.getZ(c)) / 3;
+              const centerU = (uv.getX(a) + uv.getX(b) + uv.getX(c)) / 3;
+              const centerV = (uv.getY(a) + uv.getY(b) + uv.getY(c)) / 3;
+              const isNose = Math.abs(centerX) < 0.16 && centerY > -0.78 && centerY < -0.62 &&
+                centerZ > 2.58 && centerZ < 2.84 && centerU > 0.94 && centerV > 0.68 && centerV < 0.71;
+              (isNose ? noseIndices : headIndices).push(a, b, c);
+              if (isNose) [a, b, c].forEach((id) => noseVertexIds.add(id));
             }
 
-            if (noseIndices.length > 0) {
+            if (noseIndices.length) {
               headGeo.setIndex(new THREE.BufferAttribute(new Uint32Array(headIndices), 1));
+              const noseCenter = new THREE.Vector3();
+              noseVertexIds.forEach((id) => noseCenter.add(new THREE.Vector3(pos.getX(id), pos.getY(id), pos.getZ(id))));
+              noseCenter.multiplyScalar(1 / noseVertexIds.size);
+              noseCenter.z += 0.009;
 
-              const noseGeo = new THREE.BufferGeometry();
-              noseGeo.setAttribute('position', posAttr);
-              noseGeo.setAttribute('normal', normAttr);
-              noseGeo.setAttribute('uv', uvAttr);
-              noseGeo.setIndex(new THREE.BufferAttribute(new Uint32Array(noseIndices), 1));
-
-              const noseMat = new THREE.MeshStandardMaterial({
-                color: new THREE.Color(0x9E603C),
-                emissive: new THREE.Color(0x2A150A),
-                roughness: 0.60,
-                metalness: 0.0
-              });
-
-              const noseMesh = new THREE.Mesh(noseGeo, noseMat);
+              const noseMesh = new THREE.Mesh(
+                new THREE.SphereGeometry(0.02, 24, 16),
+                new THREE.MeshStandardMaterial({
+                  color: 0xEFB052,
+                  roughness: 0.82,
+                  metalness: 0,
+                  side: THREE.DoubleSide
+                })
+              );
               noseMesh.name = 'Dora_Nose';
-              noseMesh.castShadow = true;
-              noseMesh.receiveShadow = true;
+              noseMesh.position.copy(noseCenter);
+              noseMesh.scale.set(0.78, 0.62, 0.72);
+              noseMesh.castShadow = false;
+              noseMesh.receiveShadow = false;
               objHead.add(noseMesh);
             }
           }

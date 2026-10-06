@@ -40,10 +40,10 @@ a { color: inherit; text-decoration: none; }
 .header-start { justify-self: end; padding: 8px 0 8px 12px; border: 0; background: transparent; cursor: pointer; }
 .header-start span { margin-left: 9px; color: var(--clay); }
 
-.hero { position: relative; min-height: 740px; height: 100svh; overflow: hidden; background: radial-gradient(ellipse at 50% 50%, #FDF4E7 0%, #FAEBD5 65%, #F2D7B5 100%); isolation: isolate; }
+.hero { position: relative; min-height: 740px; height: 100svh; overflow: hidden; background: radial-gradient(ellipse at 50% 50%, #E8CEAA 0%, #D5B58D 65%, #BC9269 100%); isolation: isolate; }
 .hero-world { position: absolute; z-index: 0; inset: 0; overflow: hidden; }
 .hero-world canvas { display: block; width: 100% !important; height: 100% !important; outline: none; }
-.hero-vignette { position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(250,235,213,.35) 0%, transparent 15%, transparent 65%, rgba(250,235,213,.45) 85%, rgba(250,235,213,.85) 100%), linear-gradient(90deg, rgba(250,235,213,.65) 0%, rgba(250,235,213,.15) 25%, transparent 50%); }
+.hero-vignette { position: absolute; z-index: 1; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(75,49,31,.03) 0%, transparent 15%, transparent 65%, rgba(75,49,31,.06) 85%, rgba(75,49,31,.12) 100%), linear-gradient(90deg, rgba(75,49,31,.08) 0%, rgba(75,49,31,.025) 25%, transparent 50%); }
 .hero-overline { position: absolute; z-index: 4; top: 104px; right: var(--page-pad); display: flex; gap: 10px; align-items: center; color: rgba(32,27,24,.75); font-size: 11px; }
 .live-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--olive); box-shadow: 0 0 0 4px rgba(83,97,59,.18); }
 .hero-copy { position: absolute; z-index: 3; left: var(--page-pad); bottom: clamp(112px, 15vh, 170px); width: min(430px, 39vw); pointer-events: none; }
