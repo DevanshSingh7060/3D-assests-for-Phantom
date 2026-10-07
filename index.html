@@ -13,8 +13,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=3.7.4">
+  <link rel="stylesheet" href="phantom.css?v=1.0.0">
+  <link rel="stylesheet" href="reality-diff.css?v=1.0.0">
+  <link rel="stylesheet" href="memory-receipt.css?v=1.0.0">
+  <link rel="stylesheet" href="trust-section.css?v=1.0.0">
   <script src="three.min.js?v=3.7.0"></script>
   <script src="GLTFLoader.js?v=3.7.0"></script>
+  <script src="https://unpkg.com/@rive-app/canvas@2.21.5/rive.js" defer></script>
 </head>
 <body>
   <header class="site-header" id="siteHeader">
@@ -124,13 +129,329 @@
       </div>
     </section>
 
-    <section class="chapter chapter-trust" id="trust" aria-labelledby="trustTitle">
-      <div class="chapter-index"><span>05</span><span>CARE, WITH DIGNITY</span></div>
-      <div class="trust-heading"><p class="eyebrow">HELP SHOULD FEEL HELPFUL</p><h2 id="trustTitle">Made for people.<br><em>Mindful of privacy.</em></h2></div>
-      <div class="trust-list">
-        <div><h3>Objects, not people.</h3><p>SMRITI remembers the home’s objects, not faces, conversations, or personal routines.</p></div>
-        <div><h3>Consent comes first.</h3><p>It is designed to support a family, with the people who live there in control.</p></div>
-        <div><h3>Honest when unsure.</h3><p>If SMRITI cannot tell where something is, it says so. A guess is never presented as a memory.</p></div>
+    <section class="chapter chapter-phantom" id="phantom" aria-labelledby="phantomTitle">
+      <div class="phantom-grid-overlay" aria-hidden="true"></div>
+      <div class="chapter-index"><span>05</span><span>PHANTOM SPATIAL ENGINE</span></div>
+
+      <div class="phantom-layout">
+        <div class="phantom-intro">
+          <p class="eyebrow">05 / PHANTOM</p>
+          <h2 id="phantomTitle">Meet PHANTOM.</h2>
+          <p class="phantom-lead">The spatial memory engine behind SMRITI.</p>
+          <p class="phantom-copy">
+            PHANTOM remembers where things were, compares that memory with what exists now, and reveals what changed.
+          </p>
+
+          <div class="phantom-process-row" aria-label="PHANTOM process pipeline">
+            <span class="process-step active" data-step="0">REMEMBER</span>
+            <span class="process-arrow" aria-hidden="true">→</span>
+            <span class="process-step" data-step="1">COMPARE</span>
+            <span class="process-arrow" aria-hidden="true">→</span>
+            <span class="process-step" data-step="2">EXPLAIN</span>
+          </div>
+
+          <div class="phantom-stage-card" id="phantomStageCard" aria-live="polite">
+            <div class="stage-tag" id="phantomStageTag">STATE 01 · IDLE</div>
+            <h3 class="stage-headline" id="phantomStageHeadline">PHANTOM is ready</h3>
+            <p class="stage-description" id="phantomStageDesc">
+              A quiet wireframe coordinate baseline is maintained. Every fixture and surface is mapped into a persistent spatial representation.
+            </p>
+            <div class="stage-diff-details" id="phantomDiffDetails" hidden>
+              <div class="detail-line">
+                <span class="detail-label">OBJECT MOVED</span>
+                <span class="detail-val">READING GLASSES</span>
+              </div>
+              <div class="detail-route">
+                <span class="route-point ghost-text">TABLE (2:10 PM)</span>
+                <span class="route-sep">→</span>
+                <span class="route-point active-text">BOOKSHELF (4:40 PM)</span>
+              </div>
+            </div>
+            <div class="stage-statement" id="phantomStageStatement" hidden>
+              “Not a guess. A remembered change.”
+            </div>
+          </div>
+
+          <div class="phantom-stage-selector" role="tablist" aria-label="Phantom States">
+            <button type="button" class="stage-btn active" data-state="idle" role="tab" aria-selected="true">Ready</button>
+            <button type="button" class="stage-btn" data-state="scanning" role="tab" aria-selected="false">Scanning</button>
+            <button type="button" class="stage-btn" data-state="analyzing" role="tab" aria-selected="false">Analyzing</button>
+            <button type="button" class="stage-btn" data-state="change_found" role="tab" aria-selected="false">Found</button>
+            <button type="button" class="stage-btn" data-state="confirmed" role="tab" aria-selected="false">Confirmed</button>
+          </div>
+        </div>
+
+        <div class="phantom-visual-container" id="phantomVisualContainer">
+          <div class="phantom-canvas-wrap" id="phantomCanvasWrap">
+            <canvas id="phantomCanvas" aria-label="3D wireframe room depicting PHANTOM spatial coordinates and memory tracking"></canvas>
+
+            <div class="phantom-spatial-hud" aria-hidden="true">
+              <span class="hud-coord top-left">GRID: 0.25M · EPSILON: 0.02</span>
+              <span class="hud-coord top-right" id="phantomStateHud">PHANTOM READY</span>
+              <span class="hud-coord bottom-left">SPATIAL ANCHORS: 04 TRACKED</span>
+              <span class="hud-coord bottom-right" id="phantomDeltaHud">DELTA: 0.00M</span>
+            </div>
+
+            <div class="rive-status-component" id="rivePhantomIndicator" aria-label="PHANTOM System Indicator">
+              <div class="rive-canvas-container" id="riveCanvasContainer">
+                <canvas id="riveStatusCanvas" width="96" height="96"></canvas>
+                <div class="rive-fallback-badge" id="riveFallbackBadge">
+                  <span class="badge-dot" id="riveBadgeDot"></span>
+                  <div class="badge-text">
+                    <span class="badge-brand">PHANTOM</span>
+                    <span class="badge-state" id="riveStateLabel">READY</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter chapter-reality-diff" id="reality-diff-compare" aria-labelledby="realityDiffTitle">
+      <div class="chapter-index"><span>06</span><span>REALITY DIFF</span></div>
+
+      <div class="diff-header-block">
+        <p class="eyebrow">06 / REALITY DIFF</p>
+        <h2 id="realityDiffTitle">See what changed.</h2>
+        <p class="diff-lead">
+          SMRITI compares moments in your home so the change doesn't have to live only in your memory.
+        </p>
+      </div>
+
+      <div class="reality-comparison-card" id="realityComparisonCard" aria-label="Interactive before and after comparison of the room">
+        <div class="comparison-viewport" id="comparisonViewport">
+          <canvas id="realityDiffCanvas" aria-label="3D visual comparison showing room at 2:10 PM on the left and 4:40 PM on the right"></canvas>
+
+          <div class="state-pill state-pill-left" aria-hidden="true">
+            <span class="pill-dot before-dot"></span>
+            <div class="pill-meta">
+              <span class="pill-state">BEFORE · 2:10 PM</span>
+              <span class="pill-loc">Side table</span>
+            </div>
+          </div>
+
+          <div class="state-pill state-pill-right" aria-hidden="true">
+            <span class="pill-dot after-dot"></span>
+            <div class="pill-meta">
+              <span class="pill-state">AFTER · 4:40 PM</span>
+              <span class="pill-loc">Bookshelf</span>
+            </div>
+          </div>
+
+          <div class="moved-badge" id="movedBadge" aria-hidden="true">
+            <span class="moved-tag">MOVED</span>
+            <span class="moved-route">TABLE → BOOKSHELF</span>
+          </div>
+
+          <div class="diff-split-divider" id="diffSplitDivider" style="left: 50%;">
+            <div class="divider-line"></div>
+            <div class="divider-handle" id="dividerHandle" role="slider" aria-label="Comparison slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+              <span class="handle-arrow">‹</span>
+              <span class="handle-bar"></span>
+              <span class="handle-arrow">›</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reality-evidence-bar">
+          <div class="evidence-timeline">
+            <div class="time-node">
+              <span class="time-label">2:10 PM</span>
+              <span class="time-anchor">Side table</span>
+            </div>
+            <div class="timeline-rule">
+              <span class="timeline-vector"></span>
+            </div>
+            <div class="time-node">
+              <span class="time-label">4:40 PM</span>
+              <span class="time-anchor">Bookshelf</span>
+            </div>
+          </div>
+
+          <div class="evidence-data">
+            <span class="data-tag">OBJECT MOVED</span>
+            <div class="data-pair">
+              <span class="data-obj">GLASSES</span>
+              <span class="data-arrow">→</span>
+              <span class="data-dest">TABLE → BOOKSHELF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diff-editorial-closing">
+        <p class="diff-statement-primary">“Not everything changes.<br>Only what matters.”</p>
+        <p class="diff-statement-secondary">SMRITI makes the difference visible.</p>
+      </div>
+    </section>
+
+    <section class="chapter chapter-memory-receipt" id="memory-receipt-section" aria-labelledby="receiptSectionTitle">
+      <div class="receipt-spatial-connector" aria-hidden="true">
+        <span class="connector-line"></span>
+        <span class="connector-node">EVIDENCE</span>
+      </div>
+
+      <div class="chapter-index"><span>07</span><span>MEMORY RECEIPT</span></div>
+
+      <div class="receipt-layout">
+        <div class="receipt-intro">
+          <p class="eyebrow">07 / MEMORY RECEIPT</p>
+          <h2 id="receiptSectionTitle">Remembered,<br><em>not guessed.</em></h2>
+          <p class="receipt-lead">
+            SMRITI turns a change in your home into a simple record you can understand.
+          </p>
+
+          <div class="receipt-narrative-box">
+            <h3 class="narrative-headline">Every memory has a place.</h3>
+            <p class="narrative-detail">
+              Observed change: reading glasses moved from the side table to the bookshelf.
+            </p>
+          </div>
+        </div>
+
+        <div class="receipt-showcase">
+          <article class="memory-receipt-paper" aria-label="Physical SMRITI Memory Receipt for Reading Glasses">
+            <div class="receipt-perforation-top" aria-hidden="true"></div>
+
+            <div class="receipt-header receipt-reveal-item reveal-1">
+              <div class="receipt-brand-mark">
+                <span class="brand-title">SMRITI</span>
+                <span class="brand-sub">MEMORY RECEIPT</span>
+              </div>
+              <div class="receipt-meta">
+                <span class="meta-record-id">REC · #0440</span>
+                <span class="meta-date">TODAY · OCT 6</span>
+              </div>
+            </div>
+
+            <div class="receipt-hero-item">
+              <span class="item-action-tag receipt-reveal-item reveal-2">OBJECT MOVED</span>
+              <h3 class="item-name receipt-reveal-item reveal-3">Reading glasses</h3>
+            </div>
+
+            <div class="receipt-route-grid receipt-reveal-item reveal-4">
+              <div class="route-step from-step">
+                <span class="step-prefix">FROM</span>
+                <span class="step-location">Side table</span>
+                <span class="step-time">2:10 PM</span>
+              </div>
+              <span class="route-arrow" aria-hidden="true">→</span>
+              <div class="route-step to-step">
+                <span class="step-prefix">TO</span>
+                <span class="step-location">Bookshelf</span>
+                <span class="step-time">4:40 PM</span>
+              </div>
+            </div>
+
+            <div class="receipt-evidence-table receipt-reveal-item reveal-5">
+              <div class="evidence-row">
+                <span>SPATIAL DISPLACEMENT</span>
+                <span class="row-val">4.85 METERS</span>
+              </div>
+              <div class="evidence-row">
+                <span>PREVIOUS ANCHOR</span>
+                <span class="row-val">TABLE · 2:10 PM</span>
+              </div>
+              <div class="evidence-row">
+                <span>CURRENT ANCHOR</span>
+                <span class="row-val">SHELF 2 · 4:40 PM</span>
+              </div>
+            </div>
+
+            <div class="receipt-status-footer receipt-reveal-item reveal-6">
+              <div class="status-badge-container">
+                <span class="status-dot" id="receiptStatusDot"></span>
+                <span class="status-label" id="receiptStatusLabel">CONFIRMED</span>
+              </div>
+              <span class="receipt-engine-tag">PHANTOM SPATIAL ENGINE</span>
+            </div>
+          </article>
+
+          <div class="receipt-3d-companion receipt-reveal-item reveal-7" aria-label="3D visual preview of the reading glasses">
+            <div class="companion-canvas-wrap">
+              <canvas id="receiptGlassesCanvas" width="240" height="180" aria-label="3D model of reading glasses"></canvas>
+            </div>
+            <span class="companion-caption">PHYSICAL ARTIFACT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter chapter-trust-manifesto" id="trust" aria-labelledby="trustHeadline">
+      <div class="trust-spatial-connector" aria-hidden="true">
+        <span class="trust-connector-line"></span>
+        <span class="trust-connector-node">PROMISE</span>
+      </div>
+
+      <div class="chapter-index trust-reveal-item reveal-1">
+        <span>08</span>
+        <span>TRUST</span>
+      </div>
+
+      <div class="trust-container">
+        <header class="trust-header">
+          <p class="eyebrow trust-reveal-item reveal-2">08 / TRUST</p>
+          <h2 id="trustHeadline" class="trust-headline trust-reveal-item reveal-3">
+            Built to remember objects.<br>
+            <em>Not people.</em>
+          </h2>
+          <p class="trust-lead trust-reveal-item reveal-4">
+            SMRITI focuses on the spaces and objects that matter — not on watching the people inside them.
+          </p>
+        </header>
+
+        <div class="trust-principles-stack" role="list">
+          <article class="trust-principle-item trust-reveal-item reveal-5" role="listitem">
+            <div class="principle-num" aria-hidden="true">01</div>
+            <div class="principle-content">
+              <h3 class="principle-title">OBJECTS, NOT PEOPLE.</h3>
+              <p class="principle-desc">
+                SMRITI remembers spatial changes around everyday objects. It is not designed to identify or profile people.
+              </p>
+            </div>
+            <div class="principle-motif" aria-hidden="true">
+              <span class="motif-dot"></span>
+              <span class="motif-label">OBJECT ONLY</span>
+            </div>
+          </article>
+
+          <article class="trust-principle-item trust-reveal-item reveal-6" role="listitem">
+            <div class="principle-num" aria-hidden="true">02</div>
+            <div class="principle-content">
+              <h3 class="principle-title">CONSENT FIRST.</h3>
+              <p class="principle-desc">
+                Memory should be helpful by choice. Capture and sharing should happen with clear consent.
+              </p>
+            </div>
+            <div class="principle-motif" aria-hidden="true">
+              <span class="motif-dot"></span>
+              <span class="motif-label">BY CHOICE</span>
+            </div>
+          </article>
+
+          <article class="trust-principle-item trust-reveal-item reveal-7" role="listitem">
+            <div class="principle-num" aria-hidden="true">03</div>
+            <div class="principle-content">
+              <h3 class="principle-title">UNCERTAINTY WHEN UNCERTAIN.</h3>
+              <p class="principle-desc">
+                If the system cannot confidently determine what changed, it should say so.
+              </p>
+            </div>
+            <div class="principle-motif" aria-hidden="true">
+              <span class="motif-dot"></span>
+              <span class="motif-label">NO GUESSES</span>
+            </div>
+          </article>
+        </div>
+
+        <footer class="trust-closing-statement trust-reveal-item reveal-8">
+          <div class="statement-marker" aria-hidden="true"></div>
+          <p class="statement-text">
+            “Helpful memory should never become surveillance.”
+          </p>
+        </footer>
       </div>
     </section>
 
@@ -145,5 +466,9 @@
 
   <script src="smriti-experience.js?v=3.7.4"></script>
   <script src="app.js?v=3.7.0"></script>
+  <script src="phantom-engine.js?v=1.0.0"></script>
+  <script src="reality-diff.js?v=1.0.0"></script>
+  <script src="memory-receipt.js?v=1.0.0"></script>
+  <script src="trust-section.js?v=1.0.0"></script>
 </body>
 </html>
