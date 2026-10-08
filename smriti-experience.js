@@ -237,7 +237,7 @@
       // 2. High-Fidelity Renderer with Controlled Tone Mapping
       this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       this.renderer.shadowMap.enabled = true;
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       this.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -260,8 +260,16 @@
       window.addEventListener('resize', () => this.onResize());
       this.setupUIListeners();
 
+      this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener) {
+        window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+          this.prefersReducedMotion = e.matches;
+        });
+      }
+
       this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
       window.addEventListener('mousemove', (e) => {
+        if (this.prefersReducedMotion) return;
         this.mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 2;
         this.mouse.targetY = (e.clientY / window.innerHeight - 0.5) * 2;
       });
@@ -271,8 +279,23 @@
         setTimeout(() => this.startStory(), 1400);
       }
 
+      this.isIntersecting = true;
+      this.animId = null;
       this.animate = this.animate.bind(this);
-      requestAnimationFrame(this.animate);
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          this.isIntersecting = entry.isIntersecting;
+          if (this.isIntersecting) {
+            this.startLoop();
+          } else {
+            this.stopLoop();
+          }
+        });
+      }, { threshold: 0.05 });
+      observer.observe(this.container);
+
+      this.startLoop();
     }
 
     // =========================================================================
@@ -1461,6 +1484,7 @@
       this.storyStartTime = performance.now();
       this.glassesState = 'GLASSES_TABLE';
       this.glassesPickedUp = false;
+      this.startLoop();
 
       if (this.ui.cta) {
         this.ui.cta.classList.remove('complete', 'replay');
@@ -1537,8 +1561,24 @@
       return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
     }
 
+    startLoop() {
+      if (this.animId) return;
+      this.animId = requestAnimationFrame(this.animate);
+    }
+
+    stopLoop() {
+      if (this.animId) {
+        cancelAnimationFrame(this.animId);
+        this.animId = null;
+      }
+    }
+
     animate(timestamp) {
-      requestAnimationFrame(this.animate);
+      if (!this.isIntersecting) {
+        this.animId = null;
+        return;
+      }
+      this.animId = requestAnimationFrame(this.animate);
       const now = timestamp || performance.now();
 
       // Telemetry in document title for reliable headless QA inspection
@@ -1549,8 +1589,13 @@
         document.title = `[SMRITI] IDLE | G=${this.glassesState}`;
       }
 
-      this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.045;
-      this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.045;
+      if (!this.prefersReducedMotion) {
+        this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.045;
+        this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.045;
+      } else {
+        this.mouse.x = 0;
+        this.mouse.y = 0;
+      }
 
       const isMobile = window.innerWidth < 640;
 

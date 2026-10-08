@@ -84,6 +84,7 @@
       this.glassesShelf = null;
       this.shelfShadow = null;
       this.shelfHalo = null;
+      this.isSceneInitialized = false;
 
       this.init();
     }
@@ -91,6 +92,23 @@
     init() {
       if (!window.THREE) return;
 
+      this.initEvents();
+      this.updateSplitUI();
+
+      // Lazy-initialize 3D scene and assets when approaching Section 06
+      const approachObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !this.isSceneInitialized) {
+            this.isSceneInitialized = true;
+            this.initScene();
+            approachObserver.disconnect();
+          }
+        });
+      }, { rootMargin: '500px 0px' });
+      approachObserver.observe(this.section);
+    }
+
+    initScene() {
       this.shadowTexture = this.createRadialShadowTexture();
       this.initThree();
       this.setupCinematicLighting();
@@ -100,8 +118,12 @@
       this.loadPlant();
       this.buildBookshelf();
       this.buildGlassesProps();
-      this.initEvents();
-      this.startLoop();
+
+      if (this.isIntersecting && !this.prefersReducedMotion) {
+        this.startLoop();
+      } else if (this.prefersReducedMotion) {
+        this.renderStatic();
+      }
       this.updateSplitUI();
     }
 
@@ -148,7 +170,7 @@
         powerPreference: 'high-performance'
       });
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
       this.renderer.shadowMap.enabled = true;
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       this.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -577,10 +599,46 @@
       this.scene.add(this.shelfShadow);
     }
 
+    renderStatic() {
+      if (!this.renderer || !this.scene || !this.camera || !this.glassesTable) return;
+      const width = this.viewport.clientWidth;
+      const height = this.viewport.clientHeight;
+      const dividerX = Math.round(width * this.splitPercent);
+
+      this.renderer.setScissorTest(true);
+
+      this.glassesTable.visible = true;
+      this.tableShadow.visible = true;
+      this.glassesShelf.visible = false;
+      this.shelfShadow.visible = false;
+      this.renderer.setScissor(0, 0, Math.max(dividerX, 1), height);
+      this.renderer.setViewport(0, 0, width, height);
+      this.renderer.render(this.scene, this.camera);
+
+      this.glassesTable.visible = false;
+      this.tableShadow.visible = false;
+      this.glassesShelf.visible = true;
+      this.shelfShadow.visible = true;
+      this.renderer.setScissor(dividerX, 0, Math.max(width - dividerX, 1), height);
+      this.renderer.setViewport(0, 0, width, height);
+      this.renderer.render(this.scene, this.camera);
+
+      this.renderer.setScissorTest(false);
+    }
+
     initEvents() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           this.isIntersecting = entry.isIntersecting;
+          if (this.isIntersecting && this.isSceneInitialized) {
+            if (!this.prefersReducedMotion) {
+              this.startLoop();
+            } else {
+              this.renderStatic();
+            }
+          } else {
+            this.stopLoop();
+          }
         });
       }, { threshold: 0.05 });
       observer.observe(this.viewport);
@@ -644,6 +702,9 @@
 
         this.renderer.setSize(w, h);
         this.updateSplitUI();
+        if (this.prefersReducedMotion || !this.isIntersecting) {
+          this.renderStatic();
+        }
       }, { passive: true });
     }
 
@@ -658,6 +719,9 @@
     setSplit(percent) {
       this.splitPercent = Math.min(Math.max(percent, 0.02), 0.98);
       this.updateSplitUI();
+      if (this.prefersReducedMotion || !this.isIntersecting) {
+        this.renderStatic();
+      }
     }
 
     updateSplitUI() {
@@ -674,26 +738,34 @@
         const screenX = (projected.x * 0.5 + 0.5) * w;
         const screenY = (-projected.y * 0.5 + 0.5) * h;
 
-        this.movedBadge.style.left = `${screenX}px`;
-        this.movedBadge.style.top = `${screenY}px`;
+        const clampedX = Math.max(55, Math.min(w - 75, screenX));
+        const clampedY = Math.max(30, Math.min(h - 30, screenY));
+
+        this.movedBadge.style.left = `${clampedX}px`;
+        this.movedBadge.style.top = `${clampedY}px`;
 
         const dividerX = w * this.splitPercent;
-        const isRevealed = dividerX < screenX + 24;
+        const isRevealed = dividerX < clampedX + 24;
         this.movedBadge.classList.toggle('visible', isRevealed);
       }
     }
 
     startLoop() {
-      const render = (time) => {
-        this.animId = requestAnimationFrame(render);
+      if (this.animId) return;
 
-        if (!this.isIntersecting && !this.prefersReducedMotion) return;
+      const render = (time) => {
+        if (!this.isIntersecting || this.prefersReducedMotion) {
+          this.animId = null;
+          return;
+        }
+
+        this.animId = requestAnimationFrame(render);
 
         const width = this.viewport.clientWidth;
         const height = this.viewport.clientHeight;
         const dividerX = Math.round(width * this.splitPercent);
 
-        if (this.shelfHalo && !this.prefersReducedMotion) {
+        if (this.shelfHalo) {
           const sec = time * 0.001;
           const s = 1.0 + Math.sin(sec * 3.5) * 0.10;
           this.shelfHalo.scale.set(s, s, s);
@@ -727,11 +799,20 @@
 
       this.animId = requestAnimationFrame(render);
     }
+
+    stopLoop() {
+      if (this.animId) {
+        cancelAnimationFrame(this.animId);
+        this.animId = null;
+      }
+    }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new RealityDiffController());
+    document.addEventListener('DOMContentLoaded', () => {
+      window.realityDiffController = new RealityDiffController();
+    });
   } else {
-    new RealityDiffController();
+    window.realityDiffController = new RealityDiffController();
   }
 })();

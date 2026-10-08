@@ -9,7 +9,8 @@
   color: #EDE7DC;
   border-top: 1px solid rgba(255, 255, 255, .08);
   border-bottom: 1px solid rgba(255, 255, 255, .08);
-  padding: 110px var(--page-pad);
+  padding-block: var(--section-pad-y);
+  padding-inline: 0;
   overflow: hidden;
   isolation: isolate;
 }
@@ -52,15 +53,16 @@
   color: var(--phantom-teal);
 }
 
-/* Section Grid Layout: 38% editorial / 62% technical visualization */
+/* Section Grid Layout: Asymmetric Editorial (Left Story / Right Spatial Engine) */
 .phantom-layout {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(320px, 400px) 1fr;
-  gap: clamp(40px, 5.5vw, 96px);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
+  gap: clamp(40px, 5.5vw, 88px);
   align-items: center;
-  margin-top: 60px;
+  width: 100%;
+  margin: var(--space-4) 0 0;
 }
 
 /* Left Column: Editorial & Story */
@@ -78,18 +80,20 @@
 
 .phantom-intro h2 {
   margin: 0;
-  font: 400 clamp(48px, 5.8vw, 76px)/.94 var(--serif);
-  letter-spacing: -.03em;
+  font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
+  letter-spacing: var(--text-h1-ls);
+  max-width: var(--text-h1-max);
   color: #FDF9F2;
 }
 
 .phantom-lead {
   margin: 0;
   font-family: var(--sans);
-  font-size: clamp(16px, 1.4vw, 19px);
+  font-size: var(--text-lead-size);
   font-weight: 500;
   color: #D6CFBE;
-  line-height: 1.4;
+  line-height: 1.45;
+  max-width: var(--text-lead-max);
 }
 
 .phantom-copy {
@@ -97,7 +101,7 @@
   font-size: 14px;
   line-height: 1.65;
   color: #9C9385;
-  max-width: 380px;
+  max-width: 44ch;
 }
 
 /* Pipeline Indicator: REMEMBER → COMPARE → EXPLAIN */
@@ -106,10 +110,10 @@
   align-items: center;
   gap: 12px;
   margin-top: 8px;
-  padding: 10px 14px;
+  padding: 8px 18px;
   background: rgba(255, 255, 255, .03);
-  border: 1px solid rgba(255, 255, 255, .07);
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, .08);
+  border-radius: var(--radius-pill, 999px);
   width: fit-content;
 }
 
@@ -135,13 +139,15 @@
 
 /* Dynamic State Card */
 .phantom-stage-card {
-  margin-top: 10px;
-  padding: 18px 20px;
+  margin-top: 12px;
+  padding: 22px 24px;
   background: rgba(28, 25, 22, .75);
   border: 1px solid rgba(255, 255, 255, .09);
-  border-left: 2px solid var(--phantom-teal);
-  border-radius: 4px;
-  backdrop-filter: blur(8px);
+  border-left: 3px solid var(--phantom-teal);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   transition: border-color .3s ease;
 }
 
@@ -239,18 +245,18 @@
 .phantom-stage-selector {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .stage-btn {
-  padding: 6px 12px;
+  padding: 7px 16px;
   background: rgba(255, 255, 255, .04);
-  border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, .09);
+  border-radius: var(--radius-pill, 999px);
   color: #8C8477;
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: .12em;
   text-transform: uppercase;
   cursor: pointer;
@@ -258,15 +264,18 @@
 }
 
 .stage-btn:hover {
-  background: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .09);
   color: #EDE7DC;
+  border-color: rgba(255, 255, 255, .18);
+  transform: translateY(-1px);
 }
 
 .stage-btn.active {
-  background: rgba(77, 157, 145, .15);
-  border-color: rgba(77, 157, 145, .5);
+  background: rgba(77, 157, 145, .16);
+  border-color: rgba(77, 157, 145, .6);
   color: var(--phantom-teal);
   font-weight: 600;
+  box-shadow: 0 2px 12px rgba(77, 157, 145, 0.2);
 }
 
 /* Right Column: 3D Wireframe Spatial Visualization */
@@ -278,7 +287,7 @@
   max-height: 640px;
   background: #110F0D;
   border: 1px solid rgba(255, 255, 255, .08);
-  border-radius: 6px;
+  border-radius: var(--radius-card, 20px);
   overflow: hidden;
   box-shadow:
     0 24px 60px rgba(0, 0, 0, .45),
@@ -442,7 +451,8 @@
 
 @media (max-width: 980px) {
   .chapter-phantom {
-    padding: 80px var(--page-pad);
+    padding-block: var(--section-pad-y);
+    padding-inline: 0;
   }
 
   .phantom-layout {
@@ -467,7 +477,8 @@
 
 @media (max-width: 640px) {
   .chapter-phantom {
-    padding: 60px var(--page-pad);
+    padding-block: var(--section-pad-y);
+    padding-inline: 0;
   }
 
   .phantom-intro h2 {

@@ -163,7 +163,7 @@
         powerPreference: 'high-performance'
       });
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
 
       this.buildWireframeRoom();
       this.buildSpatialNodes();
@@ -489,15 +489,29 @@
       }
     }
 
+    renderStatic() {
+      if (!this.renderer || !this.scene || !this.camera) return;
+      this.renderer.render(this.scene, this.camera);
+    }
+
     initEvents() {
       // Viewport Intersection Observer for high performance
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             this.isIntersecting = entry.isIntersecting;
+            if (this.isIntersecting) {
+              if (!this.prefersReducedMotion) {
+                this.startLoop();
+              } else {
+                this.renderStatic();
+              }
+            } else {
+              this.stopLoop();
+            }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.08 }
       );
       observer.observe(this.canvas);
 
@@ -505,6 +519,7 @@
       window.addEventListener(
         'mousemove',
         (e) => {
+          if (this.prefersReducedMotion) return;
           const nx = (e.clientX / window.innerWidth) - 0.5;
           const ny = (e.clientY / window.innerHeight) - 0.5;
           this.targetRotation.x = 0.42 + ny * 0.12;
@@ -525,16 +540,24 @@
           this.camera.aspect = w / h;
           this.camera.updateProjectionMatrix();
           this.renderer.setSize(w, h);
+          if (this.prefersReducedMotion || !this.isIntersecting) {
+            this.renderStatic();
+          }
         },
         { passive: true }
       );
     }
 
     startLoop() {
-      const render = (time) => {
-        this.animId = requestAnimationFrame(render);
+      if (this.animId) return;
 
-        if (!this.isIntersecting && !this.prefersReducedMotion) return;
+      const render = (time) => {
+        if (!this.isIntersecting || this.prefersReducedMotion) {
+          this.animId = null;
+          return;
+        }
+
+        this.animId = requestAnimationFrame(render);
 
         const sec = time * 0.001;
 
@@ -549,7 +572,7 @@
         this.camera.lookAt(0, 8, 0);
 
         // State animations
-        if (this.state === 'scanning' && !this.prefersReducedMotion) {
+        if (this.state === 'scanning') {
           this.scanProgress += 0.015 * this.scanDirection;
           if (this.scanProgress > 1) {
             this.scanProgress = 1;
@@ -579,6 +602,13 @@
 
       this.animId = requestAnimationFrame(render);
     }
+
+    stopLoop() {
+      if (this.animId) {
+        cancelAnimationFrame(this.animId);
+        this.animId = null;
+      }
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -606,13 +636,32 @@
       this.init();
     }
 
+    ensureVisualizer() {
+      if (!this.visualizer && this.canvas) {
+        this.visualizer = new PhantomRoomVisualizer(this.canvas);
+        if (this.currentState) {
+          this.visualizer.setState(this.currentState);
+        }
+      }
+      return this.visualizer;
+    }
+
     init() {
       if (!this.section) return;
 
       // Initialize Subcomponents
       this.riveIndicator = new RivePhantomIndicator();
       if (this.canvas) {
-        this.visualizer = new PhantomRoomVisualizer(this.canvas);
+        // Lazy-initialize 3D visualizer when approaching Section 05
+        const approachObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.ensureVisualizer();
+              approachObserver.disconnect();
+            }
+          });
+        }, { rootMargin: '400px 0px' });
+        approachObserver.observe(this.section);
       }
 
       // Expose Public Global State Machine API as required
@@ -628,7 +677,10 @@
       this.stageButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
           const targetState = btn.dataset.state;
-          if (targetState) this.setState(targetState);
+          if (targetState) {
+            this.ensureVisualizer();
+            this.setState(targetState);
+          }
         });
       });
     }

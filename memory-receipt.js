@@ -32,6 +32,7 @@
       this.glassesGroup = null;
       this.groundShadow = null;
       this.shadowTexture = null;
+      this.isSceneInitialized = false;
 
       this.init();
     }
@@ -39,10 +40,27 @@
     init() {
       this.initReducedMotionListener();
       this.initIntersectionObserver();
+
       if (this.canvas && window.THREE) {
-        this.shadowTexture = this.createRadialShadowTexture();
-        this.initGlassesCanvas();
-        this.startLoop();
+        // Lazy-initialize 3D glasses canvas when approaching Section 07
+        const approachObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !this.isSceneInitialized) {
+              this.isSceneInitialized = true;
+              this.shadowTexture = this.createRadialShadowTexture();
+              this.initGlassesCanvas();
+              if (this.isIntersecting) {
+                if (!this.prefersReducedMotion) {
+                  this.startLoop();
+                } else {
+                  this.renderStatic();
+                }
+              }
+              approachObserver.disconnect();
+            }
+          });
+        }, { rootMargin: '400px 0px' });
+        approachObserver.observe(this.section);
       }
     }
 
@@ -53,7 +71,11 @@
         mediaQuery.addEventListener('change', (e) => {
           this.prefersReducedMotion = e.matches;
           if (this.prefersReducedMotion) {
+            this.stopLoop();
             this.resetRestingPose();
+            this.renderStatic();
+          } else if (this.isIntersecting && this.isSceneInitialized) {
+            this.startLoop();
           }
         });
       }
@@ -68,6 +90,12 @@
         this.groundShadow.material.opacity = 0.44;
         this.groundShadow.scale.set(1, 1, 1);
       }
+    }
+
+    renderStatic() {
+      if (!this.renderer || !this.scene || !this.camera) return;
+      this.resetRestingPose();
+      this.renderer.render(this.scene, this.camera);
     }
 
     createRadialShadowTexture() {
@@ -95,10 +123,19 @@
             if (entry.isIntersecting) {
               // Trigger staggered Jitter-ready reveal sequence
               this.section.classList.add('revealed');
+              if (this.isSceneInitialized) {
+                if (!this.prefersReducedMotion) {
+                  this.startLoop();
+                } else {
+                  this.renderStatic();
+                }
+              }
+            } else {
+              this.stopLoop();
             }
           });
         },
-        { threshold: 0.12 }
+        { threshold: 0.1 }
       );
 
       observer.observe(this.section);
@@ -122,7 +159,7 @@
         powerPreference: 'high-performance'
       });
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
 
       // Warm Soft Lights matching story atmosphere
       const ambient = new THREE.AmbientLight(0xFFE8D6, 0.85);
@@ -256,16 +293,21 @@
     }
 
     startLoop() {
+      if (this.animId) return;
+
       // 4.2-second period for calm, organic breathing float loop
       const duration = 4.2;
       const omega = (2 * Math.PI) / duration;
 
       const render = (time) => {
+        if (!this.isIntersecting || this.prefersReducedMotion) {
+          this.animId = null;
+          return;
+        }
+
         this.animId = requestAnimationFrame(render);
 
-        if (!this.isIntersecting && !this.prefersReducedMotion) return;
-
-        if (this.glassesGroup && !this.prefersReducedMotion) {
+        if (this.glassesGroup) {
           const t = time * 0.001;
           const phase = t * omega;
 
@@ -285,15 +327,19 @@
             const shadowScale = 1.0 + lift * 0.08; // 1.0 -> 1.08
             this.groundShadow.scale.set(shadowScale, shadowScale, 1);
           }
-        } else if (this.glassesGroup && this.prefersReducedMotion) {
-          // Strictly still when reduced motion is preferred
-          this.resetRestingPose();
         }
 
         this.renderer.render(this.scene, this.camera);
       };
 
       this.animId = requestAnimationFrame(render);
+    }
+
+    stopLoop() {
+      if (this.animId) {
+        cancelAnimationFrame(this.animId);
+        this.animId = null;
+      }
     }
 
     // Public Status Architecture (supports CONFIRMED, UNCERTAIN, MOVED, ADDED, GONE)
