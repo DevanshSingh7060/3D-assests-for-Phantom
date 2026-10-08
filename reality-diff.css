@@ -28,24 +28,33 @@
 
 .diff-header-block .eyebrow {
   margin: 0 0 14px;
-  color: var(--clay);
+  color: var(--signal-orange);
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow-size);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
 }
 
 .diff-header-block h2 {
   margin: 0;
-  font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
+  font-family: var(--font-display);
+  font-size: var(--text-h1-size);
+  font-weight: 400;
+  line-height: var(--text-h1-lh);
   letter-spacing: var(--text-h1-ls);
   max-width: var(--text-h1-max);
-  color: var(--ink);
+  color: var(--ink-black);
 }
 
 .diff-lead {
-  margin: 18px 0 0;
+  margin: 16px 0 0;
+  font-family: var(--font-body);
   font-size: var(--text-lead-size);
-  line-height: 1.55;
-  color: #5D5447;
+  line-height: var(--text-lead-lh);
+  color: var(--slate-gray);
   max-width: 48ch;
-  font-weight: 450;
+  font-weight: 400;
 }
 
 /* Main Visual Comparison Card */
@@ -138,8 +147,9 @@
 }
 
 .pill-loc {
-  font-family: var(--serif);
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--ink);
 }
 
@@ -350,18 +360,22 @@
 
 .diff-statement-primary {
   margin: 0;
-  font: 400 clamp(28px, 3.2vw, 42px)/1.18 var(--serif);
-  color: var(--ink);
-  letter-spacing: -.02em;
+  font-family: var(--font-display);
+  font-size: var(--text-h2-size);
+  font-weight: 400;
+  line-height: var(--text-h2-lh);
+  color: var(--ink-black);
+  letter-spacing: var(--text-h2-ls);
   max-width: 24ch;
 }
 
 .diff-statement-secondary {
-  margin: 18px 0 0;
-  font-family: var(--sans);
-  font-size: clamp(14px, 1.25vw, 17px);
-  color: #726A5E;
-  letter-spacing: .02em;
+  margin: 14px 0 0;
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  color: var(--slate-gray);
+  line-height: var(--text-body-lh);
+  font-weight: 400;
   max-width: 38ch;
 }
 

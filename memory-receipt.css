@@ -75,31 +75,39 @@
 .receipt-intro .eyebrow {
   margin: 0;
   color: var(--clay);
-  letter-spacing: .16em;
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow-size);
+  font-weight: var(--text-eyebrow-weight);
+  letter-spacing: var(--text-eyebrow-ls);
+  text-transform: uppercase;
 }
 
 .receipt-intro h2 {
   margin: 0;
-  font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
+  font-family: var(--font-display);
+  font-size: var(--text-h1-size);
+  font-weight: 400;
+  line-height: var(--text-h1-lh);
   letter-spacing: var(--text-h1-ls);
   max-width: var(--text-h1-max);
-  color: var(--ink);
+  color: var(--ink-black);
 }
 
 .receipt-lead {
   margin: 0;
+  font-family: var(--font-body);
   font-size: var(--text-lead-size);
-  line-height: 1.55;
-  color: #5D5447;
+  line-height: var(--text-lead-lh);
+  color: var(--slate-gray);
   max-width: 44ch;
-  font-weight: 450;
+  font-weight: 400;
 }
 
 .receipt-narrative-box {
   margin-top: 14px;
   padding: 16px 20px;
-  background: rgba(253, 249, 242, .65);
-  border-left: 2px solid var(--clay);
+  background: rgba(255, 255, 255, .8);
+  border-left: 2px solid var(--signal-orange);
   border-radius: 0 4px 4px 0;
   display: flex;
   flex-direction: column;
@@ -108,18 +116,20 @@
 
 .narrative-headline {
   margin: 0;
-  font-family: var(--serif);
+  font-family: var(--font-body);
   font-size: 20px;
-  font-weight: 400;
-  color: var(--ink);
+  font-weight: 500;
+  color: var(--ink-black);
   letter-spacing: -.01em;
 }
 
 .narrative-detail {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.6;
-  color: #726A5E;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--slate-gray);
+  font-weight: 400;
 }
 
 /* Right Column: Physical Memory Receipt & 3D Companion Showcase */
@@ -179,34 +189,37 @@
 }
 
 .brand-title {
-  font-family: var(--serif);
-  font-size: 24px;
+  font-family: var(--font-body);
+  font-size: 22px;
   line-height: 1;
-  color: var(--ink);
-  letter-spacing: .02em;
+  color: var(--ink-black);
+  letter-spacing: -0.02em;
+  font-weight: 600;
 }
 
 .brand-sub {
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: .16em;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: #8C7B6D;
+  color: var(--slate-gray);
   margin-top: 4px;
+  font-weight: 500;
 }
 
 .receipt-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .12em;
-  color: #726A5E;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--slate-gray);
+  font-weight: 500;
 }
 
 .meta-record-id {
-  color: var(--clay);
+  color: var(--signal-orange);
   font-weight: 600;
 }
 
@@ -218,22 +231,22 @@
 }
 
 .item-action-tag {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: .16em;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--clay);
+  color: var(--signal-orange);
   font-weight: 600;
 }
 
 .item-name {
   margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(32px, 3.8vw, 40px);
-  font-weight: 400;
-  color: var(--ink);
-  line-height: 1.05;
-  letter-spacing: -.02em;
+  font-family: var(--font-body);
+  font-size: clamp(28px, 3.2vw, 36px);
+  font-weight: 500;
+  color: var(--ink-black);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 /* Spatial Transition Route */
@@ -269,8 +282,9 @@
 }
 
 .step-location {
-  font-family: var(--serif);
-  font-size: 20px;
+  font-family: var(--font-body);
+  font-size: 19px;
+  font-weight: 500;
   color: var(--ink);
   margin-top: 2px;
 }

@@ -11,7 +11,7 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 if __name__ == '__main__':
-    os.chdir('/Users/devanshsingh/.gemini/antigravity-ide/scratch/smriti')
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("", 8080), NoCacheHTTPRequestHandler) as httpd:
         print("Serving SMRITI no-cache on http://localhost:8080/index.html")

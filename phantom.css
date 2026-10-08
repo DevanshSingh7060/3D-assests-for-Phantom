@@ -80,7 +80,10 @@
 
 .phantom-intro h2 {
   margin: 0;
-  font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
+  font-family: var(--font-display);
+  font-size: var(--text-h1-size);
+  font-weight: 400;
+  line-height: var(--text-h1-lh);
   letter-spacing: var(--text-h1-ls);
   max-width: var(--text-h1-max);
   color: #FDF9F2;
@@ -88,20 +91,22 @@
 
 .phantom-lead {
   margin: 0;
-  font-family: var(--sans);
+  font-family: var(--font-body);
   font-size: var(--text-lead-size);
-  font-weight: 500;
+  font-weight: 400;
   color: #D6CFBE;
-  line-height: 1.45;
+  line-height: var(--text-lead-lh);
   max-width: var(--text-lead-max);
 }
 
 .phantom-copy {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.65;
-  color: #9C9385;
+  font-family: var(--font-body);
+  font-size: var(--text-body-size);
+  line-height: var(--text-body-lh);
+  color: #BDB2A6;
   max-width: 44ch;
+  font-weight: 400;
 }
 
 /* Pipeline Indicator: REMEMBER → COMPARE → EXPLAIN */
@@ -161,18 +166,21 @@
 
 .stage-headline {
   margin: 6px 0 0;
-  font-family: var(--serif);
+  font-family: var(--font-body);
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 500;
   color: #FDF9F2;
   line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .stage-description {
   margin: 8px 0 0;
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
   line-height: 1.55;
   color: #A69E90;
+  font-weight: 400;
 }
 
 /* Diff Details when moving from Table -> Bookshelf */
@@ -230,11 +238,13 @@
 
 .stage-statement {
   margin-top: 12px;
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-style: italic;
-  font-size: 15px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.35;
   color: #E2DBD0;
-  letter-spacing: .01em;
+  letter-spacing: normal;
 }
 
 .stage-statement[hidden] {

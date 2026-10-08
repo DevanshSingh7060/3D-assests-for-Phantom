@@ -136,9 +136,12 @@
 .chapter-trust-manifesto .trust-headline,
 .chapter-trust-manifesto h2.trust-headline {
   margin: 0;
-  font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
+  font-family: var(--font-display);
+  font-size: var(--text-h1-size);
+  font-weight: 400;
+  line-height: var(--text-h1-lh);
   letter-spacing: var(--text-h1-ls);
-  color: rgba(250, 244, 236, 0.90);
+  color: rgba(250, 244, 236, 0.95);
   max-width: 22ch;
   position: relative;
   z-index: 2;
@@ -147,7 +150,8 @@
 .chapter-trust-manifesto .trust-headline em,
 .chapter-trust-manifesto h2.trust-headline em {
   font-style: italic;
-  color: var(--clay, #C95F3D);
+  font-weight: 400;
+  color: var(--light-signal-orange, #F37338);
 }
 
 /* Right Column: Supporting Copy & 3 Editorial Principles */
@@ -160,10 +164,11 @@
 
 .trust-supporting-lead {
   margin: 0;
-  font-family: var(--sans);
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.62;
-  color: #BDB2A6;
+  font-family: var(--font-body);
+  font-size: var(--text-lead-size);
+  line-height: var(--text-lead-lh);
+  font-weight: 400;
+  color: #D6CFBE;
   max-width: 500px;
 }
 
@@ -184,21 +189,21 @@
 }
 
 .principle-kicker {
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: .14em;
+  letter-spacing: .12em;
   text-transform: uppercase;
-  color: var(--clay, #C95F3D);
+  color: var(--light-signal-orange, #F37338);
   font-weight: 500;
 }
 
 .principle-statement {
   margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(21px, 2.1vw, 28px);
-  font-weight: 400;
-  line-height: 1.24;
-  letter-spacing: -.015em;
+  font-family: var(--font-body);
+  font-size: var(--text-h3-size);
+  font-weight: 500;
+  line-height: var(--text-h3-lh);
+  letter-spacing: var(--text-h3-ls);
   color: #FAF4EC;
   max-width: 480px;
 }
