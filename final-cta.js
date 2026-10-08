@@ -513,7 +513,7 @@
     buildReadingGlasses() {
       // Complete symmetrical reading glasses resting comfortably on the side table
       this.glassesGroup = new THREE.Group();
-      this.glassesGroup.position.set(-3.5, 19.9, 4.2);
+      this.glassesGroup.position.set(-3.5, 19.62, 4.2);
       this.glassesGroup.rotation.set(-0.06, 0.35, -0.04);
       this.worldGroup.add(this.glassesGroup);
 
@@ -521,11 +521,11 @@
       const matBookCover = new THREE.MeshStandardMaterial({ color: 0x3E281C, roughness: 0.72 });
       const matBookPages = new THREE.MeshStandardMaterial({ color: 0xFDF8EE, roughness: 0.85 });
       const bookCover = new THREE.Mesh(new THREE.BoxGeometry(10.5, 0.8, 8.2), matBookCover);
-      bookCover.position.set(-0.2, -0.4, 0);
+      bookCover.position.set(-0.2, 0.4, 0);
       this.glassesGroup.add(bookCover);
 
       const bookPages = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.6, 7.6), matBookPages);
-      bookPages.position.set(-0.2, -0.38, 0);
+      bookPages.position.set(-0.2, 0.42, 0);
       this.glassesGroup.add(bookPages);
 
       // Glasses Model Components
@@ -541,7 +541,7 @@
       });
 
       const glassesSub = new THREE.Group();
-      glassesSub.position.set(0, 0.35, 0);
+      glassesSub.position.set(0, 2.62, 0);
       glassesSub.scale.set(0.48, 0.48, 0.48);
 
       // Left Eye Rim & Lens
@@ -574,15 +574,15 @@
       // Left Temple Arm
       const armGeo = new THREE.CylinderGeometry(0.35, 0.35, 9.8, 12);
       const armL = new THREE.Mesh(armGeo, matFrame);
-      armL.position.set(-7.4, -0.1, -4.8);
-      armL.rotation.x = Math.PI * 0.5;
+      armL.position.set(-7.4, -1.2, -4.8);
+      armL.rotation.x = Math.PI * 0.5 + 0.22;
       armL.rotation.z = 0.06;
       glassesSub.add(armL);
 
       // Right Temple Arm
       const armR = new THREE.Mesh(armGeo, matFrame);
-      armR.position.set(7.4, -0.1, -4.8);
-      armR.rotation.x = Math.PI * 0.5;
+      armR.position.set(7.4, -1.2, -4.8);
+      armR.rotation.x = Math.PI * 0.5 + 0.22;
       armR.rotation.z = -0.06;
       glassesSub.add(armR);
 
@@ -594,7 +594,7 @@
         new THREE.MeshBasicMaterial({ map: this.shadowTexture, transparent: true, opacity: 0.56, depthWrite: false })
       );
       glassesShadow.rotation.x = -Math.PI * 0.5;
-      glassesShadow.position.set(0, 0.05, 0);
+      glassesShadow.position.set(0, 0.82, 0);
       this.glassesGroup.add(glassesShadow);
     }
 
@@ -603,7 +603,7 @@
       // tiny node, faint location marker, subtle spatial line, soft glow.
       // Starts invisible, activates once on viewport reveal, settles quietly.
       this.spatialTraceGroup = new THREE.Group();
-      this.spatialTraceGroup.position.set(-3.5, 20.8, 4.2);
+      this.spatialTraceGroup.position.set(-3.5, 22.8, 4.2);
       this.worldGroup.add(this.spatialTraceGroup);
 
       // 1. Tiny Luminous Teal Node

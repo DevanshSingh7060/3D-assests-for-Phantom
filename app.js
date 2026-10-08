@@ -83,9 +83,16 @@
 
   const qaMatch = window.location.search.match(/[?&]qa_scroll=([^&]+)/);
   if (qaMatch && qaMatch[1]) {
-    const targetEl = document.getElementById(decodeURIComponent(qaMatch[1]));
-    if (targetEl) {
-      window.scrollTo({ top: targetEl.offsetTop - 72, behavior: 'instant' });
-    }
+    const doQaScroll = () => {
+      const targetEl = document.getElementById(decodeURIComponent(qaMatch[1]));
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'instant', block: 'start' });
+        targetEl.classList.add('revealed');
+      }
+    };
+    doQaScroll();
+    window.addEventListener('load', () => setTimeout(doQaScroll, 50));
+    setTimeout(doQaScroll, 200);
+    setTimeout(doQaScroll, 600);
   }
 })();

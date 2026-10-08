@@ -106,7 +106,8 @@
   color: var(--clay, #C95F3D);
 }
 
-.cta-headline {
+.chapter-final-cta .cta-headline,
+.chapter-final-cta h2.cta-headline {
   margin: 0;
   font-family: var(--serif, 'Instrument Serif', Georgia, serif);
   font-size: var(--text-display-size);
@@ -117,7 +118,8 @@
   max-width: 16ch;
 }
 
-.cta-headline em {
+.chapter-final-cta .cta-headline em,
+.chapter-final-cta h2.cta-headline em {
   font-style: italic;
   font-weight: 400;
   color: var(--clay, #E8A882);

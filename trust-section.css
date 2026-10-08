@@ -133,17 +133,21 @@
   text-transform: uppercase;
 }
 
-.trust-headline {
+.chapter-trust-manifesto .trust-headline,
+.chapter-trust-manifesto h2.trust-headline {
   margin: 0;
   font: 400 var(--text-h1-size)/var(--text-h1-lh) var(--serif);
   letter-spacing: var(--text-h1-ls);
-  color: #FAF4EC;
+  color: rgba(250, 244, 236, 0.90);
   max-width: 22ch;
+  position: relative;
+  z-index: 2;
 }
 
-.trust-headline em {
+.chapter-trust-manifesto .trust-headline em,
+.chapter-trust-manifesto h2.trust-headline em {
   font-style: italic;
-  color: #E8A882;
+  color: var(--clay, #C95F3D);
 }
 
 /* Right Column: Supporting Copy & 3 Editorial Principles */
