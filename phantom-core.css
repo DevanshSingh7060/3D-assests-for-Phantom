@@ -14,11 +14,13 @@
 
   --smriti-module-accent: #f07b42;
   --smriti-module-glow: rgba(240, 123, 66, 0.25);
+  --smriti-aura-rgb: 240, 123, 66;
   --aegis-module-accent: #6ec1e4;
   --aegis-module-glow: rgba(110, 193, 228, 0.22);
+  --aegis-aura-rgb: 110, 193, 228;
   --lumen-module-accent: #b898ff;
   --lumen-module-glow: rgba(184, 152, 255, 0.22);
-  --future-module-accent: #636b78;
+  --lumen-aura-rgb: 184, 152, 255;
 
   --phantom-font-serif: var(--font-display, 'Instrument Serif', Georgia, serif);
   --phantom-font-sans: var(--font-body, 'Geist', -apple-system, sans-serif);
@@ -42,9 +44,9 @@
   background-color: var(--phantom-void-black);
   color: #f2f4f8;
   font-family: var(--phantom-font-sans);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transition: opacity 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity;
 }
 
 .phantom-experience-root.is-active {
@@ -54,15 +56,15 @@
 }
 
 /* ==============================================================================
-   STEP 02 & 03: TRANSITION LAYERS (GRAVITATIONAL SINGULARITY & VIGNETTE)
+   LAYER 1: BACKGROUND LAYER (TRANSITION, COLLAPSE WARP, DUST PARTICLES & AURA)
    ============================================================================== */
 .phantom-transition-backdrop {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 50% 50%, rgba(8, 10, 15, 0.4) 0%, #030406 85%, #010203 100%);
   opacity: 0;
-  transform: scale(1.15);
-  transition: opacity 1.2s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.05);
+  transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
   z-index: 1;
 }
@@ -77,13 +79,13 @@
   position: absolute;
   inset: -20%;
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
   background-image: 
     radial-gradient(circle at 50% 50%, transparent 20%, rgba(10, 12, 18, 0.95) 75%),
     repeating-radial-gradient(circle at 50% 50%, transparent 0, transparent 40px, rgba(255, 255, 255, 0.012) 41px, transparent 42px);
   opacity: 0;
-  transform: scale(1.3) rotate(0deg);
-  transition: opacity 1.5s ease, transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.15) rotate(0deg);
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .phantom-experience-root.is-active .phantom-collapse-warp {
@@ -98,9 +100,9 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 3;
+  z-index: 2;
   opacity: 0;
-  transition: opacity 1.8s ease 0.6s;
+  transition: opacity 0.8s ease;
 }
 
 .phantom-experience-root.is-stabilized .phantom-dust-canvas {
@@ -108,7 +110,177 @@
 }
 
 /* ==============================================================================
-   3D HERO BLOB CANVAS
+   REACTIVE COLOR AURA (BEHIND CENTRAL BLOB & BEHIND CONNECTION LINES)
+   Soft, atmospheric radial glow in module signature color with slow breathing
+   ============================================================================== */
+.phantom-reactive-aura {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(480px, 52vw, 840px);
+  height: clamp(480px, 52vw, 840px);
+  pointer-events: none;
+  z-index: 2; /* Background layer: sits directly behind connection layer (z-index 3) and blob (z-index 4) */
+  border-radius: 50%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.phantom-aura-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.phantom-aura-glow::before {
+  content: '';
+  position: absolute;
+  inset: -16%;
+  border-radius: 50%;
+  filter: blur(52px);
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.phantom-aura-glow.is-active {
+  opacity: 1;
+}
+
+.phantom-aura-glow.is-active::before {
+  animation: phantomAuraBreathing 4.6s ease-in-out infinite;
+}
+
+@keyframes phantomAuraBreathing {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.96;
+    transform: scale(1.06);
+  }
+}
+
+/* SMRITI Module Aura: Warm Orange (#f07b42) */
+.phantom-aura-glow.aura-smriti::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(var(--smriti-aura-rgb), 0.54) 0%,
+    rgba(var(--smriti-aura-rgb), 0.32) 28%,
+    rgba(var(--smriti-aura-rgb), 0.11) 56%,
+    rgba(var(--smriti-aura-rgb), 0) 76%
+  );
+}
+
+/* AEGIS Module Aura: Cyan / Blue (#6ec1e4) */
+.phantom-aura-glow.aura-aegis::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(var(--aegis-aura-rgb), 0.50) 0%,
+    rgba(var(--aegis-aura-rgb), 0.28) 28%,
+    rgba(var(--aegis-aura-rgb), 0.10) 56%,
+    rgba(var(--aegis-aura-rgb), 0) 76%
+  );
+}
+
+/* LUMEN Module Aura: Violet / Purple (#b898ff) */
+.phantom-aura-glow.aura-lumen::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(var(--lumen-aura-rgb), 0.50) 0%,
+    rgba(var(--lumen-aura-rgb), 0.28) 28%,
+    rgba(var(--lumen-aura-rgb), 0.10) 56%,
+    rgba(var(--lumen-aura-rgb), 0) 76%
+  );
+}
+
+
+
+/* ==============================================================================
+   LAYER 2: CONNECTION LAYER (SVG DOTTED CONSTELLATION LINES)
+   Positioned behind central blob container so lines emerge from behind the blob
+   ============================================================================== */
+.phantom-constellation-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3; /* Connection layer: BEHIND the 3D central blob (z-index 4) */
+  overflow: visible;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+}
+
+.phantom-experience-root.is-stabilized .phantom-constellation-svg {
+  opacity: 1;
+}
+
+.phantom-connector-line {
+  stroke: rgba(255, 255, 255, 0.10);
+  stroke-width: 1px;
+  fill: none;
+  stroke-dasharray: 3 6;
+  transition: stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease;
+}
+
+.phantom-connector-line.is-active,
+.phantom-connector-line.is-selected {
+  stroke-width: 1.2px;
+  stroke-dasharray: 4 4;
+}
+
+.phantom-connector-line.smriti-connector.is-active,
+.phantom-connector-line.smriti-connector.is-selected {
+  stroke: var(--smriti-module-accent);
+  opacity: 0.85;
+}
+
+.phantom-connector-line.aegis-connector.is-active,
+.phantom-connector-line.aegis-connector.is-selected {
+  stroke: var(--aegis-module-accent);
+  opacity: 0.85;
+}
+
+.phantom-connector-line.lumen-connector.is-active,
+.phantom-connector-line.lumen-connector.is-selected {
+  stroke: var(--lumen-module-accent);
+  opacity: 0.85;
+}
+
+.phantom-pulse-dot {
+  fill: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.phantom-pulse-dot.is-pulsing {
+  opacity: 0.95;
+}
+
+#pulseSmriti.is-pulsing {
+  fill: var(--smriti-module-accent);
+  filter: drop-shadow(0 0 5px var(--smriti-module-glow));
+}
+
+#pulseAegis.is-pulsing {
+  fill: var(--aegis-module-accent);
+  filter: drop-shadow(0 0 5px var(--aegis-module-glow));
+}
+
+#pulseLumen.is-pulsing {
+  fill: var(--lumen-module-accent);
+  filter: drop-shadow(0 0 5px var(--lumen-module-glow));
+}
+
+/* ==============================================================================
+   LAYER 3: CENTRAL BLOB LAYER (3D WEBGL HERO CANVAS)
+   Obsidian black fluid blob with transparent surroundings (alpha: true)
    ============================================================================== */
 .phantom-canvas-container {
   position: absolute;
@@ -118,7 +290,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 4;
+  z-index: 4; /* Central blob layer: in front of connection SVG (z-index 3) and aura (z-index 2) */
   pointer-events: auto;
   cursor: grab;
 }
@@ -135,72 +307,21 @@
 }
 
 /* ==============================================================================
-   SPATIAL CONSTELLATION SVG CONNECTOR LAYER
-   ============================================================================== */
-.phantom-constellation-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
-  overflow: visible;
-}
-
-.phantom-connector-line {
-  stroke: rgba(255, 255, 255, 0.16);
-  stroke-width: 1.2;
-  fill: none;
-  stroke-dasharray: 4 5;
-  transition: stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease;
-}
-
-.phantom-connector-line.is-active {
-  stroke-width: 1.5;
-  stroke-dasharray: none;
-}
-
-.phantom-connector-line.smriti-connector.is-active {
-  stroke: var(--smriti-module-accent);
-  filter: drop-shadow(0 0 6px var(--smriti-module-glow));
-}
-
-.phantom-connector-line.aegis-connector.is-active {
-  stroke: var(--aegis-module-accent);
-  filter: drop-shadow(0 0 6px var(--aegis-module-glow));
-}
-
-.phantom-connector-line.lumen-connector.is-active {
-  stroke: var(--lumen-module-accent);
-  filter: drop-shadow(0 0 6px var(--lumen-module-glow));
-}
-
-.phantom-pulse-dot {
-  fill: #ffffff;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.phantom-pulse-dot.is-pulsing {
-  opacity: 0.9;
-}
-
-/* ==============================================================================
-   UI OVERLAY CHROME: HEADER, STATUS, EXIT
+   LAYER 5: FOREGROUND UI OVERLAY (NAVIGATION, STATUS, EXIT, HEADING)
    ============================================================================== */
 .phantom-ui-layer {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 8; /* Foreground UI layer */
   pointer-events: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: clamp(20px, 3.5vw, 40px);
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
-              transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s;
+  transform: translateY(6px);
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.05s,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
 }
 
 .phantom-experience-root.is-stabilized .phantom-ui-layer {
@@ -301,7 +422,7 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Central Anchor Title (Floating gracefully above blob) */
+/* Central Anchor Title (Floating gracefully above blob in Foreground UI Layer) */
 .phantom-center-anchor {
   position: absolute;
   top: 9%;
@@ -309,7 +430,7 @@
   transform: translate(-50%, 0);
   text-align: center;
   pointer-events: none;
-  z-index: 5;
+  z-index: 7; /* Foreground UI layer */
 }
 
 .phantom-core-eyebrow {
@@ -392,7 +513,8 @@
 }
 
 /* ==============================================================================
-   SPATIAL CONSTELLATION NODES (SMRITI, AEGIS, LUMEN, FUTURE)
+/* ==============================================================================
+   SPATIAL CONSTELLATION NODES (SMRITI, AEGIS, LUMEN)
    ============================================================================== */
 .phantom-nodes-container {
   position: absolute;
@@ -409,7 +531,26 @@
   display: flex;
   flex-direction: column;
   transform: translate(-50%, -50%);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+.phantom-experience-root.is-stabilized .phantom-module-node {
+  opacity: 1;
+}
+
+.phantom-experience-root.is-stabilized .phantom-node-smriti {
+  transition-delay: 0.08s, 0s;
+}
+
+.phantom-experience-root.is-stabilized .phantom-node-aegis {
+  transition-delay: 0.16s, 0s;
+}
+
+.phantom-experience-root.is-stabilized .phantom-node-lumen {
+  transition-delay: 0.24s, 0s;
 }
 
 .phantom-module-node:focus-visible {
@@ -521,161 +662,506 @@
   box-shadow: 0 12px 36px rgba(184, 152, 255, 0.15);
 }
 
-/* Inactive Future Nodes (Orbit, Nova) */
-.phantom-module-node.is-future {
-  opacity: 0.55;
-}
-.phantom-module-node.is-future:hover {
-  opacity: 0.85;
-}
-.phantom-node-future .phantom-node-beacon {
-  background: var(--future-module-accent);
-  color: var(--future-module-accent);
-}
-.phantom-node-future .phantom-node-pill {
-  padding: 6px 12px;
-  background: rgba(12, 14, 18, 0.6);
-  border-style: dashed;
-}
-.phantom-node-future .phantom-node-title {
-  font-size: 11px;
-}
-.phantom-node-future .phantom-node-subtitle {
-  font-size: 8.5px;
-}
-
 /* ==============================================================================
-   EXPANDED SPATIAL DETAIL DRAWER / POPUP
+   ADAPTIVE INTELLIGENCE DETAIL PANEL (LEFT OR RIGHT COLUMN)
+   Cinematic, fluid entrance with staggered intelligence architecture details
    ============================================================================== */
-.phantom-module-card {
+.phantom-detail-panel {
   position: absolute;
-  top: calc(100% + 12px);
-  left: 0;
-  width: 290px;
-  background: rgba(12, 15, 22, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  padding: 16px 18px;
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px) scale(0.97);
-  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.3s;
+  top: 0;
+  bottom: 0;
+  width: clamp(380px, 34vw, 500px);
+  padding: clamp(24px, 3vw, 44px) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 15;
   pointer-events: none;
-  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
 }
 
-.phantom-module-node:hover .phantom-module-card,
-.phantom-module-node.is-active .phantom-module-card {
+/* LEFT SIDE POSITION (For SMRITI, LUMEN) */
+.phantom-detail-panel.panel-side-left {
+  left: clamp(28px, 4vw, 56px);
+  right: auto;
+  transform: translateX(-40px) translateY(10px);
+  filter: blur(8px);
+}
+
+/* RIGHT SIDE POSITION (For AEGIS) */
+.phantom-detail-panel.panel-side-right {
+  right: clamp(28px, 4vw, 56px);
+  left: auto;
+  transform: translateX(40px) translateY(10px);
+  filter: blur(8px);
+}
+
+/* ACTIVE STATE (PHASE 3 ENTRANCE 350-1000ms) */
+.phantom-experience-root.is-detail-active .phantom-detail-panel {
   opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
+  transform: translateX(0) translateY(0);
+  filter: blur(0px);
   pointer-events: auto;
 }
 
-/* Align card right for nodes on right side of screen */
-.phantom-module-node.align-right .phantom-module-card {
-  left: auto;
-  right: 0;
+.phantom-detail-content {
+  background: rgba(9, 12, 17, 0.90);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: clamp(24px, 2.4vw, 34px);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  position: relative;
+  overflow: hidden;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.phantom-card-header {
+/* Dynamic Glowing Accent Top Border */
+.phantom-detail-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--active-module-color, var(--smriti-module-accent));
+  box-shadow: 0 0 20px var(--active-module-color, var(--smriti-module-accent));
+  opacity: 0.95;
+  transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* STAGGERED ENTRANCE FOR INTERNAL CONTENT */
+.phantom-detail-stagger {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-topbar.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.10s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-header-row.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.16s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-subtitle.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.22s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-desc-wrap.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.28s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-capabilities.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.34s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-meta-grid.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.40s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-module-switch.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.46s;
+}
+
+.phantom-experience-root.is-detail-active .phantom-detail-actions.phantom-detail-stagger {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.52s;
+}
+
+/* TOP CONTROLS BAR: EYEBROW & CLOSE BUTTON */
+.phantom-detail-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.phantom-card-tag {
-  font-family: var(--phantom-font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #8c95a6;
+.phantom-detail-eyebrow-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.phantom-card-env {
+.detail-eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--active-module-color, var(--smriti-module-accent));
+  box-shadow: 0 0 8px currentColor;
+}
+
+.phantom-detail-eyebrow {
   font-family: var(--phantom-font-mono);
   font-size: 10px;
-  color: #c4ccd8;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 2px 8px;
-  border-radius: 999px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--active-module-color, var(--smriti-module-accent));
+  font-weight: 600;
 }
 
-.phantom-card-role {
+.phantom-detail-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c4ccd8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.phantom-detail-close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+/* HEADER ROW: TITLE & STATUS BADGE */
+.phantom-detail-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.phantom-detail-name {
+  margin: 0;
+  font-family: var(--phantom-font-sans);
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.phantom-detail-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--phantom-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.status-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: beaconPulse 2.8s infinite ease-out;
+}
+
+/* SUBTITLE */
+.phantom-detail-subtitle {
+  margin: 0;
   font-family: var(--phantom-font-serif);
-  font-size: 15px;
+  font-size: clamp(16px, 1.35vw, 19px);
   font-style: italic;
-  color: #f2f4f8;
-  margin: 0 0 8px;
+  font-weight: 400;
+  color: #dbe2ec;
   line-height: 1.35;
 }
 
-.phantom-card-desc {
+/* DETAILED DESCRIPTION */
+.phantom-detail-desc-wrap {
+  margin: 0;
+}
+
+.phantom-detail-desc {
+  margin: 0;
   font-family: var(--phantom-font-sans);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 13.5px;
+  line-height: 1.6;
   color: #9ba6b6;
-  margin: 0 0 12px;
 }
 
-.phantom-card-personality {
+/* CAPABILITIES SECTION */
+.phantom-detail-capabilities {
   display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 12px;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.phantom-trait-pill {
+.capabilities-title {
   font-family: var(--phantom-font-mono);
   font-size: 9.5px;
-  padding: 3px 7px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #cbd3de;
+  letter-spacing: 0.14em;
+  color: #7b8595;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
-.phantom-card-action-btn {
+.capabilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.capability-item {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-family: var(--phantom-font-sans);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #cbd5e1;
+}
+
+.capability-icon {
+  font-size: 10px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* SMALL METADATA GRID */
+.phantom-detail-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.meta-label {
+  font-family: var(--phantom-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: #6a7484;
+  text-transform: uppercase;
+}
+
+.meta-val {
+  font-family: var(--phantom-font-mono);
+  font-size: 10.5px;
+  color: #cbd3de;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* QUICK-SWITCH INTELLIGENCE SUITE RAIL */
+.phantom-detail-module-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.detail-switch-label {
+  font-family: var(--phantom-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #6a7484;
+}
+
+.detail-switch-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detail-switch-pill {
+  font-family: var(--phantom-font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #98a2b3;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-switch-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.detail-switch-pill.is-active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+/* ACTIONS */
+.phantom-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.phantom-detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 18px;
+  background: var(--active-module-color, var(--smriti-module-accent));
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #060709;
+  font-family: var(--phantom-font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.phantom-detail-action-btn:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+}
+
+.phantom-detail-action-btn:disabled,
+.phantom-detail-action-btn.is-disabled {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #6d7684;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.phantom-detail-back-link {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  width: 100%;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
-  color: #ffffff;
-  font-family: var(--phantom-font-sans);
-  font-size: 12px;
-  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 6px;
+  color: #7b8595;
+  font-family: var(--phantom-font-mono);
+  font-size: 10.5px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.phantom-card-action-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.3);
+.phantom-detail-back-link kbd {
+  font-size: 9px;
+  opacity: 0.6;
 }
 
-.phantom-card-action-btn.smriti-btn {
-  background: rgba(240, 123, 66, 0.16);
-  border-color: rgba(240, 123, 66, 0.4);
-  color: #ffd8c4;
-}
-
-.phantom-card-action-btn.smriti-btn:hover {
-  background: rgba(240, 123, 66, 0.28);
-  border-color: var(--smriti-module-accent);
+.phantom-detail-back-link:hover {
   color: #ffffff;
+}
+
+/* ==============================================================================
+   STATE-DRIVEN VISIBILITY & SELECTION FEEDBACK (PHASE 1: 0-200ms)
+   - Clicked node highlights (scale 1.04, glow)
+   - Non-selected nodes dim slightly without disappearing
+   - Central heading remains visible as anchor
+   ============================================================================== */
+.phantom-experience-root.is-detail-active .phantom-center-anchor {
+  opacity: 0.85;
+  pointer-events: none;
+  transform: translate(-50%, -6px) scale(0.92);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.phantom-experience-root.is-detail-active .phantom-nodes-container {
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* Dim non-selected nodes slightly (opacity: 0.38) without making them disappear */
+.phantom-experience-root.is-detail-active .phantom-module-node:not(.is-selected) {
+  opacity: 0.38;
+  filter: brightness(0.85);
+  pointer-events: auto;
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.phantom-experience-root.is-detail-active .phantom-module-node:not(.is-selected):hover {
+  opacity: 0.85;
+  filter: brightness(1.1);
+}
+
+/* Phase 1: Clicked Node Selection Feedback (Scale 1.04, Accent Glow) */
+.phantom-module-node.is-selected {
+  opacity: 1 !important;
+  filter: brightness(1.18) !important;
+  transform: translate(-50%, -50%) scale(1.04) !important;
+  z-index: 25;
+  pointer-events: auto;
+}
+
+.phantom-module-node.is-selected .phantom-node-pill {
+  border-color: var(--active-node-color, #ffffff) !important;
+  box-shadow: 0 0 24px var(--active-node-glow, rgba(255, 255, 255, 0.35)),
+              inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  background: rgba(16, 20, 28, 0.94) !important;
+}
+
+/* Dim connector lines for unselected nodes, highlight active line */
+.phantom-experience-root.is-detail-active .phantom-connector-line:not(.is-selected) {
+  opacity: 0.12;
+}
+
+.phantom-connector-line.is-selected {
+  opacity: 0.95 !important;
+  stroke-width: 1.4px;
+  stroke-dasharray: 4 4;
 }
 
 /* ==============================================================================
@@ -698,16 +1184,49 @@ body.phantom-experience-open .site-header {
    ============================================================================== */
 @media (max-width: 900px) {
   .phantom-center-anchor {
-    top: 15%;
+    top: 13%;
+  }
+}
+
+@media (max-width: 860px) {
+  .phantom-detail-panel,
+  .phantom-detail-panel.panel-side-left,
+  .phantom-detail-panel.panel-side-right {
+    top: auto;
+    bottom: 20px;
+    left: 16px !important;
+    right: 16px !important;
+    width: auto;
+    max-height: 62vh;
+    padding: 0;
+    transform: translateY(30px) !important;
+    filter: blur(8px);
   }
 
-  .phantom-module-card {
-    width: 250px;
-    padding: 12px 14px;
+  .phantom-experience-root.is-detail-active .phantom-detail-panel,
+  .phantom-experience-root.is-detail-active .phantom-detail-panel.panel-side-left,
+  .phantom-experience-root.is-detail-active .phantom-detail-panel.panel-side-right {
+    transform: translateY(0) !important;
+    filter: blur(0px);
   }
 
-  .phantom-card-desc {
-    font-size: 11px;
+  .phantom-detail-content {
+    padding: 18px 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+    gap: 10px;
+  }
+
+  .phantom-detail-name {
+    font-size: 24px;
+  }
+
+  .phantom-detail-subtitle {
+    font-size: 14px;
+  }
+
+  .phantom-detail-meta-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -750,21 +1269,6 @@ body.phantom-experience-open .site-header {
     font-size: 8.5px;
   }
 
-  .phantom-module-card {
-    position: fixed;
-    top: auto;
-    bottom: 20px;
-    left: 16px;
-    right: 16px;
-    width: auto;
-    transform: translateY(20px);
-  }
-
-  .phantom-module-node:hover .phantom-module-card,
-  .phantom-module-node.is-active .phantom-module-card {
-    transform: translateY(0);
-  }
-
   .phantom-bottom-bar {
     justify-content: center;
   }
@@ -799,5 +1303,11 @@ body.phantom-experience-open .site-header {
   .phantom-module-card,
   .phantom-return-btn {
     transition: opacity 0.2s ease !important;
+  }
+
+  .phantom-aura-glow.is-active::before {
+    animation: none !important;
+    opacity: 0.7 !important;
+    transform: none !important;
   }
 }
