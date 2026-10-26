@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 44" width="200" height="44">
+  <defs><style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style></defs>
+  <rect width="200" height="44" rx="20" fill="transparent"/>
+  <text x="12" y="27" class="sans" font-size="14.5" font-weight="500" fill="#696969">Where are my glasses?</text>
+</svg>

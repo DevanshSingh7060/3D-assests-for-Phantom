@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200">
+  <defs><style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style></defs>
+  <rect width="1920" height="1200" fill="#FCFBFA"/>
+
+  <!-- Page Header -->
+  <g transform="translate(100, 70)">
+    <text x="0" y="24" class="mono" font-size="12" font-weight="600" fill="#CF4500" letter-spacing="2">06 / INTERACTION STATES &amp; VARIANTS</text>
+    <text x="0" y="64" class="sans" font-size="34" font-weight="700" fill="#141413" letter-spacing="-0.5">Interaction State Matrix</text>
+    <line x1="0" y1="88" x2="1720" y2="88" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+  </g>
+
+  <!-- Column Headers -->
+  <g transform="translate(300, 190)">
+    <text x="0" y="0" class="mono" font-size="11" font-weight="600" fill="#696969">DEFAULT</text>
+    <text x="280" y="0" class="mono" font-size="11" font-weight="600" fill="#696969">HOVER</text>
+    <text x="560" y="0" class="mono" font-size="11" font-weight="600" fill="#696969">ACTIVE / PRESSED</text>
+    <text x="840" y="0" class="mono" font-size="11" font-weight="600" fill="#696969">FOCUS-VISIBLE</text>
+    <text x="1120" y="0" class="mono" font-size="11" font-weight="600" fill="#696969">DISABLED</text>
+  </g>
+
+  <!-- Row 1: Primary Button -->
+  <g transform="translate(100, 240)">
+    <text x="0" y="28" class="sans" font-size="15" font-weight="600" fill="#141413">Primary Button</text>
+    <g transform="translate(200, 0)">
+      <!-- Default -->
+      <rect x="0" y="0" width="180" height="44" rx="20" fill="#141413"/>
+      <text x="28" y="27" class="sans" font-size="14.5" font-weight="600" fill="#F3F0EE">See how it works →</text>
+      <!-- Hover -->
+      <rect x="280" y="0" width="180" height="44" rx="20" fill="#262627"/>
+      <text x="308" y="27" class="sans" font-size="14.5" font-weight="600" fill="#FFF">See how it works →</text>
+      <!-- Active -->
+      <rect x="560" y="2" width="176" height="40" rx="20" fill="#000"/>
+      <text x="588" y="27" class="sans" font-size="14" font-weight="600" fill="#D1CDC7">See how it works →</text>
+      <!-- Focus -->
+      <rect x="840" y="0" width="180" height="44" rx="20" fill="#141413" stroke="#CF4500" stroke-width="3"/>
+      <text x="868" y="27" class="sans" font-size="14.5" font-weight="600" fill="#F3F0EE">See how it works →</text>
+      <!-- Disabled -->
+      <rect x="1120" y="0" width="180" height="44" rx="20" fill="#D1CDC7"/>
+      <text x="1148" y="27" class="sans" font-size="14.5" font-weight="600" fill="#FFF">See how it works →</text>
+    </g>
+  </g>
+
+  <!-- Row 2: Secondary Button -->
+  <g transform="translate(100, 340)">
+    <text x="0" y="28" class="sans" font-size="15" font-weight="600" fill="#141413">Secondary Button</text>
+    <g transform="translate(200, 0)">
+      <!-- Default -->
+      <rect x="0" y="0" width="180" height="44" rx="20" fill="#FFFFFF" stroke="#141413" stroke-width="1.5"/>
+      <text x="32" y="27" class="sans" font-size="14.5" font-weight="600" fill="#141413">Explore SMRITI ↗</text>
+      <!-- Hover -->
+      <rect x="280" y="0" width="180" height="44" rx="20" fill="#F3F0EE" stroke="#141413" stroke-width="1.5"/>
+      <text x="312" y="27" class="sans" font-size="14.5" font-weight="600" fill="#141413">Explore SMRITI ↗</text>
+      <!-- Active -->
+      <rect x="560" y="2" width="176" height="40" rx="20" fill="#E8E2DA" stroke="#141413" stroke-width="1.5"/>
+      <text x="592" y="27" class="sans" font-size="14" font-weight="600" fill="#141413">Explore SMRITI ↗</text>
+      <!-- Focus -->
+      <rect x="840" y="0" width="180" height="44" rx="20" fill="#FFF" stroke="#CF4500" stroke-width="3"/>
+      <text x="872" y="27" class="sans" font-size="14.5" font-weight="600" fill="#141413">Explore SMRITI ↗</text>
+      <!-- Disabled -->
+      <rect x="1120" y="0" width="180" height="44" rx="20" fill="#FCFBFA" stroke="#D1CDC7" stroke-width="1"/>
+      <text x="1152" y="27" class="sans" font-size="14.5" font-weight="600" fill="#D1CDC7">Explore SMRITI ↗</text>
+    </g>
+  </g>
+
+  <!-- Row 3: Navigation Links -->
+  <g transform="translate(100, 440)">
+    <text x="0" y="28" class="sans" font-size="15" font-weight="600" fill="#141413">Navigation Link</text>
+    <g transform="translate(200, 0)">
+      <text x="20" y="28" class="sans" font-size="15" font-weight="500" fill="#141413">PHANTOM</text>
+      <rect x="270" y="6" width="90" height="32" rx="16" fill="rgba(20,20,19,0.06)"/>
+      <text x="286" y="28" class="sans" font-size="15" font-weight="500" fill="#141413">PHANTOM</text>
+      <text x="580" y="28" class="sans" font-size="15" font-weight="600" fill="#CF4500">PHANTOM</text>
+      <rect x="830" y="4" width="100" height="34" rx="17" fill="none" stroke="#CF4500" stroke-width="2"/>
+      <text x="850" y="27" class="sans" font-size="15" font-weight="500" fill="#141413">PHANTOM</text>
+      <text x="1140" y="28" class="sans" font-size="15" font-weight="400" fill="#D1CDC7">PHANTOM</text>
+    </g>
+  </g>
+
+  <!-- Row 4: PHANTOM Stage Selector Tabs -->
+  <g transform="translate(100, 540)">
+    <text x="0" y="28" class="sans" font-size="15" font-weight="600" fill="#141413">PHANTOM Stage Tab</text>
+    <g transform="translate(200, 0)">
+      <rect x="0" y="0" width="100" height="36" rx="8" fill="#1A1D24" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="32" y="23" class="sans" font-size="12" fill="#8C95A6">Ready</text>
+
+      <rect x="280" y="0" width="100" height="36" rx="8" fill="#242934" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <text x="312" y="23" class="sans" font-size="12" fill="#FFF">Ready</text>
+
+      <rect x="560" y="0" width="100" height="36" rx="8" fill="#CF4500"/>
+      <text x="592" y="23" class="sans" font-size="12" font-weight="600" fill="#FFF">Ready</text>
+
+      <rect x="840" y="0" width="100" height="36" rx="8" fill="#1A1D24" stroke="#FFF" stroke-width="2"/>
+      <text x="872" y="23" class="sans" font-size="12" fill="#FFF">Ready</text>
+    </g>
+  </g>
+</svg>

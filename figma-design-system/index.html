@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SMRITI × PHANTOM — Figma Design System & Screen Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --canvas: #F3F0EE;
+      --surface: #FCFBFA;
+      --card: #FFFFFF;
+      --ink: #141413;
+      --muted: #696969;
+      --line: rgba(20, 20, 19, 0.08);
+      --accent: #CF4500;
+      --phantom-void: #050608;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Geist', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--canvas);
+      color: var(--ink);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 320px;
+      background: var(--surface);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(207,69,0,0.08);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #39FF6A; }
+    .file-title {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+    }
+    .file-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* Page Navigation List */
+    .page-list {
+      padding: 16px 12px;
+      flex: 1;
+    }
+    .page-group-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 1px;
+      padding: 10px 12px 6px;
+      text-transform: uppercase;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      margin-bottom: 2px;
+      user-select: none;
+    }
+    .nav-item:hover {
+      background: rgba(20,20,19,0.04);
+    }
+    .nav-item.active {
+      background: var(--ink);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+    .nav-item .page-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      opacity: 0.6;
+    }
+    .nav-item.active .page-num {
+      opacity: 0.9;
+      color: #FFB38A;
+    }
+
+    /* Main Area */
+    .main-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #E8E4DF;
+    }
+
+    /* Top Action Bar */
+    .topbar {
+      height: 64px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+    .current-page-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .current-page-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+    .current-page-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(20,20,19,0.04);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: #F4F2EF;
+      border-color: rgba(20,20,19,0.18);
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: #F3F0EE;
+      border-color: var(--ink);
+    }
+    .btn-primary:hover {
+      background: #262627;
+      color: #FFF;
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+    .btn-accent:hover {
+      background: #9A3A0A;
+    }
+
+    /* Canvas Viewport */
+    .viewport {
+      flex: 1;
+      overflow: auto;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .screen-frame {
+      background: #FFFFFF;
+      border-radius: 8px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+      transition: transform 0.2s ease;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(20,20,19,0.1);
+    }
+    .screen-frame img, .screen-frame object, .screen-frame iframe {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #141413;
+      color: #FFF;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+    .modal-backdrop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-box {
+      background: var(--surface);
+      border-radius: 20px;
+      width: min(90vw, 680px);
+      max-height: 80vh;
+      padding: 32px;
+      overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+      border: 1px solid rgba(20,20,19,0.1);
+    }
+    .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .modal-close {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--muted);
+      border: none;
+      background: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="badge"><span class="badge-dot"></span> FIGMA DESIGN SYSTEM</div>
+      <h1 class="file-title">SMRITI × PHANTOM</h1>
+      <p class="file-subtitle">Product UI &amp; Design System Library</p>
+    </div>
+
+    <nav class="page-list" id="pageList">
+      <div class="page-group-title">Figma File Pages</div>
+      <div class="nav-item active" data-file="screens/00_cover.svg" data-name="00 — Cover &amp; Overview" data-dims="1920 × 1080">
+        <span>00 Cover &amp; Overview</span>
+        <span class="page-num">00</span>
+      </div>
+      <div class="nav-item" data-file="screens/01_foundations_tokens.svg" data-name="01 — Foundations &amp; Tokens" data-dims="1920 × 1400">
+        <span>01 Foundations &amp; Tokens</span>
+        <span class="page-num">01</span>
+      </div>
+      <div class="nav-item" data-file="screens/02_components_library.svg" data-name="02 — Master Components" data-dims="1920 × 1800">
+        <span>02 Components Library</span>
+        <span class="page-num">02</span>
+      </div>
+      <div class="nav-item" data-file="screens/03_smriti_desktop_complete.svg" data-name="03 — SMRITI Desktop Complete" data-dims="1440 × 5200">
+        <span>03 SMRITI Desktop (1440px)</span>
+        <span class="page-num">03</span>
+      </div>
+      <div class="nav-item" data-file="screens/04_smriti_responsive_tablet.svg" data-name="04 — SMRITI Tablet (768px)" data-dims="768 × 3800">
+        <span>04 SMRITI Tablet (768px)</span>
+        <span class="page-num">04</span>
+      </div>
+      <div class="nav-item" data-file="screens/04_smriti_responsive_mobile.svg" data-name="04 — SMRITI Mobile (390px)" data-dims="390 × 4200">
+        <span>04 SMRITI Mobile (390px)</span>
+        <span class="page-num">04</span>
+      </div>
+
+      <div class="page-group-title">PHANTOM Core Experience</div>
+      <div class="nav-item" data-file="screens/05_phantom_core_experience.svg" data-name="05 — PHANTOM Core Experience" data-dims="1440 × 900">
+        <span>05 PHANTOM Core Void</span>
+        <span class="page-num">05</span>
+      </div>
+      <div class="nav-item" data-file="screens/05_phantom_module_smriti_active.svg" data-name="05 — SMRITI Module Active" data-dims="1440 × 900">
+        <span>05 SMRITI Node Active</span>
+        <span class="page-num">05</span>
+      </div>
+      <div class="nav-item" data-file="screens/05_phantom_module_aegis_active.svg" data-name="05 — AEGIS Module Active" data-dims="1440 × 900">
+        <span>05 AEGIS Node Active</span>
+        <span class="page-num">05</span>
+      </div>
+      <div class="nav-item" data-file="screens/05_phantom_module_lumen_active.svg" data-name="05 — LUMEN Module Active" data-dims="1440 × 900">
+        <span>05 LUMEN Node Active</span>
+        <span class="page-num">05</span>
+      </div>
+
+      <div class="page-group-title">Prototyping &amp; Handoff</div>
+      <div class="nav-item" data-file="screens/06_interaction_states.svg" data-name="06 — Interaction States Matrix" data-dims="1920 × 1200">
+        <span>06 Interaction States</span>
+        <span class="page-num">06</span>
+      </div>
+      <div class="nav-item" data-file="screens/07_user_flows_prototype.svg" data-name="07 — Prototype &amp; User Flows" data-dims="1920 × 1200">
+        <span>07 Prototype User Flows</span>
+        <span class="page-num">07</span>
+      </div>
+      <div class="nav-item" data-file="screens/08_handoff_documentation.svg" data-name="08 — Handoff &amp; Documentation" data-dims="1920 × 1400">
+        <span>08 Handoff &amp; Docs</span>
+        <span class="page-num">08</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main View -->
+  <main class="main-view">
+    <header class="topbar">
+      <div class="current-page-info">
+        <h2 class="current-page-title" id="pageTitle">00 — Cover &amp; Overview</h2>
+        <span class="current-page-meta" id="pageMeta">1920 × 1080</span>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="btn" id="btnTokens">View Tokens JSON</button>
+        <button class="btn" id="btnImportGuide">Figma Import Guide</button>
+        <button class="btn btn-primary" id="btnCopySvg">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M13 5H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.6"/><path d="M3 11V3a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.6"/></svg>
+          Copy SVG for Figma
+        </button>
+        <a class="btn btn-accent" id="btnDownloadSvg" download href="screens/00_cover.svg">
+          Download SVG
+        </a>
+      </div>
+    </header>
+
+    <div class="viewport" id="viewport">
+      <div class="screen-frame" id="screenFrame">
+        <img id="screenImage" src="screens/00_cover.svg" alt="Figma Screen Preview">
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span>✓</span> Copied vector SVG to clipboard! Paste directly into Figma (Cmd+V).
+  </div>
+
+  <!-- Import Guide Modal -->
+  <div class="modal-backdrop" id="modalImport">
+    <div class="modal-box">
+      <button class="modal-close" id="btnCloseModal">×</button>
+      <h3 class="modal-title">How to Open in Figma</h3>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">
+        Choose the fastest workflow to bring the design system into your Figma file:
+      </p>
+
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 15px; margin-bottom: 6px;">Method 1: Instant Copy &amp; Paste (Fastest)</h4>
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+          Click <strong>"Copy SVG for Figma"</strong> on any screen in this viewer, then open your Figma canvas and press <kbd style="background:#E8E2DA; padding:2px 6px; border-radius:4px;">Cmd + V</kbd>. Figma immediately parses it into native editable vector frames, text layers, and groups!
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 15px; margin-bottom: 6px;">Method 2: Drag &amp; Drop All Screens</h4>
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+          Open Figma in your desktop app or browser, open your Finder/file manager, and drag all 13 SVG files from <code style="background:#E8E2DA; padding:2px 6px; border-radius:4px;">figma-design-system/screens/</code> directly into Figma.
+        </p>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <h4 style="font-size: 15px; margin-bottom: 6px;">Method 3: Tokens Studio for Figma (Design Variables)</h4>
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+          Open the <strong>Tokens Studio for Figma</strong> plugin, choose <em>Load from File</em>, and select <code style="background:#E8E2DA; padding:2px 6px; border-radius:4px;">figma-design-system/tokens/tokens.json</code>. All color, typography, spacing, and elevation tokens will be imported automatically!
+        </p>
+      </div>
+
+      <div>
+        <h4 style="font-size: 15px; margin-bottom: 6px;">Method 4: html.to.design Figma Plugin</h4>
+        <p style="font-size: 13px; color: var(--muted); line-height: 1.5;">
+          Run the official <strong>html.to.design</strong> plugin in Figma and enter the local server URL <code style="background:#E8E2DA; padding:2px 6px; border-radius:4px;">http://localhost:8080/index.html</code> to import the live page with full native Auto Layout frames.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const navItems = document.querySelectorAll('.nav-item');
+    const screenImage = document.getElementById('screenImage');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageMeta = document.getElementById('pageMeta');
+    const btnDownloadSvg = document.getElementById('btnDownloadSvg');
+    const btnCopySvg = document.getElementById('btnCopySvg');
+    const toast = document.getElementById('toast');
+    const modalImport = document.getElementById('modalImport');
+    const btnImportGuide = document.getElementById('btnImportGuide');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+
+    let currentFile = 'screens/00_cover.svg';
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        currentFile = item.dataset.file;
+        screenImage.src = currentFile;
+        pageTitle.textContent = item.dataset.name;
+        pageMeta.textContent = item.dataset.dims;
+        btnDownloadSvg.href = currentFile;
+      });
+    });
+
+    // Copy SVG to clipboard
+    btnCopySvg.addEventListener('click', async () => {
+      try {
+        const resp = await fetch(currentFile);
+        const svgText = await resp.text();
+        await navigator.clipboard.writeText(svgText);
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+      } catch (err) {
+        console.error('Clipboard copy failed:', err);
+        alert('Could not copy to clipboard. Please download the SVG file instead.');
+      }
+    });
+
+    // Modal
+    btnImportGuide.addEventListener('click', () => modalImport.classList.add('show'));
+    btnCloseModal.addEventListener('click', () => modalImport.classList.remove('show'));
+    modalImport.addEventListener('click', (e) => {
+      if (e.target === modalImport) modalImport.classList.remove('show');
+    });
+
+    document.getElementById('btnTokens').addEventListener('click', () => {
+      window.open('tokens/tokens.json', '_blank');
+    });
+  </script>
+</body>
+</html>

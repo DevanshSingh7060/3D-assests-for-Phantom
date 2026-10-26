@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1400" width="1920" height="1400">
+  <defs><style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style></defs>
+  <rect width="1920" height="1400" fill="#FCFBFA"/>
+
+  <!-- Page Header -->
+  <g transform="translate(100, 70)">
+    <text x="0" y="24" class="mono" font-size="12" font-weight="600" fill="#CF4500" letter-spacing="2">08 / DEVELOPER HANDOFF &amp; SPECIFICATIONS</text>
+    <text x="0" y="64" class="sans" font-size="34" font-weight="700" fill="#141413" letter-spacing="-0.5">Engineering Architecture &amp; Implementation Digest</text>
+    <line x1="0" y1="88" x2="1720" y2="88" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+  </g>
+
+  <!-- Technical Specs Columns -->
+  <!-- Col 1: Design Tokens -> CSS Variables -->
+  <g transform="translate(100, 190)">
+    <rect width="520" height="540" rx="16" fill="#FFF" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="24" y="36" class="mono" font-size="11" font-weight="600" fill="#CF4500">01. CSS CUSTOM PROPERTIES MAPPING</text>
+    <g transform="translate(24, 60)">
+      <text x="0" y="20" class="mono" font-size="11" fill="#141413">--canvas-cream: #F3F0EE;</text>
+      <text x="0" y="44" class="mono" font-size="11" fill="#141413">--lifted-cream: #FCFBFA;</text>
+      <text x="0" y="68" class="mono" font-size="11" fill="#141413">--ink-black: #141413;</text>
+      <text x="0" y="92" class="mono" font-size="11" fill="#141413">--signal-orange: #CF4500;</text>
+      <text x="0" y="116" class="mono" font-size="11" fill="#141413">--phantom-void-black: #050608;</text>
+      <text x="0" y="140" class="mono" font-size="11" fill="#141413">--phantom-deep-charcoal: #0E1117;</text>
+      <text x="0" y="164" class="mono" font-size="11" fill="#141413">--smriti-module-accent: #F07B42;</text>
+      <text x="0" y="188" class="mono" font-size="11" fill="#141413">--aegis-module-accent: #6EC1E4;</text>
+      <text x="0" y="212" class="mono" font-size="11" fill="#141413">--lumen-module-accent: #B898FF;</text>
+      <text x="0" y="248" class="mono" font-size="11" fill="#696969">/* Radii */</text>
+      <text x="0" y="272" class="mono" font-size="11" fill="#141413">--radius-btn: 20px;</text>
+      <text x="0" y="296" class="mono" font-size="11" fill="#141413">--radius-card: 20px;</text>
+      <text x="0" y="320" class="mono" font-size="11" fill="#141413">--radius-stadium: 40px;</text>
+      <text x="0" y="344" class="mono" font-size="11" fill="#141413">--radius-pill: 999px;</text>
+    </g>
+  </g>
+
+  <!-- Col 2: 3D Scene Coordinate Digest -->
+  <g transform="translate(660, 190)">
+    <rect width="520" height="540" rx="16" fill="#FFF" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="24" y="36" class="mono" font-size="11" font-weight="600" fill="#CF4500">02. 3D SPATIAL SCENE ARCHITECTURE</text>
+    <g transform="translate(24, 60)">
+      <text x="0" y="20" class="sans" font-size="13" font-weight="600" fill="#141413">Camera Baseline &amp; Scene Setup (Three.js):</text>
+      <text x="0" y="44" class="mono" font-size="11" fill="#141413">Camera Pos: [10, 155, 420] · FOV: 35deg</text>
+      <text x="0" y="68" class="mono" font-size="11" fill="#141413">LookAt Target: [0, 80, 0] · Azimuth: 0deg</text>
+
+      <text x="0" y="110" class="sans" font-size="13" font-weight="600" fill="#141413">Object Hierarchy &amp; Coordinates:</text>
+      <text x="0" y="134" class="mono" font-size="11" fill="#141413">• Bookshelf: [x: 130, z: -225] (Flush back wall)</text>
+      <text x="0" y="158" class="mono" font-size="11" fill="#141413">• Armchair: [x: -55, z: 40]</text>
+      <text x="0" y="182" class="mono" font-size="11" fill="#141413">• Side Table: [x: -115, z: 20] (Origin 2:10 PM)</text>
+      <text x="0" y="206" class="mono" font-size="11" fill="#141413">• Dora Avatar: [x: 15, y: 68, z: 20] (Centered)</text>
+
+      <text x="0" y="250" class="sans" font-size="13" font-weight="600" fill="#141413">PHANTOM Fluid Shader Parameters:</text>
+      <text x="0" y="274" class="mono" font-size="11" fill="#141413">• Simplex 3D Noise GLSL (Ashima Arts)</text>
+      <text x="0" y="298" class="mono" font-size="11" fill="#141413">• Deformation Frequency: 1.45</text>
+      <text x="0" y="322" class="mono" font-size="11" fill="#141413">• Rim Lighting: #FFFFFF (Fresnel Power: 3.2)</text>
+    </g>
+  </g>
+
+  <!-- Col 3: Screen & Component Inventory -->
+  <g transform="translate(1220, 190)">
+    <rect width="520" height="540" rx="16" fill="#FFF" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="24" y="36" class="mono" font-size="11" font-weight="600" fill="#CF4500">03. ASSET &amp; COMPONENT AUDIT</text>
+    <g transform="translate(24, 60)">
+      <text x="0" y="20" class="sans" font-size="13" font-weight="600" fill="#141413">Restored Source Files (100% Vercel Match):</text>
+      <text x="0" y="44" class="mono" font-size="11" fill="#141413">✓ index.html (28,723 bytes)</text>
+      <text x="0" y="68" class="mono" font-size="11" fill="#141413">✓ phantom.css (10,571 bytes)</text>
+      <text x="0" y="92" class="mono" font-size="11" fill="#141413">✓ phantom-core.css (19,544 bytes)</text>
+      <text x="0" y="116" class="mono" font-size="11" fill="#141413">✓ phantom-core.js (36,532 bytes)</text>
+      <text x="0" y="140" class="mono" font-size="11" fill="#141413">✓ smriti-experience.js (95,702 bytes)</text>
+
+      <text x="0" y="180" class="sans" font-size="13" font-weight="600" fill="#141413">Binary 3D Model Assets:</text>
+      <text x="0" y="204" class="mono" font-size="11" fill="#141413">• dora_dora_the_explorer.glb (419 KB)</text>
+      <text x="0" y="228" class="mono" font-size="11" fill="#141413">• plant_with_pot.glb (8.3 MB)</text>
+      <text x="0" y="252" class="mono" font-size="11" fill="#141413">• small_table.glb (17.0 MB)</text>
+      <text x="0" y="276" class="mono" font-size="11" fill="#141413">• sofa.glb (28.5 MB)</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,93 @@
+{
+  "version": "1.0",
+  "collections": [
+    {
+      "name": "Colors",
+      "modes": [
+        { "modeId": "m_light", "name": "SMRITI (Light / Canvas)" },
+        { "modeId": "m_dark", "name": "PHANTOM (Dark / Void)" }
+      ],
+      "variables": [
+        {
+          "name": "surface/canvas",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#F3F0EE", "m_dark": "#050608" },
+          "description": "Default background canvas"
+        },
+        {
+          "name": "surface/elevated",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#FCFBFA", "m_dark": "#0E1117" },
+          "description": "Elevated card and nested surface"
+        },
+        {
+          "name": "surface/card",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#FFFFFF", "m_dark": "rgba(12, 15, 22, 0.92)" },
+          "description": "Card surface"
+        },
+        {
+          "name": "text/primary",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#141413", "m_dark": "#FFFFFF" },
+          "description": "Primary high-contrast text"
+        },
+        {
+          "name": "text/secondary",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#696969", "m_dark": "#9BA6B6" },
+          "description": "Secondary editorial copy"
+        },
+        {
+          "name": "text/muted",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#D1CDC7", "m_dark": "#6D7684" },
+          "description": "Muted whisper and placeholder text"
+        },
+        {
+          "name": "border/subtle",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "rgba(20, 20, 19, 0.08)", "m_dark": "rgba(255, 255, 255, 0.12)" },
+          "description": "Border lines and divider rules"
+        },
+        {
+          "name": "brand/accent",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#CF4500", "m_dark": "#F07B42" },
+          "description": "Brand signal orange / SMRITI module accent"
+        },
+        {
+          "name": "module/aegis",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#4D9D91", "m_dark": "#6EC1E4" },
+          "description": "AEGIS Clinical module accent"
+        },
+        {
+          "name": "module/lumen",
+          "type": "COLOR",
+          "valuesByMode": { "m_light": "#7E57C2", "m_dark": "#B898FF" },
+          "description": "LUMEN Laboratory module accent"
+        }
+      ]
+    },
+    {
+      "name": "Dimensions & Spacing",
+      "modes": [{ "modeId": "m_default", "name": "Default" }],
+      "variables": [
+        { "name": "space/1", "type": "FLOAT", "valuesByMode": { "m_default": 8 } },
+        { "name": "space/2", "type": "FLOAT", "valuesByMode": { "m_default": 16 } },
+        { "name": "space/3", "type": "FLOAT", "valuesByMode": { "m_default": 24 } },
+        { "name": "space/4", "type": "FLOAT", "valuesByMode": { "m_default": 32 } },
+        { "name": "space/5", "type": "FLOAT", "valuesByMode": { "m_default": 40 } },
+        { "name": "space/6", "type": "FLOAT", "valuesByMode": { "m_default": 48 } },
+        { "name": "space/7", "type": "FLOAT", "valuesByMode": { "m_default": 64 } },
+        { "name": "space/8", "type": "FLOAT", "valuesByMode": { "m_default": 96 } },
+        { "name": "space/9", "type": "FLOAT", "valuesByMode": { "m_default": 128 } },
+        { "name": "radius/button", "type": "FLOAT", "valuesByMode": { "m_default": 20 } },
+        { "name": "radius/card", "type": "FLOAT", "valuesByMode": { "m_default": 20 } },
+        { "name": "radius/stadium", "type": "FLOAT", "valuesByMode": { "m_default": 40 } },
+        { "name": "radius/pill", "type": "FLOAT", "valuesByMode": { "m_default": 999 } }
+      ]
+    }
+  ]
+}

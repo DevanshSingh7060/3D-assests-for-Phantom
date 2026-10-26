@@ -220,7 +220,8 @@
       this.shadowTexture = this.createRadialShadowTexture();
 
       const isMobile = window.innerWidth < 640;
-      const initialFov = isMobile ? 38 : CAM_PRESETS.HOME.fov;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+      const initialFov = isMobile ? 38 : (isTablet ? 34 : CAM_PRESETS.HOME.fov);
       const aspect = this.container.clientWidth / this.container.clientHeight;
       this.camera = new THREE.PerspectiveCamera(initialFov, aspect, 10, 3000);
 
@@ -228,6 +229,10 @@
         this.camera.position.set(10, 115, 340);
         this.camTarget.set(4, 58, -15);
         this.camera.fov = 36;
+      } else if (isTablet) {
+        this.camera.position.set(0, 114, 310);
+        this.camTarget.set(-36, 54, -10);
+        this.camera.fov = 33;
       } else {
         this.camera.position.copy(CAM_PRESETS.HOME.pos);
         this.camTarget.copy(CAM_PRESETS.HOME.target);
@@ -1598,6 +1603,7 @@
       }
 
       const isMobile = window.innerWidth < 640;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
 
       // ================= IDLE STATE =================
       if (!this.isStoryActive) {
@@ -1630,6 +1636,10 @@
           this.targetCamPos.set(10, 115, 340);
           this.targetCamLook.set(4, 58, -15);
           this.targetFov = 36;
+        } else if (isTablet) {
+          this.targetCamPos.set(0, 114, 310);
+          this.targetCamLook.set(-36, 54, -10);
+          this.targetFov = 33;
         } else {
           this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
           this.targetCamLook.copy(CAM_PRESETS.HOME.target);
@@ -2348,6 +2358,24 @@
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
+
+      const isMobile = window.innerWidth < 640;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+      if (this.currentStoryPhase === 'HOME' && !this.isStoryActive) {
+        if (isMobile) {
+          this.targetCamPos.set(10, 115, 340);
+          this.targetCamLook.set(4, 58, -15);
+          this.targetFov = 36;
+        } else if (isTablet) {
+          this.targetCamPos.set(0, 114, 310);
+          this.targetCamLook.set(-36, 54, -10);
+          this.targetFov = 33;
+        } else {
+          this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
+          this.targetCamLook.copy(CAM_PRESETS.HOME.target);
+          this.targetFov = CAM_PRESETS.HOME.fov;
+        }
+      }
     }
 
     findGlasses() {

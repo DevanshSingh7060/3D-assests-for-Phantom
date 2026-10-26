@@ -354,7 +354,7 @@
 
 .hud-coord.bottom-right {
   bottom: 16px;
-  right: 20px;
+  right: 170px;
 }
 
 /* Rive Indicator Component (sitting near bottom-right/top-right of visualization) */
@@ -498,6 +498,27 @@
   .phantom-visual-container {
     aspect-ratio: 4 / 3;
     min-height: 320px;
+  }
+
+  .phantom-stage-selector {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .phantom-stage-selector::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stage-btn {
+    flex-shrink: 0;
+    min-height: 38px;
+    padding: 8px 14px;
+    font-size: 10px;
   }
 
   .hud-coord.bottom-left,

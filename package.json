@@ -17,5 +17,9 @@
     "spatial-memory"
   ],
   "author": "Devansh Singh",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@splinetool/runtime": "^2.0.75",
+    "puppeteer-core": "^25.13.0"
+  }
 }

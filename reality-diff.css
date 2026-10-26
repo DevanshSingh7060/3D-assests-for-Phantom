@@ -419,17 +419,17 @@
   }
 
   .state-pill {
-    top: 14px;
-    padding: 6px 10px;
-    gap: 7px;
+    top: 12px;
+    padding: 5px 9px;
+    gap: 6px;
   }
 
   .state-pill-left {
-    left: 14px;
+    left: 12px;
   }
 
   .state-pill-right {
-    right: 14px;
+    right: 12px;
   }
 
   .pill-loc {
@@ -443,6 +443,26 @@
 
   .diff-editorial-closing {
     margin-top: 44px;
+  }
+}
+
+@media (max-width: 400px) {
+  .state-pill {
+    top: 10px;
+    padding: 4px 7px;
+    gap: 5px;
+  }
+  .state-pill-left {
+    left: 8px;
+  }
+  .state-pill-right {
+    right: 8px;
+  }
+  .pill-meta .pill-state {
+    font-size: 8.5px;
+  }
+  .pill-loc {
+    font-size: 10px;
   }
 }
 

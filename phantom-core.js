@@ -809,6 +809,7 @@
 
       const w = window.innerWidth;
       const h = window.innerHeight;
+      if (!w || !h) return;
       const THREE = window.THREE;
 
       // Project 3D blob center into 2D viewport coordinates
@@ -818,6 +819,7 @@
 
       const centerX = (blobPos.x * 0.5 + 0.5) * w;
       const centerY = (-blobPos.y * 0.5 + 0.5) * h;
+      if (!isFinite(centerX) || !isFinite(centerY)) return;
       this.centerCoords = { x: centerX, y: centerY };
 
       // Keep reactive aura centered directly behind the 3D blob even when shifted
@@ -831,8 +833,10 @@
         this.dom.maskBlobCircle.setAttribute('cx', centerX);
         this.dom.maskBlobCircle.setAttribute('cy', centerY);
         // Visual radius in screen pixels based on camera distance (7.2) and FOV 45
-        const visualRadius = (1.52 * this.currentBlobScale / 5.964) * h;
-        this.dom.maskBlobCircle.setAttribute('r', Math.max(visualRadius, 20));
+        const scale = isFinite(this.currentBlobScale) ? this.currentBlobScale : 1.0;
+        const visualRadius = (1.52 * scale / 5.964) * h;
+        const radius = isFinite(visualRadius) ? Math.max(visualRadius, 20) : 180;
+        this.dom.maskBlobCircle.setAttribute('r', radius);
       }
 
       // Update SVG connector lines: originate from module nodes and terminate behind the central blob
@@ -840,7 +844,7 @@
         Object.keys(this.nodePositions).forEach((key) => {
           const line = this.dom.lines[key];
           const pos = this.nodePositions[key];
-          if (line && pos) {
+          if (line && pos && isFinite(pos.x) && isFinite(pos.y) && isFinite(centerX) && isFinite(centerY)) {
             line.setAttribute('x1', pos.x);
             line.setAttribute('y1', pos.y);
             line.setAttribute('x2', centerX);
@@ -1298,9 +1302,11 @@
           const t = (elapsedTime * 1.4) % 1.0;
           const curX = target.x + (this.centerCoords.x - target.x) * t;
           const curY = target.y + (this.centerCoords.y - target.y) * t;
-          pulse.setAttribute('cx', curX);
-          pulse.setAttribute('cy', curY);
-          pulse.classList.add('is-pulsing');
+          if (isFinite(curX) && isFinite(curY)) {
+            pulse.setAttribute('cx', curX);
+            pulse.setAttribute('cy', curY);
+            pulse.classList.add('is-pulsing');
+          }
         }
       } else {
         Object.values(this.dom.pulses).forEach((p) => p && p.classList.remove('is-pulsing'));

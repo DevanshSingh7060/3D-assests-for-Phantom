@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 4200" width="390" height="4200">
+  <defs>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style>
+    <filter id="shadowNav" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000000" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <rect width="390" height="4200" fill="#F3F0EE"/>
+
+  <!-- Mobile Floating Pill Navigation -->
+  <g id="Navigation / Mobile Pill" transform="translate(20, 16)">
+    <rect width="350" height="50" rx="25" fill="rgba(255,255,255,0.96)" stroke="rgba(20,20,19,0.08)" stroke-width="1" filter="url(#shadowNav)"/>
+    <text x="20" y="32" class="sans" font-size="18" font-weight="600" fill="#141413">SMRITI<tspan fill="#CF4500">.</tspan></text>
+
+    <!-- Compact Action -->
+    <g transform="translate(230, 8)">
+      <rect width="70" height="34" rx="17" fill="#141413"/>
+      <text x="18" y="21" class="sans" font-size="11" font-weight="600" fill="#F3F0EE">Start →</text>
+    </g>
+
+    <!-- Hamburger Toggle -->
+    <g transform="translate(312, 19)">
+      <line x1="0" y1="0" x2="18" y2="0" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="8" x2="18" y2="8" stroke="#141413" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- Hero Section Mobile -->
+  <g id="Hero / Mobile" transform="translate(20, 85)">
+    <circle cx="6" cy="6" r="3.5" fill="#39FF6A"/>
+    <text x="16" y="9" class="sans" font-size="11" font-weight="500" fill="#141413">A quiet afternoon</text>
+    <text x="0" y="35" class="mono" font-size="9" font-weight="600" fill="#CF4500" letter-spacing="1">SPATIAL MEMORY</text>
+    <text x="0" y="75" class="serif" font-size="38" fill="#141413">Your home</text>
+    <text x="0" y="115" class="serif" font-size="38" font-style="italic" fill="#141413">remembers.</text>
+    <text x="0" y="145" class="sans" font-size="13" fill="#696969">SMRITI remembers where everyday things were and shows what changed.</text>
+
+    <!-- Mobile Action Buttons -->
+    <g transform="translate(0, 195)">
+      <rect width="160" height="42" rx="20" fill="#141413"/>
+      <text x="22" y="26" class="sans" font-size="13" font-weight="600" fill="#F3F0EE">See how it works →</text>
+    </g>
+
+    <!-- 3D Room Mobile Viewport -->
+    <rect x="0" y="260" width="350" height="280" rx="16" fill="#EAE5DF" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="175" y="250" text-anchor="middle" class="mono" font-size="10" fill="#696969">MOBILE 3D VIEWPORT</text>
+  </g>
+
+  <!-- Mobile 01 Problem -->
+  <g transform="translate(20, 680)">
+    <line x1="0" y1="0" x2="350" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="30" class="mono" font-size="9" fill="#696969">01 / A FAMILIAR MOMENT</text>
+    <text x="0" y="65" class="serif" font-size="30" fill="#141413">“Where did I put</text>
+    <text x="0" y="100" class="serif" font-size="30" font-style="italic" fill="#141413">my glasses?”</text>
+    <text x="0" y="130" class="sans" font-size="13" fill="#696969">Some days, a familiar room can feel a little less familiar.</text>
+  </g>
+
+  <!-- Mobile 02 Moments -->
+  <g transform="translate(20, 860)">
+    <line x1="0" y1="0" x2="350" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="30" class="mono" font-size="9" fill="#696969">02 / THREE QUIET MOMENTS</text>
+    <text x="0" y="65" class="serif" font-size="28" fill="#141413">A little help, on time.</text>
+
+    <!-- Stacked Cards Mobile -->
+    <rect x="0" y="90" width="350" height="90" rx="14" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="16" y="32" class="mono" font-size="9" fill="#CF4500">01 · BEFORE</text>
+    <text x="16" y="58" class="sans" font-size="15" font-weight="600" fill="#141413">Remember</text>
+    <text x="16" y="76" class="sans" font-size="11.5" fill="#696969">The glasses have a usual place.</text>
+
+    <rect x="0" y="195" width="350" height="90" rx="14" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="16" y="32" class="mono" font-size="9" fill="#CF4500">02 · AFTER</text>
+    <text x="16" y="58" class="sans" font-size="15" font-weight="600" fill="#141413">Notice</text>
+    <text x="16" y="76" class="sans" font-size="11.5" fill="#696969">Later, they are somewhere else.</text>
+
+    <rect x="0" y="300" width="350" height="90" rx="14" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="16" y="32" class="mono" font-size="9" fill="#CF4500">03 · FOUND</text>
+    <text x="16" y="58" class="sans" font-size="15" font-weight="600" fill="#141413">Explain</text>
+    <text x="16" y="76" class="sans" font-size="11.5" fill="#696969">A small, certain answer replaces doubt.</text>
+  </g>
+
+  <!-- Mobile Reality Diff -->
+  <g transform="translate(20, 1310)">
+    <line x1="0" y1="0" x2="350" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="30" class="mono" font-size="9" fill="#696969">06 / REALITY DIFF</text>
+    <text x="0" y="65" class="serif" font-size="28" fill="#141413">See what changed.</text>
+    <rect x="0" y="90" width="350" height="240" rx="16" fill="#FFF" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <rect x="0" y="0" width="175" height="180" rx="16" fill="#EAE5DF"/>
+    <rect x="175" y="0" width="175" height="180" rx="16" fill="#F4EFEA"/>
+    <line x1="175" y1="0" x2="175" y2="180" stroke="#FFF" stroke-width="2"/>
+    <circle cx="175" cy="90" r="14" fill="#FFF"/>
+  </g>
+
+  <!-- Mobile Memory Receipt -->
+  <g transform="translate(20, 1720)">
+    <rect width="350" height="380" rx="16" fill="#FCFBFA" stroke="rgba(20,20,19,0.1)" stroke-width="1.2"/>
+    <text x="20" y="32" class="sans" font-size="16" font-weight="700" fill="#141413">SMRITI MEMORY RECEIPT</text>
+    <text x="20" y="52" class="mono" font-size="9" fill="#8C95A6">REC · #0440</text>
+    <text x="20" y="100" class="sans" font-size="20" font-weight="600" fill="#141413">Reading glasses</text>
+    <text x="20" y="130" class="sans" font-size="13" fill="#696969">Side table → Bookshelf</text>
+    <text x="20" y="170" class="mono" font-size="11" font-weight="600" fill="#141413">DELTA: 4.85 METERS</text>
+  </g>
+
+  <!-- Mobile Final CTA -->
+  <g transform="translate(20, 2180)">
+    <text x="0" y="35" class="serif" font-size="30" fill="#141413">What if your home</text>
+    <text x="0" y="70" class="serif" font-size="30" font-style="italic" fill="#141413">could remember?</text>
+    <rect x="0" y="100" width="160" height="42" rx="20" fill="#141413"/>
+    <text x="26" y="126" class="sans" font-size="13" font-weight="600" fill="#F3F0EE">Explore SMRITI ↗</text>
+  </g>
+</svg>
