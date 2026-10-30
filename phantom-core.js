@@ -295,7 +295,12 @@
       glowRgb: '130, 185, 161'
     }
   };
-  PHANTOM_MODULES_DATA.disha = PHANTOM_MODULES_DATA.smriti;
+  // Developer alias: enable accessing PHANTOM_MODULES_DATA.disha without duplicating canonical module node
+  Object.defineProperty(PHANTOM_MODULES_DATA, 'disha', {
+    get: () => PHANTOM_MODULES_DATA.smriti,
+    enumerable: false,
+    configurable: true
+  });
 
   // ----------------------------------------------------------------------------
   // CUBIC BEZIER EASING SOLVER: cubic-bezier(0.22, 1, 0.36, 1)
@@ -514,22 +519,11 @@
           .map((k) => `<div class="phantom-aura-glow aura-${k}" data-module="${k}"></div>`)
           .join('\n');
 
-        <!-- BACKGROUND LAYER: Reactive Color Aura (Behind SVG Lines & Central Blob) -->
-        <div class="phantom-reactive-aura" id="phantomReactiveAura" aria-hidden="true">
-          <div class="phantom-aura-glow aura-default is-active" data-module="default"></div>
-          <div class="phantom-aura-glow aura-smriti" data-module="smriti"></div>
-          <div class="phantom-aura-glow aura-lumen" data-module="lumen"></div>
-          <div class="phantom-aura-glow aura-aegis" data-module="aegis"></div>
-        </div>
-
-        <!-- CONNECTION LAYER: Dotted Constellation Lines (Behind Central Blob with Occlusion Mask) -->
-        <svg class="phantom-constellation-svg" id="phantomConstellationSvg" aria-hidden="true">
-          <defs>
-            <mask id="blobOcclusionMask">
-              <rect width="100%" height="100%" fill="white" />
-              <circle id="maskBlobCircle" cx="0" cy="0" r="180" fill="black" />
-            </mask>
-            <filter id="glowSmriti" x="-20%" y="-20%" width="140%" height="140%">
+        // Dynamic construction of SVG filters & connector lines
+        const filtersHtml = moduleKeys
+          .map(
+            (k) => `
+            <filter id="glow${k.charAt(0).toUpperCase() + k.slice(1)}" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
             </filter>`
@@ -540,19 +534,24 @@
           .map((k) => `<line id="line${k.charAt(0).toUpperCase() + k.slice(1)}" class="phantom-connector-line ${k}-connector" />`)
           .join('\n');
 
-        <!-- Cute Interactive Poke Cue -->
-        <div class="phantom-poke-hint" id="phantomPokeHint" aria-hidden="true">
-          <span class="poke-sparkle">✦</span> poke to squish &amp; sparkle <span class="poke-sparkle">✦</span>
-        </div>
+        const pulsesHtml = moduleKeys
+          .map((k) => `<circle id="pulse${k.charAt(0).toUpperCase() + k.slice(1)}" class="phantom-pulse-dot" r="3" />`)
+          .join('\n');
 
-        <!-- ADAPTIVE INTELLIGENCE INFORMATION PANEL (LEFT OR RIGHT SIDE) -->
-        <aside class="phantom-detail-panel panel-side-left" id="phantomDetailPanel" aria-label="Module Detail">
-          <div class="phantom-detail-content">
-            <!-- Top Controls Row -->
-            <div class="phantom-detail-topbar phantom-detail-stagger">
-              <div class="phantom-detail-eyebrow-wrap">
-                <span class="detail-eyebrow-dot" id="detailEyebrowDot" aria-hidden="true"></span>
-                <span class="phantom-detail-eyebrow" id="detailEyebrow">INTELLIGENCE MODULE / 01</span>
+        // Dynamic construction of module nodes
+        const nodesHtml = moduleKeys
+          .map((k) => {
+            const data = PHANTOM_MODULES_DATA[k];
+            const alignClass = data.side === 'right' ? ' align-right' : '';
+            return `
+              <div class="phantom-module-node phantom-node-${k}${alignClass}" id="node${k.charAt(0).toUpperCase() + k.slice(1)}" data-module="${k}" role="button" tabindex="0" aria-label="Select ${data.name} — ${data.category}">
+                <div class="phantom-node-pill">
+                  <span class="phantom-node-beacon" aria-hidden="true"></span>
+                  <div class="phantom-node-meta">
+                    <span class="phantom-node-title">${data.name}</span>
+                    <span class="phantom-node-subtitle">${data.category}</span>
+                  </div>
+                </div>
               </div>
             `;
           })
@@ -579,12 +578,112 @@
           })
           .join('\n');
 
-            <!-- Header Row: Title & Status Badge -->
-            <div class="phantom-detail-header-row phantom-detail-stagger">
-              <h2 class="phantom-detail-name" id="detailName">DISHA</h2>
-              <div class="phantom-detail-status-badge" id="detailStatusBadge">
-                <span class="status-pulse-dot" id="detailStatusDot"></span>
-                <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
+        root.innerHTML = `
+          <div class="phantom-transition-backdrop" id="phantomBackdrop"></div>
+          <div class="phantom-collapse-warp" id="phantomWarp"></div>
+          <canvas class="phantom-dust-canvas" id="phantomDustCanvas"></canvas>
+
+          <!-- BACKGROUND LAYER: Reactive Color Aura (Behind SVG Lines & Central Blob) -->
+          <div class="phantom-reactive-aura" id="phantomReactiveAura" aria-hidden="true">
+            <div class="phantom-aura-glow aura-default is-active" data-module="default"></div>
+            ${auraHtml}
+          </div>
+
+          <!-- CONNECTION LAYER: Dotted Constellation Lines (Behind Central Blob with Occlusion Mask) -->
+          <svg class="phantom-constellation-svg" id="phantomConstellationSvg" aria-hidden="true">
+            <defs>
+              <mask id="blobOcclusionMask">
+                <rect width="100%" height="100%" fill="white" />
+                <circle id="maskBlobCircle" cx="0" cy="0" r="180" fill="black" />
+              </mask>
+              ${filtersHtml}
+            </defs>
+            <g id="phantomConnectionsGroup" mask="url(#blobOcclusionMask)">
+              ${linesHtml}
+              ${pulsesHtml}
+            </g>
+          </svg>
+
+          <!-- CENTRAL BLOB LAYER: 3D WebGL Hero Canvas -->
+          <div class="phantom-canvas-container" id="phantomCanvasContainer">
+            <canvas class="phantom-webgl-canvas" id="phantomWebglCanvas"></canvas>
+          </div>
+
+          <!-- Interactive Cute Poke Hint -->
+          <div class="phantom-poke-hint" id="phantomPokeHint" aria-hidden="true">
+            <span class="poke-sparkle">✦</span> poke to squish &amp; sparkle <span class="poke-sparkle">✦</span>
+          </div>
+
+          <!-- ADAPTIVE INTELLIGENCE INFORMATION PANEL (LEFT OR RIGHT SIDE) -->
+          <aside class="phantom-detail-panel panel-side-left" id="phantomDetailPanel" aria-label="Module Detail">
+            <div class="phantom-detail-content">
+              <!-- Top Controls Row -->
+              <div class="phantom-detail-topbar phantom-detail-stagger">
+                <div class="phantom-detail-eyebrow-wrap">
+                  <span class="detail-eyebrow-dot" id="detailEyebrowDot" aria-hidden="true"></span>
+                  <span class="phantom-detail-eyebrow" id="detailEyebrow">INTELLIGENCE MODULE / 01</span>
+                </div>
+                <button class="phantom-detail-close-btn" id="btnDetailClose" type="button" aria-label="Close intelligence details">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"></line><line x1="12" y1="2" x2="2" y2="12"></line></svg>
+                </button>
+              </div>
+
+              <!-- Header Row: Title & Status Badge -->
+              <div class="phantom-detail-header-row phantom-detail-stagger">
+                <h2 class="phantom-detail-name" id="detailName">DISHA</h2>
+                <div class="phantom-detail-status-badge" id="detailStatusBadge">
+                  <span class="status-pulse-dot" id="detailStatusDot"></span>
+                  <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
+                </div>
+              </div>
+
+              <!-- Subtitle -->
+              <p class="phantom-detail-subtitle phantom-detail-stagger" id="detailSubtitle">Your environment, understood.</p>
+
+              <!-- Detailed Description -->
+              <div class="phantom-detail-desc-wrap phantom-detail-stagger">
+                <p class="phantom-detail-desc" id="detailDesc"></p>
+              </div>
+
+              <!-- Capabilities Section -->
+              <div class="phantom-detail-capabilities phantom-detail-stagger" id="detailCapabilitiesSection">
+                <span class="capabilities-title">CORE CAPABILITIES</span>
+                <ul class="capabilities-list" id="detailCapabilitiesList"></ul>
+              </div>
+
+              <!-- Supported Environments / Application Domains Section -->
+              <div class="phantom-detail-environments phantom-detail-stagger" id="detailEnvironmentsSection">
+                <span class="environments-title">APPLICATION DOMAINS &amp; ENVIRONMENTS</span>
+                <div class="environments-tags" id="detailEnvironmentsTags"></div>
+              </div>
+
+              <!-- Small Metadata Row -->
+              <div class="phantom-detail-meta-grid phantom-detail-stagger" id="detailMetaGrid"></div>
+
+              <!-- Related Intelligence Synergy -->
+              <div class="phantom-detail-related phantom-detail-stagger" id="detailRelatedSection">
+                <span class="related-title">SHARED INTELLIGENCE SYNERGY</span>
+                <div class="related-pills" id="detailRelatedPills"></div>
+              </div>
+
+              <!-- Quick-Switch Intelligence Suite Rail -->
+              <div class="phantom-detail-module-switch phantom-detail-stagger" id="detailModuleSwitch" aria-label="Switch Intelligence">
+                <span class="detail-switch-label">INTELLIGENCE SUITE</span>
+                <div class="detail-switch-pills">
+                  ${switchPillsHtml}
+                </div>
+              </div>
+
+              <!-- Action & Return Controls -->
+              <div class="phantom-detail-actions phantom-detail-stagger">
+                <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
+                  <span id="detailActionText">Explore DISHA Experience</span>
+                  <span class="action-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
+                  <span>← Back to Architecture</span>
+                  <kbd>[ESC]</kbd>
+                </button>
               </div>
             </div>
           </aside>
@@ -605,47 +704,25 @@
             ${mobileSelectorHtml}
           </div>
 
-            <!-- Small Metadata Row -->
-            <div class="phantom-detail-meta-grid phantom-detail-stagger" id="detailMetaGrid"></div>
-
-            <!-- Quick-Switch Intelligence Suite Rail -->
-            <div class="phantom-detail-module-switch phantom-detail-stagger" id="detailModuleSwitch" aria-label="Switch Intelligence">
-              <span class="detail-switch-label">INTELLIGENCE SUITE</span>
-              <div class="detail-switch-pills">
-                <button class="detail-switch-pill is-active" data-switch="smriti" type="button">DISHA</button>
-                <button class="detail-switch-pill" data-switch="lumen" type="button">LUMEN</button>
-                <button class="detail-switch-pill" data-switch="aegis" type="button">AEGIS</button>
-              </div>
-            </div>
-
-            <!-- Action & Return Controls -->
-            <div class="phantom-detail-actions phantom-detail-stagger">
-              <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
-                <span id="detailActionText">Explore DISHA Experience</span>
-                <span class="action-arrow" aria-hidden="true">→</span>
+          <div class="phantom-ui-layer" id="phantomUiLayer">
+            <div class="phantom-header-bar">
+              <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to DISHA website">
+                <span class="phantom-return-arrow" aria-hidden="true">←</span>
+                <span>Return to DISHA</span>
+                <span class="phantom-return-tag">[ESC]</span>
               </button>
-              <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
-                <span>← Back to Architecture</span>
-                <kbd>[ESC]</kbd>
-              </button>
-            </div>
-          </div>
-        </aside>
-
-        <div class="phantom-center-anchor" id="phantomCenterAnchor">
-          <div class="phantom-core-eyebrow">Spatial Intelligence Layer</div>
-          <h1 class="phantom-core-title">PHANTOM</h1>
-          <p class="phantom-core-desc">Core Intelligence Architecture</p>
-        </div>
-
-        <div class="phantom-nodes-container" id="phantomNodesContainer">
-          <!-- MODULE 01: SMRITI (Upper-Left) -->
-          <div class="phantom-module-node phantom-node-smriti" id="nodeSmriti" data-module="smriti" role="button" tabindex="0" aria-label="Select DISHA - Home Intelligence">
-            <div class="phantom-node-pill">
-              <span class="phantom-node-beacon" aria-hidden="true"></span>
-              <div class="phantom-node-meta">
-                <span class="phantom-node-title">DISHA</span>
-                <span class="phantom-node-subtitle">Home Intelligence</span>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="workspace.html" class="phantom-workspace-nav-btn" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(240, 123, 66, 0.15); border: 1px solid rgba(240, 123, 66, 0.5); border-radius: 9999px; padding: 6px 16px; color: #f2f4f8; font-size: 12.5px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;">
+                  <span style="color: #f07b42;">✦</span>
+                  <span>Launch Table Workspace</span>
+                  <span style="font-size: 11px; opacity: 0.8;">→</span>
+                </a>
+                <div class="phantom-telemetry-badge">
+                  <span class="phantom-live-indicator" aria-hidden="true"></span>
+                  <span class="phantom-status-text">CORE ONLINE</span>
+                  <span class="phantom-telemetry-divider" aria-hidden="true"></span>
+                  <span>7 ACTIVE MODULES</span>
+                </div>
               </div>
             </div>
 
@@ -654,40 +731,7 @@
               <span class="phantom-active-count">PHANTOM <strong>KERNEL 2.0</strong> · SPATIAL MATRIX</span>
             </div>
           </div>
-
-          <!-- MODULE 03: AEGIS (Upper-Right) -->
-          <div class="phantom-module-node phantom-node-aegis align-right" id="nodeAegis" data-module="aegis" role="button" tabindex="0" aria-label="Select AEGIS - Clinical Intelligence">
-            <div class="phantom-node-pill">
-              <span class="phantom-node-beacon" aria-hidden="true"></span>
-              <div class="phantom-node-meta">
-                <span class="phantom-node-title">AEGIS</span>
-                <span class="phantom-node-subtitle">Clinical Intelligence</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="phantom-ui-layer" id="phantomUiLayer">
-          <div class="phantom-header-bar">
-            <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to DISHA website">
-              <span class="phantom-return-arrow" aria-hidden="true">←</span>
-              <span>Return to DISHA</span>
-              <span class="phantom-return-tag">[ESC]</span>
-            </button>
-            <div class="phantom-telemetry-badge">
-              <span class="phantom-live-indicator" aria-hidden="true"></span>
-              <span class="phantom-status-text">CORE ONLINE</span>
-              <span class="phantom-telemetry-divider" aria-hidden="true"></span>
-              <span>3 ACTIVE MODULES</span>
-            </div>
-          </div>
-
-          <div class="phantom-bottom-bar">
-            <span class="phantom-esc-hint">Press <kbd>ESC</kbd> or click Return to exit</span>
-            <span class="phantom-active-count">PHANTOM <strong>KERNEL 2.0</strong> · SPATIAL MATRIX</span>
-          </div>
-        </div>
-      `;
+        `;
 
         document.body.appendChild(root);
       }
