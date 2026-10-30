@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#F3F0EE">
   <meta name="description" content="FORGE — Industrial & Logistics Spatial Intelligence powered by PHANTOM.">
-  <title>FORGE — Industrial & Logistics Intelligence</title>
+  <title>FORGE — Industrial Intelligence & Tool Crib Verification</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <link rel="stylesheet" href="module-shared.css?v=2.0.0">
   <style>
     :root {
       --module-accent: #0D9488;
@@ -19,332 +19,189 @@
   </style>
 </head>
 <body data-module="forge">
-  <!-- Top Global Header -->
+  <!-- Top Floating Pill Header (SMRITI Benchmark) -->
   <header class="module-site-header">
-    <div class="module-header-left">
-      <a href="phantom.html" class="module-brand">
-        <span>PHANTOM</span>
-        <span class="module-brand-sep">/</span>
-        <span class="module-brand-name">FORGE</span>
-      </a>
-      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4;">
-        04 · INDUSTRIAL
-      </span>
-    </div>
+    <div class="module-header-inner">
+      <div class="module-header-left">
+        <a href="phantom.html" class="module-brand">
+          <span>PHANTOM</span>
+          <span class="module-brand-sep">/</span>
+          <span class="module-brand-name">FORGE</span>
+        </a>
+        <span class="module-domain-badge">04 · INDUSTRIAL</span>
+      </div>
 
-    <div class="module-header-center">
-      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
-        <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
-        <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
-        <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
-        <a href="forge.html" class="module-nav-link is-active">04 FORGE</a>
-        <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
-        <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
-        <a href="sense.html" class="module-nav-link">07 SENSE</a>
-      </nav>
-    </div>
+      <div class="module-header-center">
+        <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+          <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
+          <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
+          <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
+          <a href="forge.html" class="module-nav-link is-active">04 FORGE</a>
+          <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
+          <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
+          <a href="sense.html" class="module-nav-link">07 SENSE</a>
+        </nav>
+      </div>
 
-    <div class="module-header-right">
-      <a href="workspace.html" class="btn-nav-primary">
-        <span>Launch Table Workspace →</span>
-      </a>
-      <a href="phantom.html#forge" class="btn-nav-outline">
-        <span>← Architecture Matrix</span>
-      </a>
+      <div class="module-header-right">
+        <a href="workspace.html" class="btn-nav-primary">
+          <span>Launch Workspace →</span>
+        </a>
+        <a href="phantom.html#forge" class="btn-nav-outline">
+          <span>← Architecture</span>
+        </a>
+      </div>
     </div>
   </header>
 
   <main class="module-main-wrap">
-    <!-- Hero Section -->
+    <!-- Hero Block -->
     <section class="module-hero-block">
       <div class="module-tagline-eyebrow">
         <span class="dot"></span>
-        <span>SPECIALIZED INDUSTRIAL & LOGISTICS INTELLIGENCE · MODULE 04</span>
+        <span>INDUSTRIAL & LOGISTICS SPATIAL INTELLIGENCE · MODULE 04</span>
       </div>
       <h1 class="module-headline">
-        Operational awareness across<br><em>physical infrastructure.</em>
+        Order across<br><em>the production floor.</em>
       </h1>
       <p class="module-lead">
-        FORGE extends PHANTOM's spatial intelligence across high-throughput industrial distribution hubs, manufacturing tool cribs, and data centers. It tracks serialized tool custody, models volumetric pallet bay utilization, and verifies floor layout integrity without interrupting daily workflow.
+        FORGE monitors manufacturing facilities, high-bay warehouses, and precision tool cribs. It detects missing heavy tooling from shadow-boards, tracks volumetric pallet storage density, and enforces forklift safety clearance corridors.
       </p>
       <div class="module-cta-row">
-        <button class="btn-nav-primary" type="button" onclick="document.getElementById('forgeStageSection').scrollIntoView({ behavior: 'smooth' });">
-          <span>Inspect Logistics Matrix</span>
-        </button>
-        <a href="#facilityLedgerSection" class="btn-nav-outline">
-          <span>Review Asset Ledger</span>
+        <a href="#toolCribSection" class="btn-nav-primary">
+          <span>Inspect Tool Crib Matrix ↓</span>
+        </a>
+        <a href="#stagingBaySection" class="btn-nav-outline">
+          <span>Pallet Staging Bays</span>
         </a>
       </div>
     </section>
 
-    <!-- Metrics Ribbon -->
-    <section class="module-metric-ribbon">
-      <div class="module-metric-cell">
-        <div class="cell-label">Volumetric Bay Capacity</div>
-        <div class="cell-value">94.8% Density</div>
-        <div class="cell-sub">3D cubic spatial occupancy modeled</div>
+    <!-- Chapter 01: Tool Crib Shadow Board -->
+    <section class="module-chapter" id="toolCribSection">
+      <div class="chapter-index">
+        <span class="num">01</span>
+        <span>TOOL CRIB ALPHA · SHADOW-BOARD RETURN VERIFICATION</span>
       </div>
-      <div class="module-metric-cell">
-        <div class="cell-label">Tool Crib Reconciliation</div>
-        <div class="cell-value">100% Serialized</div>
-        <div class="cell-sub">Calibrated high-value tool custody</div>
+      <div class="chapter-headline-split">
+        <h2 class="chapter-title">Shadow-board status<br><em>& calibration custody.</em></h2>
+        <p class="chapter-desc">
+          Overhead ceiling cameras monitor tool silhouette boards in real-time. Tools are recognized by outline and spatial coordinate, flagging unreturned assets before shifts conclude.
+        </p>
       </div>
-      <div class="module-metric-cell">
-        <div class="cell-label">Floor Layout Drift</div>
-        <div class="cell-value">&lt; 15mm Variance</div>
-        <div class="cell-sub">Staging line & barrier compliance</div>
-      </div>
-      <div class="module-metric-cell">
-        <div class="cell-label">Throughput Disruption</div>
-        <div class="cell-value">Zero Stoppage</div>
-        <div class="cell-sub">Non-intrusive ambient camera tracking</div>
+
+      <div class="tool-crib-board">
+        <div class="shadow-tool-slot present">
+          <div class="shadow-tool-header">
+            <span class="shadow-tool-name">Digital Micrometer 0-25mm</span>
+            <span class="shadow-tool-status in-crib">IN CRIB</span>
+          </div>
+          <div style="font-size: 13px; color: var(--slate-gray);">Bay 02 · Serial #MC-4881</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #0d9488; margin-top: 6px;">Calibration Valid: 2026-12</div>
+        </div>
+
+        <div class="shadow-tool-slot">
+          <div class="shadow-tool-header">
+            <span class="shadow-tool-name">Pneumatic Impact 1/2"</span>
+            <span class="shadow-tool-status checked-out">CHECKED OUT</span>
+          </div>
+          <div style="font-size: 13px; color: var(--slate-gray);">Tech: J. Miller · Shift 2</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #b91c1c; margin-top: 6px;">Removed: 13:40 (Station 4)</div>
+        </div>
+
+        <div class="shadow-tool-slot present">
+          <div class="shadow-tool-header">
+            <span class="shadow-tool-name">Torque Wrench 40-200Nm</span>
+            <span class="shadow-tool-status in-crib">IN CRIB</span>
+          </div>
+          <div style="font-size: 13px; color: var(--slate-gray);">Bay 05 · Serial #TW-9102</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #0d9488; margin-top: 6px;">Verified in Silhouette</div>
+        </div>
+
+        <div class="shadow-tool-slot present">
+          <div class="shadow-tool-header">
+            <span class="shadow-tool-name">Optical Tachometer</span>
+            <span class="shadow-tool-status in-crib">IN CRIB</span>
+          </div>
+          <div style="font-size: 13px; color: var(--slate-gray);">Bay 08 · Serial #OT-3301</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #0d9488; margin-top: 6px;">Verified in Silhouette</div>
+        </div>
       </div>
     </section>
 
-    <!-- Interactive Spatial Stage Layout -->
-    <section class="module-stage-grid" id="forgeStageSection">
-      <div class="stage-main-card">
-        <div class="stage-card-header">
-          <div class="stage-header-title">
-            <span class="star">✦</span>
-            <span>Spatial State Matrix — Distribution Hub Bay 12</span>
+    <!-- Chapter 02: Volumetric Staging & Clearance -->
+    <section class="module-chapter" id="stagingBaySection">
+      <div class="chapter-index">
+        <span class="num">02</span>
+        <span>HIGH-BAY STAGING · VOLUMETRIC FILL & CLEAR-ZONE ENVELOPE</span>
+      </div>
+      <div class="chapter-headline-split">
+        <h2 class="chapter-title">Pallet density &<br><em>forklift aisle safety.</em></h2>
+        <p class="chapter-desc">
+          Calculates cubic occupancy in pallet storage bays while continuously verifying that pedestrian walkways and yellow forklift clearance zones remain unobstructed.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div style="background: var(--lifted-cream); border: 1px solid var(--line-border); border-radius: var(--radius-lg); padding: 24px;">
+          <h3 style="font-family: var(--font-display); font-size: 22px; margin: 0 0 8px;">Pallet Staging Bay 14</h3>
+          <p style="font-size: 13px; color: var(--slate-gray); margin: 0 0 16px;">Volumetric Density: 88% Capacity</p>
+          <div style="height: 10px; background: var(--soft-bone); border-radius: var(--radius-pill); overflow: hidden; margin-bottom: 12px;">
+            <div style="width: 88%; height: 100%; background: #0d9488;"></div>
           </div>
-          <div class="stage-pills-selector">
-            <button class="stage-select-btn is-active" type="button" data-layer="bays">Pallet Bays (A-F)</button>
-            <button class="stage-select-btn" type="button" data-layer="tools">Tool Crib (Station 4)</button>
-            <button class="stage-select-btn" type="button" data-layer="staging">Forklift Staging Perimeter</button>
+          <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--charcoal);">
+            14 of 16 Pallet Footprints Occupied · 2 Available
           </div>
         </div>
 
-        <div class="stage-canvas-wrapper">
-          <canvas id="forgeStageCanvas"></canvas>
-          <div class="stage-hud-overlay">
-            <div class="stage-hud-pill">
-              <span>FACILITY ZONE:</span>
-              <strong style="color: #fff;">DISTRIBUTION HUB WEST</strong>
-            </div>
-            <div class="stage-hud-pill">
-              <span>ACTIVE VIEW:</span>
-              <strong id="forgeHudLayer">PALLET BAYS (A-F)</strong>
-            </div>
-            <div class="stage-hud-pill">
-              <span>UTILIZATION:</span>
-              <strong style="color: #2dd4bf;">OPTIMAL (94.8%)</strong>
-            </div>
+        <div style="background: var(--lifted-cream); border: 1px solid var(--line-border); border-radius: var(--radius-lg); padding: 24px;">
+          <h3 style="font-family: var(--font-display); font-size: 22px; margin: 0 0 8px;">Forklift Safety Envelope</h3>
+          <p style="font-size: 13px; color: var(--slate-gray); margin: 0 0 16px;">Aisle 03-C Clear-Zone Corridor</p>
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: #ccfbf1; color: #0f766e; border-radius: var(--radius-pill); font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;">
+            <span>✓ CLEAR-ZONE UNOBSTRUCTED</span>
+          </div>
+          <div style="font-size: 12.5px; color: var(--slate-gray); margin-top: 10px;">
+            No pallets or debris staged inside yellow boundary.
           </div>
         </div>
       </div>
-
-      <!-- Sidebar -->
-      <aside class="stage-sidebar-col">
-        <div class="sidebar-panel-card">
-          <div class="panel-card-title">Industrial Capabilities</div>
-          <ul class="panel-list">
-            <li class="panel-list-item">
-              <span class="bullet">◆</span>
-              <span>Warehouse volumetric bay utilization & density modeling</span>
-            </li>
-            <li class="panel-list-item">
-              <span class="bullet">◆</span>
-              <span>Tool crib & serialized asset check-in / check-out reconciliation</span>
-            </li>
-            <li class="panel-list-item">
-              <span class="bullet">◆</span>
-              <span>Heavy equipment staging line & aisle obstruction monitoring</span>
-            </li>
-            <li class="panel-list-item">
-              <span class="bullet">◆</span>
-              <span>Facility layout drift & structural rack displacement alerts</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sidebar-panel-card">
-          <div class="panel-card-title">Facility Types</div>
-          <div class="env-tags-cloud">
-            <span class="env-tag-badge">Distribution Warehouses</span>
-            <span class="env-tag-badge">Manufacturing Assembly</span>
-            <span class="env-tag-badge">Aviation Maintenance Hangers</span>
-            <span class="env-tag-badge">Data Centers & Server Racks</span>
-            <span class="env-tag-badge">Bulk Grain & Agricultural Silos</span>
-          </div>
-        </div>
-      </aside>
     </section>
 
-    <!-- Domain-Specific Tool Crib & Facility Ledger Section -->
-    <section class="module-editorial-section" id="facilityLedgerSection">
-      <div class="section-head-split">
-        <div>
-          <h2 class="section-head-title">Facility Asset & Tool Crib <em>Spatial Ledger.</em></h2>
-          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified heavy asset placement records for Distribution Hub Bay 12.</p>
-        </div>
-        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">SUPPLY-CHAIN INTEGRITY</span>
+    <!-- Chapter 03: Shift Handover Ledger -->
+    <section class="module-chapter">
+      <div class="chapter-index">
+        <span class="num">03</span>
+        <span>SHIFT HANDOVER · EQUIPMENT AUDIT STREAM</span>
       </div>
 
-      <table class="domain-table">
+      <table class="custody-ledger-table">
         <thead>
           <tr>
-            <th>Asset Identifier</th>
-            <th>Equipment Type</th>
-            <th>Assigned Storage Zone</th>
-            <th>Observed Coordinates</th>
-            <th>Operational State</th>
-            <th>Shift Attestation</th>
+            <th>Asset Specification</th>
+            <th>Designated Location</th>
+            <th>Observed State</th>
+            <th>Shift Operator</th>
+            <th>Verification</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>#CRB-702 Digital Torque Wrench</strong></td>
-            <td>Calibrated Aviation Tool</td>
-            <td>Tool Locker 04-A</td>
-            <td>Locker 04-A (Verified)</td>
-            <td><span class="status-badge-pill verified">Calibrated & In Dock</span></td>
-            <td style="font-family: var(--font-mono); font-size: 12px;">Operator #4410</td>
+            <td><strong>Pneumatic Impact Wrench 1/2"</strong><br><span style="font-size: 12px; color: var(--slate-gray);">Serial #PI-8812</span></td>
+            <td>Tool Crib Silhouette 04</td>
+            <td>In Use · Assembly Station 4</td>
+            <td>J. Miller (Shift 2)</td>
+            <td><span class="tamper-seal-badge" style="background:#fef3c7;color:#b45309;">Signed Out</span></td>
           </tr>
           <tr>
-            <td><strong>#BAY-12A Euro-Pallet Stack</strong></td>
-            <td>Volumetric Cargo Unit</td>
-            <td>High-Bay Rack 12-A</td>
-            <td>Height 2.4m / 98% Density</td>
-            <td><span class="status-badge-pill verified">Occupied</span></td>
-            <td style="font-family: var(--font-mono); font-size: 12px;">Spatial Scanner</td>
-          </tr>
-          <tr>
-            <td><strong>#FL-03 Electric Forklift</strong></td>
-            <td>Motive Material Handling</td>
-            <td>Charging Bay West</td>
-            <td>Docked at Station 02</td>
-            <td><span class="status-badge-pill verified">Charging</span></td>
-            <td style="font-family: var(--font-mono); font-size: 12px;">Telematics Verified</td>
-          </tr>
-          <tr>
-            <td><strong>#BAR-09 Safety Egress Lane</strong></td>
-            <td>Pedestrian Walkway Lane</td>
-            <td>Aisle 04 Yellow Line</td>
-            <td>Clear of Obstructions</td>
-            <td><span class="status-badge-pill verified">Clear (Zero Drift)</span></td>
-            <td style="font-family: var(--font-mono); font-size: 12px;">Continuous Eye</td>
+            <td><strong>Laser Alignment System</strong><br><span style="font-size: 12px; color: var(--slate-gray);">Serial #LA-1090</span></td>
+            <td>Tool Crib Bay 01</td>
+            <td>Present & Calibrated</td>
+            <td>Crib Master R. Patel</td>
+            <td><span class="tamper-seal-badge">Reconciled</span></td>
           </tr>
         </tbody>
       </table>
     </section>
-
-    <!-- Bottom Action CTA -->
-    <section class="module-bottom-cta">
-      <div>
-        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
-        <p class="bottom-cta-desc">Test the shared spatial intelligence engine live using your browser webcam or phone.</p>
-      </div>
-      <div class="bottom-cta-actions">
-        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
-          <span>Open Workspace Monitor →</span>
-        </a>
-        <a href="phantom.html#forge" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
-          <span>Architecture Matrix</span>
-        </a>
-      </div>
-    </section>
   </main>
-
-  <script>
-    // Interactive Industrial Stage Simulation
-    (function () {
-      const canvas = document.getElementById('forgeStageCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let w = (canvas.width = canvas.parentElement.clientWidth);
-      let h = (canvas.height = canvas.parentElement.clientHeight);
-
-      window.addEventListener('resize', () => {
-        w = canvas.width = canvas.parentElement.clientWidth;
-        h = canvas.height = canvas.parentElement.clientHeight;
-      });
-
-      const layers = {
-        bays: [
-          { name: 'Bay 12-A (98% Vol)', x: 0.22, y: 0.50, w: 90, h: 90, status: 'LOADED' },
-          { name: 'Bay 12-B (94% Vol)', x: 0.40, y: 0.50, w: 90, h: 90, status: 'LOADED' },
-          { name: 'Bay 12-C (82% Vol)', x: 0.58, y: 0.50, w: 90, h: 90, status: 'PARTIAL' },
-          { name: 'Bay 12-D (Empty)', x: 0.76, y: 0.50, w: 90, h: 90, status: 'AVAILABLE' }
-        ],
-        tools: [
-          { name: 'Digital Torque Wrench #702', x: 0.28, y: 0.45, w: 120, h: 40, status: 'IN DOCK' },
-          { name: 'Fiber Laser Micrometer #12', x: 0.28, y: 0.65, w: 120, h: 40, status: 'IN DOCK' },
-          { name: 'Pneumatic Riveter #04', x: 0.68, y: 0.55, w: 140, h: 60, status: 'CHECKED OUT' }
-        ],
-        staging: [
-          { name: 'Forklift Turning Radius', x: 0.35, y: 0.50, w: 140, h: 100, status: 'CLEAR' },
-          { name: 'Pedestrian Egress Line', x: 0.72, y: 0.50, w: 120, h: 100, status: 'UNOBSTRUCTED' }
-        ]
-      };
-
-      let currentLayer = 'bays';
-
-      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
-          btn.classList.add('is-active');
-          currentLayer = btn.dataset.layer;
-          const hud = document.getElementById('forgeHudLayer');
-          if (hud) hud.textContent = btn.textContent.toUpperCase();
-        });
-      });
-
-      function render() {
-        ctx.clearRect(0, 0, w, h);
-
-        // Industrial warehouse structural grid
-        ctx.strokeStyle = 'rgba(13, 148, 136, 0.08)';
-        ctx.lineWidth = 1;
-        for (let x = 0; x < w; x += 40) {
-          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
-        }
-        for (let y = 0; y < h; y += 40) {
-          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-        }
-
-        // Heavy rack boundary
-        ctx.strokeStyle = 'rgba(13, 148, 136, 0.35)';
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([5, 5]);
-        ctx.strokeRect(40, 40, w - 80, h - 80);
-        ctx.setLineDash([]);
-
-        ctx.font = '10px "JetBrains Mono", monospace';
-        ctx.fillStyle = 'rgba(13, 148, 136, 0.85)';
-        ctx.fillText('BAY 12 VOLUMETRIC SCAN BOUNDARY · HIGH-RACK AISLE', 50, 60);
-
-        // Render layer items
-        const list = layers[currentLayer] || [];
-        list.forEach((item) => {
-          const ix = item.x * w - item.w / 2;
-          const iy = item.y * h - item.h / 2;
-
-          ctx.fillStyle = 'rgba(10, 24, 24, 0.9)';
-          ctx.strokeStyle = '#0d9488';
-          ctx.lineWidth = 1.5;
-
-          ctx.fillRect(ix, iy, item.w, item.h);
-          ctx.strokeRect(ix, iy, item.w, item.h);
-
-          ctx.fillStyle = item.status === 'AVAILABLE' ? '#94a3b8' : '#2dd4bf';
-          ctx.beginPath();
-          ctx.arc(ix + 12, iy + 14, 4, 0, Math.PI * 2);
-          ctx.fill();
-
-          ctx.fillStyle = '#ffffff';
-          ctx.textAlign = 'center';
-          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
-          ctx.fillStyle = '#2dd4bf';
-          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
-          ctx.textAlign = 'left';
-        });
-
-        requestAnimationFrame(render);
-      }
-      render();
-    })();
-  </script>
 </body>
 </html>

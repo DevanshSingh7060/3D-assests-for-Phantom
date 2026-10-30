@@ -1,8 +1,9 @@
 /**
  * ==============================================================================
- * PHANTOM WORKSPACE — CONTROLLER & INTERACTION CONTROLLER
- * Integrates PhantomEngine with Live Video, Overlay HUD, Key-Value Store,
- * Chronological Event Stream, Deterministic Search & Evidence Reveal
+ * PHANTOM WORKSPACE — CONTROLLER & INTERACTION ENGINE
+ * SMRITI Craftsmanship & Apple-Level Precision
+ * Seamless integration of WebRTC Capture, 2-Stage Gate, Continuous Key-Value Store,
+ * Precision Object Registry, Chronological Activity Ledger, and Deterministic Search.
  * ==============================================================================
  */
 
@@ -16,7 +17,7 @@
   let showBoundingBoxes = true;
   let selectedDeviceId = null;
 
-  // DOM Elements
+  // DOM Elements Cache
   const dom = {};
 
   function cacheDom() {
@@ -29,7 +30,7 @@
     dom.hudText = document.getElementById('hudText');
     dom.envSelect = document.getElementById('envSelect');
 
-    // Controls
+    // Viewfinder & Controls
     dom.cameraSourceSelect = document.getElementById('cameraSourceSelect');
     dom.resolutionSelect = document.getElementById('resolutionSelect');
     dom.intervalSlider = document.getElementById('intervalSlider');
@@ -38,32 +39,45 @@
     dom.btnToggleBoxes = document.getElementById('btnToggleBoxes');
     dom.fileUploadInput = document.getElementById('fileUploadInput');
     dom.btnUploadFallback = document.getElementById('btnUploadFallback');
+    dom.cameraResolutionHud = document.getElementById('cameraResolutionHud');
+    dom.overviewCameraStatusText = document.getElementById('overviewCameraStatusText');
 
-    // Motion meter
+    // Motion Meter
     dom.motionMeterFill = document.getElementById('motionMeterFill');
     dom.motionMeterText = document.getElementById('motionMeterText');
 
-    // Containers
-    dom.statsTotalObjects = document.getElementById('statsTotalObjects');
-    dom.statsRecentChanges = document.getElementById('statsRecentChanges');
-    dom.statsLastObsTime = document.getElementById('statsLastObsTime');
+    // Overview Containers
+    dom.deskSnapshotList = document.getElementById('deskSnapshotList');
     dom.recentEventsOverview = document.getElementById('recentEventsOverview');
+    dom.statsRecentChangesBadge = document.getElementById('statsRecentChangesBadge');
+
+    // Monitor Containers
     dom.activeDetectionsList = document.getElementById('activeDetectionsList');
-    dom.objectsGrid = document.getElementById('objectsGrid');
-    dom.objectsGridOverview = document.getElementById('objectsGridOverview');
+
+    // Objects Precision Registry Table
+    dom.objectsRegistryRows = document.getElementById('objectsRegistryRows');
+    dom.objectsRegistryCount = document.getElementById('objectsRegistryCount');
+
+    // Activity Timeline
     dom.timelineList = document.getElementById('timelineList');
 
     // Search
     dom.searchInput = document.getElementById('searchInput');
     dom.btnSearch = document.getElementById('btnSearch');
     dom.quickSearchInput = document.getElementById('quickSearchInput');
+    dom.btnQuickSearchTrigger = document.getElementById('btnQuickSearchTrigger');
     dom.searchResultContainer = document.getElementById('searchResultContainer');
+
+    // Settings
+    dom.btnPurgeFrames = document.getElementById('btnPurgeFrames');
+    dom.btnResetDatabase = document.getElementById('btnResetDatabase');
 
     // Drawer
     dom.drawerBackdrop = document.getElementById('drawerBackdrop');
     dom.drawerCloseBtn = document.getElementById('drawerCloseBtn');
     dom.drawerTitle = document.getElementById('drawerTitle');
     dom.drawerSubtitle = document.getElementById('drawerSubtitle');
+    dom.drawerCategory = document.getElementById('drawerCategory');
     dom.drawerBody = document.getElementById('drawerBody');
 
     // Tabs
@@ -127,7 +141,7 @@
     dom.btnStartMonitoring?.addEventListener('click', toggleMonitoring);
     dom.btnHeaderAction?.addEventListener('click', toggleMonitoring);
 
-    // Camera source selector
+    // Camera hardware selector
     dom.cameraSourceSelect?.addEventListener('change', async (e) => {
       selectedDeviceId = e.target.value;
       if (engine.isMonitoring) {
@@ -140,7 +154,11 @@
 
     // Resolution selector
     dom.resolutionSelect?.addEventListener('change', (e) => {
-      engine.capture.setResolution(e.target.value);
+      const val = e.target.value;
+      engine.capture.setResolution(val);
+      if (dom.cameraResolutionHud) {
+        dom.cameraResolutionHud.textContent = val.replace('x', ' × ') + ' HD';
+      }
     });
 
     // Interval slider
@@ -155,7 +173,7 @@
       dom.btnCaptureNow.textContent = 'Verifying...';
       await engine.captureAndVerifyNow();
       dom.btnCaptureNow.disabled = false;
-      dom.btnCaptureNow.innerHTML = '<span>✦ Capture & Verify Now</span>';
+      dom.btnCaptureNow.innerHTML = '<span>✦ Capture & Verify</span>';
     });
 
     // Toggle bounding boxes
@@ -164,38 +182,29 @@
       dom.btnToggleBoxes.classList.toggle('is-active', showBoundingBoxes);
     });
 
-    // Upload test video fallback
+    // Video upload fallback
     dom.btnUploadFallback?.addEventListener('click', () => {
       dom.fileUploadInput?.click();
     });
 
     dom.fileUploadInput?.addEventListener('change', async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        await engine.capture.loadOfflineVideo(file);
-        if (!engine.isMonitoring) {
-          await engine.startMonitoring();
-        }
-      }
+      if (!file) return;
+      await engine.capture.loadFromFile(file);
+      switchTab('monitor');
     });
 
-    // Environment Selector
-    dom.envSelect?.addEventListener('change', async (e) => {
-      engine.activeEnvironmentId = e.target.value;
-      await refreshAllViews();
-    });
-
-    // Category filter chips in Objects View
+    // Category Filter Chips
     document.querySelectorAll('.filter-chip[data-category]').forEach((chip) => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('.filter-chip[data-category]').forEach((c) => c.classList.remove('is-active'));
         chip.classList.add('is-active');
         activeCategoryFilter = chip.dataset.category;
-        renderObjectsGrid();
+        renderObjectsRegistry();
       });
     });
 
-    // Event filter chips in Activity View
+    // Event Filter Chips
     document.querySelectorAll('.filter-chip[data-event]').forEach((chip) => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('.filter-chip[data-event]').forEach((c) => c.classList.remove('is-active'));
@@ -226,17 +235,50 @@
       if (e.key === 'Enter') executeSearch(dom.quickSearchInput?.value);
     });
 
-    // Search suggestion pills
-    document.querySelectorAll('.search-prompt-pill').forEach((pill) => {
+    dom.btnQuickSearchTrigger?.addEventListener('click', () => {
+      executeSearch(dom.quickSearchInput?.value);
+    });
+
+    // Suggestion pills
+    document.querySelectorAll('.suggestion-chip').forEach((pill) => {
       pill.addEventListener('click', () => {
         executeSearch(pill.textContent.trim());
       });
+    });
+
+    // Settings actions
+    dom.btnPurgeFrames?.addEventListener('click', async () => {
+      if (confirm('Purge all cached evidence snapshots from local storage?')) {
+        await engine.storage.purgeEvidenceFrames();
+        alert('Evidence snapshots purged.');
+        await refreshAllViews();
+      }
+    });
+
+    dom.btnResetDatabase?.addEventListener('click', async () => {
+      if (confirm('Reset spatial memory to default desk baseline?')) {
+        await engine.storage.resetDatabase();
+        alert('Database reset to baseline state.');
+        await refreshAllViews();
+      }
     });
 
     // Drawer close
     dom.drawerCloseBtn?.addEventListener('click', closeDrawer);
     dom.drawerBackdrop?.addEventListener('click', (e) => {
       if (e.target === dom.drawerBackdrop) closeDrawer();
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && dom.drawerBackdrop?.classList.contains('is-open')) {
+        closeDrawer();
+      }
+      if (e.key === '/' && document.activeElement !== dom.searchInput && document.activeElement !== dom.quickSearchInput) {
+        e.preventDefault();
+        switchTab('search');
+        dom.searchInput?.focus();
+      }
     });
   }
 
@@ -248,6 +290,7 @@
     dom.views.forEach((view) => {
       view.classList.toggle('is-active', view.dataset.view === tabId);
     });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function updateStatusUI(status, detail) {
@@ -258,11 +301,11 @@
     const statusMap = {
       'no-camera': { text: 'NO CAMERA', class: '' },
       'permission-required': { text: 'PERMISSION REQUIRED', class: 'settling' },
-      'camera-connected': { text: 'CAMERA CONNECTED', class: 'connected' },
+      'camera-connected': { text: 'CONNECTED', class: 'connected' },
       'camera-unavailable': { text: 'CAMERA UNAVAILABLE', class: '' },
       'camera-disconnected': { text: 'DISCONNECTED', class: '' },
       'monitoring-active': { text: 'MONITORING ACTIVE', class: 'active' },
-      'monitoring-paused': { text: 'MONITORING PAUSED', class: '' },
+      'monitoring-paused': { text: 'STANDBY', class: '' },
       'processing-error': { text: 'PROCESSING ERROR', class: '' }
     };
 
@@ -288,7 +331,7 @@
 
     if (devices.length === 0) {
       const opt = document.createElement('option');
-      opt.textContent = 'No camera found';
+      opt.textContent = 'No camera detected';
       opt.disabled = true;
       dom.cameraSourceSelect.appendChild(opt);
       return;
@@ -303,20 +346,23 @@
 
     if (devices.length > 0 && !selectedDeviceId) {
       selectedDeviceId = devices[0].deviceId;
+      if (dom.overviewCameraStatusText) {
+        dom.overviewCameraStatusText.textContent = `Camera: ${devices[0].label} (${devices[0].type})`;
+      }
     }
   }
 
   function updateMotionMeter(score) {
     if (!dom.motionMeterFill || !dom.motionMeterText) return;
-    const percent = Math.min(100, Math.round(score * 100 * 4));
+    const percent = Math.min(100, Math.round(score * 100 * 3));
     dom.motionMeterFill.style.width = `${percent}%`;
 
     if (score >= engine.changeDetector.motionThreshold) {
       dom.motionMeterFill.style.background = '#ef4444';
-      dom.motionMeterText.textContent = `MOTION DETECTED · ${(score * 100).toFixed(1)}%`;
+      dom.motionMeterText.textContent = `MOTION · ${(score * 100).toFixed(1)}%`;
     } else {
-      dom.motionMeterFill.style.background = 'var(--accent-orange)';
-      dom.motionMeterText.textContent = `SCENE CALM · ${(score * 100).toFixed(1)}%`;
+      dom.motionMeterFill.style.background = 'var(--signal-orange)';
+      dom.motionMeterText.textContent = `CALM · ${(score * 100).toFixed(1)}%`;
     }
   }
 
@@ -327,10 +373,8 @@
   }
 
   async function handleNewObservation(deltaResult) {
-    console.log('[Workspace] New verified observation committed:', deltaResult);
     await refreshAllViews();
 
-    // Show temporary notification if objects changed
     if (deltaResult.changes && deltaResult.changes.length > 0) {
       const first = deltaResult.changes[0];
       const toast = document.createElement('div');
@@ -341,114 +385,106 @@
       toast.style.zIndex = '2000';
       toast.style.background = '#141413';
       toast.style.color = '#F3F0EE';
-      toast.innerHTML = `<span class="hud-dot active"></span><span>CHANGE RECORDED: <strong>${first.new_location}</strong></span>`;
+      toast.innerHTML = `<span class="hud-dot active"></span><span>STATE CHANGE: <strong>${first.new_location}</strong></span>`;
       document.body.appendChild(toast);
       setTimeout(() => toast.remove(), 4000);
     }
   }
 
   async function refreshAllViews() {
-    await renderOverviewStats();
-    await renderObjectsGrid();
+    await renderOverview();
+    await renderMonitorSidebar();
+    await renderObjectsRegistry();
     await renderActivityTimeline();
   }
 
-  async function renderOverviewStats() {
+  async function renderOverview() {
     const envId = engine.activeEnvironmentId;
     const objects = await engine.storage.getAllObjects(envId);
     const events = await engine.storage.getEvents(envId);
 
-    if (dom.statsTotalObjects) dom.statsTotalObjects.textContent = objects.length;
-    if (dom.statsRecentChanges) dom.statsRecentChanges.textContent = events.length;
-
-    if (dom.statsLastObsTime) {
-      if (events.length > 0) {
-        const lastDate = new Date(events[0].timestamp);
-        dom.statsLastObsTime.textContent = lastDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      } else {
-        dom.statsLastObsTime.textContent = 'None';
-      }
+    // Update badges
+    if (dom.statsRecentChangesBadge) {
+      dom.statsRecentChangesBadge.textContent = `${events.length} EVENTS COMMITTED`;
     }
 
-    // Render Recent 3 Verified Changes
+    // Populate Overview Desk Mini-Registry (Top 3 items)
+    if (dom.deskSnapshotList) {
+      dom.deskSnapshotList.innerHTML = '';
+      const previewItems = objects.slice(0, 3);
+
+      previewItems.forEach((obj) => {
+        const item = document.createElement('div');
+        item.className = 'desk-snapshot-item';
+        item.innerHTML = `
+          <div class="snapshot-name-col">
+            <strong>${obj.canonical_name}</strong>
+            <div class="snapshot-loc">📍 ${obj.current_location}</div>
+          </div>
+          <div class="snapshot-meta-col">
+            <div class="snapshot-conf">${Math.round(obj.confidence * 100)}% CONF</div>
+            <div class="snapshot-time">${formatTimeAgo(new Date(obj.last_seen))}</div>
+          </div>
+        `;
+        dom.deskSnapshotList.appendChild(item);
+      });
+    }
+
+    // Populate Recent Events Stream (Top 3)
     if (dom.recentEventsOverview) {
-      const recent = events.slice(0, 3);
+      const recent = events.slice(0, 4);
       if (recent.length === 0) {
-        dom.recentEventsOverview.innerHTML = `<li style="color: var(--slate-gray); font-size: 13px;">No physical changes recorded yet.</li>`;
+        dom.recentEventsOverview.innerHTML = `<li style="color: var(--slate-gray); font-size: 13px;">No physical state changes recorded yet.</li>`;
       } else {
         dom.recentEventsOverview.innerHTML = recent
           .map((evt) => {
             const obj = objects.find((o) => o.object_id === evt.object_id);
-            const name = obj ? obj.canonical_name : 'Object';
+            const name = obj ? obj.canonical_name : 'Physical Asset';
             const timeStr = new Date(evt.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             return `
-              <li class="recent-event-item">
-                <span class="event-type-badge ${evt.event_type}">${evt.event_type}</span>
-                <div class="event-item-content">
-                  <div class="event-item-title">${name}</div>
-                  <div class="event-item-route">
-                    ${evt.previous_location ? `<span>${evt.previous_location}</span> <span aria-hidden="true">→</span>` : ''}
+              <li class="recent-event-row">
+                <span class="event-type-chip ${evt.event_type}">${evt.event_type}</span>
+                <div class="event-details">
+                  <div class="event-name">${name}</div>
+                  <div class="event-delta-route">
+                    ${evt.previous_location ? `<span>${evt.previous_location}</span> <span class="arrow">→</span>` : ''}
                     <strong>${evt.new_location}</strong>
                   </div>
+                  <div class="event-time-meta">Verified ${timeStr} · ${(evt.confidence * 100).toFixed(0)}% confidence</div>
                 </div>
-                <div class="event-item-time">${timeStr}</div>
               </li>
             `;
           })
           .join('');
       }
     }
-
-    // Render Preview of Objects in Overview
-    if (dom.objectsGridOverview) {
-      const topObjects = objects.slice(0, 3);
-      dom.objectsGridOverview.innerHTML = '';
-      for (const obj of topObjects) {
-        const card = document.createElement('div');
-        card.className = 'object-card';
-
-        let mediaHtml = `<div style="font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.4);">NO EVIDENCE FRAME</div>`;
-        if (obj.evidence_frame_ref) {
-          const frame = await engine.storage.getEvidenceFrame(obj.evidence_frame_ref);
-          if (frame && frame.data_url) {
-            mediaHtml = `<img src="${frame.data_url}" alt="${obj.canonical_name}" loading="lazy"/>`;
-          }
-        }
-
-        card.innerHTML = `
-          <div class="object-card-media">
-            ${mediaHtml}
-            <span class="object-status-badge ${obj.status}">${obj.status}</span>
-          </div>
-          <div class="object-card-body">
-            <div class="object-card-category">${obj.category} · ${Math.round(obj.confidence * 100)}% CONFIDENCE</div>
-            <h3 class="object-card-title">${obj.canonical_name}</h3>
-            <div class="object-card-location">
-              <span style="color: var(--accent-orange);">📍</span>
-              <span>${obj.current_location}</span>
-            </div>
-            <div class="object-card-footer">
-              <span class="object-card-time">Verified ${formatTimeAgo(new Date(obj.last_seen))}</span>
-              <button class="btn-inspect-history" type="button" data-object-id="${obj.object_id}">
-                <span>Inspect History</span>
-                <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          </div>
-        `;
-
-        card.querySelector('.btn-inspect-history')?.addEventListener('click', () => {
-          openObjectDrawer(obj.object_id);
-        });
-
-        dom.objectsGridOverview.appendChild(card);
-      }
-    }
   }
 
-  async function renderObjectsGrid() {
-    if (!dom.objectsGrid) return;
+  async function renderMonitorSidebar() {
+    if (!dom.activeDetectionsList) return;
+    const envId = engine.activeEnvironmentId;
+    const objects = await engine.storage.getAllObjects(envId);
+
+    dom.activeDetectionsList.innerHTML = '';
+    const visible = objects.filter((o) => o.status !== 'removed');
+
+    visible.slice(0, 5).forEach((obj) => {
+      const row = document.createElement('div');
+      row.className = 'matrix-row';
+      row.innerHTML = `
+        <div class="matrix-row-name">
+          <strong>${obj.canonical_name}</strong>
+          <div class="matrix-row-loc">${obj.current_location}</div>
+        </div>
+        <span class="matrix-conf-pill">${Math.round(obj.confidence * 100)}%</span>
+      `;
+      dom.activeDetectionsList.appendChild(row);
+    });
+  }
+
+  async function renderObjectsRegistry() {
+    if (!dom.objectsRegistryRows) return;
     const envId = engine.activeEnvironmentId;
     let objects = await engine.storage.getAllObjects(envId);
 
@@ -456,55 +492,75 @@
       objects = objects.filter((o) => o.category === activeCategoryFilter);
     }
 
+    if (dom.objectsRegistryCount) {
+      dom.objectsRegistryCount.textContent = `${objects.length} OBJECTS IN PHYSICAL STORE`;
+    }
+
     if (objects.length === 0) {
-      dom.objectsGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--slate-gray);">
-          No physical objects tracked in this category yet.
+      dom.objectsRegistryRows.innerHTML = `
+        <div style="padding: 40px; text-align: center; color: var(--slate-gray);">
+          No physical items found in this category.
         </div>
       `;
       return;
     }
 
-    dom.objectsGrid.innerHTML = '';
-    for (const obj of objects) {
-      const card = document.createElement('div');
-      card.className = 'object-card';
+    dom.objectsRegistryRows.innerHTML = '';
 
-      let mediaHtml = `<div style="font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.4);">NO EVIDENCE FRAME</div>`;
+    for (const obj of objects) {
+      const row = document.createElement('div');
+      row.className = 'registry-row-item';
+
+      let thumbUrl = '';
       if (obj.evidence_frame_ref) {
         const frame = await engine.storage.getEvidenceFrame(obj.evidence_frame_ref);
-        if (frame && frame.data_url) {
-          mediaHtml = `<img src="${frame.data_url}" alt="${obj.canonical_name}" loading="lazy"/>`;
-        }
+        if (frame && frame.data_url) thumbUrl = frame.data_url;
       }
 
-      card.innerHTML = `
-        <div class="object-card-media">
-          ${mediaHtml}
-          <span class="object-status-badge ${obj.status}">${obj.status}</span>
+      const thumbImg = thumbUrl
+        ? `<img src="${thumbUrl}" class="registry-thumb-img" alt="${obj.canonical_name}" loading="lazy"/>`
+        : `<div class="registry-thumb-img" style="display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--slate-gray);font-family:var(--font-mono);">RAW</div>`;
+
+      const confPercent = Math.round(obj.confidence * 100);
+
+      row.innerHTML = `
+        <div class="registry-col-item">
+          ${thumbImg}
+          <div>
+            <div class="registry-item-name">${obj.canonical_name}</div>
+            <div class="registry-item-category">${obj.category.toUpperCase()} · STATUS: ${obj.status.toUpperCase()}</div>
+          </div>
         </div>
-        <div class="object-card-body">
-          <div class="object-card-category">${obj.category} · ${Math.round(obj.confidence * 100)}% CONFIDENCE</div>
-          <h3 class="object-card-title">${obj.canonical_name}</h3>
-          <div class="object-card-location">
-            <span style="color: var(--accent-orange);">📍</span>
-            <span>${obj.current_location}</span>
+
+        <div class="registry-col-loc">
+          <span class="loc-pin">📍</span>
+          <span>${obj.current_location}</span>
+        </div>
+
+        <div class="registry-col-time">
+          ${formatTimeAgo(new Date(obj.last_seen))}
+        </div>
+
+        <div class="registry-col-conf">
+          <div class="conf-bar-mini">
+            <div class="conf-bar-fill" style="width: ${confPercent}%;"></div>
           </div>
-          <div class="object-card-footer">
-            <span class="object-card-time">Verified ${formatTimeAgo(new Date(obj.last_seen))}</span>
-            <button class="btn-inspect-history" type="button" data-object-id="${obj.object_id}">
-              <span>Inspect History</span>
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
+          <span class="conf-val-num">${confPercent}%</span>
+        </div>
+
+        <div class="registry-col-action">
+          <button class="btn-inspect-pill" type="button" data-object-id="${obj.object_id}">
+            <span>Inspect History</span>
+            <span aria-hidden="true">→</span>
+          </button>
         </div>
       `;
 
-      card.querySelector('.btn-inspect-history')?.addEventListener('click', () => {
+      row.querySelector('.btn-inspect-pill')?.addEventListener('click', () => {
         openObjectDrawer(obj.object_id);
       });
 
-      dom.objectsGrid.appendChild(card);
+      dom.objectsRegistryRows.appendChild(row);
     }
   }
 
@@ -519,43 +575,45 @@
     }
 
     if (events.length === 0) {
-      dom.timelineList.innerHTML = `<li style="padding: 20px; color: var(--slate-gray);">No physical events recorded for this filter.</li>`;
+      dom.timelineList.innerHTML = `<li style="padding: 24px; color: var(--slate-gray);">No physical events recorded for this filter.</li>`;
       return;
     }
 
     dom.timelineList.innerHTML = '';
+
     for (const evt of events) {
       const obj = objects.find((o) => o.object_id === evt.object_id);
-      const name = obj ? obj.canonical_name : 'Physical Object';
+      const name = obj ? obj.canonical_name : 'Physical Asset';
       const timeStr = new Date(evt.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
       let thumbHtml = '';
       if (evt.frame_reference) {
         const frame = await engine.storage.getEvidenceFrame(evt.frame_reference);
         if (frame && frame.data_url) {
-          thumbHtml = `<div class="node-thumbnail-preview"><img src="${frame.data_url}" alt="Evidence"/></div>`;
+          thumbHtml = `<img src="${frame.data_url}" class="timeline-entry-thumb" alt="Evidence snapshot"/>`;
         }
       }
 
       const li = document.createElement('li');
-      li.className = 'timeline-node-item';
+      li.className = 'timeline-event-entry';
       li.innerHTML = `
-        <div class="timeline-node-dot"></div>
-        <div class="timeline-node-box">
-          <div style="flex: 1;">
-            <div class="node-title-row">
-              <span class="event-type-badge ${evt.event_type}">${evt.event_type}</span>
-              <span class="node-object-name">${name}</span>
+        <div class="timeline-event-dot"></div>
+        <div class="timeline-entry-content">
+          <div class="timeline-entry-left">
+            <div class="timeline-entry-title-row">
+              <span class="event-type-chip ${evt.event_type}">${evt.event_type}</span>
+              <span class="timeline-obj-name">${name}</span>
             </div>
-            <div class="node-route-delta">
+            <div class="timeline-route-desc">
               ${evt.previous_location ? `<span>${evt.previous_location}</span> <span class="arrow">→</span>` : ''}
               <strong>${evt.new_location}</strong>
             </div>
-            <div class="node-meta-time">Verified ${timeStr} · ${(evt.confidence * 100).toFixed(0)}% confidence</div>
+            <div class="timeline-entry-meta">Verified ${timeStr} · ${(evt.confidence * 100).toFixed(0)}% confidence · Committed to key-value store</div>
           </div>
           ${thumbHtml}
         </div>
       `;
+
       dom.timelineList.appendChild(li);
     }
   }
@@ -565,8 +623,8 @@
 
     if (!res.success) {
       dom.searchResultContainer.innerHTML = `
-        <div class="evidence-reveal-card" style="padding: 30px; text-align: center; color: var(--slate-gray);">
-          ${res.message || 'No matching physical records found.'}
+        <div class="evidence-reveal-card" style="text-align: center; color: var(--slate-gray);">
+          ${res.message || 'No matching physical records found in memory.'}
         </div>
       `;
       return;
@@ -576,9 +634,9 @@
       const obj = res.object;
       let evidenceImg = '';
       if (res.evidence && res.evidence.data_url) {
-        evidenceImg = `<img src="${res.evidence.data_url}" alt="${obj.canonical_name} evidence"/>`;
+        evidenceImg = `<img src="${res.evidence.data_url}" alt="${obj.canonical_name} physical evidence"/>`;
       } else {
-        evidenceImg = `<div style="color: rgba(255,255,255,0.4); font-family: var(--font-mono); font-size: 11px;">NO RETAINED EVIDENCE SNAPSHOT</div>`;
+        evidenceImg = `<div style="color: rgba(255,255,255,0.4); font-family: var(--font-mono); font-size: 11px; padding: 40px; text-align: center;">NO RETAINED EVIDENCE SNAPSHOT</div>`;
       }
 
       const historyItems = (res.movementHistory || [])
@@ -596,28 +654,34 @@
 
       dom.searchResultContainer.innerHTML = `
         <div class="evidence-reveal-card">
-          <div class="reveal-card-header">
-            <div>
-              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray); text-transform: uppercase; margin-bottom: 4px;">
-                DETERMINISTIC SPATIAL MEMORY RESULT
-              </div>
-              <h2 class="reveal-object-title">${obj.canonical_name}</h2>
-              <div class="reveal-last-location">📍 ${res.lastKnownLocation}</div>
-              <div class="reveal-meta-sub">
-                Last seen ${res.lastSeenHuman} · ${res.confidencePercent}% confidence · Status: ${res.status.toUpperCase()}
-              </div>
-              ${res.isStale ? `<div style="color: #b45309; font-size: 12px; margin-top: 6px;">⚠️ ${res.stalenessNote}</div>` : ''}
+          <div class="reveal-fact-header">
+            <div class="reveal-eyebrow">DETERMINISTIC SPATIAL QUERY RESULT</div>
+            <h2 class="reveal-object-title">${obj.canonical_name}</h2>
+            <div class="reveal-location-highlight">📍 <strong>${res.lastKnownLocation}</strong></div>
+            <div class="reveal-meta-row">
+              <span>Last observed: ${res.lastSeenHuman}</span>
+              <span>Model Confidence: ${res.confidencePercent}%</span>
+              <span>Status: ${res.status.toUpperCase()}</span>
             </div>
-            <button class="btn-pill-outline" type="button" id="btnRevealInspectFull">View Full Timeline</button>
+            ${res.isStale ? `<div style="color: #b45309; font-size: 12px; margin-top: 8px;">⚠️ ${res.stalenessNote}</div>` : ''}
           </div>
-          <div class="reveal-media-stage">
-            ${evidenceImg}
-          </div>
-          <div class="reveal-history-section">
-            <div class="reveal-history-title">Verified Movement Chronology</div>
-            <ul style="list-style: none; padding: 0; margin: 0;">
-              ${historyItems || '<li style="color: var(--slate-gray); font-size: 13px;">No prior movement events recorded.</li>'}
-            </ul>
+
+          <div class="reveal-evidence-layout">
+            <div class="evidence-snapshot-box">
+              ${evidenceImg}
+            </div>
+
+            <div class="evidence-history-col">
+              <h4>Verified Movement History</h4>
+              <ul class="evidence-history-list">
+                ${historyItems || '<li style="color: var(--slate-gray); font-size: 13px;">No prior movement events recorded.</li>'}
+              </ul>
+              <div style="margin-top: 20px;">
+                <button class="btn-pill-primary" type="button" id="btnRevealInspectFull">
+                  <span>Open Full Detail Drawer →</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       `;
@@ -633,7 +697,8 @@
     if (!obj || !dom.drawerBackdrop) return;
 
     dom.drawerTitle.textContent = obj.canonical_name;
-    dom.drawerSubtitle.textContent = `${obj.category.toUpperCase()} · CURRENT: ${obj.current_location}`;
+    dom.drawerSubtitle.textContent = `STATUS: ${obj.status.toUpperCase()} · CURRENT: ${obj.current_location}`;
+    if (dom.drawerCategory) dom.drawerCategory.textContent = `${obj.category.toUpperCase()} INDEX`;
 
     const events = await engine.storage.getEvents(engine.activeEnvironmentId, { objectId });
     const rels = await engine.storage.getRelationshipsForObject(objectId, engine.activeEnvironmentId);
@@ -642,14 +707,14 @@
     if (obj.evidence_frame_ref) {
       const frame = await engine.storage.getEvidenceFrame(obj.evidence_frame_ref);
       if (frame && frame.data_url) {
-        frameImg = `<div style="width: 100%; aspect-ratio: 16/9; background: #141820; border-radius: 12px; overflow: hidden; margin-bottom: 24px;"><img src="${frame.data_url}" style="width: 100%; height: 100%; object-fit: contain;"/></div>`;
+        frameImg = `<div style="width: 100%; aspect-ratio: 16/9; background: #0f0f10; border-radius: 12px; overflow: hidden; margin-bottom: 24px;"><img src="${frame.data_url}" style="width: 100%; height: 100%; object-fit: contain;"/></div>`;
       }
     }
 
     const eventList = events
       .map((e, idx) => `
-        <div style="display: flex; gap: 14px; margin-bottom: 18px;">
-          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-orange); font-weight: 600; width: 24px;">0${idx + 1}</div>
+        <div style="display: flex; gap: 14px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--line-border);">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--signal-orange); font-weight: 600; width: 24px;">0${idx + 1}</div>
           <div style="flex: 1;">
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray);">
               ${new Date(e.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -666,15 +731,15 @@
     dom.drawerBody.innerHTML = `
       ${frameImg}
       <div style="margin-bottom: 24px; padding: 16px; background: var(--pure-white); border: 1px solid var(--line-border); border-radius: 12px;">
-        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray); text-transform: uppercase; margin-bottom: 6px;">Spatial Anchors</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray); text-transform: uppercase; margin-bottom: 6px;">Stationary Spatial Anchors</div>
         <div style="font-size: 13.5px; color: var(--charcoal);">
-          ${rels.map((r) => `<div>✦ ${r.relation} ${r.reference_object_id}</div>`).join('') || 'Aligned relative to primary desk coordinate frame.'}
+          ${rels.map((r) => `<div>✦ ${r.relation} ${r.reference_object_id}</div>`).join('') || 'Aligned relative to primary desk reference coordinate frame.'}
         </div>
       </div>
       <h4 style="font-family: var(--font-body); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-gray); margin: 0 0 16px;">
-        Chronological Movement History
+        Chronological State Transitions
       </h4>
-      <div>${eventList || '<div style="color: var(--slate-gray); font-size: 13.5px;">No recorded movement deltas.</div>'}</div>
+      <div>${eventList || '<div style="color: var(--slate-gray); font-size: 13.5px;">No recorded movement transitions.</div>'}</div>
     `;
 
     dom.drawerBackdrop.classList.add('is-open');
@@ -701,9 +766,6 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         if (showBoundingBoxes && engine && engine.isMonitoring) {
-          // Draw subtle alignment crosshair at center
-          const cx = canvas.width / 2;
-          const cy = canvas.height / 2;
           ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
           ctx.lineWidth = 1;
           ctx.setLineDash([4, 4]);
