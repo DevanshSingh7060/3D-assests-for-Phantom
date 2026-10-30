@@ -1,0 +1,456 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 5200" width="1440" height="5200">
+  <defs>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style>
+    <filter id="shadowNav" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#000000" flood-opacity="0.04"/>
+    </filter>
+    <filter id="shadowCard" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="24" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+    <linearGradient id="heroRoomGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EBE6DE"/>
+      <stop offset="100%" stop-color="#DCD5CA"/>
+    </linearGradient>
+    <linearGradient id="warmLightGrad" x1="30%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF9" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#EFE8DD" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Complete Page Canvas -->
+  <rect width="1440" height="5200" fill="#F3F0EE"/>
+
+  <!-- ==============================================================================
+       FLOATING NAVIGATION PILL (Fixed at top)
+       ============================================================================== -->
+  <g id="Navigation / Floating Pill" transform="translate(160, 24)">
+    <rect width="1120" height="58" rx="29" fill="rgba(255,255,255,0.96)" stroke="rgba(20,20,19,0.08)" stroke-width="1" filter="url(#shadowNav)"/>
+    <text x="28" y="36" class="sans" font-size="22" font-weight="600" fill="#141413" letter-spacing="-0.5">SMRITI<tspan fill="#CF4500">.</tspan></text>
+    <g transform="translate(200, 14)">
+      <text x="0" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">How it works</text>
+      <text x="130" y="20" class="sans" font-size="14.5" font-weight="600" fill="#CF4500">PHANTOM</text>
+      <text x="245" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Reality diff</text>
+      <text x="365" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Memory receipt</text>
+      <text x="515" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Trust</text>
+    </g>
+    <g transform="translate(930, 9)">
+      <rect width="170" height="40" rx="20" fill="#141413"/>
+      <text x="26" y="25" class="sans" font-size="14" font-weight="600" fill="#F3F0EE">See the moment →</text>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 00: HERO ROOM EXPERIENCE (y: 110 - 750)
+       ============================================================================== -->
+  <g id="Section / Hero" transform="translate(100, 120)">
+    <!-- 3D Spatial Room Viewport -->
+    <g id="Hero / Spatial 3D Room" transform="translate(480, 20)">
+      <rect width="760" height="580" rx="24" fill="url(#heroRoomGrad)" stroke="rgba(20,20,19,0.06)" stroke-width="1"/>
+      <rect width="760" height="580" rx="24" fill="url(#warmLightGrad)"/>
+
+      <!-- Architectural Room Details -->
+      <!-- Back Wall & Flooring -->
+      <line x1="0" y1="420" x2="760" y2="420" stroke="rgba(20,20,19,0.08)" stroke-width="1.5"/>
+      <!-- Bookshelf (Right back wall) -->
+      <rect x="560" y="80" width="160" height="340" rx="4" fill="#C5BCAD" stroke="rgba(20,20,19,0.12)" stroke-width="1"/>
+      <line x1="560" y1="160" x2="720" y2="160" stroke="rgba(20,20,19,0.15)" stroke-width="1.5"/>
+      <line x1="560" y1="240" x2="720" y2="240" stroke="rgba(20,20,19,0.15)" stroke-width="1.5"/>
+      <line x1="560" y1="320" x2="720" y2="320" stroke="rgba(20,20,19,0.15)" stroke-width="1.5"/>
+      <!-- Books on Shelf -->
+      <rect x="580" y="180" width="18" height="55" fill="#9A3A0A"/>
+      <rect x="602" y="190" width="14" height="45" fill="#555555"/>
+      <rect x="620" y="175" width="22" height="60" fill="#CF4500"/>
+      <!-- Reading Glasses on Shelf (Target location 4:40 PM) -->
+      <g transform="translate(650, 222)">
+        <ellipse cx="14" cy="8" rx="12" ry="5" fill="none" stroke="#CF4500" stroke-width="1.5"/>
+        <line x1="8" y1="8" x2="20" y2="8" stroke="#CF4500" stroke-width="1.5"/>
+      </g>
+
+      <!-- Side Table & Armchair (Midground seating) -->
+      <rect x="180" y="260" width="160" height="180" rx="20" fill="#B38A6D" stroke="rgba(20,20,19,0.15)" stroke-width="1.5"/>
+      <!-- Side Table (Original location 2:10 PM) -->
+      <circle cx="120" cy="360" r="45" fill="#D8CFBF" stroke="rgba(20,20,19,0.15)" stroke-width="1.5"/>
+      <text x="120" y="364" text-anchor="middle" class="mono" font-size="8" fill="#696969">TABLE (2:10 PM)</text>
+
+      <!-- Potted Plant -->
+      <rect x="360" y="320" width="50" height="60" rx="6" fill="#8C7A6B"/>
+      <path d="M385,320 Q370,260 350,250 Q385,280 385,320" fill="#4D7C5D"/>
+      <path d="M385,320 Q400,250 420,240 Q390,280 385,320" fill="#5B936F"/>
+
+      <!-- Dora Character Centered on Woven Rug -->
+      <ellipse cx="440" cy="460" rx="140" ry="40" fill="#D6CDC0"/>
+      <!-- Dora Silhouette/Stylized Avatar -->
+      <g transform="translate(410, 280)">
+        <rect x="10" y="50" width="40" height="70" rx="10" fill="#CF4500"/>
+        <circle cx="30" cy="30" r="22" fill="#E8C4A2"/>
+        <ellipse cx="30" cy="18" rx="24" ry="14" fill="#3D2314"/>
+        <!-- Glasses / Eyes -->
+        <circle cx="23" cy="30" r="5" fill="#FFF"/>
+        <circle cx="37" cy="30" r="5" fill="#FFF"/>
+      </g>
+    </g>
+
+    <!-- Hero Content (Left) -->
+    <g id="Hero / Content">
+      <!-- Live Indicator -->
+      <g transform="translate(0, 40)">
+        <circle cx="6" cy="6" r="4" fill="#39FF6A"/>
+        <text x="18" y="10" class="sans" font-size="13" font-weight="500" fill="#141413">A quiet afternoon at home</text>
+      </g>
+
+      <text x="0" y="120" class="mono" font-size="11" font-weight="600" fill="#CF4500" letter-spacing="1.5">SPATIAL MEMORY FOR EVERYDAY LIFE</text>
+      <text x="0" y="185" class="serif" font-size="64" fill="#141413" letter-spacing="-1">Your home</text>
+      <text x="0" y="255" class="serif" font-size="64" font-style="italic" fill="#141413" letter-spacing="-1">remembers.</text>
+
+      <text x="0" y="315" class="sans" font-size="17" fill="#696969">
+        <tspan x="0" dy="0">SMRITI remembers where everyday things were</tspan>
+        <tspan x="0" dy="26">— and shows what changed.</tspan>
+      </text>
+
+      <!-- Action Buttons -->
+      <g transform="translate(0, 390)">
+        <rect width="180" height="46" rx="20" fill="#141413"/>
+        <text x="26" y="28" class="sans" font-size="14.5" font-weight="600" fill="#F3F0EE">See how it works →</text>
+
+        <text x="210" y="28" class="sans" font-size="14.5" font-weight="500" fill="#696969">Where are my glasses?</text>
+      </g>
+
+      <!-- Memory Note Toast Notification -->
+      <g transform="translate(0, 470)" filter="url(#shadowCard)">
+        <rect width="360" height="130" rx="16" fill="#FCFBFA" stroke="rgba(20,20,19,0.1)" stroke-width="1"/>
+        <text x="20" y="28" class="mono" font-size="10" font-weight="600" fill="#CF4500" letter-spacing="1">SMRITI MEMORY · CONFIRMED</text>
+        <text x="20" y="58" class="sans" font-size="18" font-weight="600" fill="#141413">Reading glasses</text>
+        <text x="20" y="86" class="sans" font-size="13" fill="#696969">Side table (2:10 pm) → Bookshelf (4:40 pm)</text>
+        <text x="20" y="112" class="mono" font-size="10.5" fill="#141413">JUST ONE THING MOVED</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 01: HUMAN PROBLEM (y: 820 - 1280)
+       ============================================================================== -->
+  <g id="Section / 01 Human Problem" transform="translate(100, 840)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">01 / A FAMILIAR MOMENT</text>
+
+    <text x="0" y="110" class="serif" font-size="52" fill="#141413">“Where did I put</text>
+    <text x="0" y="170" class="serif" font-size="52" fill="#141413">my <tspan font-style="italic">glasses?</tspan>”</text>
+
+    <g transform="translate(680, 70)">
+      <text x="0" y="20" class="sans" font-size="18" fill="#141413">Some days, a familiar room can feel a little less familiar.</text>
+      <text x="0" y="55" class="sans" font-size="15" fill="#696969">
+        <tspan x="0" dy="0">SMRITI keeps a gentle memory of where everyday things were,</tspan>
+        <tspan x="0" dy="24">so the answer is close when someone needs it.</tspan>
+      </text>
+      <text x="0" y="130" class="sans" font-size="14.5" font-weight="600" fill="#CF4500">Watch the moment unfold ↗</text>
+    </g>
+
+    <!-- Object Ribbon -->
+    <g transform="translate(0, 260)">
+      <rect width="1240" height="54" rx="27" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+      <text x="40" y="32" class="mono" font-size="11" font-weight="600" fill="#141413" letter-spacing="1.5">READING GLASSES</text>
+      <circle cx="210" cy="27" r="2.5" fill="#CF4500"/>
+      <text x="240" y="32" class="mono" font-size="11" font-weight="600" fill="#141413" letter-spacing="1.5">HOUSE KEYS</text>
+      <circle cx="370" cy="27" r="2.5" fill="#CF4500"/>
+      <text x="400" y="32" class="mono" font-size="11" font-weight="600" fill="#141413" letter-spacing="1.5">MEDICINE DISPENSER</text>
+      <circle cx="580" cy="27" r="2.5" fill="#CF4500"/>
+      <text x="610" y="32" class="mono" font-size="11" font-weight="600" fill="#141413" letter-spacing="1.5">WALKING CANE</text>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 02: THREE QUIET MOMENTS (y: 1240 - 1750)
+       ============================================================================== -->
+  <g id="Section / 02 Three Moments" transform="translate(100, 1260)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">02 / THREE QUIET MOMENTS</text>
+
+    <text x="0" y="100" class="serif" font-size="44" fill="#141413">A little help,</text>
+    <text x="0" y="150" class="serif" font-size="44" font-style="italic" fill="#141413">right on time.</text>
+    <text x="0" y="195" class="sans" font-size="15" fill="#696969">Nothing to learn. Nothing to remember about technology. Just a clear answer.</text>
+
+    <!-- 3 Cards Grid -->
+    <g transform="translate(0, 240)">
+      <!-- Card 01: Remember -->
+      <g transform="translate(0, 0)">
+        <rect width="380" height="200" rx="20" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+        <text x="24" y="38" class="mono" font-size="12" font-weight="600" fill="#CF4500">01</text>
+        <rect x="290" y="24" width="66" height="20" rx="10" fill="rgba(20,20,19,0.06)"/>
+        <text x="302" y="38" class="mono" font-size="9" font-weight="600" fill="#141413">BEFORE</text>
+        <text x="24" y="80" class="sans" font-size="20" font-weight="600" fill="#141413">Remember</text>
+        <text x="24" y="115" class="sans" font-size="14" fill="#696969">
+          <tspan x="24" dy="0">The glasses have a usual place.</tspan>
+          <tspan x="24" dy="20">SMRITI quietly maintains awareness.</tspan>
+        </text>
+      </g>
+
+      <!-- Card 02: Notice -->
+      <g transform="translate(420, 0)">
+        <rect width="380" height="200" rx="20" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+        <text x="24" y="38" class="mono" font-size="12" font-weight="600" fill="#CF4500">02</text>
+        <rect x="290" y="24" width="66" height="20" rx="10" fill="rgba(20,20,19,0.06)"/>
+        <text x="306" y="38" class="mono" font-size="9" font-weight="600" fill="#141413">AFTER</text>
+        <text x="24" y="80" class="sans" font-size="20" font-weight="600" fill="#141413">Notice</text>
+        <text x="24" y="115" class="sans" font-size="14" fill="#696969">
+          <tspan x="24" dy="0">Later, they are somewhere else.</tspan>
+          <tspan x="24" dy="20">The spatial reality of the room changed.</tspan>
+        </text>
+      </g>
+
+      <!-- Card 03: Explain -->
+      <g transform="translate(840, 0)">
+        <rect width="380" height="200" rx="20" fill="#FCFBFA" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+        <text x="24" y="38" class="mono" font-size="12" font-weight="600" fill="#CF4500">03</text>
+        <rect x="290" y="24" width="66" height="20" rx="10" fill="rgba(207,69,0,0.12)"/>
+        <text x="306" y="38" class="mono" font-size="9" font-weight="600" fill="#CF4500">FOUND</text>
+        <text x="24" y="80" class="sans" font-size="20" font-weight="600" fill="#141413">Explain</text>
+        <text x="24" y="115" class="sans" font-size="14" fill="#696969">
+          <tspan x="24" dy="0">A small, certain answer replaces</tspan>
+          <tspan x="24" dy="20">a frustrating, disorienting search.</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 03: ONE MEANINGFUL CHANGE (y: 1780 - 2280)
+       ============================================================================== -->
+  <g id="Section / 03 Reality Diff Timeline" transform="translate(100, 1800)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">03 / ONE MEANINGFUL CHANGE</text>
+
+    <text x="0" y="100" class="serif" font-size="44" fill="#141413">The room, <tspan font-style="italic">then and now.</tspan></text>
+    <text x="0" y="135" class="sans" font-size="15" fill="#696969">Move through the afternoon. See what stayed — and what moved.</text>
+
+    <!-- Timeline Scrubber Card -->
+    <g transform="translate(0, 180)">
+      <rect width="1240" height="180" rx="20" fill="#FCFBFA" stroke="rgba(20,20,19,0.1)" stroke-width="1"/>
+      <text x="40" y="40" class="mono" font-size="12" font-weight="600" fill="#141413">2:10 PM · At the side table</text>
+      <text x="1200" y="40" text-anchor="end" class="mono" font-size="12" font-weight="600" fill="#CF4500">4:40 PM · On the bookshelf</text>
+
+      <!-- Track Bar -->
+      <rect x="40" y="70" width="1160" height="8" rx="4" fill="#E8E2DA"/>
+      <rect x="40" y="70" width="580" height="8" rx="4" fill="#CF4500"/>
+      <circle cx="620" cy="74" r="14" fill="#141413" filter="url(#shadowNav)"/>
+
+      <text x="40" y="135" class="sans" font-size="14" font-weight="500" fill="#141413">The glasses begin on the side table.</text>
+      <text x="1200" y="135" text-anchor="end" class="mono" font-size="11" fill="#696969">01 / 01 TRACKED</text>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 05: MEET PHANTOM SPATIAL ENGINE (y: 2320 - 2960)
+       ============================================================================== -->
+  <g id="Section / 05 PHANTOM Reveal" transform="translate(100, 2340)">
+    <rect width="1240" height="600" rx="24" fill="#0E1117" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+
+    <!-- Left Column: Copy & Pipeline -->
+    <g transform="translate(50, 60)">
+      <text x="0" y="0" class="mono" font-size="11" font-weight="600" fill="#F07B42" letter-spacing="2">05 / PHANTOM SPATIAL ENGINE</text>
+      <text x="0" y="60" class="serif" font-size="48" fill="#FFF">Meet PHANTOM.</text>
+      <text x="0" y="105" class="sans" font-size="18" fill="#D6CFBE">The spatial memory engine behind SMRITI.</text>
+      <text x="0" y="145" class="sans" font-size="14" fill="#BDB2A6">
+        <tspan x="0" dy="0">PHANTOM remembers where things were, compares</tspan>
+        <tspan x="0" dy="22">that memory with what exists now, and reveals what changed.</tspan>
+      </text>
+
+      <!-- Pipeline Row -->
+      <g transform="translate(0, 210)">
+        <rect width="360" height="38" rx="19" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <text x="24" y="24" class="mono" font-size="10" font-weight="600" fill="#F07B42">REMEMBER</text>
+        <text x="110" y="24" class="mono" font-size="10" fill="#696969">→</text>
+        <text x="135" y="24" class="mono" font-size="10" fill="#C8D3E0">COMPARE</text>
+        <text x="215" y="24" class="mono" font-size="10" fill="#696969">→</text>
+        <text x="240" y="24" class="mono" font-size="10" fill="#C8D3E0">EXPLAIN</text>
+      </g>
+
+      <!-- State Card -->
+      <g transform="translate(0, 280)">
+        <rect width="440" height="150" rx="16" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <text x="20" y="28" class="mono" font-size="9" fill="#8C95A6">STATE 01 · IDLE</text>
+        <text x="20" y="58" class="serif" font-size="22" fill="#FFF">PHANTOM is ready</text>
+        <text x="20" y="90" class="sans" font-size="12" fill="#A69E90">
+          <tspan x="20" dy="0">A quiet wireframe coordinate baseline is maintained.</tspan>
+          <tspan x="20" dy="18">Every fixture is mapped into persistent memory.</tspan>
+        </text>
+      </g>
+    </g>
+
+    <!-- Right Column: 3D Wireframe HUD Simulation -->
+    <g transform="translate(620, 60)">
+      <rect width="560" height="480" rx="16" fill="#050608" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Grid Lines -->
+      <g opacity="0.12" stroke="#FFF" stroke-width="1">
+        <line x1="0" y1="120" x2="560" y2="120"/>
+        <line x1="0" y1="240" x2="560" y2="240"/>
+        <line x1="0" y1="360" x2="560" y2="360"/>
+        <line x1="140" y1="0" x2="140" y2="480"/>
+        <line x1="280" y1="0" x2="280" y2="480"/>
+        <line x1="420" y1="0" x2="420" y2="480"/>
+      </g>
+
+      <!-- HUD Telemetry -->
+      <text x="20" y="32" class="mono" font-size="9" fill="#8C95A6">GRID: 0.25M · EPSILON: 0.02</text>
+      <text x="540" y="32" text-anchor="end" class="mono" font-size="9" fill="#39FF6A">PHANTOM READY</text>
+      <text x="20" y="460" class="mono" font-size="9" fill="#8C95A6">SPATIAL ANCHORS: 04 TRACKED</text>
+      <text x="540" y="460" text-anchor="end" class="mono" font-size="9" fill="#FFF">DELTA: 0.00M</text>
+
+      <!-- Wireframe Spatial Entity -->
+      <ellipse cx="280" cy="240" rx="120" ry="70" fill="none" stroke="#F07B42" stroke-width="1.5"/>
+      <ellipse cx="280" cy="240" rx="70" ry="120" fill="none" stroke="#6EC1E4" stroke-width="1.5" stroke-dasharray="4 6"/>
+      <circle cx="280" cy="240" r="14" fill="#F07B42"/>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 06: REALITY DIFF (y: 3020 - 3600)
+       ============================================================================== -->
+  <g id="Section / 06 Reality Diff" transform="translate(100, 3040)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">06 / REALITY DIFF</text>
+
+    <text x="0" y="100" class="serif" font-size="44" fill="#141413">See what changed.</text>
+    <text x="0" y="135" class="sans" font-size="15" fill="#696969">SMRITI compares moments so the change doesn't have to live only in your memory.</text>
+
+    <!-- Before / After Card -->
+    <g transform="translate(0, 180)" filter="url(#shadowCard)">
+      <rect width="1240" height="340" rx="20" fill="#FFFFFF" stroke="rgba(20,20,19,0.1)" stroke-width="1"/>
+      <rect x="0" y="0" width="620" height="270" rx="20" fill="#EAE5DF"/>
+      <rect x="620" y="0" width="620" height="270" rx="20" fill="#F4EFEA"/>
+
+      <line x1="620" y1="0" x2="620" y2="270" stroke="#FFF" stroke-width="3"/>
+      <circle cx="620" cy="135" r="20" fill="#FFF" filter="url(#shadowNav)"/>
+      <text x="612" y="141" class="sans" font-size="15" font-weight="700" fill="#141413">‹ ›</text>
+
+      <g transform="translate(30, 25)">
+        <rect width="140" height="28" rx="14" fill="rgba(20,20,19,0.7)"/>
+        <text x="16" y="19" class="mono" font-size="10" font-weight="600" fill="#FFF">BEFORE · 2:10 PM</text>
+      </g>
+      <g transform="translate(1050, 25)">
+        <rect width="140" height="28" rx="14" fill="rgba(207,69,0,0.85)"/>
+        <text x="16" y="19" class="mono" font-size="10" font-weight="600" fill="#FFF">AFTER · 4:40 PM</text>
+      </g>
+
+      <g transform="translate(40, 298)">
+        <text x="0" y="18" class="mono" font-size="11" font-weight="600" fill="#CF4500">READING GLASSES</text>
+        <text x="160" y="18" class="sans" font-size="14" fill="#696969">Moved from side table to bookshelf</text>
+        <text x="1160" y="18" text-anchor="end" class="mono" font-size="12" font-weight="600" fill="#141413">DELTA: 4.85 METERS</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 07: MEMORY RECEIPT (y: 3660 - 4240)
+       ============================================================================== -->
+  <g id="Section / 07 Memory Receipt" transform="translate(100, 3680)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">07 / MEMORY RECEIPT</text>
+
+    <text x="0" y="100" class="serif" font-size="44" fill="#141413">Remembered, <tspan font-style="italic">not guessed.</tspan></text>
+    <text x="0" y="135" class="sans" font-size="15" fill="#696969">SMRITI turns a change in your home into a simple record you can understand.</text>
+
+    <!-- Physical Thermal Receipt Component -->
+    <g transform="translate(460, 180)" filter="url(#shadowCard)">
+      <path d="M0,0 L320,0 L320,380 L310,385 L300,380 L290,385 L280,380 L270,385 L260,380 L250,385 L240,380 L230,385 L220,380 L210,385 L200,380 L190,385 L180,380 L170,385 L160,380 L150,385 L140,380 L130,385 L120,380 L110,385 L100,380 L90,385 L80,380 L70,385 L60,380 L50,385 L40,380 L30,385 L20,380 L10,385 L0,380 Z" fill="#FCFBFA" stroke="rgba(20,20,19,0.12)" stroke-width="1.2"/>
+      <text x="24" y="36" class="sans" font-size="16" font-weight="700" fill="#141413">SMRITI</text>
+      <text x="24" y="52" class="mono" font-size="9" fill="#8C95A6" letter-spacing="1">MEMORY RECEIPT · #0440</text>
+      <text x="296" y="44" text-anchor="end" class="mono" font-size="10" fill="#696969">TODAY · OCT 6</text>
+      <line x1="24" y1="68" x2="296" y2="68" stroke="rgba(20,20,19,0.08)" stroke-width="1" stroke-dasharray="3 3"/>
+      <rect x="24" y="85" width="105" height="20" rx="4" fill="#CF4500"/>
+      <text x="32" y="99" class="mono" font-size="9" font-weight="600" fill="#FFF">OBJECT MOVED</text>
+      <text x="24" y="135" class="sans" font-size="22" font-weight="600" fill="#141413">Reading glasses</text>
+
+      <g transform="translate(24, 155)">
+        <rect width="272" height="60" rx="8" fill="#F3F0EE"/>
+        <text x="14" y="26" class="mono" font-size="9" fill="#696969">FROM: 2:10 PM</text>
+        <text x="14" y="46" class="sans" font-size="13" font-weight="600" fill="#141413">Side table</text>
+        <text x="130" y="38" class="sans" font-size="16" fill="#CF4500">→</text>
+        <text x="160" y="26" class="mono" font-size="9" fill="#696969">TO: 4:40 PM</text>
+        <text x="160" y="46" class="sans" font-size="13" font-weight="600" fill="#141413">Bookshelf</text>
+      </g>
+
+      <g transform="translate(24, 235)">
+        <text x="0" y="16" class="mono" font-size="9" fill="#8C95A6">SPATIAL DISPLACEMENT</text>
+        <text x="272" y="16" text-anchor="end" class="mono" font-size="10" font-weight="600" fill="#141413">4.85 METERS</text>
+        <line x1="0" y1="26" x2="272" y2="26" stroke="rgba(20,20,19,0.06)" stroke-width="1"/>
+        <text x="0" y="44" class="mono" font-size="9" fill="#8C95A6">PREVIOUS ANCHOR</text>
+        <text x="272" y="44" text-anchor="end" class="mono" font-size="10" fill="#141413">TABLE · 2:10 PM</text>
+        <line x1="0" y1="54" x2="272" y2="54" stroke="rgba(20,20,19,0.06)" stroke-width="1"/>
+        <text x="0" y="72" class="mono" font-size="9" fill="#8C95A6">CURRENT ANCHOR</text>
+        <text x="272" y="72" text-anchor="end" class="mono" font-size="10" fill="#141413">SHELF 2 · 4:40 PM</text>
+      </g>
+
+      <g transform="translate(24, 335)">
+        <circle cx="6" cy="6" r="4" fill="#39FF6A"/>
+        <text x="18" y="10" class="mono" font-size="10" font-weight="600" fill="#141413">CONFIRMED RECORD</text>
+        <text x="272" y="10" text-anchor="end" class="mono" font-size="9" fill="#8C95A6">PHANTOM SPATIAL</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 08: TRUST MANIFESTO (y: 4300 - 4750)
+       ============================================================================== -->
+  <g id="Section / 08 Trust" transform="translate(100, 4320)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">08 / TRUST</text>
+
+    <!-- Main Headline Left -->
+    <text x="0" y="110" class="serif" font-size="44" fill="#141413">Technology should reduce confusion,</text>
+    <text x="0" y="160" class="serif" font-size="44" font-style="italic" fill="#141413">not create more of it.</text>
+
+    <!-- Principles Right -->
+    <g transform="translate(680, 80)">
+      <text x="0" y="20" class="sans" font-size="15" fill="#696969">
+        <tspan x="0" dy="0">SMRITI is designed to support caregivers with a clearer picture</tspan>
+        <tspan x="0" dy="22">without turning everyday life into invasive surveillance.</tspan>
+      </text>
+
+      <g transform="translate(0, 80)">
+        <text x="0" y="20" class="mono" font-size="10" font-weight="600" fill="#CF4500">01 — CONTEXT</text>
+        <text x="0" y="42" class="sans" font-size="16" font-weight="600" fill="#141413">Remember the environment, not just the object.</text>
+
+        <text x="0" y="80" class="mono" font-size="10" font-weight="600" fill="#CF4500">02 — CLARITY</text>
+        <text x="0" y="102" class="sans" font-size="16" font-weight="600" fill="#141413">Show what changed instead of forcing someone to remember.</text>
+
+        <text x="0" y="140" class="mono" font-size="10" font-weight="600" fill="#CF4500">03 — HUMAN CONTROL</text>
+        <text x="0" y="162" class="sans" font-size="16" font-weight="600" fill="#141413">Technology assists the caregiver. It does not replace them.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==============================================================================
+       SECTION 09: FINAL CTA & CLOSING (y: 4800 - 5200)
+       ============================================================================== -->
+  <g id="Section / 09 Closing CTA" transform="translate(100, 4820)">
+    <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+    <text x="0" y="40" class="mono" font-size="11" font-weight="600" fill="#696969" letter-spacing="2">09 / CLOSING</text>
+
+    <text x="0" y="100" class="serif" font-size="44" fill="#141413">What if your home</text>
+    <text x="0" y="150" class="serif" font-size="44" font-style="italic" fill="#141413">could remember for you?</text>
+
+    <text x="0" y="195" class="sans" font-size="15" fill="#696969">
+      <tspan x="0" dy="0">SMRITI gives caregivers a clearer picture of what changed</tspan>
+      <tspan x="0" dy="22">— so everyday uncertainty becomes easier to navigate.</tspan>
+    </text>
+
+    <!-- Action Button -->
+    <g transform="translate(0, 250)">
+      <rect width="180" height="46" rx="20" fill="#141413"/>
+      <text x="32" y="28" class="sans" font-size="14.5" font-weight="600" fill="#F3F0EE">Explore SMRITI ↗</text>
+    </g>
+
+    <!-- Closing Footer Row -->
+    <g transform="translate(0, 340)">
+      <line x1="0" y1="0" x2="1240" y2="0" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+      <text x="0" y="30" class="sans" font-size="13" font-weight="600" fill="#141413">SMRITI / PHANTOM</text>
+      <text x="160" y="30" class="sans" font-size="13" fill="#696969">A spatial memory system for everyday life.</text>
+      <text x="1240" y="30" text-anchor="end" class="sans" font-size="13" font-weight="500" fill="#141413">Back to the beginning ↑</text>
+    </g>
+  </g>
+</svg>

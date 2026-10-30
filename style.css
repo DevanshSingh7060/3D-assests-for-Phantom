@@ -426,7 +426,19 @@ a { color: inherit; text-decoration: none; }
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--signal-orange);
+  background: currentColor;
+}
+
+/* Accessible focus visible indicators (Stage 6 /audit WCAG 2.1 AA) */
+:focus-visible {
+  outline: 2px solid var(--signal-orange);
+  outline-offset: 3px;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--signal-orange);
+  outline-offset: 2px;
 }
 
 .hero-copy h1 {
@@ -630,10 +642,12 @@ a { color: inherit; text-decoration: none; }
 /* ==============================================================================
    CHAPTER SYSTEM — STANDARDIZED SPACING & GLOBAL GRID ALIGNMENT
    ============================================================================== */
-.chapter {
+.chapter,
+section {
   position: relative;
   padding-block: var(--section-pad-y);
   padding-inline: 0;
+  scroll-margin-top: clamp(80px, 9vw, 108px);
 }
 .chapter-index {
   display: flex;
@@ -656,9 +670,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
 }
 .chapter-index span:first-child::after {
-  content: " •";
-  color: var(--signal-orange);
-  margin-right: 4px;
+  content: "";
 }
 
 .chapter h2 {

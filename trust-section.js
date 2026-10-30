@@ -46,6 +46,15 @@
         return;
       }
 
+      // Reveal immediately if navigating directly to trust
+      const checkHash = () => {
+        if (window.location.hash === '#trust') {
+          this.section.classList.add('revealed');
+        }
+      };
+      checkHash();
+      window.addEventListener('hashchange', checkHash);
+
       // Intersection Observer for reveal and canvas animation lifecycle
       const observer = new IntersectionObserver(
         (entries) => {
@@ -65,10 +74,17 @@
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0, rootMargin: '120px 0px 80px 0px' }
       );
 
       observer.observe(this.section);
+
+      // Safety fallback: ensure trust content is never stuck in hidden state
+      setTimeout(() => {
+        if (this.section && !this.section.classList.contains('revealed')) {
+          this.section.classList.add('revealed');
+        }
+      }, 1200);
 
       // Handle Canvas Sizing
       if (this.canvas) {

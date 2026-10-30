@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 42" width="210" height="42">
+  <defs><style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style></defs>
+  <rect width="210" height="42" rx="21" fill="#0E1117" stroke="#F07B42" stroke-width="1.5"/>
+  <circle cx="22" cy="21" r="5" fill="#F07B42"/>
+  <text x="36" y="22" class="sans" font-size="13" font-weight="600" fill="#FFF">SMRITI</text>
+  <text x="36" y="33" class="mono" font-size="8.5" fill="#8C95A6">HOME INTELLIGENCE</text>
+  <text x="180" y="25" class="sans" font-size="12" fill="#F07B42">↗</text>
+</svg>

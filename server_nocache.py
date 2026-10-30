@@ -12,7 +12,10 @@ class NoCacheHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", 8080), NoCacheHTTPRequestHandler) as httpd:
+    class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+        daemon_threads = True
+
+    ThreadedHTTPServer.allow_reuse_address = True
+    with ThreadedHTTPServer(("", 8080), NoCacheHTTPRequestHandler) as httpd:
         print("Serving DISHA no-cache on http://localhost:8080/index.html")
         httpd.serve_forever()

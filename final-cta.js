@@ -173,6 +173,15 @@
     }
 
     initIntersectionObserver() {
+      // Reveal immediately if navigating directly to final-cta
+      const checkHash = () => {
+        if (window.location.hash === '#final-cta') {
+          this.section.classList.add('revealed');
+        }
+      };
+      checkHash();
+      window.addEventListener('hashchange', checkHash);
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -197,10 +206,17 @@
             }
           });
         },
-        { threshold: 0.12 }
+        { threshold: 0, rootMargin: '120px 0px 80px 0px' }
       );
 
       observer.observe(this.section);
+
+      // Safety fallback: ensure CTA content is never stuck in hidden state
+      setTimeout(() => {
+        if (this.section && !this.section.classList.contains('revealed')) {
+          this.section.classList.add('revealed');
+        }
+      }, 1200);
     }
 
     initThree() {

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 58" width="1120" height="58">
+  <defs><style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .serif { font-family: 'Instrument Serif', Georgia, serif; }
+    .sans { font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+</style></defs>
+  <rect width="1120" height="58" rx="29" fill="rgba(255,255,255,0.95)" stroke="rgba(20,20,19,0.08)" stroke-width="1"/>
+  <text x="28" y="36" class="sans" font-size="22" font-weight="600" fill="#141413" letter-spacing="-0.5">SMRITI<tspan fill="#CF4500">.</tspan></text>
+  <g transform="translate(200, 14)">
+    <text x="0" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">How it works</text>
+    <text x="130" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">PHANTOM</text>
+    <text x="245" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Reality diff</text>
+    <text x="365" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Memory receipt</text>
+    <text x="515" y="20" class="sans" font-size="14.5" font-weight="500" fill="#141413">Trust</text>
+  </g>
+  <g transform="translate(930, 9)">
+    <rect width="170" height="40" rx="20" fill="#141413"/>
+    <text x="30" y="25" class="sans" font-size="14" font-weight="600" fill="#F3F0EE">See the moment →</text>
+  </g>
+</svg>

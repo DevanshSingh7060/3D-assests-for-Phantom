@@ -116,6 +116,15 @@
     }
 
     initIntersectionObserver() {
+      // Reveal immediately if navigating directly to this section
+      const checkHash = () => {
+        if (window.location.hash === '#memory-receipt-section' || window.location.hash === '#memory') {
+          this.section.classList.add('revealed');
+        }
+      };
+      checkHash();
+      window.addEventListener('hashchange', checkHash);
+
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -135,10 +144,17 @@
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0, rootMargin: '120px 0px 80px 0px' }
       );
 
       observer.observe(this.section);
+
+      // Safety fallback: ensure receipt content is never stuck in blank state
+      setTimeout(() => {
+        if (this.section && !this.section.classList.contains('revealed')) {
+          this.section.classList.add('revealed');
+        }
+      }, 1200);
     }
 
     initGlassesCanvas() {

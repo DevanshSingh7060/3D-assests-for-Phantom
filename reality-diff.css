@@ -504,6 +504,26 @@
   }
 }
 
+@media (max-width: 400px) {
+  .state-pill {
+    top: 10px;
+    padding: 4px 7px;
+    gap: 5px;
+  }
+  .state-pill-left {
+    left: 8px;
+  }
+  .state-pill-right {
+    right: 8px;
+  }
+  .pill-meta .pill-state {
+    font-size: 8.5px;
+  }
+  .pill-loc {
+    font-size: 10px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .divider-handle {
     transition: none !important;

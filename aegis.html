@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="AEGIS — Clinical Intelligence & Human-Supervised Spatial Decision Support powered by PHANTOM.">
+  <title>AEGIS — Clinical Intelligence & Spatial Verification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <style>
+    :root {
+      --module-accent: #0284C7;
+      --module-accent-light: #38BDF8;
+      --module-accent-rgb: 2, 132, 199;
+    }
+  </style>
+</head>
+<body data-module="aegis">
+  <!-- Top Global Header -->
+  <header class="module-site-header">
+    <div class="module-header-left">
+      <a href="phantom.html" class="module-brand">
+        <span>PHANTOM</span>
+        <span class="module-brand-sep">/</span>
+        <span class="module-brand-name">AEGIS</span>
+      </a>
+      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd;">
+        03 · CLINICAL
+      </span>
+    </div>
+
+    <div class="module-header-center">
+      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+        <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
+        <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
+        <a href="aegis.html" class="module-nav-link is-active">03 AEGIS</a>
+        <a href="forge.html" class="module-nav-link">04 FORGE</a>
+        <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
+        <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
+        <a href="sense.html" class="module-nav-link">07 SENSE</a>
+      </nav>
+    </div>
+
+    <div class="module-header-right">
+      <a href="workspace.html" class="btn-nav-primary">
+        <span>Launch Table Workspace →</span>
+      </a>
+      <a href="phantom.html#aegis" class="btn-nav-outline">
+        <span>← Architecture Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="module-main-wrap">
+    <!-- Hero Section -->
+    <section class="module-hero-block">
+      <div class="module-tagline-eyebrow">
+        <span class="dot"></span>
+        <span>SPECIALIZED CLINICAL INTELLIGENCE · MODULE 03</span>
+      </div>
+      <h1 class="module-headline">
+        Clarity in<br><em>critical contexts.</em>
+      </h1>
+      <p class="module-lead">
+        AEGIS applies PHANTOM's spatial intelligence to surgical operating suites, inpatient sterile fields, and secure hospital pharmacy vaults. It organizes physical inventories, verifies sterile instrument count integrity, audits pharmaceutical custody, and provides human-supervised spatial decision support.
+      </p>
+      <div class="module-cta-row">
+        <button class="btn-nav-primary" type="button" onclick="document.getElementById('clinicalStageSection').scrollIntoView({ behavior: 'smooth' });">
+          <span>Inspect OR Tray Matrix</span>
+        </button>
+        <a href="#custodyAuditSection" class="btn-nav-outline">
+          <span>Review Custody Ledger</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="module-metric-ribbon">
+      <div class="module-metric-cell">
+        <div class="cell-label">Sterile Tray Reconciliation</div>
+        <div class="cell-value">100% Match</div>
+        <div class="cell-sub">Pre/post-op instrument count verified</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">DEA Substance Custody</div>
+        <div class="cell-value">Dual Attested</div>
+        <div class="cell-sub">Vault spatial ledger & audit trail</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Vaccine Cold-Chain</div>
+        <div class="cell-value">+4.1°C Active</div>
+        <div class="cell-sub">Chamber spatial custody monitored</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Supervision Architecture</div>
+        <div class="cell-value">Human Attested</div>
+        <div class="cell-sub">Zero autonomous medical decision-making</div>
+      </div>
+    </section>
+
+    <!-- Interactive Spatial Stage Layout -->
+    <section class="module-stage-grid" id="clinicalStageSection">
+      <div class="stage-main-card">
+        <div class="stage-card-header">
+          <div class="stage-header-title">
+            <span class="star">✦</span>
+            <span>Spatial State Matrix — Surgical Suite OR-3</span>
+          </div>
+          <div class="stage-pills-selector">
+            <button class="stage-select-btn is-active" type="button" data-layer="tray">Surgical Tray (OR-3)</button>
+            <button class="stage-select-btn" type="button" data-layer="vault">Pharmacy Vault</button>
+            <button class="stage-select-btn" type="button" data-layer="bedside">Patient Room</button>
+          </div>
+        </div>
+
+        <div class="stage-canvas-wrapper">
+          <canvas id="aegisStageCanvas"></canvas>
+          <div class="stage-hud-overlay">
+            <div class="stage-hud-pill">
+              <span>STERILITY ZONE:</span>
+              <strong style="color: #fff;">CLASS 100 / ISO 5</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>ACTIVE VIEW:</span>
+              <strong id="aegisHudLayer">SURGICAL TRAY (OR-3)</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>DISCREPANCY:</span>
+              <strong style="color: #22c55e;">0 UNACCOUNTED</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="stage-sidebar-col">
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Core Clinical Capabilities</div>
+          <ul class="panel-list">
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Surgical asset verification & sterile instrument tray reconciliation</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Cold-chain & DEA scheduled pharmaceutical custody auditing</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Clinical workflow spatial barrier & sterile field observation</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Human-supervised decision support & tamper-evident logs</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Application Domains</div>
+          <div class="env-tags-cloud">
+            <span class="env-tag-badge">Operating Room Suites</span>
+            <span class="env-tag-badge">DEA Scheduled Pharmacies</span>
+            <span class="env-tag-badge">Intensive Care Units</span>
+            <span class="env-tag-badge">Blood & Vaccine Banks</span>
+            <span class="env-tag-badge">Elder Care & Memory Support</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Domain-Specific Custody Ledger & Reconciliation Table -->
+    <section class="module-editorial-section" id="custodyAuditSection">
+      <div class="section-head-split">
+        <div>
+          <h2 class="section-head-title">Surgical Asset & Cold-Chain <em>Spatial Ledger.</em></h2>
+          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified item custody and containment observations for Operating Suite 03.</p>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">ISO 13485 DATA STRUCTURE</span>
+      </div>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Asset Identifier</th>
+            <th>Clinical Category</th>
+            <th>Target Storage Zone</th>
+            <th>Observed Placement</th>
+            <th>Verification State</th>
+            <th>Attestation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#INS-042 Micro-Scalpel</strong></td>
+            <td>Sterile Surgical Instrument</td>
+            <td>Tray Slot A1</td>
+            <td>Slot A1 (Centroid Verified)</td>
+            <td><span class="status-badge-pill verified">Verified in Place</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Nurse Attested</td>
+          </tr>
+          <tr>
+            <td><strong>#INS-048 Hemostatic Forceps</strong></td>
+            <td>Sterile Surgical Instrument</td>
+            <td>Tray Slot A2</td>
+            <td>Slot A2 (Centroid Verified)</td>
+            <td><span class="status-badge-pill verified">Verified in Place</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Nurse Attested</td>
+          </tr>
+          <tr>
+            <td><strong>#MED-881 Midazolam 5mg/mL</strong></td>
+            <td>DEA Schedule IV Vault</td>
+            <td>Vault Compartment 3B</td>
+            <td>Compartment 3B (Dual-Sensor)</td>
+            <td><span class="status-badge-pill locked">Secured / Locked</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Pharmacist Biometric</td>
+          </tr>
+          <tr>
+            <td><strong>#VAC-109 MMR Biologic</strong></td>
+            <td>Cold Storage (+2°C to +8°C)</td>
+            <td>Chamber Zone North</td>
+            <td>Temp +4.1°C / Position Stable</td>
+            <td><span class="status-badge-pill verified">Compliant</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Automated Telemetry</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 24px; padding: 16px 20px; background: var(--pure-white); border: 1px solid var(--line-border); border-radius: var(--radius-md); display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 18px;">ℹ️</span>
+        <div style="font-size: 13px; color: var(--slate-gray); line-height: 1.5;">
+          <strong>Human-Supervised Decision Support:</strong> AEGIS does not make autonomous clinical or diagnostic decisions. All alerts require attestation from registered surgical or pharmacy staff.
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Action CTA -->
+    <section class="module-bottom-cta">
+      <div>
+        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
+        <p class="bottom-cta-desc">Experience PHANTOM's underlying spatial intelligence engine live using your MacBook camera or mobile phone.</p>
+      </div>
+      <div class="bottom-cta-actions">
+        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
+          <span>Open Workspace Monitor →</span>
+        </a>
+        <a href="phantom.html#aegis" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
+          <span>Architecture Matrix</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Interactive Clinical Stage Simulation
+    (function () {
+      const canvas = document.getElementById('aegisStageCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = canvas.parentElement.clientWidth);
+      let h = (canvas.height = canvas.parentElement.clientHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.parentElement.clientWidth;
+        h = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      const items = {
+        tray: [
+          { name: 'Micro-Scalpel #10', x: 0.22, y: 0.45, w: 18, h: 80, status: 'VERIFIED' },
+          { name: 'Hemostatic Forceps', x: 0.36, y: 0.45, w: 22, h: 90, status: 'VERIFIED' },
+          { name: 'Tissue Retractor', x: 0.50, y: 0.45, w: 26, h: 100, status: 'VERIFIED' },
+          { name: 'Needle Driver', x: 0.64, y: 0.45, w: 20, h: 85, status: 'VERIFIED' },
+          { name: 'Suture Scissors', x: 0.78, y: 0.45, w: 20, h: 75, status: 'VERIFIED' }
+        ],
+        vault: [
+          { name: 'DEA Schedule II Vault', x: 0.32, y: 0.50, w: 160, h: 90, status: 'LOCKED' },
+          { name: 'Cold Storage (+4.1°C)', x: 0.68, y: 0.50, w: 180, h: 90, status: 'SECURED' }
+        ],
+        bedside: [
+          { name: 'Infusion Pump Alpha', x: 0.35, y: 0.48, w: 100, h: 70, status: 'CALIBRATED' },
+          { name: 'Patient Perimeter Field', x: 0.68, y: 0.48, w: 140, h: 100, status: 'CLEAR' }
+        ]
+      };
+
+      let currentLayer = 'tray';
+
+      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentLayer = btn.dataset.layer;
+          const hud = document.getElementById('aegisHudLayer');
+          if (hud) hud.textContent = btn.textContent.toUpperCase();
+        });
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Surgical sterile grid
+        ctx.strokeStyle = 'rgba(2, 132, 199, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Bounding sterile perimeter
+        ctx.strokeStyle = 'rgba(2, 132, 199, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 6]);
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+        ctx.setLineDash([]);
+
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.8)';
+        ctx.fillText('STERILE FIELD PERIMETER [BOUNDED · ISO 5]', 50, 60);
+
+        // Render layer items
+        const list = items[currentLayer] || [];
+        list.forEach((item) => {
+          const ix = item.x * w - item.w / 2;
+          const iy = item.y * h - item.h / 2;
+
+          ctx.fillStyle = 'rgba(14, 22, 34, 0.88)';
+          ctx.strokeStyle = '#0284c7';
+          ctx.lineWidth = 1.5;
+
+          ctx.fillRect(ix, iy, item.w, item.h);
+          ctx.strokeRect(ix, iy, item.w, item.h);
+
+          // Verification badge dot
+          ctx.fillStyle = '#22c55e';
+          ctx.beginPath();
+          ctx.arc(ix + item.w / 2, iy + 14, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Labels
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
+          ctx.fillStyle = '#38bdf8';
+          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
+          ctx.textAlign = 'left';
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

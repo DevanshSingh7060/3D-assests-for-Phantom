@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="LUMEN — Laboratory Intelligence & Controlled Spatial Environment Observation powered by PHANTOM.">
+  <title>LUMEN — Laboratory Intelligence & Scientific Spatial Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <style>
+    :root {
+      --module-accent: #7C3AED;
+      --module-accent-light: #A78BFA;
+      --module-accent-rgb: 124, 58, 237;
+    }
+  </style>
+</head>
+<body data-module="lumen">
+  <!-- Top Global Header -->
+  <header class="module-site-header">
+    <div class="module-header-left">
+      <a href="phantom.html" class="module-brand">
+        <span>PHANTOM</span>
+        <span class="module-brand-sep">/</span>
+        <span class="module-brand-name">LUMEN</span>
+      </a>
+      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe;">
+        02 · LABORATORY
+      </span>
+    </div>
+
+    <div class="module-header-center">
+      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+        <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
+        <a href="lumen.html" class="module-nav-link is-active">02 LUMEN</a>
+        <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
+        <a href="forge.html" class="module-nav-link">04 FORGE</a>
+        <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
+        <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
+        <a href="sense.html" class="module-nav-link">07 SENSE</a>
+      </nav>
+    </div>
+
+    <div class="module-header-right">
+      <a href="workspace.html" class="btn-nav-primary">
+        <span>Launch Table Workspace →</span>
+      </a>
+      <a href="phantom.html#lumen" class="btn-nav-outline">
+        <span>← Architecture Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="module-main-wrap">
+    <!-- Hero Section -->
+    <section class="module-hero-block">
+      <div class="module-tagline-eyebrow">
+        <span class="dot"></span>
+        <span>SPECIALIZED LABORATORY INTELLIGENCE · MODULE 02</span>
+      </div>
+      <h1 class="module-headline">
+        Where observations become<br><em>discoveries.</em>
+      </h1>
+      <p class="module-lead">
+        LUMEN applies PHANTOM's spatial intelligence to cleanrooms, clinical testing laboratories, and research containment facilities. It continuously organizes physical instruments, verifies delicate specimen plate placement, audits cryogenic storage custody, and flags spatial contamination drift.
+      </p>
+      <div class="module-cta-row">
+        <button class="btn-nav-primary" type="button" onclick="document.getElementById('lumenStageSection').scrollIntoView({ behavior: 'smooth' });">
+          <span>Inspect Cleanroom Matrix</span>
+        </button>
+        <a href="#specimenLedgerSection" class="btn-nav-outline">
+          <span>Review Sample Ledger</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="module-metric-ribbon">
+      <div class="module-metric-cell">
+        <div class="cell-label">Micro-Plate Array Tracking</div>
+        <div class="cell-value">384-Well Grid</div>
+        <div class="cell-sub">Sub-millimeter layout reconciliation</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Cryogenic Sample Custody</div>
+        <div class="cell-value">-80°C Verified</div>
+        <div class="cell-sub">Automated bio-repository spatial logging</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Cleanroom Boundary</div>
+        <div class="cell-value">ISO 4 / Class 10</div>
+        <div class="cell-sub">Zero unmonitored perimeter breaches</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Audit Protocol</div>
+        <div class="cell-value">GLP / 21 CFR</div>
+        <div class="cell-sub">Immutable spatial observation log</div>
+      </div>
+    </section>
+
+    <!-- Interactive Spatial Stage Layout -->
+    <section class="module-stage-grid" id="lumenStageSection">
+      <div class="stage-main-card">
+        <div class="stage-card-header">
+          <div class="stage-header-title">
+            <span class="star">✦</span>
+            <span>Spatial State Matrix — Cleanroom Bay 04</span>
+          </div>
+          <div class="stage-pills-selector">
+            <button class="stage-select-btn is-active" type="button" data-layer="pcr">PCR 96-Well Plate</button>
+            <button class="stage-select-btn" type="button" data-layer="cryo">Cryo Rack (-80°C)</button>
+            <button class="stage-select-btn" type="button" data-layer="pipette">Pipette Carousel</button>
+          </div>
+        </div>
+
+        <div class="stage-canvas-wrapper">
+          <canvas id="lumenStageCanvas"></canvas>
+          <div class="stage-hud-overlay">
+            <div class="stage-hud-pill">
+              <span>CLEANROOM CLASS:</span>
+              <strong style="color: #fff;">ISO 4 / CLASS 10</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>ACTIVE VIEW:</span>
+              <strong id="lumenHudLayer">PCR 96-WELL PLATE</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>DRIFT STATE:</span>
+              <strong style="color: #22c55e;">STABLE (0.0mm)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="stage-sidebar-col">
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Laboratory Capabilities</div>
+          <ul class="panel-list">
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Delicate biological specimen placement & well plate tracking</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Pipette array & serialized micro-instrument spatial calibration</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Contamination barrier & sterile hood spatial perimeter verification</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Research experimental layout drift detection & audit logs</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Laboratory Environments</div>
+          <div class="env-tags-cloud">
+            <span class="env-tag-badge">Clinical Diagnostics</span>
+            <span class="env-tag-badge">Genomics Cleanrooms</span>
+            <span class="env-tag-badge">Bio-Repository Vaults</span>
+            <span class="env-tag-badge">Pharmaceutical R&D</span>
+            <span class="env-tag-badge">Academic Chemistry Labs</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Domain-Specific Specimen Ledger Section -->
+    <section class="module-editorial-section" id="specimenLedgerSection">
+      <div class="section-head-split">
+        <div>
+          <h2 class="section-head-title">Specimen Custody & Storage <em>Spatial Ledger.</em></h2>
+          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified laboratory sample placement records for Molecular Testing Suite.</p>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">GLP AUDIT RECORD</span>
+      </div>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Specimen Identifier</th>
+            <th>Sample Type</th>
+            <th>Target Storage Zone</th>
+            <th>Observed Coordinates</th>
+            <th>Containment State</th>
+            <th>Technician Attestation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#SAMP-091 RNA Isolate</strong></td>
+            <td>Human Genomic Purified</td>
+            <td>96-Well Plate Slot B04</td>
+            <td>Centroid [0.34, 0.45] Verified</td>
+            <td><span class="status-badge-pill verified">Verified in Slot</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Dr. K. Vance (Tech)</td>
+          </tr>
+          <tr>
+            <td><strong>#SAMP-094 Control DNA</strong></td>
+            <td>Synthesized Primer Reference</td>
+            <td>96-Well Plate Slot C01</td>
+            <td>Centroid [0.50, 0.45] Verified</td>
+            <td><span class="status-badge-pill verified">Verified in Slot</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Dr. K. Vance (Tech)</td>
+          </tr>
+          <tr>
+            <td><strong>#REAG-402 Taq Polymerase</strong></td>
+            <td>Enzyme Cold Storage</td>
+            <td>Cryo-Chamber Slot -20°C</td>
+            <td>Slot 08 Locked</td>
+            <td><span class="status-badge-pill locked">Secured</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Automated Ledger</td>
+          </tr>
+          <tr>
+            <td><strong>#PIP-102 Multi-Channel</strong></td>
+            <td>Eppendorf 20-200μL</td>
+            <td>Carousel Stand 01</td>
+            <td>Position Calibrated</td>
+            <td><span class="status-badge-pill verified">Calibrated</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Metrology Verified</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bottom Action CTA -->
+    <section class="module-bottom-cta">
+      <div>
+        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
+        <p class="bottom-cta-desc">Test the shared spatial intelligence engine live using your browser webcam or phone.</p>
+      </div>
+      <div class="bottom-cta-actions">
+        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
+          <span>Open Workspace Monitor →</span>
+        </a>
+        <a href="phantom.html#lumen" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
+          <span>Architecture Matrix</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Interactive Cleanroom Stage Simulation
+    (function () {
+      const canvas = document.getElementById('lumenStageCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = canvas.parentElement.clientWidth);
+      let h = (canvas.height = canvas.parentElement.clientHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.parentElement.clientWidth;
+        h = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      const layers = {
+        pcr: [
+          { name: 'Row A (Primers 1-12)', x: 0.30, y: 0.35, w: 120, h: 36, status: 'VERIFIED' },
+          { name: 'Row B (Patient Samples)', x: 0.30, y: 0.52, w: 120, h: 36, status: 'ACTIVE' },
+          { name: 'Row C (Control Standards)', x: 0.30, y: 0.69, w: 120, h: 36, status: 'VERIFIED' },
+          { name: 'Optical Seal Barrier', x: 0.70, y: 0.52, w: 140, h: 100, status: 'AIRTIGHT' }
+        ],
+        cryo: [
+          { name: 'Rack 01 (-80°C Plasma)', x: 0.32, y: 0.50, w: 150, h: 90, status: 'LOCKED' },
+          { name: 'Rack 02 (-80°C RNA)', x: 0.68, y: 0.50, w: 150, h: 90, status: 'LOCKED' }
+        ],
+        pipette: [
+          { name: 'Single-Channel 10μL', x: 0.25, y: 0.50, w: 40, h: 100, status: 'CALIBRATED' },
+          { name: 'Single-Channel 200μL', x: 0.45, y: 0.50, w: 40, h: 100, status: 'CALIBRATED' },
+          { name: '8-Channel Multi 300μL', x: 0.70, y: 0.50, w: 70, h: 110, status: 'CALIBRATED' }
+        ]
+      };
+
+      let currentLayer = 'pcr';
+
+      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentLayer = btn.dataset.layer;
+          const hud = document.getElementById('lumenHudLayer');
+          if (hud) hud.textContent = btn.textContent.toUpperCase();
+        });
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Laboratory cleanroom grid
+        ctx.strokeStyle = 'rgba(124, 58, 237, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 36) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 36) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Cleanroom hood boundary
+        ctx.strokeStyle = 'rgba(124, 58, 237, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+        ctx.setLineDash([]);
+
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(124, 58, 237, 0.85)';
+        ctx.fillText('LAMINAR FLOW HOOD BOUNDARY · ISO 4 AIRFLOW', 50, 60);
+
+        // Render layer elements
+        const list = layers[currentLayer] || [];
+        list.forEach((item) => {
+          const ix = item.x * w - item.w / 2;
+          const iy = item.y * h - item.h / 2;
+
+          ctx.fillStyle = 'rgba(20, 16, 32, 0.9)';
+          ctx.strokeStyle = '#7c3aed';
+          ctx.lineWidth = 1.5;
+
+          ctx.fillRect(ix, iy, item.w, item.h);
+          ctx.strokeRect(ix, iy, item.w, item.h);
+
+          ctx.fillStyle = '#a78bfa';
+          ctx.beginPath();
+          ctx.arc(ix + 12, iy + 14, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
+          ctx.fillStyle = '#a78bfa';
+          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
+          ctx.textAlign = 'left';
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>
