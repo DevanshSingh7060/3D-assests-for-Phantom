@@ -48,7 +48,8 @@
         { label: 'SYSTEM STATE', value: 'Active System' }
       ],
       actionText: 'Explore SMRITI Experience',
-      actionType: 'return-home',
+      actionType: 'navigate',
+      routeUrl: 'smriti.html',
       isPlanned: false,
       color: '#f07b42',
       glowRgb: '240, 123, 66'
@@ -85,8 +86,9 @@
         { label: 'FRAMEWORK', value: 'Scientific Observation' },
         { label: 'SYSTEM STATE', value: 'Active Prototype' }
       ],
-      actionText: 'Review Research Protocol',
-      actionType: 'preview',
+      actionText: 'Enter LUMEN Lab Suite',
+      actionType: 'navigate',
+      routeUrl: 'lumen.html',
       isPlanned: false,
       color: '#b898ff',
       glowRgb: '184, 152, 255'
@@ -126,8 +128,9 @@
         { label: 'SUPERVISION', value: 'Human-Supervised Only' },
         { label: 'SYSTEM STATE', value: 'Decision Support Model' }
       ],
-      actionText: 'Review Clinical Framework',
-      actionType: 'preview',
+      actionText: 'Access AEGIS Clinical Framework',
+      actionType: 'navigate',
+      routeUrl: 'aegis.html',
       isPlanned: false,
       color: '#6ec1e4',
       glowRgb: '110, 193, 228'
@@ -165,8 +168,9 @@
         { label: 'RELIABILITY', value: 'High-Throughput Spatial Audit' },
         { label: 'SYSTEM STATE', value: 'Active Architecture' }
       ],
-      actionText: 'Inspect Industrial Architecture',
-      actionType: 'preview',
+      actionText: 'Explore FORGE Industrial Suite',
+      actionType: 'navigate',
+      routeUrl: 'forge.html',
       isPlanned: false,
       color: '#38b8a5',
       glowRgb: '56, 184, 165'
@@ -204,8 +208,9 @@
         { label: 'PRECISION', value: 'Sub-Centimeter Spatial State' },
         { label: 'SYSTEM STATE', value: 'Active Evaluation' }
       ],
-      actionText: 'Explore Commercial Framework',
-      actionType: 'preview',
+      actionText: 'Explore MERIDIAN Commercial Suite',
+      actionType: 'navigate',
+      routeUrl: 'meridian.html',
       isPlanned: false,
       color: '#e8b75b',
       glowRgb: '232, 183, 91'
@@ -244,8 +249,9 @@
         { label: 'INTEGRITY', value: 'Objective Spatial Ledger' },
         { label: 'SYSTEM STATE', value: 'Active Architecture' }
       ],
-      actionText: 'Review Forensics Architecture',
-      actionType: 'preview',
+      actionText: 'Review SENTINEL Forensics Suite',
+      actionType: 'navigate',
+      routeUrl: 'sentinel.html',
       isPlanned: false,
       color: '#ed6675',
       glowRgb: '237, 102, 117'
@@ -282,8 +288,9 @@
         { label: 'INTERACTION', value: 'Calm Ambient Scaffolding' },
         { label: 'SYSTEM STATE', value: 'Active Research' }
       ],
-      actionText: 'View Cognitive Support Model',
-      actionType: 'preview',
+      actionText: 'Explore SENSE Accessibility Model',
+      actionType: 'navigate',
+      routeUrl: 'sense.html',
       isPlanned: false,
       color: '#82b9a1',
       glowRgb: '130, 185, 161'
@@ -671,11 +678,18 @@
                 <span>Return to SMRITI</span>
                 <span class="phantom-return-tag">[ESC]</span>
               </button>
-              <div class="phantom-telemetry-badge">
-                <span class="phantom-live-indicator" aria-hidden="true"></span>
-                <span class="phantom-status-text">CORE ONLINE</span>
-                <span class="phantom-telemetry-divider" aria-hidden="true"></span>
-                <span>7 ACTIVE MODULES</span>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <a href="workspace.html" class="phantom-workspace-nav-btn" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(240, 123, 66, 0.15); border: 1px solid rgba(240, 123, 66, 0.5); border-radius: 9999px; padding: 6px 16px; color: #f2f4f8; font-size: 12.5px; font-weight: 500; text-decoration: none; transition: all 0.2s ease;">
+                  <span style="color: #f07b42;">✦</span>
+                  <span>Launch Table Workspace</span>
+                  <span style="font-size: 11px; opacity: 0.8;">→</span>
+                </a>
+                <div class="phantom-telemetry-badge">
+                  <span class="phantom-live-indicator" aria-hidden="true"></span>
+                  <span class="phantom-status-text">CORE ONLINE</span>
+                  <span class="phantom-telemetry-divider" aria-hidden="true"></span>
+                  <span>7 ACTIVE MODULES</span>
+                </div>
               </div>
             </div>
 
@@ -1120,6 +1134,13 @@
       this.isDetailOpen = true;
       this.selectedSide = data.side || 'left';
 
+      // Sync URL hash state for bookmarkable routes
+      try {
+        if (window.location.hash !== '#' + id) {
+          window.history.replaceState(null, '', '#' + id);
+        }
+      } catch (e) {}
+
       // Adaptive Blob Positioning:
       // Left-side nodes (SMRITI, FORGE, LUMEN, SENSE): move blob toward right half of screen
       // Right-side nodes (AEGIS, MERIDIAN, SENTINEL): move blob toward left half of screen
@@ -1228,6 +1249,13 @@
       this.isDetailOpen = false;
       this.selectedModuleId = null;
       this.selectedSide = null;
+
+      // Clear module hash from URL
+      try {
+        if (window.location.hash) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      } catch (e) {}
 
       // Smoothly return blob to centered overview position and scale (cubic-bezier)
       this.targetBlobShiftX = 0;
@@ -1707,9 +1735,14 @@
         const line = this.dom.lines[key];
         if (!node) return;
 
-        // Selection: Click opens module detail panel (or toggles close)
+        // Selection: Click opens module detail panel, or navigates to dedicated route if already open
         node.addEventListener('click', (e) => {
           e.stopPropagation();
+          const data = PHANTOM_MODULES_DATA[key];
+          if (this.isDetailOpen && this.selectedModuleId === key && data?.routeUrl) {
+            this.navigateToModuleRoute(data.routeUrl);
+            return;
+          }
           this.selectModule(key);
         });
 
@@ -1718,6 +1751,11 @@
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             e.stopPropagation();
+            const data = PHANTOM_MODULES_DATA[key];
+            if (this.isDetailOpen && this.selectedModuleId === key && data?.routeUrl) {
+              this.navigateToModuleRoute(data.routeUrl);
+              return;
+            }
             this.selectModule(key);
           }
         });
@@ -1821,25 +1859,36 @@
         const data = PHANTOM_MODULES_DATA[this.selectedModuleId];
         if (!data || data.isPlanned) return;
 
-        if (this.selectedModuleId === 'smriti') {
-          // Enter SMRITI returns directly to the main SMRITI site
-          this.close();
-        } else {
-          // Feedback for active module connection
-          const btn = this.dom.btnDetailPrimaryAction;
-          const origText = this.dom.detailActionText ? this.dom.detailActionText.textContent : '';
-          if (this.dom.detailActionText) {
-            this.dom.detailActionText.textContent = `Connecting ${data.name}...`;
-          }
-          btn.style.opacity = '0.75';
-          setTimeout(() => {
-            if (this.dom.detailActionText) {
-              this.dom.detailActionText.textContent = origText;
-            }
-            if (btn) btn.style.opacity = '1';
-          }, 1400);
+        if (data.routeUrl) {
+          this.navigateToModuleRoute(data.routeUrl);
+          return;
         }
+
+        // Feedback for active module connection if no dedicated route
+        const btn = this.dom.btnDetailPrimaryAction;
+        const origText = this.dom.detailActionText ? this.dom.detailActionText.textContent : '';
+        if (this.dom.detailActionText) {
+          this.dom.detailActionText.textContent = `Connecting ${data.name}...`;
+        }
+        btn.style.opacity = '0.75';
+        setTimeout(() => {
+          if (this.dom.detailActionText) {
+            this.dom.detailActionText.textContent = origText;
+          }
+          if (btn) btn.style.opacity = '1';
+        }, 1400);
       });
+    }
+
+    navigateToModuleRoute(url) {
+      if (this.dom.root) {
+        this.dom.root.style.transition = 'opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.28s ease';
+        this.dom.root.style.opacity = '0.45';
+        this.dom.root.style.filter = 'blur(6px)';
+      }
+      setTimeout(() => {
+        window.location.href = url;
+      }, 200);
     }
 
     checkReducedMotion() {
@@ -1864,18 +1913,30 @@
       const exp = new PhantomCoreExperience();
       window.PhantomCoreExperience = exp;
 
-      // Check if should auto-open on load (standalone page or #phantom hash)
+      // Check if should auto-open on load (standalone page or #phantom or module hash)
       const isStandalone = window.location.pathname.endsWith('phantom.html') || document.body?.getAttribute('data-page') === 'phantom';
-      const isPhantomHash = window.location.hash === '#phantom';
+      const hash = (window.location.hash || '').replace('#', '').toLowerCase();
+      const isModuleHash = Boolean(PHANTOM_MODULES_DATA[hash]);
+      const isPhantomHash = hash === 'phantom' || isModuleHash;
+
       if (isStandalone || isPhantomHash) {
         exp.open();
+        if (isModuleHash) {
+          setTimeout(() => {
+            exp.selectModule(hash);
+          }, 180);
+        }
       }
 
       // Listen for hash changes
       window.addEventListener('hashchange', () => {
-        if (window.location.hash === '#phantom' && !exp.isOpen) {
+        const curHash = (window.location.hash || '').replace('#', '').toLowerCase();
+        if (PHANTOM_MODULES_DATA[curHash]) {
+          if (!exp.isOpen) exp.open();
+          exp.selectModule(curHash);
+        } else if (curHash === 'phantom' && !exp.isOpen) {
           exp.open();
-        } else if (window.location.hash !== '#phantom' && exp.isOpen && !isStandalone) {
+        } else if (!curHash && exp.isOpen && !isStandalone) {
           exp.close();
         }
       });

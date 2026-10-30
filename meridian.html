@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="MERIDIAN — Retail & Commercial Spatial Intelligence powered by PHANTOM.">
+  <title>MERIDIAN — Retail & Commercial Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <style>
+    :root {
+      --module-accent: #D97706;
+      --module-accent-light: #F59E0B;
+      --module-accent-rgb: 217, 119, 6;
+    }
+  </style>
+</head>
+<body data-module="meridian">
+  <!-- Top Global Header -->
+  <header class="module-site-header">
+    <div class="module-header-left">
+      <a href="phantom.html" class="module-brand">
+        <span>PHANTOM</span>
+        <span class="module-brand-sep">/</span>
+        <span class="module-brand-name">MERIDIAN</span>
+      </a>
+      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #fef3c7; color: #92400e; border: 1px solid #fde68a;">
+        05 · COMMERCIAL
+      </span>
+    </div>
+
+    <div class="module-header-center">
+      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+        <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
+        <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
+        <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
+        <a href="forge.html" class="module-nav-link">04 FORGE</a>
+        <a href="meridian.html" class="module-nav-link is-active">05 MERIDIAN</a>
+        <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
+        <a href="sense.html" class="module-nav-link">07 SENSE</a>
+      </nav>
+    </div>
+
+    <div class="module-header-right">
+      <a href="workspace.html" class="btn-nav-primary">
+        <span>Launch Table Workspace →</span>
+      </a>
+      <a href="phantom.html#meridian" class="btn-nav-outline">
+        <span>← Architecture Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="module-main-wrap">
+    <!-- Hero Section -->
+    <section class="module-hero-block">
+      <div class="module-tagline-eyebrow">
+        <span class="dot"></span>
+        <span>SPECIALIZED RETAIL & COMMERCIAL INTELLIGENCE · MODULE 05</span>
+      </div>
+      <h1 class="module-headline">
+        Physical inventory and shelf context<br><em>continuously understood.</em>
+      </h1>
+      <p class="module-lead">
+        MERIDIAN translates physical retail shelves, culinary kitchens, hospitality suites, and rare archival collections into continuous spatial memory. It verifies planogram compliance, flags displaced merchandise, and preserves physical organization across high-traffic commercial environments.
+      </p>
+      <div class="module-cta-row">
+        <button class="btn-nav-primary" type="button" onclick="document.getElementById('meridianStageSection').scrollIntoView({ behavior: 'smooth' });">
+          <span>Inspect Planogram Matrix</span>
+        </button>
+        <a href="#retailLedgerSection" class="btn-nav-outline">
+          <span>Review Inventory Ledger</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="module-metric-ribbon">
+      <div class="module-metric-cell">
+        <div class="cell-label">Planogram Compliance</div>
+        <div class="cell-value">99.2% Facing</div>
+        <div class="cell-sub">Automated shelf SKU position verification</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Displaced Item Detection</div>
+        <div class="cell-value">&lt; 30 Seconds</div>
+        <div class="cell-sub">Cross-category misplacement identified</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Archival Conservation</div>
+        <div class="cell-value">Sub-Millimeter</div>
+        <div class="cell-sub">Rare manuscript case spatial stability</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Customer Privacy</div>
+        <div class="cell-value">Zero Biometrics</div>
+        <div class="cell-sub">Observes merchandise shelves, not shopper faces</div>
+      </div>
+    </section>
+
+    <!-- Interactive Spatial Stage Layout -->
+    <section class="module-stage-grid" id="meridianStageSection">
+      <div class="stage-main-card">
+        <div class="stage-card-header">
+          <div class="stage-header-title">
+            <span class="star">✦</span>
+            <span>Spatial State Matrix — Retail Display Shelf 04</span>
+          </div>
+          <div class="stage-pills-selector">
+            <button class="stage-select-btn is-active" type="button" data-layer="shelf">Grocery Shelf Tier 2</button>
+            <button class="stage-select-btn" type="button" data-layer="archive">Museum Archive Vault</button>
+            <button class="stage-select-btn" type="button" data-layer="kitchen">Commercial Kitchen Pass</button>
+          </div>
+        </div>
+
+        <div class="stage-canvas-wrapper">
+          <canvas id="meridianStageCanvas"></canvas>
+          <div class="stage-hud-overlay">
+            <div class="stage-hud-pill">
+              <span>FACILITY ZONE:</span>
+              <strong style="color: #fff;">RETAIL FLOOR · AISLE 04</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>ACTIVE VIEW:</span>
+              <strong id="meridianHudLayer">GROCERY SHELF TIER 2</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>COMPLIANCE:</span>
+              <strong style="color: #f59e0b;">99.2% (1 MISPLACED)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="stage-sidebar-col">
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Commercial Capabilities</div>
+          <ul class="panel-list">
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Shelf planogram compliance & facing count verification</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Misplaced product detection across non-intended aisles</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>High-value archival artifact & museum case spatial logging</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Commercial kitchen prep line & pass-through spatial auditing</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Commercial Spaces</div>
+          <div class="env-tags-cloud">
+            <span class="env-tag-badge">Supermarket Shelves</span>
+            <span class="env-tag-badge">Museum Conservation Vaults</span>
+            <span class="env-tag-badge">Rare Book Libraries</span>
+            <span class="env-tag-badge">Hospitality & Hotel Suites</span>
+            <span class="env-tag-badge">Commercial Culinary Kitchens</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Domain-Specific Planogram & Archival Ledger Section -->
+    <section class="module-editorial-section" id="retailLedgerSection">
+      <div class="section-head-split">
+        <div>
+          <h2 class="section-head-title">Shelf Planogram & Archival <em>Spatial Ledger.</em></h2>
+          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified commercial inventory placement records for Aisle 04 and Vault 01.</p>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">COMMERCIAL ACCURACY</span>
+      </div>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Merchandise SKU / Artifact</th>
+            <th>Category</th>
+            <th>Planogram Target Slot</th>
+            <th>Observed Facing State</th>
+            <th>Reconciliation State</th>
+            <th>Verification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#SKU-940 Organic Extra Virgin Olive Oil</strong></td>
+            <td>Retail Grocery (Glass 500mL)</td>
+            <td>Shelf 04 Tier 2 Facings 1-4</td>
+            <td>4 Facings Confirmed Aligned</td>
+            <td><span class="status-badge-pill verified">100% Planogram Compliant</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Shelf Camera #02</td>
+          </tr>
+          <tr>
+            <td><strong>#SKU-948 Balsamic Vinegar Modena</strong></td>
+            <td>Retail Grocery (Glass 250mL)</td>
+            <td>Shelf 04 Tier 2 Facings 5-8</td>
+            <td>3 Facings Observed (1 Displaced)</td>
+            <td><span class="status-badge-pill alert">Displaced Item Detected</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Alert Flagged</td>
+          </tr>
+          <tr>
+            <td><strong>#ART-012 17th Century Cartographic Map</strong></td>
+            <td>Museum Rare Archive</td>
+            <td>Climate Case 03-B</td>
+            <td>Centroid [0.50, 0.50] / 0.0mm Drift</td>
+            <td><span class="status-badge-pill verified">Stationary / Preserved</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Curator Logged</td>
+          </tr>
+          <tr>
+            <td><strong>#KT-402 Saute Station Mise-en-place</strong></td>
+            <td>Commercial Culinary Pass</td>
+            <td>Line 01 Cold Insert Wells</td>
+            <td>6 Wells Verified Loaded</td>
+            <td><span class="status-badge-pill verified">Ready for Service</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Sous Chef Sign-off</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bottom Action CTA -->
+    <section class="module-bottom-cta">
+      <div>
+        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
+        <p class="bottom-cta-desc">Test the shared spatial intelligence engine live using your browser webcam or phone.</p>
+      </div>
+      <div class="bottom-cta-actions">
+        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
+          <span>Open Workspace Monitor →</span>
+        </a>
+        <a href="phantom.html#meridian" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
+          <span>Architecture Matrix</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Interactive Commercial Stage Simulation
+    (function () {
+      const canvas = document.getElementById('meridianStageCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = canvas.parentElement.clientWidth);
+      let h = (canvas.height = canvas.parentElement.clientHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.parentElement.clientWidth;
+        h = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      const layers = {
+        shelf: [
+          { name: 'Facing 1 (Olive Oil)', x: 0.20, y: 0.50, w: 50, h: 90, status: 'ALIGNED' },
+          { name: 'Facing 2 (Olive Oil)', x: 0.32, y: 0.50, w: 50, h: 90, status: 'ALIGNED' },
+          { name: 'Facing 3 (Olive Oil)', x: 0.44, y: 0.50, w: 50, h: 90, status: 'ALIGNED' },
+          { name: 'Facing 4 (Olive Oil)', x: 0.56, y: 0.50, w: 50, h: 90, status: 'ALIGNED' },
+          { name: 'Facing 5 (Vinegar - Displaced)', x: 0.72, y: 0.50, w: 50, h: 90, status: 'MISPLACED' }
+        ],
+        archive: [
+          { name: '17th C. Manuscript (Vault Case 03)', x: 0.38, y: 0.50, w: 160, h: 100, status: 'PRESERVED' },
+          { name: 'Illuminated Foliant Exhibit', x: 0.72, y: 0.50, w: 140, h: 90, status: 'SECURED' }
+        ],
+        kitchen: [
+          { name: 'Cold Well A (Shallots)', x: 0.25, y: 0.50, w: 60, h: 60, status: 'STOCKED' },
+          { name: 'Cold Well B (Fine Herbs)', x: 0.45, y: 0.50, w: 60, h: 60, status: 'STOCKED' },
+          { name: 'Cold Well C (Clarified Butter)', x: 0.65, y: 0.50, w: 60, h: 60, status: 'STOCKED' }
+        ]
+      };
+
+      let currentLayer = 'shelf';
+
+      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentLayer = btn.dataset.layer;
+          const hud = document.getElementById('meridianHudLayer');
+          if (hud) hud.textContent = btn.textContent.toUpperCase();
+        });
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Retail shelf planogram grid
+        ctx.strokeStyle = 'rgba(217, 119, 6, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 36) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 36) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Planogram shelf edge line
+        ctx.strokeStyle = 'rgba(217, 119, 6, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(217, 119, 6, 0.85)';
+        ctx.fillText('PLANOGRAM SHELF TIER 2 · FACING MATRIX', 50, 60);
+
+        // Render layer items
+        const list = layers[currentLayer] || [];
+        list.forEach((item) => {
+          const ix = item.x * w - item.w / 2;
+          const iy = item.y * h - item.h / 2;
+
+          ctx.fillStyle = item.status === 'MISPLACED' ? 'rgba(40, 20, 16, 0.9)' : 'rgba(24, 20, 14, 0.9)';
+          ctx.strokeStyle = item.status === 'MISPLACED' ? '#ef4444' : '#d97706';
+          ctx.lineWidth = 1.5;
+
+          ctx.fillRect(ix, iy, item.w, item.h);
+          ctx.strokeRect(ix, iy, item.w, item.h);
+
+          ctx.fillStyle = item.status === 'MISPLACED' ? '#ef4444' : '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(ix + 12, iy + 14, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
+          ctx.fillStyle = item.status === 'MISPLACED' ? '#f87171' : '#f59e0b';
+          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
+          ctx.textAlign = 'left';
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

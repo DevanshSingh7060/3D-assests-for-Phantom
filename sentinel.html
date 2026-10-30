@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="SENTINEL — Safety, Security & Forensics Spatial Intelligence powered by PHANTOM.">
+  <title>SENTINEL — Safety, Security & Forensics Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <style>
+    :root {
+      --module-accent: #DC2626;
+      --module-accent-light: #F87171;
+      --module-accent-rgb: 220, 38, 38;
+    }
+  </style>
+</head>
+<body data-module="sentinel">
+  <!-- Top Global Header -->
+  <header class="module-site-header">
+    <div class="module-header-left">
+      <a href="phantom.html" class="module-brand">
+        <span>PHANTOM</span>
+        <span class="module-brand-sep">/</span>
+        <span class="module-brand-name">SENTINEL</span>
+      </a>
+      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #fee2e2; color: #991b1b; border: 1px solid #fecaca;">
+        06 · FORENSICS
+      </span>
+    </div>
+
+    <div class="module-header-center">
+      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+        <a href="smriti.html" class="module-nav-link">01 SMRITI</a>
+        <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
+        <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
+        <a href="forge.html" class="module-nav-link">04 FORGE</a>
+        <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
+        <a href="sentinel.html" class="module-nav-link is-active">06 SENTINEL</a>
+        <a href="sense.html" class="module-nav-link">07 SENSE</a>
+      </nav>
+    </div>
+
+    <div class="module-header-right">
+      <a href="workspace.html" class="btn-nav-primary">
+        <span>Launch Table Workspace →</span>
+      </a>
+      <a href="phantom.html#sentinel" class="btn-nav-outline">
+        <span>← Architecture Matrix</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="module-main-wrap">
+    <!-- Hero Section -->
+    <section class="module-hero-block">
+      <div class="module-tagline-eyebrow">
+        <span class="dot"></span>
+        <span>SPECIALIZED SAFETY, SECURITY & FORENSICS INTELLIGENCE · MODULE 06</span>
+      </div>
+      <h1 class="module-headline">
+        Traceability, accountability, and<br><em>scene integrity.</em>
+      </h1>
+      <p class="module-lead">
+        SENTINEL provides uncompromised spatial chain-of-custody logging, hazardous site perimeter observation, and objective physical scene reconstruction. Engineered around evidentiary integrity and physical change tracking rather than intrusive surveillance aesthetics.
+      </p>
+      <div class="module-cta-row">
+        <button class="btn-nav-primary" type="button" onclick="document.getElementById('sentinelStageSection').scrollIntoView({ behavior: 'smooth' });">
+          <span>Inspect Evidence Vault Matrix</span>
+        </button>
+        <a href="#custodyLedgerSection" class="btn-nav-outline">
+          <span>Review Custody Chain</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="module-metric-ribbon">
+      <div class="module-metric-cell">
+        <div class="cell-label">Chain-of-Custody Integrity</div>
+        <div class="cell-value">100% Immutable</div>
+        <div class="cell-sub">Cryptographic physical event ledger</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Scene Diff Reconstruction</div>
+        <div class="cell-value">Sub-Centimeter</div>
+        <div class="cell-sub">Pre & post-incident spatial delta tracking</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Exclusion Perimeter</div>
+        <div class="cell-value">Active Guard</div>
+        <div class="cell-sub">Instant boundary intrusion verification</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Surveillance Philosophy</div>
+        <div class="cell-value">Non-Intrusive</div>
+        <div class="cell-sub">Observes physical scene assets, not human faces</div>
+      </div>
+    </section>
+
+    <!-- Interactive Spatial Stage Layout -->
+    <section class="module-stage-grid" id="sentinelStageSection">
+      <div class="stage-main-card">
+        <div class="stage-card-header">
+          <div class="stage-header-title">
+            <span class="star">✦</span>
+            <span>Spatial State Matrix — Property & Evidence Vault 02</span>
+          </div>
+          <div class="stage-pills-selector">
+            <button class="stage-select-btn is-active" type="button" data-layer="vault">Evidence Lockers (A-D)</button>
+            <button class="stage-select-btn" type="button" data-layer="scene">Incident Scene Diff</button>
+            <button class="stage-select-btn" type="button" data-layer="hazard">Hazard Exclusion Zone</button>
+          </div>
+        </div>
+
+        <div class="stage-canvas-wrapper">
+          <canvas id="sentinelStageCanvas"></canvas>
+          <div class="stage-hud-overlay">
+            <div class="stage-hud-pill">
+              <span>CUSTODY PROTOCOL:</span>
+              <strong style="color: #fff;">ISO/IEC 27037 DIGITAL FORENSICS</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>ACTIVE VIEW:</span>
+              <strong id="sentinelHudLayer">EVIDENCE LOCKERS (A-D)</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>CHAIN INTEGRITY:</span>
+              <strong style="color: #22c55e;">VERIFIED (ZERO TAMPER)</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="stage-sidebar-col">
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Forensic Capabilities</div>
+          <ul class="panel-list">
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Tamper-evident chain-of-custody spatial logging for property rooms</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Pre and post-incident physical scene reconstruction & diffing</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Hazard perimeter & industrial exclusion zone breach detection</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Objective forensic timeline reconstruction with evidence receipts</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Deployment Domains</div>
+          <div class="env-tags-cloud">
+            <span class="env-tag-badge">Evidence & Property Vaults</span>
+            <span class="env-tag-badge">Court & Judicial Archive</span>
+            <span class="env-tag-badge">Fire & Insurance Forensics</span>
+            <span class="env-tag-badge">Industrial Hazardous Zones</span>
+            <span class="env-tag-badge">High-Security Transit Docks</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Domain-Specific Custody Ledger Section -->
+    <section class="module-editorial-section" id="custodyLedgerSection">
+      <div class="section-head-split">
+        <div>
+          <h2 class="section-head-title">Physical Evidence & Custody <em>Spatial Ledger.</em></h2>
+          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified evidence locker placement records for Judicial Custody Bay 02.</p>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">EVIDENTIARY AUDIT LOG</span>
+      </div>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Evidence Item Reference</th>
+            <th>Evidentiary Class</th>
+            <th>Assigned Locker Vault</th>
+            <th>Observed State</th>
+            <th>Custody Hash Verification</th>
+            <th>Attesting Officer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>#EVD-881 Serialized Hardware</strong></td>
+            <td>Digital Storage Media</td>
+            <td>Evidence Locker 14-B</td>
+            <td>Locker 14-B Sealed</td>
+            <td><span class="status-badge-pill verified">0x4F92... SHA-256 Valid</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Det. M. Reynolds #781</td>
+          </tr>
+          <tr>
+            <td><strong>#EVD-889 Ballistics Envelope</strong></td>
+            <td>Forensic Physical Artifact</td>
+            <td>Evidence Locker 14-C</td>
+            <td>Locker 14-C Sealed</td>
+            <td><span class="status-badge-pill verified">0x9A12... SHA-256 Valid</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Forensic Specialist Lin</td>
+          </tr>
+          <tr>
+            <td><strong>#SCN-102 Incident Scene Marker 01</strong></td>
+            <td>Physical Scene Benchmark</td>
+            <td>Site Perimeter South</td>
+            <td>Centroid [0.22, 0.45] Unmoved</td>
+            <td><span class="status-badge-pill verified">Zero Drift (0.0cm)</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Photogrammetry Anchor</td>
+          </tr>
+          <tr>
+            <td><strong>#EXC-04 Chemical Containment Gate</strong></td>
+            <td>Exclusion Perimeter</td>
+            <td>Hazardous Line Alpha</td>
+            <td>Perimeter Secure</td>
+            <td><span class="status-badge-pill verified">No Unauthorized Breach</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Safety Lead Attested</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 24px; padding: 16px 20px; background: var(--pure-white); border: 1px solid var(--line-border); border-radius: var(--radius-md); display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 18px;">🛡️</span>
+        <div style="font-size: 13px; color: var(--slate-gray); line-height: 1.5;">
+          <strong>Objective Spatial Verification:</strong> SENTINEL is strictly an objective spatial ledger and chain-of-custody recorder. It does not perform autonomous surveillance, behavioral analysis, or law enforcement decision-making.
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Action CTA -->
+    <section class="module-bottom-cta">
+      <div>
+        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
+        <p class="bottom-cta-desc">Test the shared spatial intelligence engine live using your browser webcam or phone.</p>
+      </div>
+      <div class="bottom-cta-actions">
+        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
+          <span>Open Workspace Monitor →</span>
+        </a>
+        <a href="phantom.html#sentinel" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
+          <span>Architecture Matrix</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Interactive Forensics Stage Simulation
+    (function () {
+      const canvas = document.getElementById('sentinelStageCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = canvas.parentElement.clientWidth);
+      let h = (canvas.height = canvas.parentElement.clientHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.parentElement.clientWidth;
+        h = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      const layers = {
+        vault: [
+          { name: 'Locker 14-A (Sealed)', x: 0.22, y: 0.50, w: 90, h: 90, status: 'SECURED' },
+          { name: 'Locker 14-B (Tamper Tape Verified)', x: 0.40, y: 0.50, w: 90, h: 90, status: 'SECURED' },
+          { name: 'Locker 14-C (Ballistics Sealed)', x: 0.58, y: 0.50, w: 90, h: 90, status: 'SECURED' },
+          { name: 'Locker 14-D (Open for Check-In)', x: 0.76, y: 0.50, w: 90, h: 90, status: 'INSPECTION' }
+        ],
+        scene: [
+          { name: 'Benchmark Point Alpha', x: 0.30, y: 0.45, w: 120, h: 40, status: 'UNMOVED' },
+          { name: 'Physical Point Delta (Pre/Post Diff)', x: 0.65, y: 0.55, w: 140, h: 60, status: 'DIFF +3.2cm' }
+        ],
+        hazard: [
+          { name: 'Exclusion Perimeter Red Line', x: 0.35, y: 0.50, w: 140, h: 100, status: 'PERIMETER SECURE' },
+          { name: 'Hazardous Chemical Containment', x: 0.72, y: 0.50, w: 120, h: 100, status: 'NO INTRUSION' }
+        ]
+      };
+
+      let currentLayer = 'vault';
+
+      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentLayer = btn.dataset.layer;
+          const hud = document.getElementById('sentinelHudLayer');
+          if (hud) hud.textContent = btn.textContent.toUpperCase();
+        });
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Forensics vault grid
+        ctx.strokeStyle = 'rgba(220, 38, 38, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Vault perimeter boundary
+        ctx.strokeStyle = 'rgba(220, 38, 38, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+        ctx.setLineDash([]);
+
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(220, 38, 38, 0.85)';
+        ctx.fillText('PROPERTY VAULT BOUNDARY · TAMPER SENSORS ACTIVE', 50, 60);
+
+        // Render layer items
+        const list = layers[currentLayer] || [];
+        list.forEach((item) => {
+          const ix = item.x * w - item.w / 2;
+          const iy = item.y * h - item.h / 2;
+
+          ctx.fillStyle = 'rgba(28, 14, 16, 0.9)';
+          ctx.strokeStyle = '#dc2626';
+          ctx.lineWidth = 1.5;
+
+          ctx.fillRect(ix, iy, item.w, item.h);
+          ctx.strokeRect(ix, iy, item.w, item.h);
+
+          ctx.fillStyle = item.status === 'INSPECTION' ? '#f59e0b' : '#22c55e';
+          ctx.beginPath();
+          ctx.arc(ix + 12, iy + 14, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
+          ctx.fillStyle = '#f87171';
+          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
+          ctx.textAlign = 'left';
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

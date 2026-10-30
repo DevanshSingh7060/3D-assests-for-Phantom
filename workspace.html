@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="PHANTOM Workspace — Local-First Spatial Intelligence & Table Monitoring Engine.">
+  <title>PHANTOM — Table Workspace & Spatial Memory Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="workspace.css?v=1.0.0">
+</head>
+<body>
+  <div class="workspace-shell">
+    <!-- Top Global Navigation Header -->
+    <header class="workspace-header">
+      <div class="workspace-header-left">
+        <a href="phantom.html" class="brand-mark" aria-label="PHANTOM Architecture Home">
+          <span>PHANTOM</span><span class="dot">.</span>
+        </a>
+        <span class="workspace-badge">TABLE WORKSPACE</span>
+        <div class="env-select-wrap">
+          <select id="envSelect" class="env-select" aria-label="Monitored Environment Selector">
+            <option value="env_desk_01" selected>My Desk (Primary Active)</option>
+            <option value="env_table_02">Table Test Area</option>
+          </select>
+          <span class="env-select-arrow" aria-hidden="true">▼</span>
+        </div>
+      </div>
+
+      <div class="workspace-header-center">
+        <div class="hud-status-pill">
+          <span class="hud-dot" id="hudDot"></span>
+          <span id="hudText">STANDBY</span>
+        </div>
+      </div>
+
+      <div class="workspace-header-right">
+        <button class="btn-pill-primary" type="button" id="btnHeaderAction">
+          <span>● Start Monitoring</span>
+        </button>
+        <a href="phantom.html" class="btn-pill-outline" id="btnReturnToArch">
+          <span>← Architecture</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Sub-Nav Tab Bar -->
+    <nav class="workspace-tabs-bar" aria-label="Workspace Views">
+      <button class="tab-btn is-active" type="button" data-tab="overview">
+        <span class="tab-num">01</span>
+        <span>Overview</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="monitor">
+        <span class="tab-num">02</span>
+        <span>Live Monitor</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="objects">
+        <span class="tab-num">03</span>
+        <span>Objects (Continuous Store)</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="activity">
+        <span class="tab-num">04</span>
+        <span>Activity (Timeline)</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="search">
+        <span class="tab-num">05</span>
+        <span>Search & Reveal</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="environments">
+        <span class="tab-num">06</span>
+        <span>Environments</span>
+      </button>
+      <button class="tab-btn" type="button" data-tab="settings">
+        <span class="tab-num">07</span>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <main class="workspace-content">
+      <!-- ====================================================================
+           VIEW 1: OVERVIEW
+           ==================================================================== -->
+      <section class="workspace-view is-active" data-view="overview" id="viewOverview">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">PHYSICAL SPATIAL MEMORY ENGINE</div>
+          <h1 class="view-title">Your desk <em>remembers.</em></h1>
+          <p class="view-subtitle">
+            PHANTOM continuously maintains a structured key-value index of physical objects, their locations relative to stationary landmarks, and verified movement history.
+          </p>
+        </header>
+
+        <div class="overview-grid">
+          <!-- Left Column: Status & Operational Summary -->
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <h2 class="overview-card-title">
+                <span>Active Physical Space</span>
+              </h2>
+              <button class="btn-pill-outline" type="button" id="btnLaunchMonitorQuick" style="font-size: 12.5px; padding: 4px 14px;">
+                <span>Live View →</span>
+              </button>
+            </div>
+
+            <div class="quick-stats-row">
+              <div class="stat-box">
+                <div class="stat-label">Tracked Objects</div>
+                <div class="stat-val" id="statsTotalObjects">7</div>
+                <div class="stat-sub">Indexed in space</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Verified Changes</div>
+                <div class="stat-val" id="statsRecentChanges">6</div>
+                <div class="stat-sub">State transitions</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Last Observation</div>
+                <div class="stat-val" id="statsLastObsTime">4:38 PM</div>
+                <div class="stat-sub">Committed to ledger</div>
+              </div>
+            </div>
+
+            <div style="background: var(--pure-white); border: 1px solid var(--line-border); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+              <div>
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 3px;">Camera Connection</div>
+                <div style="font-size: 13px; color: var(--slate-gray);">MacBook FaceTime HD, Phone USB / Continuity, or external webcam.</div>
+              </div>
+              <button class="btn-pill-primary" type="button" id="btnStartMonitoring">
+                <span id="btnStartMonitoringLabel">Start Monitoring</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Quick Natural Language Search & Recent Changes -->
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <h2 class="overview-card-title">
+                <span>Recent Verified Movements</span>
+              </h2>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray);">LEDGER VERIFIED</span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+              <input type="text" id="quickSearchInput" class="form-input-text" style="width: 100%; border-radius: var(--radius-pill); padding: 12px 20px; font-size: 14px;" placeholder="Quick query: &quot;Where are my glasses?&quot; (Press Enter)"/>
+            </div>
+
+            <ul class="recent-events-list" id="recentEventsOverview">
+              <!-- Populated dynamically -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tracked Physical Objects Preview -->
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+            <h2 style="font-family: var(--font-body); font-size: 18px; font-weight: 600; margin: 0;">Tracked Physical Objects</h2>
+            <button class="btn-pill-outline" type="button" onclick="document.querySelector('.tab-btn[data-tab=\'objects\']').click()">
+              <span>View All Objects →</span>
+            </button>
+          </div>
+          <div class="objects-grid" id="objectsGridOverview">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: LIVE MONITOR (PRIMARY OPERATIONAL SCREEN)
+           ==================================================================== -->
+      <section class="workspace-view" data-view="monitor" id="viewMonitor">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">STAGE 1 DIFFERENCING · STAGE 2 NEURAL VERIFICATION</div>
+          <h1 class="view-title">Live table <em>observation.</em></h1>
+          <p class="view-subtitle">
+            Cheap local pixel differencing filters sensor noise and waits for the scene to settle (~1.5s) before promoting candidate frames for semantic verification.
+          </p>
+        </header>
+
+        <div class="live-monitor-layout">
+          <!-- Viewport Stage -->
+          <div class="viewport-stage-card">
+            <div class="viewport-header">
+              <div class="viewport-header-title">
+                <span class="pulse-circle"></span>
+                <span>DESK OBSERVATION LAYER · FIXED CAMERA</span>
+              </div>
+              <div class="viewport-controls-row">
+                <select id="cameraSourceSelect" class="toolbar-select" aria-label="Select Camera Hardware">
+                  <option value="">Detecting cameras...</option>
+                </select>
+                <select id="resolutionSelect" class="toolbar-select" aria-label="Capture Resolution">
+                  <option value="1280x720" selected>720p HD</option>
+                  <option value="1920x1080">1080p FHD</option>
+                  <option value="640x480">480p SD</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="viewport-media-container">
+              <video id="cameraVideo" autoplay playsinline muted></video>
+              <canvas id="overlayCanvas"></canvas>
+
+              <div class="viewport-watermark">
+                <span>PHANTOM REALITY EYE</span>
+                <span style="font-size: 10px; opacity: 0.7;">COCO-SSD NEURAL RUNTIME · LOCAL WORKSPACE</span>
+              </div>
+
+              <div class="viewport-motion-meter">
+                <span style="font-weight: 600;">STAGE 1:</span>
+                <div class="motion-meter-bar">
+                  <div class="motion-meter-fill" id="motionMeterFill"></div>
+                </div>
+                <span id="motionMeterText">STANDBY · 0.0%</span>
+              </div>
+            </div>
+
+            <div class="viewport-footer-toolbar">
+              <div class="toolbar-group">
+                <button class="btn-toolbar" type="button" id="btnCaptureNow">
+                  <span>✦ Capture & Verify Now</span>
+                </button>
+                <button class="btn-toolbar is-active" type="button" id="btnToggleBoxes">
+                  <span>Toggle Bounding Boxes</span>
+                </button>
+                <button class="btn-toolbar" type="button" id="btnUploadFallback">
+                  <span>Upload Test Video / File</span>
+                </button>
+                <input type="file" id="fileUploadInput" accept="video/*,image/*" style="display: none;"/>
+              </div>
+
+              <div class="toolbar-group" style="font-family: var(--font-mono); font-size: 12px; color: #a1a1aa;">
+                <span>Interval:</span>
+                <input type="range" id="intervalSlider" min="1" max="10" step="1" value="3" style="width: 80px; accent-color: var(--accent-orange);"/>
+                <span id="intervalVal" style="color: #fff; font-weight: 600;">3s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-Time Scene Inspector Sidebar -->
+          <aside class="monitor-sidebar">
+            <div class="monitor-panel">
+              <h2 class="monitor-panel-title">
+                <span>Detected Scene Matrix</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-orange);">STAGE 2 VERIFIED</span>
+              </h2>
+              <div class="active-detections-list" id="activeDetectionsList">
+                <div class="detection-item-card">
+                  <div>
+                    <div class="detection-item-name">MacBook Pro 16"</div>
+                    <div class="detection-item-loc">Stationary Primary Landmark</div>
+                  </div>
+                  <span class="confidence-pill">0.99</span>
+                </div>
+                <div class="detection-item-card">
+                  <div>
+                    <div class="detection-item-name">Reading Glasses</div>
+                    <div class="detection-item-loc">To the left of laptop</div>
+                  </div>
+                  <span class="confidence-pill">0.96</span>
+                </div>
+                <div class="detection-item-card">
+                  <div>
+                    <div class="detection-item-name">Hydro Flask</div>
+                    <div class="detection-item-loc">Behind laptop, upper center</div>
+                  </div>
+                  <span class="confidence-pill">0.94</span>
+                </div>
+                <div class="detection-item-card">
+                  <div>
+                    <div class="detection-item-name">Apple Watch Ultra</div>
+                    <div class="detection-item-loc">Beside house keys, right desk</div>
+                  </div>
+                  <span class="confidence-pill">0.93</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="monitor-panel">
+              <h2 class="monitor-panel-title">
+                <span>Spatial Reference Anchors</span>
+              </h2>
+              <div style="font-size: 13.5px; line-height: 1.6; color: var(--charcoal);">
+                <div style="margin-bottom: 8px;"><strong>Fixed Landmark:</strong> MacBook Pro (Center Anchor [0.50, 0.50])</div>
+                <div style="margin-bottom: 8px;"><strong>Orientation:</strong> Front-to-back perspective grid</div>
+                <div><strong>Resolution Delta:</strong> Euclidean centroid drift &gt; 10% promotes to verified movement.</div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: OBJECTS (CONTINUOUS PHYSICAL KEY-VALUE STORE)
+           ==================================================================== -->
+      <section class="workspace-view" data-view="objects" id="viewObjects">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">PHYSICAL KEY-VALUE INDEX</div>
+          <h1 class="view-title">Tracked everyday <em>objects.</em></h1>
+          <p class="view-subtitle">
+            Every physical item is indexed without tags, QR codes, or RFID markers. The physical environment itself becomes the queryable database.
+          </p>
+        </header>
+
+        <div class="objects-toolbar">
+          <div class="category-filter-chips">
+            <button class="filter-chip is-active" type="button" data-category="all">All Items</button>
+            <button class="filter-chip" type="button" data-category="personal">Personal Items</button>
+            <button class="filter-chip" type="button" data-category="electronics">Electronics & Anchors</button>
+            <button class="filter-chip" type="button" data-category="hydration">Hydration & Cups</button>
+            <button class="filter-chip" type="button" data-category="stationery">Stationery & Notes</button>
+          </div>
+        </div>
+
+        <div class="objects-grid" id="objectsGrid">
+          <!-- Dynamically populated from IndexedDB -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: ACTIVITY (CHRONOLOGICAL EVENT STREAM)
+           ==================================================================== -->
+      <section class="workspace-view" data-view="activity" id="viewActivity">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">AUDITABLE SPATIAL LEDGER</div>
+          <h1 class="view-title">Chronological physical <em>activity.</em></h1>
+          <p class="view-subtitle">
+            Meaningful physical events are recorded only when a validated state change occurs. Unchanged frames are safely discarded.
+          </p>
+        </header>
+
+        <div class="activity-timeline-wrap">
+          <div class="timeline-filter-row">
+            <div class="category-filter-chips">
+              <button class="filter-chip is-active" type="button" data-event="all">All Events</button>
+              <button class="filter-chip" type="button" data-event="moved">Moved</button>
+              <button class="filter-chip" type="button" data-event="added">Added</button>
+              <button class="filter-chip" type="button" data-event="removed">Removed</button>
+              <button class="filter-chip" type="button" data-event="occluded">Occluded</button>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray);">LOCAL-FIRST INDEXEDDB RECORD</span>
+          </div>
+
+          <ul class="timeline-list" id="timelineList">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 5: SEARCH & EVIDENCE REVEAL
+           ==================================================================== -->
+      <section class="workspace-view" data-view="search" id="viewSearch">
+        <header class="view-editorial-header" style="text-align: center; max-width: 680px; margin: 0 auto 36px;">
+          <div class="view-eyebrow" style="justify-content: center;">DETERMINISTIC SPATIAL QUERY</div>
+          <h1 class="view-title">Search physical <em>memory.</em></h1>
+          <p class="view-subtitle" style="margin: 0 auto;">
+            Ask where an object is, when it moved, or what was beside a reference anchor. Answers are verified against the physical key-value store, never invented.
+          </p>
+        </header>
+
+        <div class="search-center-container">
+          <div class="search-input-shell">
+            <input type="text" id="searchInput" class="search-input-field" placeholder="Ask e.g. &quot;Where are my glasses?&quot; or &quot;When did the keys move?&quot;"/>
+            <button class="btn-search-trigger" type="button" id="btnSearch" aria-label="Search">
+              <span>→</span>
+            </button>
+          </div>
+
+          <div class="search-prompts-row">
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray);">SUGGESTIONS:</span>
+            <button class="search-prompt-pill" type="button">Where are my glasses?</button>
+            <button class="search-prompt-pill" type="button">Where was the water bottle last seen?</button>
+            <button class="search-prompt-pill" type="button">When did the keys move?</button>
+            <button class="search-prompt-pill" type="button">What was beside the laptop earlier?</button>
+            <button class="search-prompt-pill" type="button">Which objects moved today?</button>
+          </div>
+
+          <!-- Evidence-Led Result Reveal Container -->
+          <div id="searchResultContainer">
+            <!-- Dynamic Result Card rendered on search -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 6: ENVIRONMENTS
+           ==================================================================== -->
+      <section class="workspace-view" data-view="environments" id="viewEnvironments">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">PHYSICAL DOMAIN PARTITIONING</div>
+          <h1 class="view-title">Monitored <em>environments.</em></h1>
+          <p class="view-subtitle">
+            Configure discrete physical observation spaces. Each space maintains its own independent key-value registry, spatial landmarks, and event timeline.
+          </p>
+        </header>
+
+        <div class="overview-grid">
+          <div class="settings-card">
+            <h2 class="settings-card-title">My Desk (Primary Active)</h2>
+            <p class="settings-card-desc">Fixed desk workspace monitored by FaceTime HD / phone camera. Contains 7 tracked assets.</p>
+            <div class="form-group-row">
+              <div>
+                <div class="form-group-label">Reference Anchor</div>
+                <div class="form-group-sub">Primary stationary object used for spatial relative coordinates</div>
+              </div>
+              <span class="badge-info-pill">MacBook Pro 16"</span>
+            </div>
+            <div class="form-group-row">
+              <div>
+                <div class="form-group-label">Status</div>
+                <div class="form-group-sub">Camera observation readiness</div>
+              </div>
+              <span style="color: var(--accent-green); font-weight: 600; font-size: 13px;">● Calibrated & Ready</span>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 class="settings-card-title">Table Test Area</h2>
+            <p class="settings-card-desc">Secondary demonstration surface for testing mobile camera handoffs and offline recordings.</p>
+            <div class="form-group-row">
+              <div>
+                <div class="form-group-label">Reference Anchor</div>
+                <div class="form-group-sub">Fixed landmark</div>
+              </div>
+              <span class="badge-info-pill">Center Worksurface</span>
+            </div>
+            <div class="form-group-row">
+              <div>
+                <div class="form-group-label">Status</div>
+                <div class="form-group-sub">Camera observation readiness</div>
+              </div>
+              <span style="color: var(--slate-gray); font-size: 13px;">Standby</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 7: SETTINGS & PRIVACY
+           ==================================================================== -->
+      <section class="workspace-view" data-view="settings" id="viewSettings">
+        <header class="view-editorial-header">
+          <div class="view-eyebrow">ENGINE CONFIGURATION & PRIVACY LEDGER</div>
+          <h1 class="view-title">Engine <em>settings.</em></h1>
+          <p class="view-subtitle">
+            Configure frame differencing sensitivity, settling window thresholds, model inference transparency, and local data retention.
+          </p>
+        </header>
+
+        <div class="settings-card">
+          <h2 class="settings-card-title">Vision Model & Inference Execution</h2>
+          <p class="settings-card-desc">Strict transparency regarding execution environment and network usage.</p>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Inference Runtime</div>
+              <div class="form-group-sub">Model executes client-side in browser WebGL / WebAssembly sandbox.</div>
+            </div>
+            <span class="badge-info-pill">TensorFlow.js Coco-SSD (Local)</span>
+          </div>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Cloud Streaming Status</div>
+              <div class="form-group-sub">No raw camera video or audio is ever streamed to external cloud servers.</div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-green);">ZERO CLOUD STREAMING · 100% LOCAL</span>
+          </div>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Settling Window Delay</div>
+              <div class="form-group-sub">Wait time after motion stops before capturing stable end-state frame</div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600;">1.5 Seconds</span>
+          </div>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Motion Threshold</div>
+              <div class="form-group-sub">Pixel difference required to trigger motion detection layer</div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600;">4.0% Pixel Area</span>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h2 class="settings-card-title">Local-First Storage & Data Deletion</h2>
+          <p class="settings-card-desc">Persistent local database management and GDPR-compliant complete data purge.</p>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Database Engine</div>
+              <div class="form-group-sub">Local browser IndexedDB (phantom_spatial_memory_v1)</div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--slate-gray);">IndexedDB Active</span>
+          </div>
+          <div class="form-group-row">
+            <div>
+              <div class="form-group-label">Evidence Snapshot Retention</div>
+              <div class="form-group-sub">Retains only key verified state change snapshots as proof receipts</div>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--slate-gray);">20 Frames Max</span>
+          </div>
+          <div style="margin-top: 24px; display: flex; gap: 14px;">
+            <button class="btn-pill-outline" type="button" onclick="alert('Exporting JSON spatial database snapshot...');">
+              <span>Export Database (JSON)</span>
+            </button>
+            <button class="btn-pill-outline" type="button" style="color: #dc2626; border-color: rgba(220, 38, 38, 0.3);" onclick="if(confirm('Purge all physical records and reset to baseline seed?')) { indexedDB.deleteDatabase('phantom_spatial_memory_v1'); window.location.reload(); }">
+              <span>Purge All Records</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Object Movement History Drawer (Modal) -->
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-modal="true" role="dialog">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <div>
+          <h3 id="drawerTitle" style="font-family: var(--font-display); font-size: 26px; font-weight: 400; margin: 0 0 4px; color: var(--ink-black);"></h3>
+          <div id="drawerSubtitle" style="font-family: var(--font-mono); font-size: 11px; color: var(--slate-gray);"></div>
+        </div>
+        <button class="drawer-close-btn" id="drawerCloseBtn" type="button" aria-label="Close drawer">✕</button>
+      </div>
+      <div class="drawer-body" id="drawerBody">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Engine Dependencies -->
+  <script src="engine/storage.js?v=1.0.0"></script>
+  <script src="engine/capture.js?v=1.0.0"></script>
+  <script src="engine/change-detection.js?v=1.0.0"></script>
+  <script src="engine/vision.js?v=1.0.0"></script>
+  <script src="engine/spatial-memory.js?v=1.0.0"></script>
+  <script src="engine/search.js?v=1.0.0"></script>
+  <script src="engine/index.js?v=1.0.0"></script>
+  <script src="workspace.js?v=1.0.0"></script>
+</body>
+</html>

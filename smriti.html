@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F3F0EE">
+  <meta name="description" content="SMRITI — Home Intelligence & Spatial Memory powered by PHANTOM.">
+  <title>SMRITI — Home Intelligence & Spatial Memory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="module-shared.css?v=1.0.0">
+  <style>
+    :root {
+      --module-accent: #CF4500;
+      --module-accent-light: #F37338;
+      --module-accent-rgb: 207, 69, 0;
+    }
+  </style>
+</head>
+<body data-module="smriti">
+  <!-- Top Global Header -->
+  <header class="module-site-header">
+    <div class="module-header-left">
+      <a href="phantom.html" class="module-brand">
+        <span>PHANTOM</span>
+        <span class="module-brand-sep">/</span>
+        <span class="module-brand-name">SMRITI</span>
+      </a>
+      <span style="font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: var(--radius-pill); background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa;">
+        01 · HOME
+      </span>
+    </div>
+
+    <div class="module-header-center">
+      <nav class="module-nav-pills" aria-label="Ecosystem Switcher">
+        <a href="smriti.html" class="module-nav-link is-active">01 SMRITI</a>
+        <a href="lumen.html" class="module-nav-link">02 LUMEN</a>
+        <a href="aegis.html" class="module-nav-link">03 AEGIS</a>
+        <a href="forge.html" class="module-nav-link">04 FORGE</a>
+        <a href="meridian.html" class="module-nav-link">05 MERIDIAN</a>
+        <a href="sentinel.html" class="module-nav-link">06 SENTINEL</a>
+        <a href="sense.html" class="module-nav-link">07 SENSE</a>
+      </nav>
+    </div>
+
+    <div class="module-header-right">
+      <a href="workspace.html" class="btn-nav-primary">
+        <span>Launch Table Workspace →</span>
+      </a>
+      <a href="index.html" class="btn-nav-outline">
+        <span>Cinematic Story →</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="module-main-wrap">
+    <!-- Hero Section -->
+    <section class="module-hero-block">
+      <div class="module-tagline-eyebrow">
+        <span class="dot"></span>
+        <span>SPECIALIZED HOME INTELLIGENCE · MODULE 01</span>
+      </div>
+      <h1 class="module-headline">
+        Your living space,<br><em>remembered.</em>
+      </h1>
+      <p class="module-lead">
+        SMRITI applies PHANTOM's spatial intelligence to residential environments, smart homes, and family spaces. By quietly observing physical change, verifying object locations, and recording temporal room transformations, SMRITI eliminates everyday disorientation and provides automated asset documentation.
+      </p>
+      <div class="module-cta-row">
+        <button class="btn-nav-primary" type="button" onclick="document.getElementById('smritiStageSection').scrollIntoView({ behavior: 'smooth' });">
+          <span>Inspect Home Matrix</span>
+        </button>
+        <a href="index.html#reality-diff-compare" class="btn-nav-outline">
+          <span>View Reality Diff</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="module-metric-ribbon">
+      <div class="module-metric-cell">
+        <div class="cell-label">Tracked Household Items</div>
+        <div class="cell-value">142 Assets</div>
+        <div class="cell-sub">Across 4 mapped residential rooms</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Everyday Recall Precision</div>
+        <div class="cell-value">Centimeter Scale</div>
+        <div class="cell-sub">Gently verifies location relative to furniture</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Temporal Memory Horizon</div>
+        <div class="cell-value">Continuous</div>
+        <div class="cell-sub">Non-intrusive event state logging</div>
+      </div>
+      <div class="module-metric-cell">
+        <div class="cell-label">Household Privacy</div>
+        <div class="cell-value">100% Local</div>
+        <div class="cell-sub">Frames remain in local browser memory</div>
+      </div>
+    </section>
+
+    <!-- Interactive Spatial Stage Layout -->
+    <section class="module-stage-grid" id="smritiStageSection">
+      <div class="stage-main-card">
+        <div class="stage-card-header">
+          <div class="stage-header-title">
+            <span class="star">✦</span>
+            <span>Spatial State Matrix — Residential Living Space</span>
+          </div>
+          <div class="stage-pills-selector">
+            <button class="stage-select-btn is-active" type="button" data-layer="living">Living Room</button>
+            <button class="stage-select-btn" type="button" data-layer="study">Home Office / Desk</button>
+            <button class="stage-select-btn" type="button" data-layer="entry">Hallway Landing Tray</button>
+          </div>
+        </div>
+
+        <div class="stage-canvas-wrapper">
+          <canvas id="smritiStageCanvas"></canvas>
+          <div class="stage-hud-overlay">
+            <div class="stage-hud-pill">
+              <span>ENVIRONMENT:</span>
+              <strong style="color: #fff;">RESIDENTIAL ZONE 01</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>ACTIVE VIEW:</span>
+              <strong id="smritiHudLayer">LIVING ROOM</strong>
+            </div>
+            <div class="stage-hud-pill">
+              <span>MEMORY RECEIPTS:</span>
+              <strong style="color: #ea580c;">4 CONFIRMED</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="stage-sidebar-col">
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Home Capabilities</div>
+          <ul class="panel-list">
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Everyday item spatial tracking (glasses, keys, medication, remotes)</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Dementia & age-related memory support with gentle reassurance receipts</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Automated home contents documentation for insurance claims</span>
+            </li>
+            <li class="panel-list-item">
+              <span class="bullet">◆</span>
+              <span>Moving box & storage locker spatial index without manual barcodes</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-panel-card">
+          <div class="panel-card-title">Residential Contexts</div>
+          <div class="env-tags-cloud">
+            <span class="env-tag-badge">Family Homes</span>
+            <span class="env-tag-badge">Apartments & Lofts</span>
+            <span class="env-tag-badge">Senior Living Suites</span>
+            <span class="env-tag-badge">Home Workshops & Garages</span>
+            <span class="env-tag-badge">Self-Storage Units</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Domain-Specific Memory Receipts Table -->
+    <section class="module-editorial-section" id="receiptsSection">
+      <div class="section-head-split">
+        <div>
+          <h2 class="section-head-title">Household Memory <em>Receipts.</em></h2>
+          <p style="font-size: 14.5px; color: var(--slate-gray); margin: 0;">Verified item movements and spatial delta log for residential living areas.</p>
+        </div>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--module-accent); font-weight: 600;">SMRITI MEMORY RECEIPT</span>
+      </div>
+
+      <table class="domain-table">
+        <thead>
+          <tr>
+            <th>Household Item</th>
+            <th>Primary Room</th>
+            <th>Previous Known Position</th>
+            <th>Current Verified Location</th>
+            <th>Observation State</th>
+            <th>Memory Receipt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Reading Glasses</strong></td>
+            <td>Living Room / Study</td>
+            <td>Side Table beside armchair</td>
+            <td>Bookshelf third shelf right</td>
+            <td><span class="status-badge-pill verified">Confirmed Moved</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Moved 4:40 PM</td>
+          </tr>
+          <tr>
+            <td><strong>House Keys</strong></td>
+            <td>Entryway</td>
+            <td>Front Coat Rack Hook</td>
+            <td>Hallway Console Marble Tray</td>
+            <td><span class="status-badge-pill verified">Confirmed Moved</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Moved 1:15 PM</td>
+          </tr>
+          <tr>
+            <td><strong>Blood Pressure Monitor</strong></td>
+            <td>Master Bedroom</td>
+            <td>Bedside Nightstand</td>
+            <td>Bathroom Vanity Shelf</td>
+            <td><span class="status-badge-pill verified">Relocated</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Moved 9:02 AM</td>
+          </tr>
+          <tr>
+            <td><strong>TV Remote Controller</strong></td>
+            <td>Media Room</td>
+            <td>Coffee Table Center</td>
+            <td>Between Sofa Cushions (Occluded)</td>
+            <td><span class="status-badge-pill alert">Occluded Flag</span></td>
+            <td style="font-family: var(--font-mono); font-size: 12px;">Last Seen 2:30 PM</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Bottom Action CTA -->
+    <section class="module-bottom-cta">
+      <div>
+        <h3 class="bottom-cta-title">Test table observation on your desk.</h3>
+        <p class="bottom-cta-desc">Test the shared spatial intelligence engine live using your browser webcam or phone.</p>
+      </div>
+      <div class="bottom-cta-actions">
+        <a href="workspace.html" class="btn-nav-primary" style="background: var(--module-accent); border-color: var(--module-accent); color: #fff;">
+          <span>Open Workspace Monitor →</span>
+        </a>
+        <a href="index.html" class="btn-nav-outline" style="background: transparent; color: #fff; border-color: rgba(255,255,255,0.2);">
+          <span>Cinematic Home Story</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Interactive Home Stage Simulation
+    (function () {
+      const canvas = document.getElementById('smritiStageCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = (canvas.width = canvas.parentElement.clientWidth);
+      let h = (canvas.height = canvas.parentElement.clientHeight);
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = canvas.parentElement.clientWidth;
+        h = canvas.height = canvas.parentElement.clientHeight;
+      });
+
+      const layers = {
+        living: [
+          { name: 'Reading Glasses (Bookshelf)', x: 0.28, y: 0.45, w: 70, h: 40, status: 'VERIFIED' },
+          { name: 'Armchair Side Table', x: 0.50, y: 0.50, w: 90, h: 70, status: 'UNOCCUPIED' },
+          { name: 'TV Remote (Sofa Cushion)', x: 0.72, y: 0.50, w: 60, h: 40, status: 'OCCLUDED' }
+        ],
+        study: [
+          { name: 'Reading Glasses', x: 0.25, y: 0.45, w: 60, h: 40, status: 'VERIFIED' },
+          { name: 'MacBook Pro Anchor', x: 0.50, y: 0.50, w: 140, h: 90, status: 'ANCHOR' },
+          { name: 'Hydro Flask Water Bottle', x: 0.75, y: 0.40, w: 40, h: 80, status: 'VERIFIED' }
+        ],
+        entry: [
+          { name: 'House Keys (Console Tray)', x: 0.35, y: 0.50, w: 60, h: 40, status: 'IN TRAY' },
+          { name: 'Leather Wallet', x: 0.65, y: 0.50, w: 70, h: 50, status: 'IN TRAY' }
+        ]
+      };
+
+      let currentLayer = 'living';
+
+      document.querySelectorAll('.stage-select-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.stage-select-btn').forEach((b) => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          currentLayer = btn.dataset.layer;
+          const hud = document.getElementById('smritiHudLayer');
+          if (hud) hud.textContent = btn.textContent.toUpperCase();
+        });
+      });
+
+      function render() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Home residential floorplan grid
+        ctx.strokeStyle = 'rgba(207, 69, 0, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+        }
+        for (let y = 0; y < h; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+
+        // Room boundary
+        ctx.strokeStyle = 'rgba(207, 69, 0, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(40, 40, w - 80, h - 80);
+
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(207, 69, 0, 0.85)';
+        ctx.fillText('RESIDENTIAL LIVING ROOM · ZONE 01 FLOORPLAN', 50, 60);
+
+        // Render layer items
+        const list = layers[currentLayer] || [];
+        list.forEach((item) => {
+          const ix = item.x * w - item.w / 2;
+          const iy = item.y * h - item.h / 2;
+
+          ctx.fillStyle = item.status === 'OCCLUDED' ? 'rgba(40, 20, 16, 0.9)' : 'rgba(26, 20, 18, 0.9)';
+          ctx.strokeStyle = item.status === 'OCCLUDED' ? '#f59e0b' : '#cf4500';
+          ctx.lineWidth = 1.5;
+
+          ctx.fillRect(ix, iy, item.w, item.h);
+          ctx.strokeRect(ix, iy, item.w, item.h);
+
+          ctx.fillStyle = item.status === 'OCCLUDED' ? '#f59e0b' : '#22c55e';
+          ctx.beginPath();
+          ctx.arc(ix + 12, iy + 14, 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.fillText(item.name, ix + item.w / 2, iy + item.h + 16);
+          ctx.fillStyle = item.status === 'OCCLUDED' ? '#fbbf24' : '#f37338';
+          ctx.fillText(item.status, ix + item.w / 2, iy + item.h + 28);
+          ctx.textAlign = 'left';
+        });
+
+        requestAnimationFrame(render);
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>
