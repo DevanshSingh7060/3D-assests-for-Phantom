@@ -12,9 +12,12 @@
   --phantom-line-faint: rgba(255, 255, 255, 0.08);
   --phantom-line-active: rgba(255, 255, 255, 0.35);
 
-  --smriti-module-accent: #f07b42;
-  --smriti-module-glow: rgba(240, 123, 66, 0.25);
-  --smriti-aura-rgb: 240, 123, 66;
+  --disha-module-accent: #f07b42;
+  --disha-module-glow: rgba(240, 123, 66, 0.25);
+  --disha-aura-rgb: 240, 123, 66;
+  --smriti-module-accent: var(--disha-module-accent);
+  --smriti-module-glow: var(--disha-module-glow);
+  --smriti-aura-rgb: var(--disha-aura-rgb);
   --aegis-module-accent: #6ec1e4;
   --aegis-module-glow: rgba(110, 193, 228, 0.22);
   --aegis-aura-rgb: 110, 193, 228;
@@ -166,36 +169,48 @@
   }
 }
 
-/* SMRITI Module Aura: Warm Orange (#f07b42) */
-.phantom-aura-glow.aura-smriti::before {
+/* Default Fairy Dream Aura: Soft Cotton-Candy Pink & Lilac */
+.phantom-aura-glow.aura-default::before {
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(var(--smriti-aura-rgb), 0.54) 0%,
-    rgba(var(--smriti-aura-rgb), 0.32) 28%,
-    rgba(var(--smriti-aura-rgb), 0.11) 56%,
-    rgba(var(--smriti-aura-rgb), 0) 76%
+    rgba(255, 175, 210, 0.48) 0%,
+    rgba(215, 180, 255, 0.28) 28%,
+    rgba(175, 225, 255, 0.12) 56%,
+    rgba(255, 200, 230, 0) 76%
   );
 }
 
-/* AEGIS Module Aura: Cyan / Blue (#6ec1e4) */
+/* SMRITI Module Aura: Warm Peach Pink (#ff9e7d) */
+.phantom-aura-glow.aura-smriti::before,
+.phantom-aura-glow.aura-disha::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 158, 125, 0.52) 0%,
+    rgba(255, 185, 160, 0.30) 28%,
+    rgba(255, 205, 190, 0.10) 56%,
+    rgba(255, 158, 125, 0) 76%
+  );
+}
+
+/* AEGIS Module Aura: Sweet Celestial Cyan (#7edeff) */
 .phantom-aura-glow.aura-aegis::before {
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(var(--aegis-aura-rgb), 0.50) 0%,
-    rgba(var(--aegis-aura-rgb), 0.28) 28%,
-    rgba(var(--aegis-aura-rgb), 0.10) 56%,
-    rgba(var(--aegis-aura-rgb), 0) 76%
+    rgba(126, 222, 255, 0.50) 0%,
+    rgba(165, 235, 255, 0.28) 28%,
+    rgba(195, 245, 255, 0.10) 56%,
+    rgba(126, 222, 255, 0) 76%
   );
 }
 
-/* LUMEN Module Aura: Violet / Purple (#b898ff) */
+/* LUMEN Module Aura: Magical Dreamy Lilac (#c9a4ff) */
 .phantom-aura-glow.aura-lumen::before {
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(var(--lumen-aura-rgb), 0.50) 0%,
-    rgba(var(--lumen-aura-rgb), 0.28) 28%,
-    rgba(var(--lumen-aura-rgb), 0.10) 56%,
-    rgba(var(--lumen-aura-rgb), 0) 76%
+    rgba(201, 164, 255, 0.52) 0%,
+    rgba(225, 195, 255, 0.30) 28%,
+    rgba(240, 215, 255, 0.11) 56%,
+    rgba(201, 164, 255, 0) 76%
   );
 }
 
@@ -292,7 +307,7 @@
   justify-content: center;
   z-index: 4; /* Central blob layer: in front of connection SVG (z-index 3) and aura (z-index 2) */
   pointer-events: auto;
-  cursor: grab;
+  cursor: pointer;
 }
 
 .phantom-canvas-container:active {
@@ -304,6 +319,63 @@
   height: 100% !important;
   display: block;
   outline: none;
+}
+
+/* Cute Floating Interactive Poke Hint */
+.phantom-poke-hint {
+  position: absolute;
+  bottom: clamp(75px, 11vh, 105px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(255, 230, 245, 0.08);
+  border: 1px solid rgba(255, 185, 220, 0.28);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ffd4e8;
+  backdrop-filter: blur(12px);
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0.9;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  animation: cutePulseGlow 3s ease-in-out infinite;
+  user-select: none;
+}
+
+.phantom-poke-hint .poke-sparkle {
+  color: #ffe066;
+  font-size: 13px;
+  animation: cuteSparkleSpin 4s linear infinite;
+  display: inline-block;
+}
+
+.phantom-experience-root.is-detail-active .phantom-poke-hint {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  pointer-events: none;
+}
+
+@keyframes cutePulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(255, 160, 210, 0.2);
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(255, 180, 230, 0.45);
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
+@keyframes cuteSparkleSpin {
+  0% { transform: rotate(0deg) scale(0.9); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(0.9); }
 }
 
 /* ==============================================================================
@@ -541,7 +613,8 @@
   opacity: 1;
 }
 
-.phantom-experience-root.is-stabilized .phantom-node-smriti {
+.phantom-experience-root.is-stabilized .phantom-node-smriti,
+.phantom-node-disha {
   transition-delay: 0.08s, 0s;
 }
 
@@ -1184,7 +1257,7 @@ body.phantom-experience-open .site-header {
    ============================================================================== */
 @media (max-width: 900px) {
   .phantom-center-anchor {
-    top: 13%;
+    top: clamp(52px, 8vh, 76px);
   }
 }
 
@@ -1193,14 +1266,15 @@ body.phantom-experience-open .site-header {
   .phantom-detail-panel.panel-side-left,
   .phantom-detail-panel.panel-side-right {
     top: auto;
-    bottom: 20px;
-    left: 16px !important;
-    right: 16px !important;
+    bottom: 16px;
+    left: clamp(12px, 3vw, 16px) !important;
+    right: clamp(12px, 3vw, 16px) !important;
     width: auto;
-    max-height: 62vh;
+    max-height: 60vh;
     padding: 0;
     transform: translateY(30px) !important;
     filter: blur(8px);
+    z-index: 40;
   }
 
   .phantom-experience-root.is-detail-active .phantom-detail-panel,
@@ -1212,17 +1286,17 @@ body.phantom-experience-open .site-header {
 
   .phantom-detail-content {
     padding: 18px 20px;
-    max-height: 60vh;
+    max-height: 58vh;
     overflow-y: auto;
     gap: 10px;
   }
 
   .phantom-detail-name {
-    font-size: 24px;
+    font-size: clamp(20px, 5vw, 24px);
   }
 
   .phantom-detail-subtitle {
-    font-size: 14px;
+    font-size: 13.5px;
   }
 
   .phantom-detail-meta-grid {
@@ -1232,7 +1306,7 @@ body.phantom-experience-open .site-header {
 
 @media (max-width: 640px) {
   .phantom-ui-layer {
-    padding: 16px;
+    padding: 14px 16px;
   }
 
   .phantom-telemetry-badge {
@@ -1240,16 +1314,32 @@ body.phantom-experience-open .site-header {
   }
 
   .phantom-center-anchor {
-    top: 14%;
-    width: 90%;
+    top: clamp(48px, 7.5vh, 68px);
+    width: 92%;
+    max-width: 440px;
+  }
+
+  .phantom-eyebrow-line {
+    gap: 8px;
+  }
+
+  .phantom-eyebrow-text {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+  }
+
+  .phantom-line-rule {
+    max-width: 24px;
   }
 
   .phantom-core-title {
-    font-size: 26px;
+    font-size: clamp(22px, 6vw, 30px);
+    letter-spacing: 0.10em;
   }
 
   .phantom-core-desc {
-    font-size: 14px;
+    font-size: clamp(12px, 3.2vw, 14px);
+    margin-top: 2px;
   }
 
   .phantom-module-node {
@@ -1257,20 +1347,35 @@ body.phantom-experience-open .site-header {
   }
 
   .phantom-node-pill {
-    padding: 8px 14px;
-    gap: 8px;
+    padding: 7px 12px;
+    gap: 7px;
   }
 
   .phantom-node-title {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .phantom-node-subtitle {
-    font-size: 8.5px;
+    font-size: 8px;
+  }
+
+  .phantom-squish-hint {
+    bottom: clamp(48px, 7.5vh, 64px);
+  }
+
+  .phantom-reactive-aura {
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
+  }
+
+  .phantom-collapse-warp {
+    inset: 0;
   }
 
   .phantom-bottom-bar {
     justify-content: center;
+    bottom: 14px;
+    font-size: 8px;
   }
 
   .phantom-esc-hint {
@@ -1278,9 +1383,29 @@ body.phantom-experience-open .site-header {
   }
 }
 
-/* ==============================================================================
-   ACCESSIBILITY: PREFERS-REDUCED-MOTION
-   ============================================================================== */
+@media (max-width: 380px) {
+  .phantom-center-anchor {
+    top: 44px;
+  }
+
+  .phantom-core-title {
+    font-size: 20px;
+  }
+
+  .phantom-node-pill {
+    padding: 5px 10px;
+    gap: 6px;
+  }
+
+  .phantom-node-title {
+    font-size: 10px;
+  }
+
+  .phantom-detail-content {
+    padding: 14px 16px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .phantom-experience-root {
     transition: opacity 0.4s ease, visibility 0.4s ease !important;

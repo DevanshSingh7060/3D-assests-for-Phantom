@@ -4,7 +4,7 @@
   const startButtons = [...document.querySelectorAll('[data-start-story]')];
   const startStory = () => {
     document.getElementById('home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    window.setTimeout(() => window.triggerSmritiStory?.(), 250);
+    window.setTimeout(() => (window.triggerDishaStory || window.triggerSmritiStory)?.(), 250);
   };
   $('btnNavStart')?.addEventListener('click', startStory);
   $('btnFooterStart')?.addEventListener('click', startStory);
@@ -12,7 +12,7 @@
 
   $('btnFindGlasses')?.addEventListener('click', () => {
     document.getElementById('home')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    window.setTimeout(() => window.smritiApp?.findGlasses(), 250);
+    window.setTimeout(() => (window.dishaApp || window.smritiApp)?.findGlasses(), 250);
   });
 
   const slider = $('diffRangeSlider');
@@ -27,7 +27,7 @@
     if (thumb) thumb.style.left = `${value}%`;
     if (readout) readout.textContent = value < 48 ? 'The glasses begin on the side table.' : value < 88 ? 'One meaningful change detected.' : 'The glasses are now on the bookshelf.';
     ghost?.classList.toggle('visible', value > 68);
-    window.smritiApp?.scrubRealityDiff(value / 100);
+    (window.dishaApp || window.smritiApp)?.scrubRealityDiff(value / 100);
   };
   slider?.addEventListener('input', updateDiff);
   updateDiff();
@@ -41,7 +41,8 @@
   const navToggle = $('navToggle');
   const siteNav = $('siteNav');
   if (navToggle && siteNav) {
-    navToggle.addEventListener('click', () => {
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isOpen = siteNav.classList.toggle('open');
       navToggle.classList.toggle('open', isOpen);
       navToggle.setAttribute('aria-expanded', String(isOpen));
@@ -52,6 +53,20 @@
         navToggle.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
       });
+    });
+    document.addEventListener('click', (e) => {
+      if (siteNav.classList.contains('open') && !siteNav.contains(e.target) && !navToggle.contains(e.target)) {
+        siteNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && siteNav.classList.contains('open')) {
+        siteNav.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 

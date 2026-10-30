@@ -15,7 +15,7 @@
   const PHANTOM_MODULES_DATA = {
     smriti: {
       id: 'smriti',
-      name: 'SMRITI',
+      name: 'DISHA',
       number: '01',
       eyebrow: 'INTELLIGENCE MODULE / 01',
       tag: 'Specialized Module · 01',
@@ -23,7 +23,7 @@
       env: 'Home Environment',
       side: 'left',
       subtitle: 'Your environment, understood.',
-      desc: "SMRITI is PHANTOM's home intelligence layer, designed to interpret the everyday environment and turn contextual observations into useful, meaningful insights. It connects environmental awareness with personalized interactions to create a more responsive living experience.",
+      desc: "DISHA is PHANTOM's home intelligence layer, designed to interpret the everyday environment and turn contextual observations into useful, meaningful insights. It connects environmental awareness with personalized interactions to create a more responsive living experience.",
       capabilities: [
         'Contextual environment awareness',
         'Personalized home intelligence',
@@ -37,7 +37,7 @@
         { label: 'ARCHITECTURE', value: 'Spatial Memory Engine' },
         { label: 'SYSTEM STATE', value: 'Active System' }
       ],
-      actionText: 'Explore SMRITI Experience',
+      actionText: 'Explore DISHA Experience',
       actionType: 'return-home',
       isPlanned: false,
       color: '#f07b42',
@@ -104,6 +104,7 @@
       glowRgb: '110, 193, 228'
     }
   };
+  PHANTOM_MODULES_DATA.disha = PHANTOM_MODULES_DATA.smriti;
 
   // ----------------------------------------------------------------------------
   // CUBIC BEZIER EASING SOLVER: cubic-bezier(0.22, 1, 0.36, 1)
@@ -232,14 +233,37 @@
       const THREE = window.THREE;
       this.clock = new THREE.Clock();
 
-      // Reactive color aura state & module signature colors (default: glowing molten orange)
-      this.defaultHighlightColor = new THREE.Color(0xf07b42);
-      this.targetHighlightColor = new THREE.Color(0xf07b42);
+      // Reactive color aura state & module signature colors (cute & glittery palette)
+      this.defaultHighlightColor = new THREE.Color(0xffa8c8); // soft fairy rose-pink
+      this.targetHighlightColor = new THREE.Color(0xffa8c8);
+      this.defaultCoreColor = new THREE.Color(0xffd5e8); // strawberry-milk marshmallow
       this.moduleColors = {
-        smriti: new THREE.Color(0xf07b42),
-        lumen: new THREE.Color(0xb898ff),
-        aegis: new THREE.Color(0x6ec1e4)
+        smriti: new THREE.Color(0xff9e7d), // warm peachy coral
+        lumen: new THREE.Color(0xc9a4ff),  // magical lavender
+        aegis: new THREE.Color(0x7edeff)   // sweet celestial cyan
       };
+
+      // Cute Squish & Jelly Spring Physics State
+      this.squish = { x: 1, y: 1, z: 1, vx: 0, vy: 0, vz: 0 };
+      this.jiggle = 0;
+      this.expression = 'normal'; // 'normal' | 'happy'
+      this.happyTimer = 0;
+      this.eyeBlink = {
+        isBlinking: false,
+        progress: 0,
+        nextBlink: performance.now() + 3200
+      };
+      this.gaze = { x: 0, y: 0, targetX: 0, targetY: 0 };
+      this.sparkleBursts = [];
+      this.orbitSparkles = [];
+      this.sparkleGroup = null;
+      this.burstGroup = null;
+      this.faceMesh = null;
+      this.faceCanvas = null;
+      this.faceCtx = null;
+      this.faceTexture = null;
+      this.crownStar = null;
+      this.audioCtx = null;
 
       // Asymmetric detail state and blob movement
       this.isDetailOpen = false;
@@ -247,6 +271,8 @@
       this.selectedSide = null; // 'left' | 'right' | null
       this.currentBlobShiftX = 0;
       this.targetBlobShiftX = 0;
+      this.currentBlobShiftY = 0;
+      this.targetBlobShiftY = 0;
       this.currentBlobScale = 1.0;
       this.targetBlobScale = 1.0;
 
@@ -255,6 +281,7 @@
       this.blobTransitionStartTime = 0;
       this.blobTransitionDuration = 750; // ms
       this.blobStartShiftX = 0;
+      this.blobStartShiftY = 0;
       this.blobStartScale = 1.0;
 
       // DOM Elements cache
@@ -292,6 +319,7 @@
 
         <!-- BACKGROUND LAYER: Reactive Color Aura (Behind SVG Lines & Central Blob) -->
         <div class="phantom-reactive-aura" id="phantomReactiveAura" aria-hidden="true">
+          <div class="phantom-aura-glow aura-default is-active" data-module="default"></div>
           <div class="phantom-aura-glow aura-smriti" data-module="smriti"></div>
           <div class="phantom-aura-glow aura-lumen" data-module="lumen"></div>
           <div class="phantom-aura-glow aura-aegis" data-module="aegis"></div>
@@ -332,6 +360,11 @@
           <canvas class="phantom-webgl-canvas" id="phantomWebglCanvas"></canvas>
         </div>
 
+        <!-- Cute Interactive Poke Cue -->
+        <div class="phantom-poke-hint" id="phantomPokeHint" aria-hidden="true">
+          <span class="poke-sparkle">✦</span> poke to squish &amp; sparkle <span class="poke-sparkle">✦</span>
+        </div>
+
         <!-- ADAPTIVE INTELLIGENCE INFORMATION PANEL (LEFT OR RIGHT SIDE) -->
         <aside class="phantom-detail-panel panel-side-left" id="phantomDetailPanel" aria-label="Module Detail">
           <div class="phantom-detail-content">
@@ -348,7 +381,7 @@
 
             <!-- Header Row: Title & Status Badge -->
             <div class="phantom-detail-header-row phantom-detail-stagger">
-              <h2 class="phantom-detail-name" id="detailName">SMRITI</h2>
+              <h2 class="phantom-detail-name" id="detailName">DISHA</h2>
               <div class="phantom-detail-status-badge" id="detailStatusBadge">
                 <span class="status-pulse-dot" id="detailStatusDot"></span>
                 <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
@@ -376,7 +409,7 @@
             <div class="phantom-detail-module-switch phantom-detail-stagger" id="detailModuleSwitch" aria-label="Switch Intelligence">
               <span class="detail-switch-label">INTELLIGENCE SUITE</span>
               <div class="detail-switch-pills">
-                <button class="detail-switch-pill is-active" data-switch="smriti" type="button">SMRITI</button>
+                <button class="detail-switch-pill is-active" data-switch="smriti" type="button">DISHA</button>
                 <button class="detail-switch-pill" data-switch="lumen" type="button">LUMEN</button>
                 <button class="detail-switch-pill" data-switch="aegis" type="button">AEGIS</button>
               </div>
@@ -385,7 +418,7 @@
             <!-- Action & Return Controls -->
             <div class="phantom-detail-actions phantom-detail-stagger">
               <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
-                <span id="detailActionText">Explore SMRITI Experience</span>
+                <span id="detailActionText">Explore DISHA Experience</span>
                 <span class="action-arrow" aria-hidden="true">→</span>
               </button>
               <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
@@ -404,11 +437,11 @@
 
         <div class="phantom-nodes-container" id="phantomNodesContainer">
           <!-- MODULE 01: SMRITI (Upper-Left) -->
-          <div class="phantom-module-node phantom-node-smriti" id="nodeSmriti" data-module="smriti" role="button" tabindex="0" aria-label="Select SMRITI - Home Intelligence">
+          <div class="phantom-module-node phantom-node-smriti" id="nodeSmriti" data-module="smriti" role="button" tabindex="0" aria-label="Select DISHA - Home Intelligence">
             <div class="phantom-node-pill">
               <span class="phantom-node-beacon" aria-hidden="true"></span>
               <div class="phantom-node-meta">
-                <span class="phantom-node-title">SMRITI</span>
+                <span class="phantom-node-title">DISHA</span>
                 <span class="phantom-node-subtitle">Home Intelligence</span>
               </div>
             </div>
@@ -439,9 +472,9 @@
 
         <div class="phantom-ui-layer" id="phantomUiLayer">
           <div class="phantom-header-bar">
-            <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to SMRITI website">
+            <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to DISHA website">
               <span class="phantom-return-arrow" aria-hidden="true">←</span>
-              <span>Return to SMRITI</span>
+              <span>Return to DISHA</span>
               <span class="phantom-return-tag">[ESC]</span>
             </button>
             <div class="phantom-telemetry-badge">
@@ -473,10 +506,12 @@
       this.dom.maskBlobCircle = root.querySelector('#maskBlobCircle');
       this.dom.aura = root.querySelector('#phantomReactiveAura');
       this.dom.auraGlows = {
+        default: root.querySelector('.phantom-aura-glow.aura-default'),
         smriti: root.querySelector('.phantom-aura-glow.aura-smriti'),
         lumen: root.querySelector('.phantom-aura-glow.aura-lumen'),
         aegis: root.querySelector('.phantom-aura-glow.aura-aegis')
       };
+      this.dom.pokeHint = root.querySelector('#phantomPokeHint');
       this.dom.returnBtn = root.querySelector('#btnPhantomReturn');
       this.dom.centerAnchor = root.querySelector('#phantomCenterAnchor');
 
@@ -540,8 +575,13 @@
 
       // Scene & Camera
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-      this.camera.position.set(0, 0, 7.2);
+      const aspect = width / height;
+      this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100);
+      const isNarrow = width < 420;
+      const isMobile = width < 640;
+      const initialZ = aspect < 0.75 ? Math.min(10.2, 7.2 * (0.75 / aspect)) : 7.2;
+      this.camera.position.set(0, 0, initialZ);
+      this.targetBlobScale = isNarrow ? 0.62 : (isMobile ? 0.72 : 1.0);
 
       // Organic Fluid Blob Geometry (Subdivided Sphere)
       const geometry = new THREE.IcosahedronGeometry(1.7, 52);
@@ -733,18 +773,18 @@
 
       if (!this.isDetailOpen) {
         // Balanced Overview Constellation (Surrounding Centered Blob)
-        // SMRITI: upper-left, LUMEN: lower-left, AEGIS: upper-right
+        // SMRITI: upper-left, LUMEN: lower-left, AEGIS: lower-right
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.26, y: h * 0.24 },
-            lumen: { x: w * 0.28, y: h * 0.76 },
-            aegis: { x: w * 0.74, y: h * 0.48 }
+            smriti: { x: w * 0.50, y: h * 0.23 },
+            lumen: { x: w * 0.24, y: h * 0.78 },
+            aegis: { x: w * 0.76, y: h * 0.78 }
           };
         } else if (isTablet) {
           positions = {
-            smriti: { x: w * 0.22, y: h * 0.32 },
-            lumen: { x: w * 0.24, y: h * 0.72 },
-            aegis: { x: w * 0.78, y: h * 0.42 }
+            smriti: { x: w * 0.20, y: h * 0.26 },
+            lumen: { x: w * 0.22, y: h * 0.78 },
+            aegis: { x: w * 0.80, y: h * 0.50 }
           };
         } else {
           positions = {
@@ -757,9 +797,9 @@
         // Detail Mode: Panel on LEFT, Blob Shifted RIGHT
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.25, y: h * 0.14 },
-            lumen: { x: w * 0.50, y: h * 0.14 },
-            aegis: { x: w * 0.75, y: h * 0.14 }
+            smriti: { x: w * 0.20, y: h * 0.12 },
+            lumen: { x: w * 0.50, y: h * 0.12 },
+            aegis: { x: w * 0.80, y: h * 0.12 }
           };
         } else {
           const isSmriti = this.selectedModuleId === 'smriti';
@@ -773,9 +813,9 @@
         // Detail Mode: Panel on RIGHT (AEGIS), Blob Shifted LEFT
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.25, y: h * 0.14 },
-            lumen: { x: w * 0.50, y: h * 0.14 },
-            aegis: { x: w * 0.75, y: h * 0.14 }
+            smriti: { x: w * 0.20, y: h * 0.12 },
+            lumen: { x: w * 0.50, y: h * 0.12 },
+            aegis: { x: w * 0.80, y: h * 0.12 }
           };
         } else {
           positions = {
@@ -974,7 +1014,8 @@
 
       // Smoothly return blob to centered overview position and scale (cubic-bezier)
       this.targetBlobShiftX = 0;
-      this.targetBlobScale = 1.0;
+      const _w = window.innerWidth;
+      this.targetBlobScale = _w < 420 ? 0.62 : (_w < 640 ? 0.72 : (_w < 1024 ? 0.85 : 1.0));
       this.blobStartShiftX = this.currentBlobShiftX;
       this.blobStartScale = this.currentBlobScale;
       this.blobTransitionStartTime = performance.now();
@@ -1371,14 +1412,26 @@
         if (!this.renderer || !this.camera) return;
         const w = window.innerWidth;
         const h = window.innerHeight;
-        this.camera.aspect = w / h;
+        const aspect = w / h;
+        this.camera.aspect = aspect;
+
+        const isDesktop = w >= 1024;
+        const isTablet = w >= 640 && w < 1024;
+        const isMobile = w < 640;
+        const isNarrow = w < 420;
+
+        if (aspect < 0.75) {
+          this.camera.position.z = Math.min(10.2, 7.2 * (0.75 / aspect));
+        } else {
+          this.camera.position.z = 7.2;
+        }
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);
 
+        const baseOverviewScale = isNarrow ? 0.62 : (isMobile ? 0.72 : (isTablet ? 0.85 : 1.0));
+
         // Adjust detail shift target on viewport resize
         if (this.isDetailOpen) {
-          const isDesktop = w >= 1024;
-          const isTablet = w >= 640 && w < 1024;
           if (isDesktop) {
             this.targetBlobShiftX = this.selectedSide === 'left' ? 2.05 : -2.05;
             this.targetBlobScale = 0.80;
@@ -1387,8 +1440,10 @@
             this.targetBlobScale = 0.76;
           } else {
             this.targetBlobShiftX = 0;
-            this.targetBlobScale = 0.68;
+            this.targetBlobScale = baseOverviewScale * 0.82;
           }
+        } else {
+          this.targetBlobScale = baseOverviewScale;
         }
 
         this.layoutConstellation();
