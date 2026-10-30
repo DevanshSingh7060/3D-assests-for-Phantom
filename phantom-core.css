@@ -12,12 +12,12 @@
   --phantom-line-faint: rgba(255, 255, 255, 0.08);
   --phantom-line-active: rgba(255, 255, 255, 0.35);
 
-  --disha-module-accent: #f07b42;
-  --disha-module-glow: rgba(240, 123, 66, 0.25);
-  --disha-aura-rgb: 240, 123, 66;
-  --smriti-module-accent: var(--disha-module-accent);
-  --smriti-module-glow: var(--disha-module-glow);
-  --smriti-aura-rgb: var(--disha-aura-rgb);
+  --smriti-module-accent: #f07b42;
+  --smriti-module-glow: rgba(240, 123, 66, 0.25);
+  --smriti-aura-rgb: 240, 123, 66;
+  --disha-module-accent: var(--smriti-module-accent);
+  --disha-module-glow: var(--smriti-module-glow);
+  --disha-aura-rgb: var(--smriti-aura-rgb);
   --aegis-module-accent: #6ec1e4;
   --aegis-module-glow: rgba(110, 193, 228, 0.22);
   --aegis-aura-rgb: 110, 193, 228;

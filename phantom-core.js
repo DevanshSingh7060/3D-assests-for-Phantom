@@ -15,7 +15,7 @@
   const PHANTOM_MODULES_DATA = {
     smriti: {
       id: 'smriti',
-      name: 'DISHA',
+      name: 'SMRITI',
       number: '01',
       eyebrow: 'INTELLIGENCE MODULE / 01',
       tag: 'Specialized Module · 01',
@@ -23,7 +23,7 @@
       env: 'Residential & Private Spaces',
       side: 'left',
       subtitle: 'Your environment, understood.',
-      desc: "DISHA is PHANTOM's home intelligence layer, designed to interpret the everyday environment and turn contextual observations into useful, meaningful insights. It connects environmental awareness with personalized interactions to create a more responsive living experience.",
+      desc: "SMRITI is PHANTOM's home intelligence layer, designed to interpret the everyday environment and turn contextual observations into useful, meaningful insights. It connects environmental awareness with personalized interactions to create a more responsive living experience.",
       capabilities: [
         'Spatial state tracking & drift detection',
         'Personalized residential environmental memory',
@@ -47,8 +47,9 @@
         { label: 'ARCHITECTURE', value: 'Spatial Memory Engine' },
         { label: 'SYSTEM STATE', value: 'Active System' }
       ],
-      actionText: 'Explore DISHA Experience',
-      actionType: 'return-home',
+      actionText: 'Explore SMRITI Experience',
+      actionType: 'navigate',
+      routeUrl: 'smriti.html',
       isPlanned: false,
       color: '#f07b42',
       glowRgb: '240, 123, 66'
@@ -630,7 +631,7 @@
 
               <!-- Header Row: Title & Status Badge -->
               <div class="phantom-detail-header-row phantom-detail-stagger">
-                <h2 class="phantom-detail-name" id="detailName">DISHA</h2>
+                <h2 class="phantom-detail-name" id="detailName">SMRITI</h2>
                 <div class="phantom-detail-status-badge" id="detailStatusBadge">
                   <span class="status-pulse-dot" id="detailStatusDot"></span>
                   <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
@@ -677,7 +678,7 @@
               <!-- Action & Return Controls -->
               <div class="phantom-detail-actions phantom-detail-stagger">
                 <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
-                  <span id="detailActionText">Explore DISHA Experience</span>
+                  <span id="detailActionText">Explore SMRITI Experience</span>
                   <span class="action-arrow" aria-hidden="true">→</span>
                 </button>
                 <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
@@ -706,9 +707,9 @@
 
           <div class="phantom-ui-layer" id="phantomUiLayer">
             <div class="phantom-header-bar">
-              <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to DISHA website">
+              <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to SMRITI website">
                 <span class="phantom-return-arrow" aria-hidden="true">←</span>
-                <span>Return to DISHA</span>
+                <span>Return to SMRITI</span>
                 <span class="phantom-return-tag">[ESC]</span>
               </button>
               <div style="display: flex; align-items: center; gap: 12px;">
@@ -1514,7 +1515,11 @@
       if (!this.isOpen) return;
 
       if (window.location.pathname.endsWith('phantom.html')) {
-        window.location.href = 'index.html';
+        if (document.referrer && (document.referrer.includes('smriti.html') || document.referrer.includes('index.html'))) {
+          window.location.href = document.referrer;
+        } else {
+          window.location.href = 'smriti.html';
+        }
         return;
       }
 
@@ -1900,8 +1905,8 @@
       // 9. Detail Primary Action Button
       this.dom.btnDetailPrimaryAction?.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!this.selectedModuleId) return;
-        const data = PHANTOM_MODULES_DATA[this.selectedModuleId];
+        const moduleId = this.selectedModuleId || 'smriti';
+        const data = PHANTOM_MODULES_DATA[moduleId];
         if (!data || data.isPlanned) return;
 
         if (data.routeUrl) {

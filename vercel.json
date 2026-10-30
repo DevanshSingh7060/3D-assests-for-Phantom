@@ -2,17 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": ".",
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/workspace", "destination": "/workspace.html" },
-    { "source": "/smriti", "destination": "/smriti.html" },
-    { "source": "/aegis", "destination": "/aegis.html" },
-    { "source": "/lumen", "destination": "/lumen.html" },
-    { "source": "/forge", "destination": "/forge.html" },
-    { "source": "/meridian", "destination": "/meridian.html" },
-    { "source": "/sentinel", "destination": "/sentinel.html" },
-    { "source": "/sense", "destination": "/sense.html" },
-    { "source": "/phantom", "destination": "/phantom.html" }
-  ],
   "headers": [
     {
       "source": "/(.*).glb",
