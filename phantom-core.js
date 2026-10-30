@@ -1,7 +1,7 @@
 /**
  * ==============================================================================
- * PHANTOM CORE — THE INTELLIGENCE REVEAL
- * Spatial Intelligence Layer & Ecosystem Architecture
+ * PHANTOM CORE — THE SPATIAL INTELLIGENCE ECOSYSTEM
+ * Multi-Domain Spatial Intelligence Layer & Ecosystem Architecture
  * ==============================================================================
  */
 
@@ -10,7 +10,7 @@
 
   // ----------------------------------------------------------------------------
   // 0. PHANTOM MODULES DATA ARCHITECTURE
-  // Source of truth for specialized intelligence modules & detail views
+  // Single source of truth for specialized intelligence modules & detail views
   // ----------------------------------------------------------------------------
   const PHANTOM_MODULES_DATA = {
     smriti: {
@@ -20,16 +20,26 @@
       eyebrow: 'INTELLIGENCE MODULE / 01',
       tag: 'Specialized Module · 01',
       category: 'Home Intelligence',
-      env: 'Home Environment',
+      env: 'Residential & Private Spaces',
       side: 'left',
       subtitle: 'Your environment, understood.',
-      desc: "SMRITI is PHANTOM's home intelligence layer, designed to interpret the everyday environment and turn contextual observations into useful, meaningful insights. It connects environmental awareness with personalized interactions to create a more responsive living experience.",
+      desc: "SMRITI applies PHANTOM's spatial intelligence to everyday residential environments, transforming continuous spatial observations into effortless household memory. It connects spatial awareness with personalized ambient interactions to maintain living space continuity.",
       capabilities: [
-        'Contextual environment awareness',
-        'Personalized home intelligence',
-        'Real-time contextual insights',
-        'Adaptive user interactions'
+        'Spatial state tracking & drift detection',
+        'Personalized residential environmental memory',
+        'Contextual item & asset spatial indexing',
+        'Adaptive ambient household assistance'
       ],
+      environments: [
+        'Home environments',
+        'Smart homes',
+        'Family life & shared spaces',
+        'Memory support & daily routines',
+        'Home inventory for insurance',
+        'Garages & private workshops',
+        'Moving & self-storage management'
+      ],
+      relatedModules: ['sense', 'meridian'],
       status: 'ACTIVE',
       statusType: 'active',
       metadata: [
@@ -53,13 +63,21 @@
       env: 'Research & Cleanroom',
       side: 'left',
       subtitle: 'Where observations become discoveries.',
-      desc: "LUMEN is the laboratory intelligence concept within PHANTOM, focused on organizing observations, identifying meaningful patterns, and supporting structured experimentation and analysis.",
+      desc: "LUMEN applies PHANTOM's spatial intelligence to cleanrooms and research facilities, organizing physical observations, tracking delicate specimen movement, detecting anomalous spatial drift, and maintaining verified experimental layouts.",
       capabilities: [
-        'Experimental data interpretation',
-        'Pattern and anomaly exploration',
-        'Structured observation workflows',
-        'Research-oriented insights'
+        'Experimental specimen spatial tracking',
+        'Controlled cleanroom state observation',
+        'Laboratory tool placement verification',
+        'Research-oriented spatial auditing'
       ],
+      environments: [
+        'Clinical & research laboratories',
+        'Laboratory equipment & spatial organization',
+        'Cleanroom research environments',
+        'Sample & biological asset tracking',
+        'Controlled laboratory containment'
+      ],
+      relatedModules: ['aegis', 'forge'],
       status: 'ACTIVE CONCEPT',
       statusType: 'active',
       metadata: [
@@ -67,7 +85,7 @@
         { label: 'FRAMEWORK', value: 'Scientific Observation' },
         { label: 'SYSTEM STATE', value: 'Active Prototype' }
       ],
-      actionText: 'Explore Research Concept',
+      actionText: 'Review Research Protocol',
       actionType: 'preview',
       isPlanned: false,
       color: '#b898ff',
@@ -83,13 +101,24 @@
       env: 'Hospital & Clinical Suite',
       side: 'right',
       subtitle: 'Clarity in critical contexts.',
-      desc: "AEGIS is PHANTOM's clinical intelligence layer, envisioned to organize relevant information, surface meaningful patterns, and assist with clinical workflows. It communicates its role as a decision-support concept rather than an autonomous medical decision-maker.",
+      desc: "AEGIS applies PHANTOM's spatial intelligence to surgical suites, wards, and controlled pharmaceutical storage. It organizes physical inventory, tracks critical assets, and provides human-supervised decision support where clinical trust and precision are mandatory.",
       capabilities: [
-        'Clinical information organization',
-        'Relevant pattern identification',
-        'Workflow-oriented insights',
-        'Human-supervised decision support'
+        'Surgical asset verification & tray tracking',
+        'Cold-chain & pharmaceutical custody tracking',
+        'Clinical workflow spatial observation',
+        'Human-supervised spatial decision support'
       ],
+      environments: [
+        'Pharmacies & DEA compliance storage',
+        'Hospital wards & intensive care suites',
+        'Elder care & assisted living facilities',
+        'Dementia & age-related memory loss care',
+        'Surgery & operating room setups',
+        'Blood banks & biological repository units',
+        'Vaccine cold-storage chains',
+        'Pharmaceutical manufacturing suites'
+      ],
+      relatedModules: ['lumen', 'sense'],
       status: 'CLINICAL PREVIEW',
       statusType: 'preview',
       metadata: [
@@ -102,6 +131,162 @@
       isPlanned: false,
       color: '#6ec1e4',
       glowRgb: '110, 193, 228'
+    },
+    forge: {
+      id: 'forge',
+      name: 'FORGE',
+      number: '04',
+      eyebrow: 'INTELLIGENCE MODULE / 04',
+      tag: 'Specialized Module · 04',
+      category: 'Industrial & Logistics Intelligence',
+      env: 'Industrial & Warehouse Hubs',
+      side: 'left',
+      subtitle: 'Operational awareness across physical infrastructure.',
+      desc: "FORGE extends PHANTOM's spatial intelligence across high-throughput industrial environments, distribution hubs, and tool cribs. It tracks heavy asset custody, models spatial volume utilization, and verifies floor layout integrity without disrupting daily throughput.",
+      capabilities: [
+        'Warehouse volumetric space utilization',
+        'Tool crib & serialized asset reconciliation',
+        'Infrastructure layout change detection',
+        'Supply-chain spatial timeline auditing'
+      ],
+      environments: [
+        'High-density distribution warehouses',
+        'Manufacturing floors & tool cribs',
+        'Data centers & server rooms',
+        'Construction sites & staging areas',
+        'Fleet maintenance & commercial garages',
+        'Agriculture & bulk food storage'
+      ],
+      relatedModules: ['meridian', 'sentinel'],
+      status: 'OPERATIONAL PILOT',
+      statusType: 'active',
+      metadata: [
+        { label: 'ENVIRONMENT', value: 'Industrial & Logistics Hubs' },
+        { label: 'RELIABILITY', value: 'High-Throughput Spatial Audit' },
+        { label: 'SYSTEM STATE', value: 'Active Architecture' }
+      ],
+      actionText: 'Inspect Industrial Architecture',
+      actionType: 'preview',
+      isPlanned: false,
+      color: '#38b8a5',
+      glowRgb: '56, 184, 165'
+    },
+    meridian: {
+      id: 'meridian',
+      name: 'MERIDIAN',
+      number: '05',
+      eyebrow: 'INTELLIGENCE MODULE / 05',
+      tag: 'Specialized Module · 05',
+      category: 'Retail & Commercial Intelligence',
+      env: 'Commercial & Cultural Spaces',
+      side: 'right',
+      subtitle: 'Contextual inventory and spatial awareness for commercial spaces.',
+      desc: "MERIDIAN translates physical retail shelves, hospitality venues, and archival collections into continuous spatial memory. It verifies planogram compliance, identifies displaced merchandise, and preserves physical organization across high-traffic customer environments.",
+      capabilities: [
+        'Planogram compliance & shelf state tracking',
+        'High-value artifact & archival cataloging',
+        'Commercial spatial layout verification',
+        'Temporal asset displacement detection'
+      ],
+      environments: [
+        'Retail store shelves & display floors',
+        'Restaurants & commercial culinary kitchens',
+        'Hotels & hospitality suites',
+        'Libraries, archives & special collections',
+        'Museums, galleries & conservation spaces',
+        'Commercial banks, vaults & secure deposit areas'
+      ],
+      relatedModules: ['forge', 'smriti'],
+      status: 'COMMERCIAL PREVIEW',
+      statusType: 'preview',
+      metadata: [
+        { label: 'ENVIRONMENT', value: 'Retail, Hospitality & Archives' },
+        { label: 'PRECISION', value: 'Sub-Centimeter Spatial State' },
+        { label: 'SYSTEM STATE', value: 'Active Evaluation' }
+      ],
+      actionText: 'Explore Commercial Framework',
+      actionType: 'preview',
+      isPlanned: false,
+      color: '#e8b75b',
+      glowRgb: '232, 183, 91'
+    },
+    sentinel: {
+      id: 'sentinel',
+      name: 'SENTINEL',
+      number: '06',
+      eyebrow: 'INTELLIGENCE MODULE / 06',
+      tag: 'Specialized Module · 06',
+      category: 'Safety, Security & Forensics Intelligence',
+      env: 'High-Integrity & Forensic Sites',
+      side: 'right',
+      subtitle: 'Traceability, accountability, and physical scene integrity.',
+      desc: "SENTINEL provides uncompromised spatial chain-of-custody logging, hazardous site monitoring, and objective physical scene reconstruction. Engineered around evidence integrity and situational awareness rather than intrusive surveillance aesthetics.",
+      capabilities: [
+        'Chain-of-custody physical state logging',
+        'Pre & post-incident spatial scene diffing',
+        'Hazard perimeter & exclusion tracking',
+        'Forensic spatial timeline reconstruction'
+      ],
+      environments: [
+        'Evidence rooms & secure property vaults',
+        'Courts & law enforcement custody facilities',
+        'Fire investigation & insurance forensics sites',
+        'Child safety & institutional care facilities',
+        'Workplace safety & shop-floor perimeters',
+        'Lone-worker monitoring zones',
+        'Hazardous containment & chemical facilities'
+      ],
+      relatedModules: ['forge', 'aegis'],
+      status: 'VERIFIED PROTOCOL',
+      statusType: 'active',
+      metadata: [
+        { label: 'ENVIRONMENT', value: 'High-Integrity & Forensic Sites' },
+        { label: 'INTEGRITY', value: 'Objective Spatial Ledger' },
+        { label: 'SYSTEM STATE', value: 'Active Architecture' }
+      ],
+      actionText: 'Review Forensics Architecture',
+      actionType: 'preview',
+      isPlanned: false,
+      color: '#ed6675',
+      glowRgb: '237, 102, 117'
+    },
+    sense: {
+      id: 'sense',
+      name: 'SENSE',
+      number: '07',
+      eyebrow: 'INTELLIGENCE MODULE / 07',
+      tag: 'Specialized Module · 07',
+      category: 'Accessibility & Cognitive Support Intelligence',
+      env: 'Supportive & Assisted Living Spaces',
+      side: 'left',
+      subtitle: 'Calm, empowering spatial assistance for cognitive and sensory needs.',
+      desc: "SENSE delivers respectful, gentle spatial scaffolding for individuals navigating neurodivergence, memory fatigue, rehabilitation, or low vision. It quietly anchors daily physical routines and assists object recall without patronizing or intrusive interfaces.",
+      capabilities: [
+        'Low-friction spatial recall & item guidance',
+        'Gentle cognitive routine anchoring',
+        'Sensory zone contrast delineation',
+        'Empowering contextual spatial prompts'
+      ],
+      environments: [
+        'ADHD support & routine scaffolding',
+        'Brain injury rehabilitation suites',
+        'Stroke recovery & occupational therapy spaces',
+        'Visual impairment navigation & tactile spaces',
+        'Low-vision aging-in-place residential adaptations'
+      ],
+      relatedModules: ['smriti', 'aegis'],
+      status: 'RESEARCH FRAMEWORK',
+      statusType: 'active',
+      metadata: [
+        { label: 'ENVIRONMENT', value: 'Cognitive & Supportive Spaces' },
+        { label: 'INTERACTION', value: 'Calm Ambient Scaffolding' },
+        { label: 'SYSTEM STATE', value: 'Active Research' }
+      ],
+      actionText: 'View Cognitive Support Model',
+      actionType: 'preview',
+      isPlanned: false,
+      color: '#82b9a1',
+      glowRgb: '130, 185, 161'
     }
   };
 
@@ -214,7 +399,7 @@
     constructor() {
       this.isOpen = false;
       this.isStabilized = false;
-      this.currentPhase = 0; // 0: closed, 1: Attention Shift, 2: Spatial Collapse, 3: Black-Hole, 4: Emergence, 5: Stabilized
+      this.currentPhase = 0;
       this.activeNodeId = null;
       this.rafId = null;
 
@@ -238,7 +423,11 @@
       this.moduleColors = {
         smriti: new THREE.Color(0xf07b42),
         lumen: new THREE.Color(0xb898ff),
-        aegis: new THREE.Color(0x6ec1e4)
+        aegis: new THREE.Color(0x6ec1e4),
+        forge: new THREE.Color(0x38b8a5),
+        meridian: new THREE.Color(0xe8b75b),
+        sentinel: new THREE.Color(0xed6675),
+        sense: new THREE.Color(0x82b9a1)
       };
 
       // Asymmetric detail state and blob movement
@@ -258,7 +447,13 @@
       this.blobStartScale = 1.0;
 
       // DOM Elements cache
-      this.dom = {};
+      this.dom = {
+        nodes: {},
+        lines: {},
+        pulses: {},
+        auraGlows: {},
+        mobilePills: {}
+      };
 
       this.init();
     }
@@ -272,10 +467,9 @@
     }
 
     // --------------------------------------------------------------------------
-    // DOM CONSTRUCTION (Additive Overlay Layer)
+    // DOM CONSTRUCTION (Data-Driven Additive Architecture)
     // --------------------------------------------------------------------------
     buildDOM() {
-      // Check if already injected
       let root = document.getElementById('phantomExperienceRoot');
       if (!root) {
         root = document.createElement('div');
@@ -283,181 +477,214 @@
         root.className = 'phantom-experience-root';
         root.setAttribute('role', 'dialog');
         root.setAttribute('aria-modal', 'true');
-        root.setAttribute('aria-label', 'PHANTOM Core Intelligence System');
+        root.setAttribute('aria-label', 'PHANTOM Core Intelligence Ecosystem');
 
-      root.innerHTML = `
-        <div class="phantom-transition-backdrop" id="phantomBackdrop"></div>
-        <div class="phantom-collapse-warp" id="phantomWarp"></div>
-        <canvas class="phantom-dust-canvas" id="phantomDustCanvas"></canvas>
+        // Dynamic construction of aura glows
+        const moduleKeys = Object.keys(PHANTOM_MODULES_DATA);
+        const auraHtml = moduleKeys
+          .map((k) => `<div class="phantom-aura-glow aura-${k}" data-module="${k}"></div>`)
+          .join('\n');
 
-        <!-- BACKGROUND LAYER: Reactive Color Aura (Behind SVG Lines & Central Blob) -->
-        <div class="phantom-reactive-aura" id="phantomReactiveAura" aria-hidden="true">
-          <div class="phantom-aura-glow aura-smriti" data-module="smriti"></div>
-          <div class="phantom-aura-glow aura-lumen" data-module="lumen"></div>
-          <div class="phantom-aura-glow aura-aegis" data-module="aegis"></div>
-        </div>
-
-        <!-- CONNECTION LAYER: Dotted Constellation Lines (Behind Central Blob with Occlusion Mask) -->
-        <svg class="phantom-constellation-svg" id="phantomConstellationSvg" aria-hidden="true">
-          <defs>
-            <mask id="blobOcclusionMask">
-              <rect width="100%" height="100%" fill="white" />
-              <circle id="maskBlobCircle" cx="0" cy="0" r="180" fill="black" />
-            </mask>
-            <filter id="glowSmriti" x="-20%" y="-20%" width="140%" height="140%">
+        // Dynamic construction of SVG filters & connector lines
+        const filtersHtml = moduleKeys
+          .map(
+            (k) => `
+            <filter id="glow${k.charAt(0).toUpperCase() + k.slice(1)}" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="3" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="glowLumen" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-            <filter id="glowAegis" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-          <g id="phantomConnectionsGroup" mask="url(#blobOcclusionMask)">
-            <line id="lineSmriti" class="phantom-connector-line smriti-connector" />
-            <line id="lineLumen" class="phantom-connector-line lumen-connector" />
-            <line id="lineAegis" class="phantom-connector-line aegis-connector" />
-            <circle id="pulseSmriti" class="phantom-pulse-dot" r="3" />
-            <circle id="pulseLumen" class="phantom-pulse-dot" r="3" />
-            <circle id="pulseAegis" class="phantom-pulse-dot" r="3" />
-          </g>
-        </svg>
+            </filter>`
+          )
+          .join('\n');
 
-        <!-- CENTRAL BLOB LAYER: 3D WebGL Hero Canvas -->
-        <div class="phantom-canvas-container" id="phantomCanvasContainer">
-          <canvas class="phantom-webgl-canvas" id="phantomWebglCanvas"></canvas>
-        </div>
+        const linesHtml = moduleKeys
+          .map((k) => `<line id="line${k.charAt(0).toUpperCase() + k.slice(1)}" class="phantom-connector-line ${k}-connector" />`)
+          .join('\n');
 
-        <!-- ADAPTIVE INTELLIGENCE INFORMATION PANEL (LEFT OR RIGHT SIDE) -->
-        <aside class="phantom-detail-panel panel-side-left" id="phantomDetailPanel" aria-label="Module Detail">
-          <div class="phantom-detail-content">
-            <!-- Top Controls Row -->
-            <div class="phantom-detail-topbar phantom-detail-stagger">
-              <div class="phantom-detail-eyebrow-wrap">
-                <span class="detail-eyebrow-dot" id="detailEyebrowDot" aria-hidden="true"></span>
-                <span class="phantom-detail-eyebrow" id="detailEyebrow">INTELLIGENCE MODULE / 01</span>
+        const pulsesHtml = moduleKeys
+          .map((k) => `<circle id="pulse${k.charAt(0).toUpperCase() + k.slice(1)}" class="phantom-pulse-dot" r="3" />`)
+          .join('\n');
+
+        // Dynamic construction of module nodes
+        const nodesHtml = moduleKeys
+          .map((k) => {
+            const data = PHANTOM_MODULES_DATA[k];
+            const alignClass = data.side === 'right' ? ' align-right' : '';
+            return `
+              <div class="phantom-module-node phantom-node-${k}${alignClass}" id="node${k.charAt(0).toUpperCase() + k.slice(1)}" data-module="${k}" role="button" tabindex="0" aria-label="Select ${data.name} — ${data.category}">
+                <div class="phantom-node-pill">
+                  <span class="phantom-node-beacon" aria-hidden="true"></span>
+                  <div class="phantom-node-meta">
+                    <span class="phantom-node-title">${data.name}</span>
+                    <span class="phantom-node-subtitle">${data.category}</span>
+                  </div>
+                </div>
               </div>
-              <button class="phantom-detail-close-btn" id="btnDetailClose" type="button" aria-label="Close intelligence details">
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"></line><line x1="12" y1="2" x2="2" y2="12"></line></svg>
+            `;
+          })
+          .join('\n');
+
+        // Dynamic switcher pills
+        const switchPillsHtml = moduleKeys
+          .map((k) => {
+            const data = PHANTOM_MODULES_DATA[k];
+            return `<button class="detail-switch-pill" data-switch="${k}" type="button">${data.name}</button>`;
+          })
+          .join('\n');
+
+        // Mobile selector bar pills
+        const mobileSelectorHtml = moduleKeys
+          .map((k) => {
+            const data = PHANTOM_MODULES_DATA[k];
+            return `
+              <button class="phantom-mobile-pill" data-module="${k}" type="button" style="--pill-color: ${data.color}; --pill-glow: rgba(${data.glowRgb}, 0.35);">
+                <span class="phantom-mobile-beacon" style="background: ${data.color};"></span>
+                <span>${data.name}</span>
               </button>
-            </div>
+            `;
+          })
+          .join('\n');
 
-            <!-- Header Row: Title & Status Badge -->
-            <div class="phantom-detail-header-row phantom-detail-stagger">
-              <h2 class="phantom-detail-name" id="detailName">SMRITI</h2>
-              <div class="phantom-detail-status-badge" id="detailStatusBadge">
-                <span class="status-pulse-dot" id="detailStatusDot"></span>
-                <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
+        root.innerHTML = `
+          <div class="phantom-transition-backdrop" id="phantomBackdrop"></div>
+          <div class="phantom-collapse-warp" id="phantomWarp"></div>
+          <canvas class="phantom-dust-canvas" id="phantomDustCanvas"></canvas>
+
+          <!-- BACKGROUND LAYER: Reactive Color Aura (Behind SVG Lines & Central Blob) -->
+          <div class="phantom-reactive-aura" id="phantomReactiveAura" aria-hidden="true">
+            ${auraHtml}
+          </div>
+
+          <!-- CONNECTION LAYER: Dotted Constellation Lines (Behind Central Blob with Occlusion Mask) -->
+          <svg class="phantom-constellation-svg" id="phantomConstellationSvg" aria-hidden="true">
+            <defs>
+              <mask id="blobOcclusionMask">
+                <rect width="100%" height="100%" fill="white" />
+                <circle id="maskBlobCircle" cx="0" cy="0" r="180" fill="black" />
+              </mask>
+              ${filtersHtml}
+            </defs>
+            <g id="phantomConnectionsGroup" mask="url(#blobOcclusionMask)">
+              ${linesHtml}
+              ${pulsesHtml}
+            </g>
+          </svg>
+
+          <!-- CENTRAL BLOB LAYER: 3D WebGL Hero Canvas -->
+          <div class="phantom-canvas-container" id="phantomCanvasContainer">
+            <canvas class="phantom-webgl-canvas" id="phantomWebglCanvas"></canvas>
+          </div>
+
+          <!-- ADAPTIVE INTELLIGENCE INFORMATION PANEL (LEFT OR RIGHT SIDE) -->
+          <aside class="phantom-detail-panel panel-side-left" id="phantomDetailPanel" aria-label="Module Detail">
+            <div class="phantom-detail-content">
+              <!-- Top Controls Row -->
+              <div class="phantom-detail-topbar phantom-detail-stagger">
+                <div class="phantom-detail-eyebrow-wrap">
+                  <span class="detail-eyebrow-dot" id="detailEyebrowDot" aria-hidden="true"></span>
+                  <span class="phantom-detail-eyebrow" id="detailEyebrow">INTELLIGENCE MODULE / 01</span>
+                </div>
+                <button class="phantom-detail-close-btn" id="btnDetailClose" type="button" aria-label="Close intelligence details">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="12" y2="12"></line><line x1="12" y1="2" x2="2" y2="12"></line></svg>
+                </button>
+              </div>
+
+              <!-- Header Row: Title & Status Badge -->
+              <div class="phantom-detail-header-row phantom-detail-stagger">
+                <h2 class="phantom-detail-name" id="detailName">SMRITI</h2>
+                <div class="phantom-detail-status-badge" id="detailStatusBadge">
+                  <span class="status-pulse-dot" id="detailStatusDot"></span>
+                  <span class="status-badge-text" id="detailStatusText">ACTIVE</span>
+                </div>
+              </div>
+
+              <!-- Subtitle -->
+              <p class="phantom-detail-subtitle phantom-detail-stagger" id="detailSubtitle">Your environment, understood.</p>
+
+              <!-- Detailed Description -->
+              <div class="phantom-detail-desc-wrap phantom-detail-stagger">
+                <p class="phantom-detail-desc" id="detailDesc"></p>
+              </div>
+
+              <!-- Capabilities Section -->
+              <div class="phantom-detail-capabilities phantom-detail-stagger" id="detailCapabilitiesSection">
+                <span class="capabilities-title">CORE CAPABILITIES</span>
+                <ul class="capabilities-list" id="detailCapabilitiesList"></ul>
+              </div>
+
+              <!-- Supported Environments / Application Domains Section -->
+              <div class="phantom-detail-environments phantom-detail-stagger" id="detailEnvironmentsSection">
+                <span class="environments-title">APPLICATION DOMAINS &amp; ENVIRONMENTS</span>
+                <div class="environments-tags" id="detailEnvironmentsTags"></div>
+              </div>
+
+              <!-- Small Metadata Row -->
+              <div class="phantom-detail-meta-grid phantom-detail-stagger" id="detailMetaGrid"></div>
+
+              <!-- Related Intelligence Synergy -->
+              <div class="phantom-detail-related phantom-detail-stagger" id="detailRelatedSection">
+                <span class="related-title">SHARED INTELLIGENCE SYNERGY</span>
+                <div class="related-pills" id="detailRelatedPills"></div>
+              </div>
+
+              <!-- Quick-Switch Intelligence Suite Rail -->
+              <div class="phantom-detail-module-switch phantom-detail-stagger" id="detailModuleSwitch" aria-label="Switch Intelligence">
+                <span class="detail-switch-label">INTELLIGENCE SUITE</span>
+                <div class="detail-switch-pills">
+                  ${switchPillsHtml}
+                </div>
+              </div>
+
+              <!-- Action & Return Controls -->
+              <div class="phantom-detail-actions phantom-detail-stagger">
+                <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
+                  <span id="detailActionText">Explore SMRITI Experience</span>
+                  <span class="action-arrow" aria-hidden="true">→</span>
+                </button>
+                <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
+                  <span>← Back to Architecture</span>
+                  <kbd>[ESC]</kbd>
+                </button>
               </div>
             </div>
+          </aside>
 
-            <!-- Subtitle -->
-            <p class="phantom-detail-subtitle phantom-detail-stagger" id="detailSubtitle">Your environment, understood.</p>
+          <div class="phantom-center-anchor" id="phantomCenterAnchor">
+            <div class="phantom-core-eyebrow">Spatial Intelligence Layer</div>
+            <h1 class="phantom-core-title">PHANTOM</h1>
+            <p class="phantom-core-desc">Core Intelligence Architecture</p>
+          </div>
 
-            <!-- Detailed Description -->
-            <div class="phantom-detail-desc-wrap phantom-detail-stagger">
-              <p class="phantom-detail-desc" id="detailDesc"></p>
-            </div>
+          <!-- All Seven Constellation Nodes -->
+          <div class="phantom-nodes-container" id="phantomNodesContainer">
+            ${nodesHtml}
+          </div>
 
-            <!-- Capabilities Section -->
-            <div class="phantom-detail-capabilities phantom-detail-stagger" id="detailCapabilitiesSection">
-              <span class="capabilities-title">CORE CAPABILITIES</span>
-              <ul class="capabilities-list" id="detailCapabilitiesList"></ul>
-            </div>
+          <!-- Mobile Quick Selector Bar -->
+          <div class="phantom-mobile-nav-bar" id="phantomMobileNavBar" aria-label="Select Intelligence Module">
+            ${mobileSelectorHtml}
+          </div>
 
-            <!-- Small Metadata Row -->
-            <div class="phantom-detail-meta-grid phantom-detail-stagger" id="detailMetaGrid"></div>
-
-            <!-- Quick-Switch Intelligence Suite Rail -->
-            <div class="phantom-detail-module-switch phantom-detail-stagger" id="detailModuleSwitch" aria-label="Switch Intelligence">
-              <span class="detail-switch-label">INTELLIGENCE SUITE</span>
-              <div class="detail-switch-pills">
-                <button class="detail-switch-pill is-active" data-switch="smriti" type="button">SMRITI</button>
-                <button class="detail-switch-pill" data-switch="lumen" type="button">LUMEN</button>
-                <button class="detail-switch-pill" data-switch="aegis" type="button">AEGIS</button>
-              </div>
-            </div>
-
-            <!-- Action & Return Controls -->
-            <div class="phantom-detail-actions phantom-detail-stagger">
-              <button class="phantom-detail-action-btn" id="btnDetailPrimaryAction" type="button">
-                <span id="detailActionText">Explore SMRITI Experience</span>
-                <span class="action-arrow" aria-hidden="true">→</span>
+          <div class="phantom-ui-layer" id="phantomUiLayer">
+            <div class="phantom-header-bar">
+              <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to SMRITI website">
+                <span class="phantom-return-arrow" aria-hidden="true">←</span>
+                <span>Return to SMRITI</span>
+                <span class="phantom-return-tag">[ESC]</span>
               </button>
-              <button class="phantom-detail-back-link" id="btnDetailBack" type="button">
-                <span>← Back to Architecture</span>
-                <kbd>[ESC]</kbd>
-              </button>
-            </div>
-          </div>
-        </aside>
-
-        <div class="phantom-center-anchor" id="phantomCenterAnchor">
-          <div class="phantom-core-eyebrow">Spatial Intelligence Layer</div>
-          <h1 class="phantom-core-title">PHANTOM</h1>
-          <p class="phantom-core-desc">Core Intelligence Architecture</p>
-        </div>
-
-        <div class="phantom-nodes-container" id="phantomNodesContainer">
-          <!-- MODULE 01: SMRITI (Upper-Left) -->
-          <div class="phantom-module-node phantom-node-smriti" id="nodeSmriti" data-module="smriti" role="button" tabindex="0" aria-label="Select SMRITI - Home Intelligence">
-            <div class="phantom-node-pill">
-              <span class="phantom-node-beacon" aria-hidden="true"></span>
-              <div class="phantom-node-meta">
-                <span class="phantom-node-title">SMRITI</span>
-                <span class="phantom-node-subtitle">Home Intelligence</span>
+              <div class="phantom-telemetry-badge">
+                <span class="phantom-live-indicator" aria-hidden="true"></span>
+                <span class="phantom-status-text">CORE ONLINE</span>
+                <span class="phantom-telemetry-divider" aria-hidden="true"></span>
+                <span>7 ACTIVE MODULES</span>
               </div>
             </div>
-          </div>
 
-          <!-- MODULE 02: LUMEN (Lower-Left) -->
-          <div class="phantom-module-node phantom-node-lumen" id="nodeLumen" data-module="lumen" role="button" tabindex="0" aria-label="Select LUMEN - Laboratory Intelligence">
-            <div class="phantom-node-pill">
-              <span class="phantom-node-beacon" aria-hidden="true"></span>
-              <div class="phantom-node-meta">
-                <span class="phantom-node-title">LUMEN</span>
-                <span class="phantom-node-subtitle">Laboratory Intelligence</span>
-              </div>
+            <div class="phantom-bottom-bar">
+              <span class="phantom-esc-hint">Press <kbd>ESC</kbd> or click Return to exit</span>
+              <span class="phantom-active-count">PHANTOM <strong>KERNEL 2.0</strong> · SPATIAL MATRIX</span>
             </div>
           </div>
-
-          <!-- MODULE 03: AEGIS (Upper-Right) -->
-          <div class="phantom-module-node phantom-node-aegis align-right" id="nodeAegis" data-module="aegis" role="button" tabindex="0" aria-label="Select AEGIS - Clinical Intelligence">
-            <div class="phantom-node-pill">
-              <span class="phantom-node-beacon" aria-hidden="true"></span>
-              <div class="phantom-node-meta">
-                <span class="phantom-node-title">AEGIS</span>
-                <span class="phantom-node-subtitle">Clinical Intelligence</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="phantom-ui-layer" id="phantomUiLayer">
-          <div class="phantom-header-bar">
-            <button class="phantom-return-btn" id="btnPhantomReturn" type="button" aria-label="Return to SMRITI website">
-              <span class="phantom-return-arrow" aria-hidden="true">←</span>
-              <span>Return to SMRITI</span>
-              <span class="phantom-return-tag">[ESC]</span>
-            </button>
-            <div class="phantom-telemetry-badge">
-              <span class="phantom-live-indicator" aria-hidden="true"></span>
-              <span class="phantom-status-text">CORE ONLINE</span>
-              <span class="phantom-telemetry-divider" aria-hidden="true"></span>
-              <span>3 ACTIVE MODULES</span>
-            </div>
-          </div>
-
-          <div class="phantom-bottom-bar">
-            <span class="phantom-esc-hint">Press <kbd>ESC</kbd> or click Return to exit</span>
-            <span class="phantom-active-count">PHANTOM <strong>KERNEL 2.0</strong> · SPATIAL MATRIX</span>
-          </div>
-        </div>
-      `;
+        `;
 
         document.body.appendChild(root);
       }
@@ -472,11 +699,6 @@
       this.dom.svg = root.querySelector('#phantomConstellationSvg');
       this.dom.maskBlobCircle = root.querySelector('#maskBlobCircle');
       this.dom.aura = root.querySelector('#phantomReactiveAura');
-      this.dom.auraGlows = {
-        smriti: root.querySelector('.phantom-aura-glow.aura-smriti'),
-        lumen: root.querySelector('.phantom-aura-glow.aura-lumen'),
-        aegis: root.querySelector('.phantom-aura-glow.aura-aegis')
-      };
       this.dom.returnBtn = root.querySelector('#btnPhantomReturn');
       this.dom.centerAnchor = root.querySelector('#phantomCenterAnchor');
 
@@ -492,34 +714,28 @@
       this.dom.detailSubtitle = root.querySelector('#detailSubtitle');
       this.dom.detailDesc = root.querySelector('#detailDesc');
       this.dom.detailCapabilitiesList = root.querySelector('#detailCapabilitiesList');
+      this.dom.detailEnvironmentsTags = root.querySelector('#detailEnvironmentsTags');
       this.dom.detailMetaGrid = root.querySelector('#detailMetaGrid');
+      this.dom.detailRelatedPills = root.querySelector('#detailRelatedPills');
       this.dom.btnDetailBack = root.querySelector('#btnDetailBack');
       this.dom.btnDetailPrimaryAction = root.querySelector('#btnDetailPrimaryAction');
       this.dom.detailActionText = root.querySelector('#detailActionText');
       this.dom.detailSwitchPills = root.querySelectorAll('.detail-switch-pill');
 
-      this.dom.nodes = {
-        smriti: root.querySelector('#nodeSmriti'),
-        lumen: root.querySelector('#nodeLumen'),
-        aegis: root.querySelector('#nodeAegis')
-      };
-
-      this.dom.lines = {
-        smriti: root.querySelector('#lineSmriti'),
-        lumen: root.querySelector('#lineLumen'),
-        aegis: root.querySelector('#lineAegis')
-      };
-
-      this.dom.pulses = {
-        smriti: root.querySelector('#pulseSmriti'),
-        lumen: root.querySelector('#pulseLumen'),
-        aegis: root.querySelector('#pulseAegis')
-      };
+      // Cache modules
+      Object.keys(PHANTOM_MODULES_DATA).forEach((key) => {
+        const capitalized = key.charAt(0).toUpperCase() + key.slice(1);
+        this.dom.nodes[key] = root.querySelector(`#node${capitalized}`);
+        this.dom.lines[key] = root.querySelector(`#line${capitalized}`);
+        this.dom.pulses[key] = root.querySelector(`#pulse${capitalized}`);
+        this.dom.auraGlows[key] = root.querySelector(`.phantom-aura-glow.aura-${key}`);
+        this.dom.mobilePills[key] = root.querySelector(`.phantom-mobile-pill[data-module="${key}"]`);
+      });
     }
 
     // --------------------------------------------------------------------------
-    // THREE.JS PROCEDURAL FLUID ORGANIC SHADER ("Black Animated AI Blobs")
-    // Replicating Spline community asset visual language with 60fps performance
+    // THREE.JS PROCEDURAL FLUID ORGANIC SHADER
+    // Glossy obsidian fluid body with Blinn-Phong specular & luminous Fresnel rim
     // --------------------------------------------------------------------------
     initThreeScene() {
       const THREE = window.THREE;
@@ -544,7 +760,7 @@
       this.camera.position.set(0, 0, 7.2);
 
       // Organic Fluid Blob Geometry (Subdivided Sphere)
-      const geometry = new THREE.IcosahedronGeometry(1.7, 52);
+      const geometry = new THREE.IcosahedronGeometry(1.52, 52);
 
       // Custom Shader Material mimicking Spline "Black Animated AI Blobs"
       this.blobMaterial = new THREE.ShaderMaterial({
@@ -552,8 +768,8 @@
           uTime: { value: 0 },
           uDeformSpeed: { value: 0.30 },
           uDeformIntensity: { value: 0.35 },
-          uExpansion: { value: 0.01 }, // Starts tiny during emergence
-          uRimAlpha: { value: 0.0 },   // Starts 0, rims in first
+          uExpansion: { value: 1.0 },
+          uRimAlpha: { value: 0.95 },
           uHighlightColor: { value: new THREE.Color(0xf07b42) },
           uCoreColor: { value: new THREE.Color(0x060709) },
           uEnergyPulse: { value: 0.0 }
@@ -647,7 +863,7 @@
             // 5. Compose full material
             vec3 finalColor = baseColor + (vec3(0.9, 0.95, 1.0) * (spec1 + spec2)) + rimColor;
 
-            // Energetic pulse glow when user hovers nodes
+            // Energetic pulse glow when user hovers or selects nodes
             finalColor += uHighlightColor * (uEnergyPulse * fresnelFactor * 0.9);
 
             gl_FragColor = vec4(finalColor, 1.0);
@@ -659,7 +875,7 @@
       });
 
       this.blobMesh = new THREE.Mesh(geometry, this.blobMaterial);
-      this.blobMesh.position.set(0, -0.22, 0);
+      this.blobMesh.position.set(0, -0.20, 0);
       this.scene.add(this.blobMesh);
 
       // Initial state: fully formed blob ready for immediate first frame rendering
@@ -677,7 +893,7 @@
       let height = (canvas.height = window.innerHeight);
 
       const particles = [];
-      const particleCount = 42;
+      const particleCount = 48;
 
       for (let i = 0; i < particleCount; i++) {
         particles.push({
@@ -695,7 +911,6 @@
         if (!this.isOpen) return;
         ctx.clearRect(0, 0, width, height);
 
-        ctx.fillStyle = '#ffffff';
         particles.forEach((p) => {
           p.x += p.speedX;
           p.y += p.speedY;
@@ -726,62 +941,97 @@
     layoutConstellation() {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const isMobile = w < 640;
-      const isTablet = w >= 640 && w < 1024;
+      const isMobile = w < 768;
+      const isTablet = w >= 768 && w < 1024;
 
-      let positions;
+      let positions = {};
 
       if (!this.isDetailOpen) {
         // Balanced Overview Constellation (Surrounding Centered Blob)
-        // SMRITI: upper-left, LUMEN: lower-left, AEGIS: upper-right
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.26, y: h * 0.24 },
-            lumen: { x: w * 0.28, y: h * 0.76 },
-            aegis: { x: w * 0.74, y: h * 0.48 }
+            smriti:   { x: w * 0.28, y: h * 0.25 },
+            forge:    { x: w * 0.20, y: h * 0.44 },
+            lumen:    { x: w * 0.28, y: h * 0.64 },
+            sense:    { x: w * 0.50, y: h * 0.74 },
+            sentinel: { x: w * 0.72, y: h * 0.64 },
+            meridian: { x: w * 0.80, y: h * 0.44 },
+            aegis:    { x: w * 0.72, y: h * 0.25 }
           };
         } else if (isTablet) {
           positions = {
-            smriti: { x: w * 0.22, y: h * 0.32 },
-            lumen: { x: w * 0.24, y: h * 0.72 },
-            aegis: { x: w * 0.78, y: h * 0.42 }
+            smriti:   { x: w * 0.22, y: h * 0.28 },
+            forge:    { x: w * 0.16, y: h * 0.50 },
+            lumen:    { x: w * 0.22, y: h * 0.72 },
+            sense:    { x: w * 0.50, y: h * 0.82 },
+            sentinel: { x: w * 0.78, y: h * 0.72 },
+            meridian: { x: w * 0.84, y: h * 0.50 },
+            aegis:    { x: w * 0.78, y: h * 0.28 }
           };
         } else {
+          // Desktop Overview: Harmonic 7-point constellation around central anchor
           positions = {
-            smriti: { x: w * 0.22, y: h * 0.34 },
-            lumen: { x: w * 0.24, y: h * 0.70 },
-            aegis: { x: w * 0.78, y: h * 0.40 }
+            smriti:   { x: w * 0.20, y: h * 0.31 },
+            forge:    { x: w * 0.13, y: h * 0.52 },
+            lumen:    { x: w * 0.20, y: h * 0.72 },
+            sense:    { x: w * 0.50, y: h * 0.86 },
+            sentinel: { x: w * 0.80, y: h * 0.72 },
+            meridian: { x: w * 0.87, y: h * 0.52 },
+            aegis:    { x: w * 0.80, y: h * 0.31 }
           };
         }
       } else if (this.selectedSide === 'left') {
         // Detail Mode: Panel on LEFT, Blob Shifted RIGHT
+        const sel = this.selectedModuleId;
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.25, y: h * 0.14 },
-            lumen: { x: w * 0.50, y: h * 0.14 },
-            aegis: { x: w * 0.75, y: h * 0.14 }
+            smriti:   { x: w * 0.18, y: h * 0.14 },
+            forge:    { x: w * 0.38, y: h * 0.14 },
+            lumen:    { x: w * 0.58, y: h * 0.14 },
+            sense:    { x: w * 0.78, y: h * 0.14 },
+            sentinel: { x: w * 0.88, y: h * 0.24 },
+            meridian: { x: w * 0.88, y: h * 0.34 },
+            aegis:    { x: w * 0.88, y: h * 0.44 }
           };
         } else {
-          const isSmriti = this.selectedModuleId === 'smriti';
+          // Desktop detail mode:
+          // Selected node is placed prominently between panel and shifted blob (x: 0.46, y: 0.38)
+          // Other nodes distribute in open space around the shifted blob
           positions = {
-            smriti: isSmriti ? { x: w * 0.22, y: h * 0.12 } : { x: w * 0.44, y: h * 0.22 },
-            lumen: !isSmriti ? { x: w * 0.22, y: h * 0.12 } : { x: w * 0.44, y: h * 0.80 },
-            aegis: { x: w * 0.88, y: h * 0.38 }
+            smriti:   sel === 'smriti'   ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.68, y: h * 0.22 },
+            forge:    sel === 'forge'    ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.46, y: h * 0.56 },
+            lumen:    sel === 'lumen'    ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.50, y: h * 0.76 },
+            sense:    sel === 'sense'    ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.68, y: h * 0.86 },
+            sentinel: sel === 'sentinel' ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.86, y: h * 0.72 },
+            meridian: sel === 'meridian' ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.90, y: h * 0.52 },
+            aegis:    sel === 'aegis'    ? { x: w * 0.46, y: h * 0.38 } : { x: w * 0.86, y: h * 0.31 }
           };
         }
       } else {
-        // Detail Mode: Panel on RIGHT (AEGIS), Blob Shifted LEFT
+        // Detail Mode: Panel on RIGHT, Blob Shifted LEFT
+        const sel = this.selectedModuleId;
         if (isMobile) {
           positions = {
-            smriti: { x: w * 0.25, y: h * 0.14 },
-            lumen: { x: w * 0.50, y: h * 0.14 },
-            aegis: { x: w * 0.75, y: h * 0.14 }
+            smriti:   { x: w * 0.18, y: h * 0.14 },
+            forge:    { x: w * 0.38, y: h * 0.14 },
+            lumen:    { x: w * 0.58, y: h * 0.14 },
+            sense:    { x: w * 0.78, y: h * 0.14 },
+            sentinel: { x: w * 0.88, y: h * 0.24 },
+            meridian: { x: w * 0.88, y: h * 0.34 },
+            aegis:    { x: w * 0.88, y: h * 0.44 }
           };
         } else {
+          // Desktop detail mode:
+          // Selected node is placed prominently between shifted blob and panel (x: 0.54, y: 0.38)
+          // Other nodes distribute in open space around the shifted blob
           positions = {
-            smriti: { x: w * 0.12, y: h * 0.34 },
-            lumen: { x: w * 0.14, y: h * 0.72 },
-            aegis: { x: w * 0.78, y: h * 0.12 }
+            smriti:   sel === 'smriti'   ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.14, y: h * 0.31 },
+            forge:    sel === 'forge'    ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.10, y: h * 0.52 },
+            lumen:    sel === 'lumen'    ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.14, y: h * 0.72 },
+            sense:    sel === 'sense'    ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.32, y: h * 0.86 },
+            sentinel: sel === 'sentinel' ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.50, y: h * 0.76 },
+            meridian: sel === 'meridian' ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.54, y: h * 0.56 },
+            aegis:    sel === 'aegis'    ? { x: w * 0.54, y: h * 0.38 } : { x: w * 0.32, y: h * 0.22 }
           };
         }
       }
@@ -832,9 +1082,8 @@
       if (this.dom.maskBlobCircle) {
         this.dom.maskBlobCircle.setAttribute('cx', centerX);
         this.dom.maskBlobCircle.setAttribute('cy', centerY);
-        // Visual radius in screen pixels based on camera distance (7.2) and FOV 45
         const scale = isFinite(this.currentBlobScale) ? this.currentBlobScale : 1.0;
-        const visualRadius = (1.52 * scale / 5.964) * h;
+        const visualRadius = (1.40 * scale / 5.964) * h;
         const radius = isFinite(visualRadius) ? Math.max(visualRadius, 20) : 180;
         this.dom.maskBlobCircle.setAttribute('r', radius);
       }
@@ -872,21 +1121,21 @@
       this.selectedSide = data.side || 'left';
 
       // Adaptive Blob Positioning:
-      // Left-side nodes (SMRITI, LUMEN): move blob toward right half of screen
-      // Right-side nodes (AEGIS): move blob toward left half of screen
+      // Left-side nodes (SMRITI, FORGE, LUMEN, SENSE): move blob toward right half of screen
+      // Right-side nodes (AEGIS, MERIDIAN, SENTINEL): move blob toward left half of screen
       const w = window.innerWidth;
       const isDesktop = w >= 1024;
-      const isTablet = w >= 640 && w < 1024;
+      const isTablet = w >= 768 && w < 1024;
 
       if (isDesktop) {
         this.targetBlobShiftX = this.selectedSide === 'left' ? 2.05 : -2.05;
-        this.targetBlobScale = 0.80; // Scale down to ~80% as requested
+        this.targetBlobScale = 0.80;
       } else if (isTablet) {
         this.targetBlobShiftX = this.selectedSide === 'left' ? 1.55 : -1.55;
         this.targetBlobScale = 0.76;
       } else {
         this.targetBlobShiftX = 0;
-        this.targetBlobScale = 0.68;
+        this.targetBlobScale = 0.62;
       }
 
       // Smooth continuous transition with cubic-bezier(0.22, 1, 0.36, 1)
@@ -912,14 +1161,18 @@
       Object.keys(this.dom.nodes).forEach((key) => {
         const node = this.dom.nodes[key];
         const line = this.dom.lines[key];
+        const pill = this.dom.mobilePills[key];
+
         if (key === id) {
           node?.classList.add('is-selected');
           node?.style.setProperty('--active-node-color', data.color);
           node?.style.setProperty('--active-node-glow', `rgba(${data.glowRgb}, 0.4)`);
           line?.classList.add('is-selected');
+          pill?.classList.add('is-active');
         } else {
           node?.classList.remove('is-selected');
           line?.classList.remove('is-selected');
+          pill?.classList.remove('is-active');
         }
       });
 
@@ -947,17 +1200,17 @@
         ? this.dom.detailSwitchPills
         : this.dom.root?.querySelectorAll('.detail-switch-pill');
       if (pills) {
-        pills.forEach((pill) => {
-          const isActive = pill.getAttribute('data-switch') === id;
-          pill.classList.toggle('is-active', isActive);
+        pills.forEach((p) => {
+          const isActive = p.getAttribute('data-switch') === id;
+          p.classList.toggle('is-active', isActive);
           if (isActive) {
-            pill.style.borderColor = data.color;
-            pill.style.color = '#ffffff';
-            pill.style.boxShadow = `0 0 12px rgba(${data.glowRgb}, 0.3)`;
+            p.style.borderColor = data.color;
+            p.style.color = '#ffffff';
+            p.style.boxShadow = `0 0 12px rgba(${data.glowRgb}, 0.3)`;
           } else {
-            pill.style.borderColor = '';
-            pill.style.color = '';
-            pill.style.boxShadow = '';
+            p.style.borderColor = '';
+            p.style.color = '';
+            p.style.boxShadow = '';
           }
         });
       }
@@ -992,6 +1245,7 @@
       Object.keys(this.dom.nodes).forEach((key) => {
         this.dom.nodes[key]?.classList.remove('is-selected');
         this.dom.lines[key]?.classList.remove('is-selected');
+        this.dom.mobilePills[key]?.classList.remove('is-active');
       });
 
       // Restore neutral molten aura & highlight
@@ -1027,6 +1281,7 @@
         this.dom.detailStatusBadge.style.color = data.color;
       }
 
+      // Core Capabilities (4 clear bullet items)
       if (this.dom.detailCapabilitiesList) {
         this.dom.detailCapabilitiesList.innerHTML = (data.capabilities || [])
           .map(
@@ -1040,6 +1295,21 @@
           .join('');
       }
 
+      // Application Domains & Environments Tag Cloud (All concrete use cases)
+      if (this.dom.detailEnvironmentsTags) {
+        this.dom.detailEnvironmentsTags.innerHTML = (data.environments || [])
+          .map(
+            (env) => `
+            <span class="env-tag">
+              <span class="env-tag-dot" style="background: ${data.color};"></span>
+              <span>${env}</span>
+            </span>
+          `
+          )
+          .join('');
+      }
+
+      // Metadata Grid
       if (this.dom.detailMetaGrid) {
         this.dom.detailMetaGrid.innerHTML = (data.metadata || [])
           .map(
@@ -1053,11 +1323,39 @@
           .join('');
       }
 
+      // Related Intelligence Synergy Pills
+      if (this.dom.detailRelatedPills) {
+        this.dom.detailRelatedPills.innerHTML = (data.relatedModules || [])
+          .map((relKey) => {
+            const relData = PHANTOM_MODULES_DATA[relKey];
+            if (!relData) return '';
+            return `
+              <button class="related-pill" data-related="${relKey}" type="button">
+                <span class="related-pill-dot" style="background: ${relData.color};"></span>
+                <span>${relData.name} — ${relData.category}</span>
+              </button>
+            `;
+          })
+          .join('');
+
+        // Attach event listeners to related pills
+        this.dom.detailRelatedPills.querySelectorAll('.related-pill').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const targetModule = btn.getAttribute('data-related');
+            if (targetModule) {
+              this.selectModule(targetModule);
+            }
+          });
+        });
+      }
+
       if (this.dom.detailPanel) {
         this.dom.detailPanel.style.setProperty('--active-module-color', data.color);
         this.dom.detailPanel.style.setProperty('--active-module-glow', `rgba(${data.glowRgb}, 0.35)`);
       }
 
+      // Primary Action CTA
       if (this.dom.btnDetailPrimaryAction && this.dom.detailActionText) {
         this.dom.detailActionText.textContent = data.actionText;
         if (data.isPlanned) {
@@ -1079,7 +1377,7 @@
     }
 
     // --------------------------------------------------------------------------
-    // THE 6-STEP BLACK-HOLE TRANSITION SEQUENCE
+    // THE 6-STEP BLACK-HOLE TRANSITION SEQUENCE & ENTRANCE
     // --------------------------------------------------------------------------
     open() {
       if (this.isOpen) return;
@@ -1106,7 +1404,7 @@
 
       if (this.dom.root) this.dom.root.classList.remove('is-detail-active');
       if (this.blobMesh) {
-        this.blobMesh.position.set(0, -0.22, 0);
+        this.blobMesh.position.set(0, -0.20, 0);
         this.blobMesh.scale.setScalar(0.95);
       }
 
@@ -1141,9 +1439,7 @@
         return;
       }
 
-      // Smooth coordinated entrance sequence:
-      // Phase A: Background and title render immediately (0-150ms)
-      // Phase B & C: UI & nodes reveal smoothly with delicate stagger (60-500ms)
+      // Smooth coordinated entrance sequence
       setTimeout(() => {
         if (!this.isOpen) return;
         this.dom.root.classList.add('is-stabilized');
@@ -1271,7 +1567,7 @@
         this.blobMesh.position.x = this.currentBlobShiftX;
         this.blobMesh.scale.setScalar(this.currentBlobScale);
 
-        // Continuous organic yaw + parallax rotation (NEVER resets)
+        // Continuous organic yaw + parallax rotation
         this.blobMesh.rotation.y = elapsedTime * 0.08 + this.mouse.x * 0.6;
         this.blobMesh.rotation.x = Math.sin(elapsedTime * 0.06) * 0.12 + this.mouse.y * 0.4;
       }
@@ -1334,10 +1630,6 @@
         e.preventDefault();
         this.close();
       });
-      this.dom.returnSmritiBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.close();
-      });
       this.dom.btnDetailClose?.addEventListener('click', (e) => {
         e.stopPropagation();
         this.deselectModule();
@@ -1384,7 +1676,7 @@
         // Adjust detail shift target on viewport resize
         if (this.isDetailOpen) {
           const isDesktop = w >= 1024;
-          const isTablet = w >= 640 && w < 1024;
+          const isTablet = w >= 768 && w < 1024;
           if (isDesktop) {
             this.targetBlobShiftX = this.selectedSide === 'left' ? 2.05 : -2.05;
             this.targetBlobScale = 0.80;
@@ -1393,7 +1685,7 @@
             this.targetBlobScale = 0.76;
           } else {
             this.targetBlobShiftX = 0;
-            this.targetBlobScale = 0.68;
+            this.targetBlobScale = 0.62;
           }
         }
 
@@ -1499,7 +1791,17 @@
         node.addEventListener('blur', onLeave);
       });
 
-      // 7. Detail Module Switcher Quick Rail
+      // 7. Mobile Pill Selector
+      Object.keys(this.dom.mobilePills).forEach((key) => {
+        const pill = this.dom.mobilePills[key];
+        if (!pill) return;
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.selectModule(key);
+        });
+      });
+
+      // 8. Detail Module Switcher Quick Rail
       if (this.dom.detailSwitchPills) {
         this.dom.detailSwitchPills.forEach((pill) => {
           pill.addEventListener('click', (e) => {
@@ -1512,7 +1814,7 @@
         });
       }
 
-      // 8. Detail Primary Action Button
+      // 9. Detail Primary Action Button
       this.dom.btnDetailPrimaryAction?.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!this.selectedModuleId) return;
