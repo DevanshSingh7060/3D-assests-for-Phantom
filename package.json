@@ -1,7 +1,7 @@
 {
   "name": "3d-assets-for-phantom",
   "version": "1.0.0",
-  "description": "3D Assets and Interactive Spatial Experience for SMRITI / PHANTOM",
+  "description": "3D Assets and Interactive Spatial Experience for DISHA / PHANTOM",
   "main": "index.html",
   "scripts": {
     "dev": "python3 -m http.server 8080",
@@ -12,6 +12,7 @@
     "spline",
     "threejs",
     "phantom",
+    "disha",
     "smriti",
     "spatial-computing",
     "spatial-memory"

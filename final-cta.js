@@ -1,7 +1,7 @@
 /**
  * ==============================================================================
  * SECTION 09: FINAL CTA — CONTROLLER & 3D VIGNETTE
- * - Quiet, warm, emotional closing moment of SMRITI
+ * - Quiet, warm, emotional closing moment of DISHA
  * - "What if your home could remember for you?"
  * - Small 3D fragment of the home: rich walnut side table, cozy armchair corner,
  *   reading glasses, warm parchment floor lamp, indoor plant, and a whisper-quiet
@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  // Master Palette (100% harmonized with SMRITI design system)
+  // Master Palette (100% harmonized with DISHA design system)
   const PALETTE = {
     bg: 0x141210,              // Dark Charcoal background
     wallPlaster: 0x181412,     // Deep warm room corner wall
@@ -33,7 +33,7 @@
     plantPot: 0xAC5838,        // Soft terracotta planter
     glassesFrame: 0x22140E,    // Deep espresso tortoiseshell
     glassesBridge: 0xD4A038,   // Warm gold bridge
-    phantomTeal: 0x4D9D91,     // SMRITI memory teal
+    phantomTeal: 0x4D9D91,     // DISHA memory teal
     phantomTealGlow: 0x6BBFB4  // Soft shimmer
   };
 
@@ -124,8 +124,9 @@
         } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        if (window.triggerSmritiStory) {
-          window.setTimeout(() => window.triggerSmritiStory(), 450);
+        const trig = window.triggerDishaStory || window.triggerSmritiStory;
+      if (trig) {
+          window.setTimeout(() => trig(), 450);
         }
       };
 

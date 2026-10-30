@@ -1,5 +1,5 @@
 /**
- * SMRITI — Spatial Memory Web Experience Engine (v4.1 Final Polish)
+ * DISHA — Spatial Memory Web Experience Engine (v4.1 Final Polish)
  * ----------------------------------------------------------------------------
  * Integrates:
  * - 3D Assets: Dora (GLB), small_table.glb, sofa.glb, plant_with_pot.glb
@@ -78,7 +78,7 @@
     RELIEF:        { pos: { x: 86, y: 102, z: 195 }, target: { x: 76, y: 62, z: -60 }, fov: 29 }
   };
 
-  class SmritiExperience {
+  class DishaExperience {
     constructor(containerId) {
       this.container = document.getElementById(containerId) || document.getElementById('spatialViewport') || document.getElementById('splineCanvas');
       if (!this.container) return;
@@ -219,24 +219,14 @@
 
       this.shadowTexture = this.createRadialShadowTexture();
 
-      const isMobile = window.innerWidth < 640;
-      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
-      const initialFov = isMobile ? 38 : (isTablet ? 34 : CAM_PRESETS.HOME.fov);
       const aspect = this.container.clientWidth / this.container.clientHeight;
-      this.camera = new THREE.PerspectiveCamera(initialFov, aspect, 10, 3000);
+      this.camera = new THREE.PerspectiveCamera(CAM_PRESETS.HOME.fov, aspect, 10, 3000);
 
-      if (isMobile) {
-        this.camera.position.set(10, 115, 340);
-        this.camTarget.set(4, 58, -15);
-        this.camera.fov = 36;
-      } else if (isTablet) {
-        this.camera.position.set(0, 114, 310);
-        this.camTarget.set(-36, 54, -10);
-        this.camera.fov = 33;
-      } else {
-        this.camera.position.copy(CAM_PRESETS.HOME.pos);
-        this.camTarget.copy(CAM_PRESETS.HOME.target);
-      }
+      this.updateStoryCameraFraming('IDLE', 0);
+      this.camera.position.copy(this.targetCamPos);
+      this.camTarget.copy(this.targetCamLook);
+      this.camera.fov = this.targetFov;
+      this.camera.updateProjectionMatrix();
       this.camera.lookAt(this.camTarget);
 
       // 2. High-Fidelity Renderer with Controlled Tone Mapping
@@ -263,6 +253,10 @@
       this.buildHeroProps();
 
       window.addEventListener('resize', () => this.onResize());
+      if (window.ResizeObserver && this.container) {
+        this.resizeObserver = new ResizeObserver(() => this.onResize());
+        this.resizeObserver.observe(this.container);
+      }
       this.setupUIListeners();
 
       this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -709,7 +703,7 @@
 
       ctx.fillStyle = '#FFFFFF';
       ctx.font = '700 19px Georgia, serif';
-      ctx.fillText('SMRITI', 40, 68);
+      ctx.fillText('DISHA', 40, 68);
 
       ctx.fillStyle = '#6E7380';
       ctx.font = '600 9px -apple-system, sans-serif';
@@ -1491,6 +1485,10 @@
       this.glassesPickedUp = false;
       this.startLoop();
 
+      const heroEl = this.container ? this.container.closest('.hero') : document.getElementById('home');
+      if (heroEl) heroEl.classList.add('story-active');
+      document.body.classList.add('story-active');
+
       if (this.ui.cta) {
         this.ui.cta.classList.remove('complete', 'replay');
         this.ui.cta.classList.add('playing');
@@ -1513,6 +1511,10 @@
       this.glassesPickedUp = false;
       this.currentStoryPhase = 'IDLE';
 
+      const heroEl = this.container ? this.container.closest('.hero') : document.getElementById('home');
+      if (heroEl) heroEl.classList.remove('story-active');
+      document.body.classList.remove('story-active');
+
       this.ghostGlasses.visible = false;
       this.highlightGhost.visible = false;
       this.highlightMoved.visible = false;
@@ -1531,9 +1533,7 @@
       this.headRot.set(0, 0, 0);
 
       if (this.camera) {
-        this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
-        this.targetCamLook.copy(CAM_PRESETS.HOME.target);
-        this.targetFov = CAM_PRESETS.HOME.fov;
+        this.updateStoryCameraFraming('IDLE', 0);
       }
 
       if (this.roomLights.phantom) this.roomLights.phantom.intensity = 0;
@@ -1589,9 +1589,9 @@
       // Telemetry in document title for reliable headless QA inspection
       if (this.isStoryActive) {
         const el = (now - this.storyStartTime) / 1000;
-        document.title = `[SMRITI] t=${el.toFixed(1)}s | ${this.currentStoryPhase} | Dora=(${this.charPos.x.toFixed(0)},${this.charPos.y.toFixed(0)},${this.charPos.z.toFixed(0)}) | G=${this.glassesState}`;
+        document.title = `[DISHA] t=${el.toFixed(1)}s | ${this.currentStoryPhase} | Dora=(${this.charPos.x.toFixed(0)},${this.charPos.y.toFixed(0)},${this.charPos.z.toFixed(0)}) | G=${this.glassesState}`;
       } else {
-        document.title = `[SMRITI] IDLE | G=${this.glassesState}`;
+        document.title = `[DISHA] IDLE | G=${this.glassesState}`;
       }
 
       if (!this.prefersReducedMotion) {
@@ -1601,9 +1601,6 @@
         this.mouse.x = 0;
         this.mouse.y = 0;
       }
-
-      const isMobile = window.innerWidth < 640;
-      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
 
       // ================= IDLE STATE =================
       if (!this.isStoryActive) {
@@ -1632,19 +1629,7 @@
           if (this.phoneScreenLight) this.phoneScreenLight.intensity = 0.2;
         }
 
-        if (isMobile) {
-          this.targetCamPos.set(10, 115, 340);
-          this.targetCamLook.set(4, 58, -15);
-          this.targetFov = 36;
-        } else if (isTablet) {
-          this.targetCamPos.set(0, 114, 310);
-          this.targetCamLook.set(-36, 54, -10);
-          this.targetFov = 33;
-        } else {
-          this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
-          this.targetCamLook.copy(CAM_PRESETS.HOME.target);
-          this.targetFov = CAM_PRESETS.HOME.fov;
-        }
+        this.updateStoryCameraFraming('IDLE', 0);
       }
 
       // ================= CINEMATIC STORY ARC =================
@@ -1680,11 +1665,7 @@
           this.glassesState = 'GLASSES_TABLE';
           const p = this.easeInOutCubic(Math.min(elapsed / 1.8, 1));
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.NOTICE.pos);
-            this.targetCamLook.copy(CAM_PRESETS.NOTICE.target);
-            this.targetFov = CAM_PRESETS.NOTICE.fov;
-          }
+          this.updateStoryCameraFraming('NOTICE', elapsed);
 
           this.charRot.y = 0.22 - 0.12 * p;
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
@@ -1724,11 +1705,7 @@
           // Head looks ahead / away
           this.headRot.set(0, 0.10 * pLookAway, 0);
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.GLASSES_MOVE.pos);
-            this.targetCamLook.copy(CAM_PRESETS.GLASSES_MOVE.target);
-            this.targetFov = CAM_PRESETS.GLASSES_MOVE.fov;
-          }
+          this.updateStoryCameraFraming('GLASSES_MOVE', elapsed);
 
           const flight = (elapsed - 3.1) / 2.2;
           if (flight >= 0 && flight <= 1.0) {
@@ -1784,11 +1761,7 @@
           this.glassesState = 'GLASSES_SHELF';
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.SEARCH.pos);
-            this.targetCamLook.copy(CAM_PRESETS.SEARCH.target);
-            this.targetFov = CAM_PRESETS.SEARCH.fov;
-          }
+          this.updateStoryCameraFraming('SEARCH', elapsed);
 
           if (elapsed < 7.5) {
             const p = this.easeInOutCubic((elapsed - 6.0) / 1.5);
@@ -1826,7 +1799,7 @@
 
           if (this.ui.narration) {
             this.ui.narrTitle.textContent = 'Object displaced.';
-            this.ui.narrDetail.textContent = 'Side table is empty. Consulting SMRITI...';
+            this.ui.narrDetail.textContent = 'Side table is empty. Consulting DISHA...';
           }
         }
 
@@ -1845,11 +1818,7 @@
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
           const p = this.easeInOutCubic(Math.min((elapsed - 9.5) / 1.4, 1.0));
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.PHONE_CHECK.pos);
-            this.targetCamLook.copy(CAM_PRESETS.PHONE_CHECK.target);
-            this.targetFov = CAM_PRESETS.PHONE_CHECK.fov;
-          }
+          this.updateStoryCameraFraming('PHONE_CHECK', elapsed);
 
           this.charRot.y = -0.05 * (1 - p) + 0.10 * p;
 
@@ -1887,7 +1856,7 @@
           this.drawPhoneScreen('SCAN', `${Math.round(scanProgress * 100)}%`, scanProgress);
 
           if (this.ui.narration) {
-            this.ui.narrTitle.textContent = 'SMRITI scanning room memory...';
+            this.ui.narrTitle.textContent = 'DISHA scanning room memory...';
             this.ui.narrDetail.textContent = 'Comparing spatial points with past reality';
           }
         }
@@ -1905,11 +1874,7 @@
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
           const scanP = (elapsed - 13.0) / 3.5;
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.PHANTOM_SCAN.pos);
-            this.targetCamLook.copy(CAM_PRESETS.PHANTOM_SCAN.target);
-            this.targetFov = CAM_PRESETS.PHANTOM_SCAN.fov;
-          }
+          this.updateStoryCameraFraming('PHANTOM_SCAN', elapsed);
 
           if (this.roomLights.phantom) this.roomLights.phantom.intensity = 1.35;
 
@@ -1974,11 +1939,7 @@
           this.glassesState = 'GLASSES_SHELF';
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.MEMORY_REVEAL.pos);
-            this.targetCamLook.copy(CAM_PRESETS.MEMORY_REVEAL.target);
-            this.targetFov = CAM_PRESETS.MEMORY_REVEAL.fov;
-          }
+          this.updateStoryCameraFraming('MEMORY_REVEAL', elapsed);
 
           if (this.spatialScanPlane) this.spatialScanPlane.visible = false;
           if (this.scanSweepLight) this.scanSweepLight.intensity = Math.max(0, 2.0 - (elapsed - 16.5) * 1.5);
@@ -2041,11 +2002,7 @@
           this.glassesState = 'GLASSES_SHELF';
           this.charPos.set(CHAR_ORIGIN.x, 0, CHAR_ORIGIN.z);
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.NOTICE_SHELF.pos);
-            this.targetCamLook.copy(CAM_PRESETS.NOTICE_SHELF.target);
-            this.targetFov = CAM_PRESETS.NOTICE_SHELF.fov;
-          }
+          this.updateStoryCameraFraming('NOTICE_SHELF', elapsed);
 
           const turnP = this.easeInOutCubic((elapsed - 20.0) / 1.2);
           this.charRot.y = 0.22 + (2.45 - 0.22) * turnP;
@@ -2085,11 +2042,7 @@
           const walkDuration = 3.8;
           const p = this.easeInOutCubic(Math.min((elapsed - 21.2) / walkDuration, 1.0));
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.WALK_TO_SHELF.pos);
-            this.targetCamLook.copy(CAM_PRESETS.WALK_TO_SHELF.target);
-            this.targetFov = CAM_PRESETS.WALK_TO_SHELF.fov;
-          }
+          this.updateStoryCameraFraming('WALK_TO_SHELF', elapsed);
 
           // Dora faces walk direction
           this.charRot.y = 2.45;
@@ -2138,11 +2091,7 @@
           this.highlightGhost.visible = false;
           this.spatialTrail.visible = false;
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.APPROACH.pos);
-            this.targetCamLook.copy(CAM_PRESETS.APPROACH.target);
-            this.targetFov = CAM_PRESETS.APPROACH.fov;
-          }
+          this.updateStoryCameraFraming('APPROACH', elapsed);
 
           this.charPos.set(this.SHELF_INTERACTION_POINT.x, 0, this.SHELF_INTERACTION_POINT.z);
 
@@ -2178,11 +2127,7 @@
           this.highlightGhost.visible = false;
           this.spatialTrail.visible = false;
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.PICKUP.pos);
-            this.targetCamLook.copy(CAM_PRESETS.PICKUP.target);
-            this.targetFov = CAM_PRESETS.PICKUP.fov;
-          }
+          this.updateStoryCameraFraming('PICKUP', elapsed);
 
           this.charPos.set(this.SHELF_INTERACTION_POINT.x, 0, this.SHELF_INTERACTION_POINT.z);
           this.charRot.set(0, 0.35, 0);
@@ -2248,11 +2193,7 @@
           this.highlightGhost.visible = false;
           this.spatialTrail.visible = false;
 
-          if (!isMobile) {
-            this.targetCamPos.copy(CAM_PRESETS.RELIEF.pos);
-            this.targetCamLook.copy(CAM_PRESETS.RELIEF.target);
-            this.targetFov = CAM_PRESETS.RELIEF.fov;
-          }
+          this.updateStoryCameraFraming('RELIEF', elapsed);
 
           if (this.roomLights.phantom) this.roomLights.phantom.intensity = Math.max(0, 1.35 - (elapsed - 28.5) * 0.4);
 
@@ -2338,8 +2279,13 @@
 
       // Smooth Cinematic Camera Lerp
       const camLerp = 0.045;
-      this.camera.position.x += (this.targetCamPos.x + this.mouse.x * 14 - this.camera.position.x) * camLerp;
-      this.camera.position.y += (this.targetCamPos.y - this.mouse.y * 8 - this.camera.position.y) * camLerp;
+      if (Math.abs(this.targetFov - this.camera.fov) > 0.01) {
+        this.camera.fov += (this.targetFov - this.camera.fov) * camLerp;
+        this.camera.updateProjectionMatrix();
+      }
+
+      this.camera.position.x += (this.targetCamPos.x + this.mouse.x * 12 - this.camera.position.x) * camLerp;
+      this.camera.position.y += (this.targetCamPos.y - this.mouse.y * 6 - this.camera.position.y) * camLerp;
       this.camera.position.z += (this.targetCamPos.z - this.camera.position.z) * camLerp;
 
       this.camTarget.x += (this.targetCamLook.x - this.camTarget.x) * camLerp;
@@ -2351,31 +2297,292 @@
       this.renderer.render(this.scene, this.camera);
     }
 
+    // =========================================================================
+    // RESPONSIVE STORY SCENE FRAMING & DYNAMIC CAMERA CHOREOGRAPHY
+    // =========================================================================
+    ensureTargetInSafeView(targetWorldPos, safeMarginX = 0.72, safeMarginY = 0.60) {
+      if (!this.camera || !targetWorldPos) return;
+      if (!this._tempVec) this._tempVec = new THREE.Vector3();
+      this._tempVec.copy(targetWorldPos).project(this.camera);
+
+      // Check if projected NDC is outside safe boundaries
+      if (this._tempVec.x < -safeMarginX) {
+        const err = -safeMarginX - this._tempVec.x;
+        const correction = err * 25;
+        this.targetCamLook.x -= Math.min(correction, 15);
+        this.targetCamPos.x -= Math.min(correction, 15);
+      } else if (this._tempVec.x > safeMarginX) {
+        const err = this._tempVec.x - safeMarginX;
+        const correction = err * 25;
+        this.targetCamLook.x += Math.min(correction, 15);
+        this.targetCamPos.x += Math.min(correction, 15);
+      }
+
+      if (this._tempVec.y < -safeMarginY) {
+        const err = -safeMarginY - this._tempVec.y;
+        const correction = err * 15;
+        this.targetCamLook.y -= Math.min(correction, 12);
+      } else if (this._tempVec.y > safeMarginY) {
+        const err = this._tempVec.y - safeMarginY;
+        const correction = err * 15;
+        this.targetCamLook.y += Math.min(correction, 12);
+      }
+    }
+
+    updateStoryCameraFraming(phase, elapsed = 0) {
+      if (!this.container || !this.camera) return;
+
+      const w = this.container.clientWidth || window.innerWidth;
+      const h = this.container.clientHeight || window.innerHeight;
+      const aspect = h > 0 ? (w / h) : 1.777;
+
+      // Responsive aspect factor:
+      // tAspect = 0 when aspect <= 0.52 (narrow mobile portrait, e.g. 375x667 ~ 0.56, 390x844 ~ 0.46)
+      // tAspect = 1 when aspect >= 1.50 (standard landscape / widescreen desktop)
+      // Smooth continuous blend for tablet portrait (0.75), square, and landscape.
+      const tAspect = Math.max(0, Math.min(1, (aspect - 0.52) / (1.50 - 0.52)));
+
+      // Base desktop preset
+      let dPos = CAM_PRESETS.HOME.pos;
+      let dTarget = CAM_PRESETS.HOME.target;
+      let dFov = CAM_PRESETS.HOME.fov;
+
+      // Mobile framing default (IDLE) - Position Dora in upper stage with feet well above hero text
+      let mPos = { x: 14, y: 102, z: 340 };
+      let mTarget = { x: 4, y: 36, z: -10 };
+      let mFov = 34;
+
+      let focalObject = null;
+
+      switch (phase) {
+        case 'IDLE':
+          dPos = CAM_PRESETS.HOME.pos;
+          dTarget = CAM_PRESETS.HOME.target;
+          dFov = CAM_PRESETS.HOME.fov;
+          mPos = { x: 12, y: 116, z: 345 };
+          mTarget = { x: 4, y: 20, z: -10 };
+          mFov = 34;
+          focalObject = null;
+          break;
+
+        case 'NOTICE':
+          dPos = CAM_PRESETS.NOTICE.pos;
+          dTarget = CAM_PRESETS.NOTICE.target;
+          dFov = CAM_PRESETS.NOTICE.fov;
+          // Mobile: Frame the side table and Dora together
+          mPos = { x: -16, y: 96, z: 230 };
+          mTarget = { x: -44, y: 51, z: 8 };
+          mFov = 31;
+          focalObject = this.glassesTablePos;
+          break;
+
+        case 'GLASSES_MOVE': {
+          dPos = CAM_PRESETS.GLASSES_MOVE.pos;
+          dTarget = CAM_PRESETS.GLASSES_MOVE.target;
+          dFov = CAM_PRESETS.GLASSES_MOVE.fov;
+
+          // Dynamically track flying glasses
+          const flight = Math.max(0, Math.min(1, (elapsed - 3.1) / 2.2));
+          const p = this.easeInOutCubic(flight);
+
+          // Smooth mobile trajectory camera:
+          // Start framed on table -> track arc in air -> arrive framed on bookshelf
+          const startMPos = { x: -16, y: 96, z: 230 };
+          const startMTarget = { x: -44, y: 51, z: 8 };
+
+          const midMPos = { x: 32, y: 106, z: 235 };
+          const midMTarget = { x: 18, y: 64, z: -35 };
+
+          const endMPos = { x: 74, y: 102, z: 205 };
+          const endMTarget = { x: 80, y: 64, z: -75 };
+
+          if (p < 0.5) {
+            const u = p * 2;
+            mPos = {
+              x: startMPos.x + (midMPos.x - startMPos.x) * u,
+              y: startMPos.y + (midMPos.y - startMPos.y) * u,
+              z: startMPos.z + (midMPos.z - startMPos.z) * u
+            };
+            mTarget = {
+              x: startMTarget.x + (midMTarget.x - startMTarget.x) * u,
+              y: startMTarget.y + (midMTarget.y - startMTarget.y) * u,
+              z: startMTarget.z + (midMTarget.z - startMTarget.z) * u
+            };
+          } else {
+            const u = (p - 0.5) * 2;
+            mPos = {
+              x: midMPos.x + (endMPos.x - midMPos.x) * u,
+              y: midMPos.y + (endMPos.y - midMPos.y) * u,
+              z: midMPos.z + (endMPos.z - midMPos.z) * u
+            };
+            mTarget = {
+              x: midMTarget.x + (endMTarget.x - midMTarget.x) * u,
+              y: midMTarget.y + (endMTarget.y - midMTarget.y) * u,
+              z: midMTarget.z + (endMTarget.z - midMTarget.z) * u
+            };
+          }
+          mFov = 31;
+          focalObject = this.glasses ? this.glasses.position : null;
+          break;
+        }
+
+        case 'SEARCH':
+          dPos = CAM_PRESETS.SEARCH.pos;
+          dTarget = CAM_PRESETS.SEARCH.target;
+          dFov = CAM_PRESETS.SEARCH.fov;
+          // Dora turns to side table; frame empty table and Dora
+          mPos = { x: -18, y: 98, z: 235 };
+          mTarget = { x: -42, y: 52, z: 6 };
+          mFov = 31;
+          focalObject = this.glassesTablePos;
+          break;
+
+        case 'PHONE_CHECK':
+          dPos = CAM_PRESETS.PHONE_CHECK.pos;
+          dTarget = CAM_PRESETS.PHONE_CHECK.target;
+          dFov = CAM_PRESETS.PHONE_CHECK.fov;
+          // Frame Dora torso and glowing phone
+          mPos = { x: 14, y: 88, z: 185 };
+          mTarget = { x: 4, y: 54, z: 12 };
+          mFov = 28;
+          focalObject = this.phone ? this.phone.position : this.charPos;
+          break;
+
+        case 'PHANTOM_SCAN': {
+          dPos = CAM_PRESETS.PHANTOM_SCAN.pos;
+          dTarget = CAM_PRESETS.PHANTOM_SCAN.target;
+          dFov = CAM_PRESETS.PHANTOM_SCAN.fov;
+          const scanP = Math.max(0, Math.min(1, (elapsed - 13.0) / 3.5));
+          // Pull back and gently track scan sweep
+          mPos = { x: 5 + scanP * 25, y: 120, z: 305 };
+          mTarget = { x: -15 + scanP * 35, y: 54, z: -30 };
+          mFov = 36;
+          focalObject = this.spatialScanPlane ? this.spatialScanPlane.position : null;
+          break;
+        }
+
+        case 'MEMORY_REVEAL': {
+          dPos = CAM_PRESETS.MEMORY_REVEAL.pos;
+          dTarget = CAM_PRESETS.MEMORY_REVEAL.target;
+          dFov = CAM_PRESETS.MEMORY_REVEAL.fov;
+          if (elapsed < 18.2) {
+            // First look at ghost on table
+            mPos = { x: -16, y: 102, z: 245 };
+            mTarget = { x: -42, y: 52, z: 6 };
+            focalObject = this.ghostGlasses ? this.ghostGlasses.position : this.glassesTablePos;
+          } else {
+            // Sweep across along spatial trail to bookshelf
+            const pTrail = this.easeInOutCubic(Math.min((elapsed - 18.2) / 1.8, 1.0));
+            mPos = {
+              x: -16 + (74 - (-16)) * pTrail,
+              y: 102 + (104 - 102) * pTrail,
+              z: 245 + (210 - 245) * pTrail
+            };
+            mTarget = {
+              x: -42 + (78 - (-42)) * pTrail,
+              y: 52 + (62 - 52) * pTrail,
+              z: 6 + (-70 - 6) * pTrail
+            };
+            focalObject = this.glassesShelfPos;
+          }
+          mFov = 32;
+          break;
+        }
+
+        case 'NOTICE_SHELF':
+          dPos = CAM_PRESETS.NOTICE_SHELF.pos;
+          dTarget = CAM_PRESETS.NOTICE_SHELF.target;
+          dFov = CAM_PRESETS.NOTICE_SHELF.fov;
+          mPos = { x: 65, y: 104, z: 225 };
+          mTarget = { x: 68, y: 58, z: -55 };
+          mFov = 31;
+          focalObject = this.glassesShelfPos;
+          break;
+
+        case 'WALK_TO_SHELF': {
+          dPos = CAM_PRESETS.WALK_TO_SHELF.pos;
+          dTarget = CAM_PRESETS.WALK_TO_SHELF.target;
+          dFov = CAM_PRESETS.WALK_TO_SHELF.fov;
+          const pWalk = this.easeInOutCubic(Math.min((elapsed - 21.2) / 3.8, 1.0));
+          // Dynamically track Dora walking across the room
+          mPos = {
+            x: 22 + (80 - 22) * pWalk,
+            y: 104,
+            z: 240 + (195 - 240) * pWalk
+          };
+          mTarget = {
+            x: 4 + (76 - 4) * pWalk + 6,
+            y: 56,
+            z: 10 + (-64 - 10) * pWalk - 8
+          };
+          mFov = 31;
+          focalObject = this.charPos;
+          break;
+        }
+
+        case 'APPROACH':
+          dPos = CAM_PRESETS.APPROACH.pos;
+          dTarget = CAM_PRESETS.APPROACH.target;
+          dFov = CAM_PRESETS.APPROACH.fov;
+          mPos = { x: 80, y: 100, z: 175 };
+          mTarget = { x: 84, y: 64, z: -75 };
+          mFov = 29;
+          focalObject = this.glassesShelfPos;
+          break;
+
+        case 'PICKUP':
+          dPos = CAM_PRESETS.PICKUP.pos;
+          dTarget = CAM_PRESETS.PICKUP.target;
+          dFov = CAM_PRESETS.PICKUP.fov;
+          mPos = { x: 80, y: 98, z: 175 };
+          mTarget = { x: 84, y: 64, z: -75 };
+          mFov = 29;
+          focalObject = this.glasses ? this.glasses.position : this.glassesShelfPos;
+          break;
+
+        case 'RELIEF':
+          dPos = CAM_PRESETS.RELIEF.pos;
+          dTarget = CAM_PRESETS.RELIEF.target;
+          dFov = CAM_PRESETS.RELIEF.fov;
+          mPos = { x: 76, y: 100, z: 190 };
+          mTarget = { x: 74, y: 62, z: -60 };
+          mFov = 30;
+          focalObject = this.charPos;
+          break;
+      }
+
+      // Smoothly blend between mobile and desktop based on aspect ratio
+      this.targetCamPos.set(
+        mPos.x + (dPos.x - mPos.x) * tAspect,
+        mPos.y + (dPos.y - mPos.y) * tAspect,
+        mPos.z + (dPos.z - mPos.z) * tAspect
+      );
+      this.targetCamLook.set(
+        mTarget.x + (dTarget.x - mTarget.x) * tAspect,
+        mTarget.y + (dTarget.y - mTarget.y) * tAspect,
+        mTarget.z + (dTarget.z - mTarget.z) * tAspect
+      );
+      this.targetFov = mFov + (dFov - mFov) * tAspect;
+
+      // Safe area boundary enforcement:
+      // Ensure the key narrative subject remains safely inside visible bounds
+      if (focalObject) {
+        this.ensureTargetInSafeView(focalObject);
+      }
+    }
+
     onResize() {
       if (!this.container || !this.renderer || !this.camera) return;
       const w = this.container.clientWidth;
       const h = this.container.clientHeight;
+      if (w === 0 || h === 0) return;
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(w, h);
-
-      const isMobile = window.innerWidth < 640;
-      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
-      if (this.currentStoryPhase === 'HOME' && !this.isStoryActive) {
-        if (isMobile) {
-          this.targetCamPos.set(10, 115, 340);
-          this.targetCamLook.set(4, 58, -15);
-          this.targetFov = 36;
-        } else if (isTablet) {
-          this.targetCamPos.set(0, 114, 310);
-          this.targetCamLook.set(-36, 54, -10);
-          this.targetFov = 33;
-        } else {
-          this.targetCamPos.copy(CAM_PRESETS.HOME.pos);
-          this.targetCamLook.copy(CAM_PRESETS.HOME.target);
-          this.targetFov = CAM_PRESETS.HOME.fov;
-        }
-      }
+      this.updateStoryCameraFraming(
+        this.currentStoryPhase || 'IDLE',
+        this.isStoryActive ? (performance.now() - this.storyStartTime) / 1000 : 0
+      );
     }
 
     findGlasses() {
@@ -2400,16 +2607,23 @@
   // Mount on DOM Ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      window.smritiApp = new SmritiExperience('spatialViewport');
+      const app = new DishaExperience('spatialViewport');
+      window.dishaApp = app;
+      window.smritiApp = app;
     });
   } else {
-    window.smritiApp = new SmritiExperience('spatialViewport');
+    const app = new DishaExperience('spatialViewport');
+    window.dishaApp = app;
+    window.smritiApp = app;
   }
 
-  window.SmritiExperience = SmritiExperience;
-  window.triggerSmritiStory = () => {
-    if (window.smritiApp) {
-      window.smritiApp.startStory();
+  window.DishaExperience = DishaExperience;
+  window.SmritiExperience = DishaExperience;
+  window.triggerDishaStory = () => {
+    const app = window.dishaApp || window.smritiApp;
+    if (app) {
+      app.startStory();
     }
   };
+  window.triggerSmritiStory = window.triggerDishaStory;
 })();

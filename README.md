@@ -1,6 +1,6 @@
-# 3D Assets for PHANTOM (SMRITI Spatial Memory Experience)
+# 3D Assets for PHANTOM (DISHA Spatial Memory Experience)
 
-This repository contains the complete 3D assets, architectural scene setup, interactive motion engine, and web experience for **SMRITI** — an assistive spatial memory system powered by the **PHANTOM** engine.
+This repository contains the complete 3D assets, architectural scene setup, interactive motion engine, and web experience for **DISHA** — an assistive spatial memory system powered by the **PHANTOM** engine.
 
 ---
 
@@ -10,7 +10,7 @@ This repository contains the complete 3D assets, architectural scene setup, inte
 3D-assets-for-Phantom/
 ├── web/                             # Complete Web Product Experience
 │   ├── index.html                   # Editorial Landing Page & Spatial Canvas
-│   ├── smriti-experience.js         # Native 60fps Three.js 3D Engine & Camera Choreography
+│   ├── disha-experience.js         # Native 60fps Three.js 3D Engine & Camera Choreography
 │   ├── style.css                    # Typography (Instrument Serif, Inter) & Responsive Layout
 │   └── three.min.js                 # Standalone Three.js library
 ├── spline/                          # Spline 3D Scene Assets & Motion Layers

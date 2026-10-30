@@ -263,9 +263,9 @@
   // Mount on DOM Ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      window.smritiTrust = new TrustSectionController();
+      window.dishaTrust = window.smritiTrust = new TrustSectionController();
     });
   } else {
-    window.smritiTrust = new TrustSectionController();
+    window.dishaTrust = window.smritiTrust = new TrustSectionController();
   }
 })();

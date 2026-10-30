@@ -377,9 +377,9 @@
   // Mount on DOM Ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      window.smritiReceipt = new MemoryReceiptController();
+      window.dishaReceipt = window.smritiReceipt = new MemoryReceiptController();
     });
   } else {
-    window.smritiReceipt = new MemoryReceiptController();
+    window.dishaReceipt = window.smritiReceipt = new MemoryReceiptController();
   }
 })();
